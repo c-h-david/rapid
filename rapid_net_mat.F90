@@ -211,7 +211,7 @@ do JS_reachbas=1,IS_reachbas
           !Within connectivity table, index JS_reachtot has been determined as
           !Flowing into reach located at index JS_reachbas.  The following is 
           !to check that the reach corresponding to JS_reachtot is within the 
-          !domain. If not, gives a warning.
+          !basin too. If not, gives a warning.
           BS_logical=.false.
           do JS_reachbas2=1,IS_reachbas
           BS_logical=( BS_logical .or.                                         &
@@ -221,7 +221,7 @@ do JS_reachbas=1,IS_reachbas
           write(temp_char,'(i10)') IV_connect_id(JS_reachtot)
           call PetscPrintf(PETSC_COMM_WORLD,                                   &
                            'WARNING: reach ID' // temp_char,ierr)
-          write(temp_char,'(i10)') IV_basin_index(JS_reachbas)
+          write(temp_char,'(i10)') IV_basin_id(JS_reachbas)
           call PetscPrintf(PETSC_COMM_WORLD,                                   &
                            ' should be connected upstream   of reach ID'       &
                            // temp_char // char(10),ierr)
@@ -236,7 +236,7 @@ do JS_reachbas=1,IS_reachbas
           !Within connectivity table, index JS_reachtot has been determined as
           !Flowing out of reach located at index JS_reachbas.  The following is 
           !to check that the reach corresponding to JS_reachtot is within the 
-          !domain. If not, gives a warning.
+          !basin too. If not, gives a warning.
           BS_logical=.false.
           do JS_reachbas2=1,IS_reachbas
           BS_logical=( BS_logical .or.                                         &
@@ -246,7 +246,7 @@ do JS_reachbas=1,IS_reachbas
           write(temp_char,'(i10)') IV_connect_id(JS_reachtot)
           call PetscPrintf(PETSC_COMM_WORLD,                                   &
                            'WARNING: reach ID' // temp_char,ierr)
-          write(temp_char,'(i10)') IV_basin_index(JS_reachbas)
+          write(temp_char,'(i10)') IV_basin_id(JS_reachbas)
           call PetscPrintf(PETSC_COMM_WORLD,                                   &
                            ' should be connected downstream of reach ID'       &
                            // temp_char // char(10),ierr)
