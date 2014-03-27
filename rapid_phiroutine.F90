@@ -43,7 +43,7 @@ implicit none
 !*******************************************************************************
 !Includes
 !*******************************************************************************
-#include "finclude/petsc.h"       
+#include "finclude/petscsys.h"       
 !base PETSc routines
 #include "finclude/petscvec.h"  
 #include "finclude/petscvec.h90"
