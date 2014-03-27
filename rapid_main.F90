@@ -49,6 +49,7 @@ use rapid_var, only :                                                          &
                    IS_reachtot,IS_forcingtot,JS_forcingtot,IS_forcingbas,      &
                    IV_forcing_index,IV_forcing_loc,IV_forcingtot_id,           &
                    IV_forcinguse_id,ZS_time1,ZS_time2,ZS_time3,                &
+                   ZV_read_gagetot,IS_gagebas,                                 &
                    IS_nc_status,IS_nc_id_fil_m3,IS_nc_id_fil_Qout,             &
                    IS_nc_id_var_m3,IS_nc_id_var_Qout,IS_nc_id_var_comid,       &
                    IS_nc_id_dim_time,IS_nc_id_dim_comid,IV_nc_id_dim,          &
@@ -166,6 +167,8 @@ call VecSet(ZV_VinitM,ZS_V0,ierr)
 !
 !!-------------------------------------------------------------------------------
 !if (rank==0) then 
+!open(99,file=m3_nc_file,status='old')
+!close(99)
 !IS_nc_status=NF90_OPEN(m3_nc_file,NF90_NOWRITE,IS_nc_id_fil_m3)
 !IS_nc_status=NF90_INQ_VARID(IS_nc_id_fil_m3,'m3_riv',IS_nc_id_var_m3)
 !IV_nc_start=(/1,1/)
@@ -343,12 +346,12 @@ call VecAssemblyEnd(ZV_kfac,ierr)
 !reads kfac and assigns to ZV_kfac
 
 !open(35,file=Qobsbarrec_file,status='old')
-!!read(35,*) ZV_read_reachtot
-!read(35,'(10e10.3)') ZV_read_reachtot
+!read(35,*) ZV_read_gagetot
 !close(35)
-!call VecSetValues(ZV_Qobsbarrec,IS_reachbas,IV_basin_loc,                      &
-!                  ZV_read_reachtot(IV_basin_index),INSERT_VALUES,ierr)
-!                  !only looking at basin, doesn't have to be whole domain here 
+!call VecSetValues(ZV_Qobsbarrec,IS_gagebas,IV_gage_loc,                        &
+!                  ZV_read_gagetot(IV_gage_index),INSERT_VALUES,ierr)
+!                  !here we only look at the observations within the basin
+!                  !studied
 !call VecAssemblyBegin(ZV_Qobsbarrec,ierr)
 !call VecAssemblyEnd(ZV_Qobsbarrec,ierr)  
 !!reads Qobsbarrec and assigns to ZV_Qobsbarrec
@@ -370,7 +373,7 @@ if (IS_forcingbas > 0) then
 call PetscPrintf(PETSC_COMM_WORLD,'WARNING: Forcing used during optimization, '&
                  //'cost function calculated with flows measured at stations ' &
                  //'located on reach ID:'//char(10),ierr)
-if (rank==0) print *, 'IV_forcingtot_id   =', IV_forcingtot_id
+!if (rank==0) print *, 'IV_forcingtot_id   =', IV_forcingtot_id
 if (rank==0) print *, 'IV_forcinguse_id   =', IV_forcinguse_id
 if (rank==0) print *, 'IS_forcingbas      =', IS_forcingbas
 if (rank==0) print *, 'IV_forcing_index   =', IV_forcing_index
