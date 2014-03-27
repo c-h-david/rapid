@@ -37,9 +37,9 @@ implicit none
 !*******************************************************************************
 !Declaration of variables - Basin variables and number of observed reaches
 !*******************************************************************************
-PetscInt,parameter :: IS_reachtot=5175!68143!5175!182240
+PetscInt,parameter :: IS_reachtot=24264!5175!68143!5175!182240
 !total number of river reaches, corresponds to the size of the table Ficvid
-PetscInt, parameter :: IS_reachbas=5175!68143!5175!182240
+PetscInt, parameter :: IS_reachbas=24264!5175!68143!5175!182240
 !size of the matrix and the vectors in this basin, corresponds to the number of
 !reaches in the basin
 PetscInt :: JS_reachtot,JS_reachbas
@@ -55,18 +55,18 @@ PetscInt,dimension(IS_reachbas) :: IV_basin_loc
 !vector giving the zero-base index corresponding to the river reaches within 
 !the basin studied only, to be used in VecSetValues
 
-PetscInt, parameter :: IS_gagetot=36!289!294!32!36
+PetscInt, parameter :: IS_gagetot=291!36!289!294!32!36
 !total number of reaches that have observations (gaged reaches), corresponds to
 !the number of lines in gage_id_file 
 PetscInt :: JS_gagetot
 !loop index corresponding to the number of gaged reaches (IS_gagetot)
 
-PetscInt, parameter :: IS_forcingtot=0!3!0!289
+PetscInt, parameter :: IS_forcingtot=0!493!0!0!3!0!289
 !total number of reaches that where forcing is available, corresponds to the 
 !number of lines in forcingtot_id_file 
 PetscInt :: JS_forcingtot
 !loop index corresponding to the number of gaged reaches (IS_forcingtot)
-PetscInt, parameter :: IS_forcinguse=0!3!0!4!0
+PetscInt, parameter :: IS_forcinguse=0!1!3!0!3!0!4!0
 !total number of reaches where forcing will be used if in basin considered
 PetscInt :: JS_forcinguse
 
@@ -74,49 +74,49 @@ PetscInt :: JS_forcinguse
 !*******************************************************************************
 !Declaration of variables - input and output files
 !*******************************************************************************
-character(len=100) :: modcou_connect_file='./input_San_Guad/rapid_connect_San_Guad.csv'
+character(len=100) :: modcou_connect_file='./input_France/rapid_connect_France.csv'
 !unit 10 - file with connectivity information following MODCOU notations
-character(len=100) :: nhdplus_connect_file='./input_San_Guad/connect_San_Guad.csv' 
+character(len=100) :: nhdplus_connect_file='./input_France/connect_France.csv' 
 !unit 11 - file with connectivity information following NHDPlus notations
-character(len=100) :: basin_id_file='./input_San_Guad/basin_id_San_Guad_hydroseq.csv'
+character(len=100) :: basin_id_file='./input_France/rivsurf_France.csv'
 !unit 15 - file with all the IDs of the reaches used in subbasin considered
-character(len=100) :: gage_id_file='./input_San_Guad/gage_id_San_Guad_2004_2007_full.csv'
+character(len=100) :: gage_id_file='./input_France/gage_id_1995_1996_full_nash.csv'
 !unit 16 - file with all the IDs of the reaches that have gage measurements
-character(len=100) :: forcingtot_id_file='./input_San_Guad/forcingtot_id_dam_springs.csv'
+character(len=100) :: forcingtot_id_file='./input_France/forcingtot_id_1995_1996_full.csv'
 !unit 17 - file with the IDs where flows can be used as forcing to their 
 !corresponding downstream reach  
-character(len=100) :: forcinguse_id_file='./input_San_Guad/forcinguse_id_dam_springs.csv'
+character(len=100) :: forcinguse_id_file='./input_France/forcinguse_id_rhone_pougny.csv'
 !unit 18 - file with the IDs of the reaches with forcing used 
 
-character(len=100) :: k_file='./input_San_Guad/k_San_Guad_2004_3.csv'
+character(len=100) :: k_file='./input_France/k_modcou_b.csv'
 !unit 20 - file with values for k (possibly from previous param. estim.)
-character(len=100) :: x_file='./input_San_Guad/x_San_Guad_2004_3.csv'
+character(len=100) :: x_file='./input_France/x_modcou_b.csv'
 !unit 21 - file with values for x (possibly from previous param. estim.)
-character(len=100) :: kfac_file='./input_San_Guad/kfac_San_Guad_1km_hour.csv'   
+character(len=100) :: kfac_file='./input_France/kfac_modcou_1km_hour.csv'   
 !unit 22 - file with kfac for all reaches of the domain
 character(len=100) :: xfac_file='' 
 !unit 23 - file with xfac for all reaches of the domain
 
-character(len=100) :: Qinit_file='./input_San_Guad/Qinit_ksat_phi2_93.dat'
+character(len=100) :: Qinit_file='./input_France/Qinit_93.csv'
 !unit 30 - file where initial flowrates can be stored to run the model with them
-character(len=100) :: m3_sur_file='./input_San_Guad/m3_riv_ksat_93.dat'
+character(len=100) :: m3_sur_file='./input_France/m3_riv_ksat_93.dat'
 !unit 31 - file where the surface inflow volumes (forced) are given
-character(len=100) :: m3_nc_file='./input_San_Guad/m3_riv_San_Guad_2004_2007_cst.nc'
+character(len=100) :: m3_nc_file='./input_France/m3_riv_France_1995_2005_ksat_201101_c_zvol_ext.nc'
 
-character(len=100) :: Qobs_file='./input_San_Guad/Qobs_San_Guad_2004_2007_full.csv'
+character(len=100) :: Qobs_file='./input_France/Qobs_1995_1996_full_nash_93.csv'
 !unit 33 - file where the flowrates observations are given
-character(len=100) :: Qfor_file='./input_San_Guad/Qfor_dam_springs_2004_2007.csv'     
+character(len=100) :: Qfor_file='./input_France/Qfor_1995_1996_full_93.csv'    
 !unit 34 - file where forcing flowrates are stored.  Forcing is taken as the
 !flow coming from upstream reach.
-character(len=100) :: Qobsbarrec_file='./input_San_Guad/Qobsbarrec.dat'     
+character(len=100) :: Qobsbarrec_file='./input_France/Qobsbarrec_1995_1996_full_nash.csv'     
 !unit 35 - file where the reciprocal (1/xi) of the average forcing are stored.
 
-character(len=100) :: Qout_file='./output/Qout_San_Guad_1460days_p3_dtR=900s_n8.dat'
+character(len=100) :: Qout_file='./'
 !unit 40 - file where model-calculated flows are stored
-character(len=100) :: V_file='./output/V_Reg07_1460days_kfac_dtR=900s_n1.dat'
+character(len=100) :: V_file='./output/'
 !unit 41 - file where model-calculated volumes are stored
 
-character(len=100) :: Qout_nc_file='./output/Qout_France_365days_p_ksat_phi2_france_dtR=1800s_nx.nc'
+character(len=100) :: Qout_nc_file='./output/Qout_France_201101_c_zvol_ext_366days_pb_dtR=1800s_nx.nc'
 
 
 !*******************************************************************************
@@ -124,7 +124,7 @@ character(len=100) :: Qout_nc_file='./output/Qout_France_365days_p_ksat_phi2_fra
 !*******************************************************************************
 PetscScalar :: ZS_knorm, ZS_xnorm
 !constants (k,x) in Muskingum expression, normalized
-PetscScalar, parameter :: ZS_knorm_init=4, ZS_xnorm_init=1
+PetscScalar, parameter :: ZS_knorm_init=2, ZS_xnorm_init=3
 !constants (k,x) in Muskingum expression, normalized, initial values for opt.
 PetscScalar, parameter :: ZS_kfac=3600,ZS_xfac=0.1
 !corresponding factors, k in seconds, x has no dimension
@@ -139,7 +139,7 @@ PetscScalar :: ZS_V0=10000,ZS_Qout0=0
 !*******************************************************************************
 !Declaration of variables - temporal parameters
 !*******************************************************************************
-PetscScalar, parameter :: ZS_TauM=3600*24*1460!182!365!100
+PetscScalar, parameter :: ZS_TauM=3600*24*366!53!6!1460!182!365!100
 !Duration of main procedure, in seconds
 PetscScalar, parameter :: ZS_dtM=3600*24
 !Time step of main procedure, in seconds
@@ -148,7 +148,7 @@ PetscInt, parameter :: IS_M=int(ZS_TauM/ZS_dtM)
 PetscInt :: JS_M
 !Index of main procedure 
 
-PetscScalar, parameter :: ZS_TauO=3600*24*182!152
+PetscScalar, parameter :: ZS_TauO=3600*24*152
 !Duration of optimization procedure, in seconds
 PetscScalar, parameter :: ZS_dtO=3600*24
 !Time step of optimization procedure, in seconds
@@ -159,7 +159,7 @@ PetscInt :: JS_O
 
 PetscScalar, parameter :: ZS_TauR=3600*3
 !Duration of river routing procedure, in seconds
-PetscScalar, parameter :: ZS_dtR=900!20!1800  
+PetscScalar, parameter :: ZS_dtR=1800  
 !Time step of river routing procedure, in seconds  
 PetscInt, parameter :: IS_R=int(ZS_TauR/ZS_dtR)
 !Number of time steps within the river routing procedure
