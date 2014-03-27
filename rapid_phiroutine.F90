@@ -110,7 +110,7 @@ open(99,file=m3_nc_file,status='old')
 close(99)
 IS_nc_status=NF90_OPEN(m3_nc_file,NF90_NOWRITE,IS_nc_id_fil_m3)
 IS_nc_status=NF90_INQ_VARID(IS_nc_id_fil_m3,'m3_riv',IS_nc_id_var_m3)
-IV_nc_start=(/1,1/)!(/1,92*8+1/)!(/1,1/)----------------------------------------------------------------------################################3333364565436543
+IV_nc_start=(/1,92*8+1/)!(/1,1/)----------------------------------------------------------------------################################3333364565436543
 IV_nc_count=(/IS_reachtot,1/)
 
 
@@ -202,20 +202,20 @@ call VecAssemblyEnd(ZV_Qobs,ierr)           !set Qobs based on reading a file
 !-------------------------------------------------------------------------------
 !Objective function #1 - for current day - square error
 !-------------------------------------------------------------------------------
-call VecWAXPY(ZV_temp1,-ZS_one,ZV_Qobs,ZV_QoutbarO,ierr)  !temp1=Qoutbar-Qobs
-call VecScale(ZV_temp1,ZS_phifac,ierr)                    !if phi too big      
-call MatMult(ZM_Obs,ZV_temp1,ZV_temp2,ierr)               !temp2=Obs*temp1
-call VecDot(ZV_temp1,ZV_temp2,ZS_phitemp,ierr)            !phitemp=temp1.temp2
-!result phitemp=(Qoutbar-Qobs)^T*Obs*(Qoutbar-Qobs)
+!call VecWAXPY(ZV_temp1,-ZS_one,ZV_Qobs,ZV_QoutbarO,ierr)  !temp1=Qoutbar-Qobs
+!call VecScale(ZV_temp1,ZS_phifac,ierr)                    !if phi too big      
+!call MatMult(ZM_Obs,ZV_temp1,ZV_temp2,ierr)               !temp2=Obs*temp1
+!call VecDot(ZV_temp1,ZV_temp2,ZS_phitemp,ierr)            !phitemp=temp1.temp2
+!!result phitemp=(Qoutbar-Qobs)^T*Obs*(Qoutbar-Qobs)
 
 !-------------------------------------------------------------------------------
 !Objective function #2 - for current day - square error normalized by avg flow
 !-------------------------------------------------------------------------------
-!call VecWAXPY(ZV_temp1,-ZS_one,ZV_Qobs,ZV_QoutbarO,ierr)  !temp1=Qoutbar-Qobs
-!call VecPointWiseMult(ZV_temp1,ZV_temp1,ZV_Qobsbarrec,ierr)!temp1=temp1.*Qobsbarrec
-!call MatMult(ZM_Obs,ZV_temp1,ZV_temp2,ierr)               !temp2=Obs*temp1
-!call VecDot(ZV_temp1,ZV_temp2,ZS_phitemp,ierr)            !phitemp=temp1.temp2
-!!result phitemp=[(Qoutbar-Qobs).*Qobsbarrec]^T*Obs*[(Qoutbar-Qobs).*Qobsbarrec]
+call VecWAXPY(ZV_temp1,-ZS_one,ZV_Qobs,ZV_QoutbarO,ierr)  !temp1=Qoutbar-Qobs
+call VecPointWiseMult(ZV_temp1,ZV_temp1,ZV_Qobsbarrec,ierr)!temp1=temp1.*Qobsbarrec
+call MatMult(ZM_Obs,ZV_temp1,ZV_temp2,ierr)               !temp2=Obs*temp1
+call VecDot(ZV_temp1,ZV_temp2,ZS_phitemp,ierr)            !phitemp=temp1.temp2
+!result phitemp=[(Qoutbar-Qobs).*Qobsbarrec]^T*Obs*[(Qoutbar-Qobs).*Qobsbarrec]
 
 !-------------------------------------------------------------------------------
 !adds daily objective function to total objective function
