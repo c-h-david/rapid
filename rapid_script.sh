@@ -1,4 +1,4 @@
-FILE=$(date +"%Y-%m-%d_%k-%M-%S_rapid_stdout.txt")
+FILE=$(date +"%Y-%m-%d_%H-%M-%S_rapid_stdout.txt")
 /usr/bin/time mpiexec -n 1 ./rapid                                             \
                            -ksp_type richardson                                \
                            1>$FILE 2>>$FILE
