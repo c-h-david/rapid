@@ -106,6 +106,8 @@ call VecCopy(ZV_QoutinitO,ZV_QoutinitR,ierr)
 !*******************************************************************************
 !Calculate objective function for the whole period ZS_TauO
 !*******************************************************************************
+open(99,file=m3_nc_file,status='old')
+close(99)
 IS_nc_status=NF90_OPEN(m3_nc_file,NF90_NOWRITE,IS_nc_id_fil_m3)
 IS_nc_status=NF90_INQ_VARID(IS_nc_id_fil_m3,'m3_riv',IS_nc_id_var_m3)
 IV_nc_start=(/1,1/)!(/1,92*8+1/)!(/1,1/)----------------------------------------------------------------------################################3333364565436543
