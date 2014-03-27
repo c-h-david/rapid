@@ -1,5 +1,6 @@
 FILE=$(date +"%Y-%m-%d_%k-%M-%S_rapid_stdout.txt")
 /usr/bin/time mpiexec -n 1 ./rapid                                             \
+                           -ksp_type richardson                                \
                            1>$FILE 2>>$FILE
 #-ksp_type preonly
 #-ksp_type richardson 
@@ -14,5 +15,7 @@ FILE=$(date +"%Y-%m-%d_%k-%M-%S_rapid_stdout.txt")
 #-mat_type mpiaij -ksp_type preonly -pc_type lu -pc_factor_mat_solver_package mumps
 #-pc_factor_reuse_ordering -pc_factor_reuse_fill
 
+#FILE is a name created based on the time when the model started running
 #FILE contains stdout from running the model (through 1), but also stderr 
-#(through 2).  The output of the time function is located in 2.
+#(through 2).  The output of the time function is also included because 
+#it is located in located in 2.
