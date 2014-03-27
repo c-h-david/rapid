@@ -71,10 +71,6 @@ PetscInt, parameter :: IS_forcinguse=0!3!0!4!0
 PetscInt :: JS_forcinguse
 
 
-!####
-!####
-
-
 !*******************************************************************************
 !Declaration of variables - input and output files
 !*******************************************************************************
