@@ -26,7 +26,8 @@ use rapid_var, only :                                                          &
                    vecscat,ZV_SeqZero,ZV_pointer,rank,                         &
                    IS_nc_status,IS_nc_id_fil_Qout,IS_nc_id_var_Qout,           &
                    IV_nc_start,IV_nc_count,                                    &
-                   IS_reachbas,JS_reachbas,IM_index_up,stage
+                   IS_reachbas,JS_reachbas,IM_index_up,stage,                  &
+                   IS_opt_routing
 
 implicit none
 
@@ -68,10 +69,10 @@ PetscScalar, pointer :: ZV_QoutR_p(:),ZV_QoutprevR_p(:),ZV_QoutinitR_p(:),ZV_Qou
 !*******************************************************************************
 call VecGetLocalSize(ZV_QoutR,IS_localsize,ierr)
 
-
 !*******************************************************************************
 !Routing with PETSc using a matrix method
 !*******************************************************************************
+if (IS_opt_routing==1) then
 !-------------------------------------------------------------------------------
 !Set mean values to zero initialize QoutprevR with QoutinitR
 !-------------------------------------------------------------------------------
@@ -207,74 +208,82 @@ call VecCopy(ZV_QoutR,ZV_QoutprevR,ierr)              !Qoutprev=Qout
 
 
 end do
+!-------------------------------------------------------------------------------
+!End Routing with PETSc using a matrix method
+!-------------------------------------------------------------------------------
+end if
 
 
+!*******************************************************************************
+!Routing with Fortran using the traditional Muskingum method
+!*******************************************************************************
+if (IS_opt_routing==2) then
+!-------------------------------------------------------------------------------
+!Get all arrays
+!-------------------------------------------------------------------------------
+call VecGetArrayF90(ZV_C1,ZV_C1_p,ierr)
+call VecGetArrayF90(ZV_C2,ZV_C2_p,ierr)
+call VecGetArrayF90(ZV_C3,ZV_C3_p,ierr)
+call VecGetArrayF90(ZV_QoutR,ZV_QoutR_p,ierr)
+call VecGetArrayF90(ZV_QoutprevR,ZV_QoutprevR_p,ierr)
+call VecGetArrayF90(ZV_QoutbarR,ZV_QoutbarR_p,ierr)
+call VecGetArrayF90(ZV_QoutinitR,ZV_QoutinitR_p,ierr)
+call VecGetArrayF90(ZV_Qext,ZV_Qext_p,ierr)
 
-!!*******************************************************************************
-!!Routing with Fortran using the traditional Muskingum method
-!!*******************************************************************************
-!!-------------------------------------------------------------------------------
-!!Get all arrays
-!!-------------------------------------------------------------------------------
-!call VecGetArrayF90(ZV_C1,ZV_C1_p,ierr)
-!call VecGetArrayF90(ZV_C2,ZV_C2_p,ierr)
-!call VecGetArrayF90(ZV_C3,ZV_C3_p,ierr)
-!call VecGetArrayF90(ZV_QoutR,ZV_QoutR_p,ierr)
-!call VecGetArrayF90(ZV_QoutprevR,ZV_QoutprevR_p,ierr)
-!call VecGetArrayF90(ZV_QoutbarR,ZV_QoutbarR_p,ierr)
-!call VecGetArrayF90(ZV_QoutinitR,ZV_QoutinitR_p,ierr)
-!call VecGetArrayF90(ZV_Qext,ZV_Qext_p,ierr)
-!
-!!-------------------------------------------------------------------------------
-!!!Set mean values to zero initialize QoutprevR with QoutinitR
-!!-------------------------------------------------------------------------------
-!do JS_reachbas=1,IS_reachbas
-!     ZV_QoutbarR_p(JS_reachbas)=0
-!     ZV_QoutprevR_p(JS_reachbas)=ZV_QoutinitR_p(JS_reachbas)
-!end do
-!
-!
-!do JS_R=1,IS_R
-!!-------------------------------------------------------------------------------
-!!Update mean
-!!-------------------------------------------------------------------------------
-!do JS_reachbas=1,IS_reachbas
-!    ZV_QoutbarR_p(JS_reachbas)=ZV_QoutbarR_p(JS_reachbas)+ZV_QoutprevR_p(JS_reachbas)/IS_R
-!end do
-!!Qoutbar=Qoutbar+Qoutprev/IS_R
-!
-!!-------------------------------------------------------------------------------
-!!Calculation of Qout
-!!-------------------------------------------------------------------------------
-!do JS_reachbas=1,IS_reachbas
-!     ZV_QoutR_p(JS_reachbas)=ZV_C1_p(JS_reachbas)*(sum(ZV_QoutR_p(IM_index_up(JS_reachbas,:)))+ZV_Qext_p(JS_reachbas)) &
-!                           +ZV_C2_p(JS_reachbas)*(sum(ZV_QoutprevR_p(IM_index_up(JS_reachbas,:)))+ZV_Qext_p(JS_reachbas)) &
-!                           +ZV_C3_p(JS_reachbas)*ZV_QoutprevR_p(JS_reachbas)
-!end do
-!
-!
-!!-------------------------------------------------------------------------------
-!!Reset previous
-!!-------------------------------------------------------------------------------
-!do JS_reachbas=1,IS_reachbas
-!     ZV_QoutprevR_p(JS_reachbas)=ZV_QoutR_p(JS_reachbas)
-!end do
-!!Qoutprev=Qout
-!
-!enddo
-!
-!
-!!-------------------------------------------------------------------------------
-!!Restore all arrays
-!!-------------------------------------------------------------------------------
-!call VecRestoreArrayF90(ZV_C1,ZV_C1_p,ierr)
-!call VecRestoreArrayF90(ZV_C2,ZV_C2_p,ierr)
-!call VecRestoreArrayF90(ZV_C3,ZV_C3_p,ierr)
-!call VecRestoreArrayF90(ZV_QoutR,ZV_QoutR_p,ierr)
-!call VecRestoreArrayF90(ZV_QoutprevR,ZV_QoutprevR_p,ierr)
-!call VecRestoreArrayF90(ZV_QoutbarR,ZV_QoutbarR_p,ierr)
-!call VecRestoreArrayF90(ZV_QoutinitR,ZV_QoutinitR_p,ierr)
-!call VecRestoreArrayF90(ZV_Qext,ZV_Qext_p,ierr)
+!-------------------------------------------------------------------------------
+!!Set mean values to zero initialize QoutprevR with QoutinitR
+!-------------------------------------------------------------------------------
+do JS_reachbas=1,IS_reachbas
+     ZV_QoutbarR_p(JS_reachbas)=0
+     ZV_QoutprevR_p(JS_reachbas)=ZV_QoutinitR_p(JS_reachbas)
+end do
+
+
+do JS_R=1,IS_R
+!-------------------------------------------------------------------------------
+!Update mean
+!-------------------------------------------------------------------------------
+do JS_reachbas=1,IS_reachbas
+    ZV_QoutbarR_p(JS_reachbas)=ZV_QoutbarR_p(JS_reachbas)+ZV_QoutprevR_p(JS_reachbas)/IS_R
+end do
+!Qoutbar=Qoutbar+Qoutprev/IS_R
+
+!-------------------------------------------------------------------------------
+!Calculation of Qout
+!-------------------------------------------------------------------------------
+do JS_reachbas=1,IS_reachbas
+     ZV_QoutR_p(JS_reachbas)=ZV_C1_p(JS_reachbas)*(sum(ZV_QoutR_p(IM_index_up(JS_reachbas,:)))+ZV_Qext_p(JS_reachbas)) &
+                           +ZV_C2_p(JS_reachbas)*(sum(ZV_QoutprevR_p(IM_index_up(JS_reachbas,:)))+ZV_Qext_p(JS_reachbas)) &
+                           +ZV_C3_p(JS_reachbas)*ZV_QoutprevR_p(JS_reachbas)
+end do
+
+
+!-------------------------------------------------------------------------------
+!Reset previous
+!-------------------------------------------------------------------------------
+do JS_reachbas=1,IS_reachbas
+     ZV_QoutprevR_p(JS_reachbas)=ZV_QoutR_p(JS_reachbas)
+end do
+!Qoutprev=Qout
+
+enddo
+
+
+!-------------------------------------------------------------------------------
+!Restore all arrays
+!-------------------------------------------------------------------------------
+call VecRestoreArrayF90(ZV_C1,ZV_C1_p,ierr)
+call VecRestoreArrayF90(ZV_C2,ZV_C2_p,ierr)
+call VecRestoreArrayF90(ZV_C3,ZV_C3_p,ierr)
+call VecRestoreArrayF90(ZV_QoutR,ZV_QoutR_p,ierr)
+call VecRestoreArrayF90(ZV_QoutprevR,ZV_QoutprevR_p,ierr)
+call VecRestoreArrayF90(ZV_QoutbarR,ZV_QoutbarR_p,ierr)
+call VecRestoreArrayF90(ZV_QoutinitR,ZV_QoutinitR_p,ierr)
+call VecRestoreArrayF90(ZV_Qext,ZV_Qext_p,ierr)
+!-------------------------------------------------------------------------------
+!end Routing with Fortran using the traditional Muskingum method
+!-------------------------------------------------------------------------------
+end if
 
 
 end subroutine rapid_routing
