@@ -79,6 +79,8 @@ call MatSetFromOptions(ZM_Net,ierr)
 !call MatSeqAIJSetPreallocation(ZM_Net,3*IS_one,PETSC_NULL_INTEGER,ierr)
 !call MatMPIAIJSetPreallocation(ZM_Net,3*IS_one,PETSC_NULL_INTEGER,2*IS_one,    &
 !                               PETSC_NULL_INTEGER,ierr)
+!Very basic preallocation assuming no more than 3 upstream elements anywhere
+!Not used here because proper preallocation is done within rapid_net_mat.F90
 
 call MatCreate(PETSC_COMM_WORLD,ZM_A,ierr)
 call MatSetSizes(ZM_A,PETSC_DECIDE,PETSC_DECIDE,IS_reachbas,IS_reachbas,ierr)
@@ -87,6 +89,8 @@ call MatSetFromOptions(ZM_A,ierr)
 !call MatSeqAIJSetPreallocation(ZM_A,4*IS_one,PETSC_NULL_INTEGER,ierr)
 !call MatMPIAIJSetPreallocation(ZM_A,4*IS_one,PETSC_NULL_INTEGER,2*IS_one,      &
 !                               PETSC_NULL_INTEGER,ierr)
+!Very basic preallocation assuming no more than 3 upstream elements anywhere
+!Not used here because proper preallocation is done within rapid_net_mat.F90
 
 call MatCreate(PETSC_COMM_WORLD,ZM_Obs,ierr)
 call MatSetSizes(ZM_Obs,PETSC_DECIDE,PETSC_DECIDE,IS_reachbas,IS_reachbas,ierr)
