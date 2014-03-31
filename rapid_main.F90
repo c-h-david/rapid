@@ -141,6 +141,21 @@ call MPI_Comm_rank(PETSC_COMM_WORLD,rank,ierr)
 
 
 !*******************************************************************************
+!Prints information about current model run based on info from namelist
+!*******************************************************************************
+if (rank==0 .and. .not. BS_opt_Qinit)   print *, 'Not initializing flows'
+if (rank==0 .and. BS_opt_Qinit)         print *, 'Initializing flows'
+if (rank==0 .and. .not. BS_opt_forcing) print *, 'Not using forcing'
+if (rank==0 .and. BS_opt_forcing)       print *, 'Using forcing'
+if (rank==0 .and. IS_opt_routing==1)    print *, 'Routing with matrix-based Muskingum method'
+if (rank==0 .and. IS_opt_routing==2)    print *, 'Routing with traditional Muskingum method'
+if (rank==0 .and. IS_opt_run==1)        print *, 'RAPID mode: computing flowrates'
+if (rank==0 .and. IS_opt_run==2)        print *, 'RAPID mode: optimizing parameters'
+!if (rank==0 .and. IS_opt_phi==1)        print *, 'RAPID optimizing using phi1' 
+!if (rank==0 .and. IS_opt_phi==2)        print *, 'RAPID optimizing using phi2' 
+
+
+!*******************************************************************************
 !Calculate Network matrix (only once)
 !*******************************************************************************
 call rapid_net_mat
