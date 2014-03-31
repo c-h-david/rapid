@@ -1,13 +1,14 @@
 subroutine rapid_net_mat
 
 !PURPOSE
-!EDIT##############
-!This subroutine is specific for MODCOU connectivity tables.  
+!This subroutine is specific for RAPID connectivity tables.  
 !Creates a sparse network matrix.  "1" is recorded at Net(i,j) if the reach 
 !in column j flows into the reach in line i. If some connection are missing
-!between the subbasin and the entire domain, gives warnings.  !Also creates four 
+!between the subbasin and the entire domain, gives warnings.  Also creates four 
 !Fortran vectors that are useful for PETSc programming within this river routing 
 !model (IV_basin_index,IV_basin_loc,IV_forcing_index,IV_forcing_loc).  
+!If forcing is used, the Network matrix is modified to break connections with
+!the reach upstream of forcing location
 !Author: Cedric H. David, 2008 
 
 
@@ -29,7 +30,8 @@ use rapid_var, only :                                                          &
                    IV_gage_id,IS_gagetot,JS_gagetot,                           &
                    ierr,rank,                                                  &
                    IS_one,ZS_one,temp_char,IV_nz,IV_dnz,IV_onz,                &
-                   IS_ownfirst,IS_ownlast
+                   IS_ownfirst,IS_ownlast,                                     &
+                   BS_opt_forcing
 
 implicit none
 
@@ -69,13 +71,15 @@ open(15,file=basin_id_file,status='old')
 read(15,*) IV_basin_id
 close(15)
 
-open(17,file=forcingtot_id_file,status='old')
-read(17,*) IV_forcingtot_id
-close(17)
+if (BS_opt_forcing) then
+     open(17,file=forcingtot_id_file,status='old')
+     read(17,*) IV_forcingtot_id
+     close(17)
 
-open(18,file=forcinguse_id_file,status='old')
-read(18,*) IV_forcinguse_id
-close(18)
+     open(18,file=forcinguse_id_file,status='old')
+     read(18,*) IV_forcinguse_id
+     close(18)
+end if
 
 
 !*******************************************************************************
@@ -144,22 +148,18 @@ end do
 end do
 end do
 
-call MatSeqAIJSetPreallocation(ZM_Net,3*IS_one,IV_nz,ierr)
+call MatSeqAIJSetPreallocation(ZM_Net,PETSC_NULL_INTEGER,IV_nz,ierr)
 call MatMPIAIJSetPreallocation(ZM_Net,                                         &
-                               3*IS_one,IV_dnz(IS_ownfirst+1:IS_ownlast),      &
-                               2*IS_one,IV_onz(IS_ownfirst+1:IS_ownlast),ierr)
-call MatSeqAIJSetPreallocation(ZM_A,4*IS_one,IV_nz+1,ierr)
+                               PETSC_NULL_INTEGER,                             &
+                               IV_dnz(IS_ownfirst+1:IS_ownlast),               &
+                               PETSC_NULL_INTEGER,                             &
+                               IV_onz(IS_ownfirst+1:IS_ownlast),ierr)
+call MatSeqAIJSetPreallocation(ZM_A,PETSC_NULL_INTEGER,IV_nz+1,ierr)
 call MatMPIAIJSetPreallocation(ZM_A,                                           &
-                               4*IS_one,IV_dnz(IS_ownfirst+1:IS_ownlast)+1,    &
-                               2*IS_one,IV_onz(IS_ownfirst+1:IS_ownlast),ierr)
-
-!call MatSeqAIJSetPreallocation(ZM_Net,3*IS_one,PETSC_NULL_INTEGER,ierr)
-!call MatMPIAIJSetPreallocation(ZM_Net,3*IS_one,PETSC_NULL_INTEGER,2*IS_one,    &
-!                               PETSC_NULL_INTEGER,ierr)
-!call MatSeqAIJSetPreallocation(ZM_A,4*IS_one,PETSC_NULL_INTEGER,ierr)
-!call MatMPIAIJSetPreallocation(ZM_A,4*IS_one,PETSC_NULL_INTEGER,2*IS_one,      &
-!                               PETSC_NULL_INTEGER,ierr)
-!!Very basic preallocation assuming no more than 3 upstream elements anywhere
+                               PETSC_NULL_INTEGER,                             &
+                               IV_dnz(IS_ownfirst+1:IS_ownlast)+1,             &
+                               PETSC_NULL_INTEGER,                             &
+                               IV_onz(IS_ownfirst+1:IS_ownlast),ierr)
 
 call PetscPrintf(PETSC_COMM_WORLD,'Network matrix preallocated'//char(10),ierr)
 
@@ -260,8 +260,12 @@ call PetscPrintf(PETSC_COMM_WORLD,'Checked for missing connections between '// &
 
 
 !*******************************************************************************
-!Breaks matrix connectivity in case forcing used is inside basin studied
+!If forcing is used
 !*******************************************************************************
+if (BS_opt_forcing) then
+!-------------------------------------------------------------------------------
+!Breaks matrix connectivity in case forcing used is inside basin studied
+!-------------------------------------------------------------------------------
 write(temp_char,'(i10)') IS_forcinguse
 call PetscPrintf(PETSC_COMM_WORLD,'WARNING: Might break '//temp_char//         &
                  ' connections (max) in network matrix if forcing is within' //&
@@ -306,9 +310,9 @@ call PetscPrintf(PETSC_COMM_WORLD,'Broke potential connections in network '//  &
                  'matrix if forcing is within basin studied'//char(10),ierr)
 
 
-!*******************************************************************************
+!-------------------------------------------------------------------------------
 !Calculates IS_forcingbas
-!*******************************************************************************
+!-------------------------------------------------------------------------------
 write(temp_char,'(i10)') IS_forcinguse
 call PetscPrintf(PETSC_COMM_WORLD,'Total number of forcing gages in forcinguse'&
                  //' file :'// temp_char // char(10),ierr)
@@ -335,9 +339,9 @@ call PetscPrintf(PETSC_COMM_WORLD,'Total number of forcing gages flowing in '//&
                  'basin   :'// temp_char // char(10),ierr)
 
 
-!*******************************************************************************
+!-------------------------------------------------------------------------------
 !Allocates and populates the vectors IV_forcing_index and IV_forcing_loc
-!*******************************************************************************
+!-------------------------------------------------------------------------------
 allocate(IV_forcing_index(IS_forcingbas))
 allocate(IV_forcing_loc(IS_forcingbas))
 !allocate vector size
@@ -408,6 +412,10 @@ end if
 !print *, 'IV_forcinguse_id   ', IV_forcinguse_id 
 !print *, 'IV_forcing_index   ', IV_forcing_index
 !print *, 'IV_forcing_loc     ', IV_forcing_loc
+!-------------------------------------------------------------------------------
+!End if forcing is used
+!-------------------------------------------------------------------------------
+end if
 
 
 !*******************************************************************************
