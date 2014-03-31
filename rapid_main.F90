@@ -149,10 +149,10 @@ if (rank==0 .and. .not. BS_opt_forcing) print *, 'Not using forcing'
 if (rank==0 .and. BS_opt_forcing)       print *, 'Using forcing'
 if (rank==0 .and. IS_opt_routing==1)    print *, 'Routing with matrix-based Muskingum method'
 if (rank==0 .and. IS_opt_routing==2)    print *, 'Routing with traditional Muskingum method'
+if (rank==0)                            print *, 'Using:', m3_nc_file 
 if (rank==0 .and. IS_opt_run==1)        print *, 'RAPID mode: computing flowrates'
-if (rank==0 .and. IS_opt_run==2)        print *, 'RAPID mode: optimizing parameters'
-!if (rank==0 .and. IS_opt_phi==1)        print *, 'RAPID optimizing using phi1' 
-!if (rank==0 .and. IS_opt_phi==2)        print *, 'RAPID optimizing using phi2' 
+if (rank==0 .and. IS_opt_run==2 .and. IS_opt_phi==1)  print *, 'RAPID mode: optimizing parameters, using ph1' 
+if (rank==0 .and. IS_opt_run==2 .and. IS_opt_phi==2)  print *, 'RAPID mode: optimizing parameters, using ph2' 
 
 
 !*******************************************************************************
