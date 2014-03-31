@@ -37,9 +37,9 @@ implicit none
 !*******************************************************************************
 !Declaration of variables - Basin variables and number of observed reaches
 !*******************************************************************************
-PetscInt,parameter :: IS_reachtot=24264!5175!68143!5175!182240
+PetscInt :: IS_reachtot
 !total number of river reaches, corresponds to the size of the table Ficvid
-PetscInt, parameter :: IS_reachbas=24264!5175!68143!5175!182240
+PetscInt :: IS_reachbas
 !size of the matrix and the vectors in this basin, corresponds to the number of
 !reaches in the basin
 PetscInt :: JS_reachtot,JS_reachbas
@@ -47,26 +47,27 @@ PetscInt :: JS_reachtot2,JS_reachbas2
 !JS_reachtot is index for all network and JS_reachbas for all river reaches in 
 !considered basin only
 
-PetscInt, dimension(IS_reachbas) :: IV_basin_id
+PetscInt, dimension(:),allocatable :: IV_basin_id
 !unique IDs in basin_id_file, of length IS_reachbas
-integer*8, dimension(IS_reachbas) :: IV_basin_index
+integer*8, dimension(:), allocatable :: IV_basin_index
 !indexes (Fortran, 1-based) of the reaches in the basin within the whole network
-PetscInt,dimension(IS_reachbas) :: IV_basin_loc
+!size IS_reachbas
+PetscInt,dimension(:), allocatable :: IV_basin_loc
 !vector giving the zero-base index corresponding to the river reaches within 
-!the basin studied only, to be used in VecSetValues
+!the basin studied only, to be used in VecSetValues. size IS_reachbas
 
-PetscInt, parameter :: IS_gagetot=291!36!289!294!32!36
+PetscInt :: IS_gagetot
 !total number of reaches that have observations (gaged reaches), corresponds to
 !the number of lines in gage_id_file 
 PetscInt :: JS_gagetot
 !loop index corresponding to the number of gaged reaches (IS_gagetot)
 
-PetscInt, parameter :: IS_forcingtot=0!493!0!0!3!0!289
+PetscInt :: IS_forcingtot
 !total number of reaches that where forcing is available, corresponds to the 
 !number of lines in forcingtot_id_file 
 PetscInt :: JS_forcingtot
 !loop index corresponding to the number of gaged reaches (IS_forcingtot)
-PetscInt, parameter :: IS_forcinguse=0!1!3!0!3!0!4!0
+PetscInt :: IS_forcinguse
 !total number of reaches where forcing will be used if in basin considered
 PetscInt :: JS_forcinguse
 
@@ -74,49 +75,49 @@ PetscInt :: JS_forcinguse
 !*******************************************************************************
 !Declaration of variables - input and output files
 !*******************************************************************************
-character(len=100) :: modcou_connect_file='./input_France/rapid_connect_France.csv'
+character(len=100) :: modcou_connect_file
 !unit 10 - file with connectivity information following MODCOU notations
-character(len=100) :: nhdplus_connect_file='./input_France/connect_France.csv' 
+character(len=100) :: nhdplus_connect_file
 !unit 11 - file with connectivity information following NHDPlus notations
-character(len=100) :: basin_id_file='./input_France/rivsurf_France.csv'
+character(len=100) :: basin_id_file
 !unit 15 - file with all the IDs of the reaches used in subbasin considered
-character(len=100) :: gage_id_file='./input_France/gage_id_1995_1996_full_nash.csv'
+character(len=100) :: gage_id_file
 !unit 16 - file with all the IDs of the reaches that have gage measurements
-character(len=100) :: forcingtot_id_file='./input_France/forcingtot_id_1995_1996_full.csv'
+character(len=100) :: forcingtot_id_file
 !unit 17 - file with the IDs where flows can be used as forcing to their 
 !corresponding downstream reach  
-character(len=100) :: forcinguse_id_file='./input_France/forcinguse_id_rhone_pougny.csv'
+character(len=100) :: forcinguse_id_file
 !unit 18 - file with the IDs of the reaches with forcing used 
 
-character(len=100) :: k_file='./input_France/k_modcou_b.csv'
+character(len=100) :: k_file
 !unit 20 - file with values for k (possibly from previous param. estim.)
-character(len=100) :: x_file='./input_France/x_modcou_b.csv'
+character(len=100) :: x_file
 !unit 21 - file with values for x (possibly from previous param. estim.)
-character(len=100) :: kfac_file='./input_France/kfac_modcou_1km_hour.csv'   
+character(len=100) :: kfac_file  
 !unit 22 - file with kfac for all reaches of the domain
-character(len=100) :: xfac_file='' 
+character(len=100) :: xfac_file
 !unit 23 - file with xfac for all reaches of the domain
 
-character(len=100) :: Qinit_file='./input_France/Qinit_93.csv'
+character(len=100) :: Qinit_file
 !unit 30 - file where initial flowrates can be stored to run the model with them
-character(len=100) :: m3_sur_file='./input_France/m3_riv_ksat_93.dat'
+character(len=100) :: m3_sur_file
 !unit 31 - file where the surface inflow volumes (forced) are given
-character(len=100) :: m3_nc_file='./input_France/m3_riv_France_1995_2005_ksat_201101_c_zvol_ext.nc'
+character(len=100) :: m3_nc_file
 
-character(len=100) :: Qobs_file='./input_France/Qobs_1995_1996_full_nash_93.csv'
+character(len=100) :: Qobs_file
 !unit 33 - file where the flowrates observations are given
-character(len=100) :: Qfor_file='./input_France/Qfor_1995_1996_full_93.csv'    
+character(len=100) :: Qfor_file
 !unit 34 - file where forcing flowrates are stored.  Forcing is taken as the
 !flow coming from upstream reach.
-character(len=100) :: Qobsbarrec_file='./input_France/Qobsbarrec_1995_1996_full_nash.csv'     
+character(len=100) :: Qobsbarrec_file
 !unit 35 - file where the reciprocal (1/xi) of the average forcing are stored.
 
-character(len=100) :: Qout_file='./'
+character(len=100) :: Qout_file
 !unit 40 - file where model-calculated flows are stored
-character(len=100) :: V_file='./output/'
+character(len=100) :: V_file
 !unit 41 - file where model-calculated volumes are stored
 
-character(len=100) :: Qout_nc_file='./output/Qout_France_201101_c_zvol_ext_366days_pb_dtR=1800s_nx.nc'
+character(len=100) :: Qout_nc_file
 
 
 !*******************************************************************************
@@ -124,7 +125,7 @@ character(len=100) :: Qout_nc_file='./output/Qout_France_201101_c_zvol_ext_366da
 !*******************************************************************************
 PetscScalar :: ZS_knorm, ZS_xnorm
 !constants (k,x) in Muskingum expression, normalized
-PetscScalar, parameter :: ZS_knorm_init=2, ZS_xnorm_init=3
+PetscScalar :: ZS_knorm_init, ZS_xnorm_init
 !constants (k,x) in Muskingum expression, normalized, initial values for opt.
 PetscScalar, parameter :: ZS_kfac=3600,ZS_xfac=0.1
 !corresponding factors, k in seconds, x has no dimension
@@ -139,39 +140,39 @@ PetscScalar :: ZS_V0=10000,ZS_Qout0=0
 !*******************************************************************************
 !Declaration of variables - temporal parameters
 !*******************************************************************************
-PetscScalar, parameter :: ZS_TauM=3600*24*366!53!6!1460!182!365!100
+PetscScalar :: ZS_TauM
 !Duration of main procedure, in seconds
-PetscScalar, parameter :: ZS_dtM=3600*24
+PetscScalar :: ZS_dtM
 !Time step of main procedure, in seconds
-PetscInt, parameter :: IS_M=int(ZS_TauM/ZS_dtM)
+PetscInt :: IS_M
 !Number of time steps within the main precedure
 PetscInt :: JS_M
 !Index of main procedure 
 
-PetscScalar, parameter :: ZS_TauO=3600*24*152
+PetscScalar :: ZS_TauO
 !Duration of optimization procedure, in seconds
-PetscScalar, parameter :: ZS_dtO=3600*24
+PetscScalar :: ZS_dtO
 !Time step of optimization procedure, in seconds
-PetscInt, parameter :: IS_O=int(ZS_TauO/ZS_dtO)
+PetscInt :: IS_O
 !Number of time steps within the optimization precedure
 PetscInt :: JS_O
 !Index of optimization procedure 
 
-PetscScalar, parameter :: ZS_TauR=3600*3
+PetscScalar :: ZS_TauR
 !Duration of river routing procedure, in seconds
-PetscScalar, parameter :: ZS_dtR=1800  
+PetscScalar :: ZS_dtR  
 !Time step of river routing procedure, in seconds  
-PetscInt, parameter :: IS_R=int(ZS_TauR/ZS_dtR)
+PetscInt :: IS_R
 !Number of time steps within the river routing procedure
 PetscInt :: JS_R
 !Index of river routing procedure
 
-PetscInt, parameter :: IS_RpO=int(ZS_dtO/ZS_TauR)
+PetscInt :: IS_RpO
 !Number routing procedures needed per optimization time step 
 PetscInt :: JS_RpO
 !Index 
 
-PetscInt, parameter :: IS_RpM=int(ZS_dtM/ZS_TauR)
+PetscInt :: IS_RpM
 !Number routing procedures needed per optimization time step 
 PetscInt :: JS_RpM
 !Index 
@@ -186,29 +187,31 @@ Logical :: BS_logical
 !Boolean used during network matrix creation to give warnings if connectivity pb
 
 !Variables for MODCOU network 
-PetscInt, dimension(IS_reachtot) :: IV_down
+PetscInt, dimension(:), allocatable :: IV_down
 !vector of the downstream river reach of each river reach (corresponds to ipere)
-PetscInt, dimension(IS_reachtot) :: IV_nbup
+PetscInt, dimension(:), allocatable :: IV_nbup
 !vector of the number of direct upstream river reach of each river reach 
 !(corresponds to nbfils)
-PetscInt, dimension(IS_reachtot,4) :: IM_up
-!matrix with the ID of the upstream river reaches of each river reach (max 4)
+PetscInt :: IS_max_up
+!maximum number of upstream river reaches for each river reach
+PetscInt, dimension(:,:), allocatable :: IM_up
+!matrix with the ID of the upstream river reaches of each river reach
 PetscInt :: JS_up
 !JS_up for the corresponding upstream reaches
 PetscInt :: IS_row,IS_col
 !index of rows and columns used to fill up the network matrix
-PetscInt,dimension (IS_reachbas,4) :: IM_index_up
-!matrix with the index of the upstream river reaches of each river reach (max 4)
+PetscInt,dimension (:,:), allocatable :: IM_index_up
+!matrix with the index of the upstream river reaches of each river reach
 !index goes from 1 to IS_reachbas 
 
 !Variables for NHDPlus network
-PetscInt, dimension(IS_reachtot) :: IV_connect_id
+PetscInt, dimension(:), allocatable :: IV_connect_id
 !unique IDs of reaches in nhdplus_connect_file
-integer*8, dimension(IS_reachtot) :: IV_fromnode
+integer*8, dimension(:),allocatable :: IV_fromnode
 !fromnode in nhdplus_connect_file.  Different type because very long integer
-integer*8, dimension(IS_reachtot) :: IV_tonode
+integer*8, dimension(:),allocatable :: IV_tonode
 !tonode in nhdplus_connect_file
-PetscInt, dimension(IS_reachtot) :: IV_diverg
+PetscInt, dimension(:), allocatable :: IV_diverg
 !divergence flag in nhdplus_connect_file
 
 
@@ -228,7 +231,7 @@ PetscInt :: IS_gagebas
 PetscInt :: JS_gagebas
 !Corresponding index
 
-PetscInt, dimension(IS_gagetot) :: IV_gage_id
+PetscInt, dimension(:), allocatable :: IV_gage_id
 !vector were are stored the river ID of each gage
 PetscInt, allocatable, dimension(:) :: IV_gage_index
 !vector where the Fortran 1-based indexes of the gages within the Qobs_file. 
@@ -244,7 +247,9 @@ PetscInt :: IS_Iter
 !number of iterations needed for optimization procedure to end
 Vec :: ZV_temp1,ZV_temp2
 !temporary vectors, used for calculations
-PetscScalar, parameter :: ZS_phifac=1./1000
+PetscScalar :: ZS_phifac
+PetscInt :: IS_strt_opt
+!first time step at which m3_riv data is read during optimization
 
 Vec :: ZV_kfac
 !Vector of size IS_reachbas a multiplication factor for k for all river reaches
@@ -261,9 +266,9 @@ PetscInt :: IS_forcingbas
 !from forcing_id_file and basin_id_file
 PetscInt :: JS_forcingbas
 !corresponding index
-PetscInt, dimension(IS_forcingtot) :: IV_forcingtot_id
+PetscInt, dimension(:), allocatable :: IV_forcingtot_id
 !IDs of the reaches where forcing data are available
-PetscInt, dimension(IS_forcinguse) :: IV_forcinguse_id
+PetscInt, dimension(:), allocatable :: IV_forcinguse_id
 !IDs of the reaches where forcing date will be used 
 PetscInt, allocatable, dimension(:) :: IV_forcing_index
 !vector where the Fortran 1-based indexes of the forcing needed is stored 
@@ -350,12 +355,12 @@ Vec :: ZV_SeqZero
 Vec :: ZV_1stIndex, ZV_2ndIndex
 !ZV_1stIndex=[1;0], ZV_2ndIndex=[0,1].  Used with VecDot to extract first and 
 !second indexes of the vector of parameter
-PetscScalar,dimension(IS_reachtot) :: ZV_read_reachtot
+PetscScalar,dimension(:), allocatable :: ZV_read_reachtot
 !temp vector that stores information from a 'read', before setting the value
 !in the object, this vector has the size of the total number of reaches
-PetscScalar,dimension(IS_gagetot) :: ZV_read_gagetot
+PetscScalar,dimension(:), allocatable :: ZV_read_gagetot
 !same as previous, with size IS_gagetot
-PetscScalar,dimension(IS_forcingtot) :: ZV_read_forcingtot
+PetscScalar,dimension(:), allocatable :: ZV_read_forcingtot
 !same as previous, with size IS_forcingtot
 PetscScalar :: ZS_time1, ZS_time2, ZS_time3
 
@@ -365,7 +370,7 @@ character(len=10) :: temp_char
 !usefull to print variables on output.  write a variable in this character and
 !then use PetscPrintf
 
-PetscInt, dimension(IS_reachbas) :: IV_nz, IV_dnz, IV_onz
+PetscInt, dimension(:), allocatable :: IV_nz, IV_dnz, IV_onz
 !number of nonzero elements per row for network matrix.  nz for sequential, dnz 
 !and onz for distributed matrix (diagonal and off-diagonal elements)
 PetscInt :: IS_ownfirst, IS_ownlast
@@ -381,6 +386,43 @@ PetscInt :: IS_nc_id_var_m3,IS_nc_id_var_Qout,IS_nc_id_var_comid
 PetscInt :: IS_nc_id_dim_comid,IS_nc_id_dim_time
 PetscInt, parameter :: IS_nc_ndim=2
 PetscInt, dimension(IS_nc_ndim) :: IV_nc_id_dim, IV_nc_start, IV_nc_count
+
+
+!*******************************************************************************
+!Declaration of variables - runtime options
+!*******************************************************************************
+logical :: BS_opt_Qinit
+!.false. --> no initialization       .true. --> initialization
+logical :: BS_opt_forcing
+!.false. --> no forcing              .true. --> forcing
+PetscInt :: IS_opt_routing
+!1       --> matrix-based Muskingum  2      --> traditional Muskingum
+PetscInt :: IS_opt_run
+!1       --> regular run             2      --> parameter optimization
+PetscInt :: IS_opt_phi
+!1       --> phi1                    2      --> phi2
+
+
+!*******************************************************************************
+!Namelist
+!*******************************************************************************
+namelist /NL_namelist/                                                         &
+                       BS_opt_Qinit,BS_opt_forcing,                            &
+                       IS_opt_routing,IS_opt_run,IS_opt_phi,                   &
+                       IS_reachtot,modcou_connect_file,m3_nc_file,IS_max_up,   &
+                       IS_reachbas,basin_id_file,                              &
+                       Qinit_file,                                             &
+                       IS_forcingtot,forcingtot_id_file,Qfor_file,             &
+                       IS_forcinguse,forcinguse_id_file,                       &
+                       k_file,x_file,Qout_nc_file,                             &
+                       kfac_file,xfac_file,ZS_knorm_init,ZS_xnorm_init,        &
+                       IS_gagetot,Qobs_file,gage_id_file,Qobsbarrec_file,      &
+                       ZS_TauM,ZS_dtM,ZS_TauO,ZS_dtO,ZS_TauR,ZS_dtR,           &
+                       ZS_phifac,IS_strt_opt
+                       
+
+character(len=100) :: namelist_file='./rapid_namelist' 
+!unit 88 - Namelist
 
 
 end module rapid_var
