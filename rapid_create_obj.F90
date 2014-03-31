@@ -84,7 +84,7 @@ call MatSetFromOptions(ZM_Net,ierr)
 
 call MatCreate(PETSC_COMM_WORLD,ZM_A,ierr)
 call MatSetSizes(ZM_A,PETSC_DECIDE,PETSC_DECIDE,IS_reachbas,IS_reachbas,ierr)
-!call MatSetType(ZM_A,MATMPIAIJ,ierr) 
+!call MatSetType(ZM_A,MATMPIAIJ,ierr) !Unnecessary, the type is picked at runtime
 call MatSetFromOptions(ZM_A,ierr)
 !call MatSeqAIJSetPreallocation(ZM_A,4*IS_one,PETSC_NULL_INTEGER,ierr)
 !call MatMPIAIJSetPreallocation(ZM_A,4*IS_one,PETSC_NULL_INTEGER,2*IS_one,      &
@@ -94,18 +94,16 @@ call MatSetFromOptions(ZM_A,ierr)
 
 call MatCreate(PETSC_COMM_WORLD,ZM_Obs,ierr)
 call MatSetSizes(ZM_Obs,PETSC_DECIDE,PETSC_DECIDE,IS_reachbas,IS_reachbas,ierr)
-!call MatSetType(ZM_Obs,MATMPIAIJ,ierr)
+!call MatSetType(ZM_Obs,MATMPIAIJ,ierr) !Unnecessary, the type is picked at runtime
 call MatSetFromOptions(ZM_Obs,ierr)
 call MatSeqAIJSetPreallocation(ZM_Obs,1*IS_one,PETSC_NULL_INTEGER,ierr)
 call MatMPIAIJSetPreallocation(ZM_Obs,1*IS_one,PETSC_NULL_INTEGER,0*IS_one,    &
                                PETSC_NULL_INTEGER,ierr)
+!Very basic preallocation assuming that all reaches have one gage.
 
-
-!square (IS_reachbas x IS_reachbas) matrices, lets PETSc decide local sizes 
-!(PETSC_DECIDE).  Using MatCreateMPIAIJ directly crashes if the size of the 
-!matrix gets too big, probably the same problem than on Horsdeprix
-!MatSetFromOptions allows to use "-mat_type aijmumps" at runtime
-!Use MATSEQAIJ for Horsdeprix in single processor mode
+!These matrices are all square of size IS_reachbas.  PETSC_DECIDE allows PETSc 
+!to determine the local sizes on its own. MatSetFromOptions allows to use many
+!different options at runtime, such as "-mat_type aijmumps".
 
 
 !Vectors of size IS_reachbas----------------------------------------------------
