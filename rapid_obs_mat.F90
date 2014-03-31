@@ -45,14 +45,6 @@ implicit none
 !*******************************************************************************
 !Read data files
 !*******************************************************************************
-!open(11,file=nhdplus_connect_file,status='old')
-!do JS_reachtot=1,IS_reachtot
-!     read(11,'(4i12)') IV_connect_id(JS_reachtot), IV_fromnode(JS_reachtot),   &
-!     read(11,*) IV_connect_id(JS_reachtot), IV_fromnode(JS_reachtot),   &
-!                       IV_tonode(JS_reachtot), IV_diverg(JS_reachtot)
-!enddo
-!close(11)
-
 open(15,file=basin_id_file,status='old')
 !read(15,'(i12)') IV_basin_id
 read(15,*) IV_basin_id
