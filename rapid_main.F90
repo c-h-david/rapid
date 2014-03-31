@@ -53,7 +53,12 @@ use rapid_var, only :                                                          &
                    IS_nc_status,IS_nc_id_fil_m3,IS_nc_id_fil_Qout,             &
                    IS_nc_id_var_m3,IS_nc_id_var_Qout,IS_nc_id_var_comid,       &
                    IS_nc_id_dim_time,IS_nc_id_dim_comid,IV_nc_id_dim,          &
-                   IV_nc_start,IV_nc_count            
+                   IV_nc_start,IV_nc_count,                                    &
+                   modcou_connect_file,IS_max_up,basin_id_file,forcingtot_id_file,IS_forcinguse,forcinguse_id_file,xfac_file,&
+                   IV_connect_id,IV_down,IV_nbup,IM_up,IM_index_up,IS_gagetot,IV_nz,IV_dnz,IV_onz,gage_id_file,&
+                   BS_opt_Qinit,BS_opt_forcing,                                &
+                   IS_opt_routing,IS_opt_run,IS_opt_phi,                       &
+                   IS_O,IS_R,IS_RpO,IS_RpM,ZS_TauM,ZS_TauO,ZS_TauR,ZS_dtO,ZS_dtR,ZS_dtM
 
 
 
@@ -87,6 +92,45 @@ external rapid_phiroutine
 
 
 !*******************************************************************************
+!Read name list, allocate Fortran arrays and compute number of time steps
+!*******************************************************************************
+call rapid_read_namelist
+
+allocate(IV_basin_id(IS_reachbas))
+allocate(IV_basin_index(IS_reachbas))
+allocate(IV_basin_loc(IS_reachbas))
+
+allocate(IV_connect_id(IS_reachtot))
+allocate(IV_down(IS_reachtot))
+allocate(IV_nbup(IS_reachtot))
+allocate(IM_up(IS_reachtot,IS_max_up))
+allocate(IM_index_up(IS_reachtot,IS_max_up))
+
+allocate(IV_nz(IS_reachbas))
+allocate(IV_dnz(IS_reachbas))
+allocate(IV_onz(IS_reachbas))
+
+allocate(ZV_read_reachtot(IS_reachtot))
+
+if (IS_opt_run==2) then
+     allocate(IV_gage_id(IS_gagetot))
+     allocate(ZV_read_gagetot(IS_gagetot))
+end if
+
+if (BS_opt_forcing) then
+     allocate(IV_forcingtot_id(IS_forcingtot))
+     allocate(IV_forcinguse_id(IS_forcinguse))
+     allocate(ZV_read_forcingtot(IS_forcingtot))
+end if
+
+IS_M=int(ZS_TauM/ZS_dtM)
+IS_O=int(ZS_TauO/ZS_dtO)
+IS_R=int(ZS_TauR/ZS_dtR)
+IS_RpO=int(ZS_dtO/ZS_TauR)
+IS_RpM=int(ZS_dtM/ZS_TauR)
+
+
+!*******************************************************************************
 !Initialize libraries and create objects
 !*******************************************************************************
 call rapid_create_obj
@@ -106,19 +150,24 @@ call rapid_net_mat
 !*******************************************************************************
 !calculates initial flows and volumes
 !*******************************************************************************
+if (.not. BS_opt_Qinit) then
 call VecSet(ZV_QoutinitM,ZS_Qout0,ierr)
-!OR
-!open(30,file=Qinit_file,status='old')
-!read(30,*) ZV_read_reachtot
-!close(30)
-!call VecSetValues(ZV_QoutinitM,IS_reachbas,IV_basin_loc,                       &
-!                  ZV_read_reachtot(IV_basin_index),INSERT_VALUES,ierr)
-!                  !here we use the output of a simulation as the intitial 
-!                  !flow rates.  The simulation has to be made on the entire
-!                  !domain, the initial value is taken only for the considered
-!                  !basin thanks to the vector IV_basin_index
-!call VecAssemblyBegin(ZV_QoutinitM,ierr)
-!call VecAssemblyEnd(ZV_QoutinitM,ierr)  
+end if
+
+if (BS_opt_Qinit) then
+open(30,file=Qinit_file,status='old')
+!read(30,'(10e10.3)') ZV_read_reachtot
+read(30,*) ZV_read_reachtot
+close(30)
+call VecSetValues(ZV_QoutinitM,IS_reachbas,IV_basin_loc,                       &
+                  ZV_read_reachtot(IV_basin_index),INSERT_VALUES,ierr)
+                  !here we use the output of a simulation as the intitial 
+                  !flow rates.  The simulation has to be made on the entire
+                  !domain, the initial value is taken only for the considered
+                  !basin thanks to the vector IV_basin_index
+call VecAssemblyBegin(ZV_QoutinitM,ierr)
+call VecAssemblyEnd(ZV_QoutinitM,ierr)  
+end if
 !Set initial flowrates for Main procedure
 
 
@@ -130,6 +179,7 @@ call VecSet(ZV_VinitM,ZS_V0,ierr)
 !MAIN
 !*******************************************************************************
 
+if (IS_opt_run==1) then
 !-------------------------------------------------------------------------------
 !OPTION 1 - use to calculate flows and volumes and generate output data 
 !-------------------------------------------------------------------------------
@@ -198,20 +248,23 @@ call PetscLogStagePush(stage,ierr)
 ZS_time3=0
 
 !open(31,file=m3_sur_file,status='old')
-open(34,file=Qfor_file,status='old')
+if (BS_opt_forcing) open(34,file=Qfor_file,status='old')
 !open(40,file=Qout_file)
 !open(41,file=V_file)
 !open(99,file='QoutR_900s.dat')
 
-if (IS_forcingbas > 0) then 
-call PetscPrintf(PETSC_COMM_WORLD,'WARNING: Forcing used during model run, '   &
-                 //'outputs calculated with flows measured at stations '       &
-                 //'located on reach ID:'//char(10),ierr)
-if (rank==0) print *, 'IV_forcingtot_id   =', IV_forcingtot_id
-if (rank==0) print *, 'IV_forcinguse_id   =', IV_forcinguse_id
+if (BS_opt_forcing) then
 if (rank==0) print *, 'IS_forcingbas      =', IS_forcingbas
-if (rank==0) print *, 'IV_forcing_index   =', IV_forcing_index
-if (rank==0) print *, 'IV_forcing_loc     =', IV_forcing_loc
+if (rank==0 .and. IS_forcingbas>0) then
+     call PetscPrintf(PETSC_COMM_WORLD,'WARNING: Forcing used during model run'&
+                 //', outputs calculated with flows measured at stations '     &
+                 //'located on reach ID:'//char(10),ierr)
+     !print *, 'IV_forcingtot_id   =', IV_forcingtot_id
+     print *, 'IV_forcinguse_id   =', IV_forcinguse_id
+     print *, 'IS_forcingbas      =', IS_forcingbas
+     print *, 'IV_forcing_index   =', IV_forcing_index
+     print *, 'IV_forcing_loc     =', IV_forcing_loc
+end if
 end if
 !Warning about forcing downstream basins
 
@@ -295,7 +348,7 @@ end do
 end do
 
 !close(31)
-close(34)
+if (BS_opt_forcing) close(34)
 !close(40)
 !close(41)
 !close(99)
@@ -310,93 +363,106 @@ call PetscLogStagePop(ierr)
 
 
 call PetscPrintf(PETSC_COMM_WORLD,'Output data created'//char(10),ierr)
+!-------------------------------------------------------------------------------
+!End of OPTION 1
+!-------------------------------------------------------------------------------
+end if
 
 
+
+if (IS_opt_run==2) then
+!-------------------------------------------------------------------------------
+!OPTION 2 - Optimization 
+!-------------------------------------------------------------------------------
+call rapid_obs_mat
+!Create observation matrix
+
+call VecSetValues(ZV_pnorm,IS_one,IS_one-1,ZS_knorm_init,INSERT_VALUES,ierr)
+call VecSetValues(ZV_pnorm,IS_one,IS_one,ZS_xnorm_init,INSERT_VALUES,ierr)
+call VecAssemblyBegin(ZV_pnorm,ierr)
+call VecAssemblyEnd(ZV_pnorm,ierr)
+!set pnorm to pnorm=(knorm,xnorm)
+
+call VecSetValues(ZV_pfac,IS_one,IS_one-1,ZS_kfac,INSERT_VALUES,ierr)
+call VecSetValues(ZV_pfac,IS_one,IS_one,ZS_xfac,INSERT_VALUES,ierr)
+call VecAssemblyBegin(ZV_pnorm,ierr)
+call VecAssemblyEnd(ZV_pnorm,ierr)
+!set pfac to pfac=(kfac,xfac)
+
+call VecPointWiseMult(ZV_p,ZV_pfac,ZV_pnorm,ierr)
+!set p to p=pfac.*pnorm
+
+open(22,file=kfac_file,status='old')
+read(22,*) ZV_read_reachtot
+close(22)
+call VecSetValues(ZV_kfac,IS_reachbas,IV_basin_loc,                            &
+                  ZV_read_reachtot(IV_basin_index),INSERT_VALUES,ierr)
+                  !only looking at basin, doesn't have to be whole domain here 
+call VecAssemblyBegin(ZV_kfac,ierr)
+call VecAssemblyEnd(ZV_kfac,ierr)  
+!reads kfac and assigns to ZV_kfac
+
+if (IS_opt_phi==2) then
+open(35,file=Qobsbarrec_file,status='old')
+read(35,*) ZV_read_gagetot
+close(35)
+call VecSetValues(ZV_Qobsbarrec,IS_gagebas,IV_gage_loc,                        &
+                  ZV_read_gagetot(IV_gage_index),INSERT_VALUES,ierr)
+                  !here we only look at the observations within the basin
+                  !studied
+call VecAssemblyBegin(ZV_Qobsbarrec,ierr)
+call VecAssemblyEnd(ZV_Qobsbarrec,ierr)  
+!reads Qobsbarrec and assigns to ZV_Qobsbarrec
+!call VecView(ZV_Qobsbarrec,PETSC_VIEWER_STDOUT_WORLD,ierr)
+end if
 
 
 !!-------------------------------------------------------------------------------
-!!OPTION 2 - Optimization 
-!!-------------------------------------------------------------------------------
-!call rapid_obs_mat
-!!Create observation matrix
-!
-!call VecSetValues(ZV_pnorm,IS_one,IS_one-1,ZS_knorm_init,INSERT_VALUES,ierr)
-!call VecSetValues(ZV_pnorm,IS_one,IS_one,ZS_xnorm_init,INSERT_VALUES,ierr)
-!call VecAssemblyBegin(ZV_pnorm,ierr)
-!call VecAssemblyEnd(ZV_pnorm,ierr)
-!!set pnorm to pnorm=(knorm,xnorm)
-!
-!call VecSetValues(ZV_pfac,IS_one,IS_one-1,ZS_kfac,INSERT_VALUES,ierr)
-!call VecSetValues(ZV_pfac,IS_one,IS_one,ZS_xfac,INSERT_VALUES,ierr)
-!call VecAssemblyBegin(ZV_pnorm,ierr)
-!call VecAssemblyEnd(ZV_pnorm,ierr)
-!!set pfac to pfac=(kfac,xfac)
-!
-!call VecPointWiseMult(ZV_p,ZV_pfac,ZV_pnorm,ierr)
-!!set p to p=pfac.*pnorm
-!
-!open(22,file=kfac_file,status='old')
-!read(22,*) ZV_read_reachtot
-!close(22)
-!call VecSetValues(ZV_kfac,IS_reachbas,IV_basin_loc,                            &
-!                  ZV_read_reachtot(IV_basin_index),INSERT_VALUES,ierr)
-!                  !only looking at basin, doesn't have to be whole domain here 
-!call VecAssemblyBegin(ZV_kfac,ierr)
-!call VecAssemblyEnd(ZV_kfac,ierr)  
-!!reads kfac and assigns to ZV_kfac
-!
-!open(35,file=Qobsbarrec_file,status='old')
-!read(35,*) ZV_read_gagetot
-!close(35)
-!call VecSetValues(ZV_Qobsbarrec,IS_gagebas,IV_gage_loc,                        &
-!                  ZV_read_gagetot(IV_gage_index),INSERT_VALUES,ierr)
-!                  !here we only look at the observations within the basin
-!                  !studied
-!call VecAssemblyBegin(ZV_Qobsbarrec,ierr)
-!call VecAssemblyEnd(ZV_Qobsbarrec,ierr)  
-!!reads Qobsbarrec and assigns to ZV_Qobsbarrec
-!!call VecView(ZV_Qobsbarrec,PETSC_VIEWER_STDOUT_WORLD,ierr)
-!
-!
-!!!-------------------------------------------------------------------------------
-!!call PetscLogStageRegister('One comp of phi',stage,ierr)
-!!call PetscLogStagePush(stage,ierr)
-!!!do JS_M=1,5
-!!call rapid_phiroutine(taoapp,ZV_pnorm,ZS_phi,ierr)
-!!!enddo
-!!call PetscLogStagePop(ierr)
-!!!-------------------------------------------------------------------------------
-!
-!
-!!-------------------------------------------------------------------------------
-!if (IS_forcingbas > 0) then 
-!call PetscPrintf(PETSC_COMM_WORLD,'WARNING: Forcing used during optimization, '&
-!                 //'cost function calculated with flows measured at stations ' &
-!                 //'located on reach ID:'//char(10),ierr)
-!!if (rank==0) print *, 'IV_forcingtot_id   =', IV_forcingtot_id
-!if (rank==0) print *, 'IV_forcinguse_id   =', IV_forcinguse_id
-!if (rank==0) print *, 'IS_forcingbas      =', IS_forcingbas
-!if (rank==0) print *, 'IV_forcing_index   =', IV_forcing_index
-!if (rank==0) print *, 'IV_forcing_loc     =', IV_forcing_loc
-!end if
-!!Warning about forcing downstream basins
-!
-!call PetscLogStageRegister('Optimization   ',stage,ierr)
+!call PetscLogStageRegister('One comp of phi',stage,ierr)
 !call PetscLogStagePush(stage,ierr)
-!call TaoAppSetObjectiveAndGradientRo(taoapp,rapid_phiroutine,TAO_NULL_OBJECT,  &
-!                                     ierr)
-!call TaoAppSetInitialSolutionVec(taoapp,ZV_pnorm,ierr)
-!call TaoSetTolerances(tao,1.0d-4,1.0d-4,TAO_NULL_OBJECT,TAO_NULL_OBJECT,ierr)
-!call TaoSetOptions(taoapp,tao,ierr)
-!
-!call TaoSolveApplication(taoapp,tao,ierr)
-!
-!call TaoView(tao,ierr)
-!call PetscPrintf(PETSC_COMM_WORLD,'final normalized p=(k,x)'//char(10),ierr)
-!call VecView(ZV_pnorm,PETSC_VIEWER_STDOUT_WORLD,ierr)
+!!do JS_M=1,5
+!call rapid_phiroutine(taoapp,ZV_pnorm,ZS_phi,ierr)
+!!enddo
 !call PetscLogStagePop(ierr)
 !!-------------------------------------------------------------------------------
 
+
+!-------------------------------------------------------------------------------
+if (BS_opt_forcing) then
+if (rank==0) print *, 'IS_forcingbas      =', IS_forcingbas
+if (rank==0 .and. IS_forcingbas>0) then
+     call PetscPrintf(PETSC_COMM_WORLD,'WARNING: Forcing used during '         &
+                 //'optimization cost function calculated with flows measured '&
+                 //'at stations located on reach ID:'//char(10),ierr)
+     !print *, 'IV_forcingtot_id   =', IV_forcingtot_id
+     print *, 'IV_forcinguse_id   =', IV_forcinguse_id
+     print *, 'IS_forcingbas      =', IS_forcingbas
+     print *, 'IV_forcing_index   =', IV_forcing_index
+     print *, 'IV_forcing_loc     =', IV_forcing_loc
+end if
+end if
+!Warning about forcing downstream basins
+
+call PetscLogStageRegister('Optimization   ',stage,ierr)
+call PetscLogStagePush(stage,ierr)
+call TaoAppSetObjectiveAndGradientRo(taoapp,rapid_phiroutine,TAO_NULL_OBJECT,  &
+                                     ierr)
+call TaoAppSetInitialSolutionVec(taoapp,ZV_pnorm,ierr)
+call TaoSetTolerances(tao,1.0d-4,1.0d-4,TAO_NULL_OBJECT,TAO_NULL_OBJECT,ierr)
+call TaoSetOptions(taoapp,tao,ierr)
+
+call TaoSolveApplication(taoapp,tao,ierr)
+
+call TaoView(tao,ierr)
+call PetscPrintf(PETSC_COMM_WORLD,'final normalized p=(k,x)'//char(10),ierr)
+call VecView(ZV_pnorm,PETSC_VIEWER_STDOUT_WORLD,ierr)
+call PetscLogStagePop(ierr)
+!-------------------------------------------------------------------------------
+
+!-------------------------------------------------------------------------------
+!End of OPTION 2
+!-------------------------------------------------------------------------------
+end if
 
 
 !*******************************************************************************
