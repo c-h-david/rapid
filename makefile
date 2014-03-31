@@ -2,6 +2,7 @@ include ${TAO_DIR}/bmake/tao_common
 
 
 rapid:	rapid_main.o \
+	rapid_read_namelist.o \
 	rapid_create_obj.o \
 	rapid_net_mat.o \
 	rapid_obs_mat.o \
@@ -14,6 +15,7 @@ rapid:	rapid_main.o \
 	-${FLINKER} -o \
 	rapid \
 	rapid_main.o \
+	rapid_read_namelist.o \
 	rapid_create_obj.o \
 	rapid_net_mat.o \
 	rapid_routing.o \
@@ -55,6 +57,9 @@ rapid_net_mat.o: 	rapid_net_mat.F90 rapid_var.o tao_chkopts
 rapid_create_obj.o: 	rapid_create_obj.F90 rapid_var.o tao_chkopts
 	-${FLINKER} -c rapid_create_obj.F90 ${PETSC_INCLUDE} ${TAO_INCLUDE}
 
+rapid_read_namelist.o:	rapid_read_namelist.F90 rapid_var.o tao_chkopts
+	-${FLINKER} -c rapid_read_namelist.F90
+	
 rapid_var.o:	rapid_var.F90 tao_chkopts
 	-${FLINKER} -c rapid_var.F90 ${PETSC_INCLUDE} ${TAO_INCLUDE} 
 	
