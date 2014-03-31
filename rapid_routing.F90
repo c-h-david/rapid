@@ -27,7 +27,7 @@ use rapid_var, only :                                                          &
                    IS_nc_status,IS_nc_id_fil_Qout,IS_nc_id_var_Qout,           &
                    IV_nc_start,IV_nc_count,                                    &
                    IS_reachbas,JS_reachbas,IM_index_up,stage,                  &
-                   IS_opt_routing
+                   IS_opt_routing,IV_nbup,IV_basin_index
 
 implicit none
 
@@ -61,7 +61,9 @@ Vec, intent(in)    :: ZV_C1,ZV_C2,ZV_C3,ZV_Qext,                               &
 Vec  :: ZV_QoutR,ZV_QoutbarR,ZV_VR,ZV_VbarR
 
 PetscInt :: IS_localsize,JS_localsize
-PetscScalar, pointer :: ZV_QoutR_p(:),ZV_QoutprevR_p(:),ZV_QoutinitR_p(:),ZV_QoutbarR_p(:),ZV_Qext_p(:),ZV_C1_p(:),ZV_C2_p(:),ZV_C3_p(:),ZV_b_p(:)
+PetscScalar, pointer :: ZV_QoutR_p(:),ZV_QoutprevR_p(:),ZV_QoutinitR_p(:),     &
+                        ZV_QoutbarR_p(:),ZV_Qext_p(:),ZV_C1_p(:),ZV_C2_p(:),   &
+                        ZV_C3_p(:),ZV_b_p(:)
 
 
 !*******************************************************************************
@@ -251,12 +253,33 @@ end do
 !-------------------------------------------------------------------------------
 !Calculation of Qout
 !-------------------------------------------------------------------------------
-do JS_reachbas=1,IS_reachbas
-     ZV_QoutR_p(JS_reachbas)=ZV_C1_p(JS_reachbas)*(sum(ZV_QoutR_p(IM_index_up(JS_reachbas,:)))+ZV_Qext_p(JS_reachbas)) &
-                           +ZV_C2_p(JS_reachbas)*(sum(ZV_QoutprevR_p(IM_index_up(JS_reachbas,:)))+ZV_Qext_p(JS_reachbas)) &
-                           +ZV_C3_p(JS_reachbas)*ZV_QoutprevR_p(JS_reachbas)
-end do
+!do JS_reachbas=1,IS_reachbas
+!     ZV_QoutR_p(JS_reachbas)=                                                  &
+!                ZV_C1_p(JS_reachbas)*                                          &
+!                              (sum(ZV_QoutR_p(IM_index_up(JS_reachbas,:)))     &
+!                               +ZV_Qext_p(JS_reachbas)                    )    &
+!               +ZV_C2_p(JS_reachbas)*                                          &
+!                              (sum(ZV_QoutprevR_p(IM_index_up(JS_reachbas,:))) &
+!                               +ZV_Qext_p(JS_reachbas)                        )&
+!               +ZV_C3_p(JS_reachbas)*ZV_QoutprevR_p(JS_reachbas)
+!end do
+!!Not taking into account the knowledge of how many upstream locations exist.
+!!Similar to poor preallocation of network matrix
 
+do JS_reachbas=1,IS_reachbas
+     ZV_QoutR_p(JS_reachbas)=                                                  &
+                ZV_C1_p(JS_reachbas)*                                          &
+                   (sum(ZV_QoutR_p(IM_index_up(JS_reachbas,1:                  &
+                                   IV_nbup(IV_basin_index(JS_reachbas)))))     & 
+                    +ZV_Qext_p(JS_reachbas)                               )    &
+               +ZV_C2_p(JS_reachbas)*                                          &
+                   (sum(ZV_QoutprevR_p(IM_index_up(JS_reachbas,1:              &
+                                       IV_nbup(IV_basin_index(JS_reachbas))))) &
+                    +ZV_Qext_p(JS_reachbas)                                   )&
+               +ZV_C3_p(JS_reachbas)*ZV_QoutprevR_p(JS_reachbas)
+end do
+!Taking into account the knowledge of how many upstream locations exist.
+!Similar to better preallocation of network matrix
 
 !-------------------------------------------------------------------------------
 !Reset previous
