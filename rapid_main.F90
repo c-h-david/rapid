@@ -143,16 +143,26 @@ call MPI_Comm_rank(PETSC_COMM_WORLD,rank,ierr)
 !*******************************************************************************
 !Prints information about current model run based on info from namelist
 !*******************************************************************************
-if (rank==0 .and. .not. BS_opt_Qinit)   print *, 'Not initializing flows'
-if (rank==0 .and. BS_opt_Qinit)         print *, 'Initializing flows'
-if (rank==0 .and. .not. BS_opt_forcing) print *, 'Not using forcing'
-if (rank==0 .and. BS_opt_forcing)       print *, 'Using forcing'
-if (rank==0 .and. IS_opt_routing==1)    print *, 'Routing with matrix-based Muskingum method'
-if (rank==0 .and. IS_opt_routing==2)    print *, 'Routing with traditional Muskingum method'
-if (rank==0)                            print *, 'Using:', m3_nc_file 
-if (rank==0 .and. IS_opt_run==1)        print *, 'RAPID mode: computing flowrates'
-if (rank==0 .and. IS_opt_run==2 .and. IS_opt_phi==1)  print *, 'RAPID mode: optimizing parameters, using ph1' 
-if (rank==0 .and. IS_opt_run==2 .and. IS_opt_phi==2)  print *, 'RAPID mode: optimizing parameters, using ph2' 
+if (rank==0 .and. .not. BS_opt_Qinit)                print '(a70)',            &
+       'Not initializing flows                                                 '
+if (rank==0 .and. BS_opt_Qinit)                      print '(a70)',            &
+       'Initializing flows                                                     '
+if (rank==0 .and. .not. BS_opt_forcing)              print '(a70)',            &
+       'Not using forcing                                                      '
+if (rank==0 .and. BS_opt_forcing)                    print '(a70)',            &
+       'Using forcing                                                          '
+if (rank==0 .and. IS_opt_routing==1)                 print '(a70)',            &
+       'Routing with matrix-based Muskingum method                             '
+if (rank==0 .and. IS_opt_routing==2)                 print '(a70)',            &
+       'Routing with traditional Muskingum method                              '
+if (rank==0)                                         print '(a10,a60)',        &
+       'Using:    ', m3_nc_file 
+if (rank==0 .and. IS_opt_run==1)                     print '(a70)',            &
+       'RAPID mode: computing flowrates                                        '
+if (rank==0 .and. IS_opt_run==2 .and. IS_opt_phi==1) print '(a70)',            &
+       'RAPID mode: optimizing parameters, using phi1                          ' 
+if (rank==0 .and. IS_opt_run==2 .and. IS_opt_phi==2) print '(a70)',            &
+       'RAPID mode: optimizing parameters, using phi2                          ' 
 
 
 !*******************************************************************************
