@@ -393,7 +393,8 @@ PetscInt :: IS_nc_id_fil_m3,IS_nc_id_fil_Qout
 PetscInt :: IS_nc_id_var_m3,IS_nc_id_var_Qout,IS_nc_id_var_comid
 PetscInt :: IS_nc_id_dim_comid,IS_nc_id_dim_time
 PetscInt, parameter :: IS_nc_ndim=2
-PetscInt, dimension(IS_nc_ndim) :: IV_nc_id_dim, IV_nc_start, IV_nc_count
+PetscInt, dimension(IS_nc_ndim) :: IV_nc_id_dim, IV_nc_start, IV_nc_count,     &
+                                   IV_nc_count2
 
 
 !*******************************************************************************
