@@ -19,7 +19,7 @@ use rapid_var, only :                                                          &
                    ZM_A,                                                       &
                    ZV_k,ZV_x,ZV_p,ZV_pnorm,ZV_pfac,                            &
                    ZV_C1,ZV_C2,ZV_C3,ZV_Cdenom,                                &
-                   ZV_b,ZV_b1,ZV_b2,ZV_b3,                                     &
+                   ZV_b,ZV_b1,ZV_b2,ZV_b3,ZV_babsmax,                          &
                    ZV_Qext,ZV_Qfor,ZV_Qlat,                                    &
                    ZV_Vext,ZV_Vfor,ZV_Vlat,                                    &
                    ZV_VinitM,ZV_QoutinitM,ZV_QoutinitO,                        &
@@ -123,6 +123,7 @@ call VecDuplicate(ZV_k,ZV_b,ierr)
 call VecDuplicate(ZV_k,ZV_b1,ierr)
 call VecDuplicate(ZV_k,ZV_b2,ierr)
 call VecDuplicate(ZV_k,ZV_b3,ierr)
+call VecDuplicate(ZV_k,ZV_babsmax,ierr)
 
 call VecDuplicate(ZV_k,ZV_Qext,ierr)
 call VecDuplicate(ZV_k,ZV_Qfor,ierr)
