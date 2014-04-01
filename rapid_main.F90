@@ -26,8 +26,8 @@ use rapid_var, only :                                                          &
                    IS_M,JS_M,JS_RpM,IS_RpM,                                    &
                    ZS_dtR,ZS_TauR,                                             &
                    ZM_Net,                                                     &
-                   IV_gage_id,IV_gage_index,IV_gage_loc,IS_iter,               &
-                   ZV_kfac,                                                    &
+                   IV_gagetot_id,IV_gageuse_id,IV_gage_index,IV_gage_loc,      &
+                   IS_iter, ZV_kfac,                                           &
                    ZM_A,                                                       &
                    ZV_k,ZV_x,ZV_p,                                             &
                    ZV_pnorm,                                                   &
@@ -55,7 +55,7 @@ use rapid_var, only :                                                          &
                    IS_nc_id_dim_time,IS_nc_id_dim_comid,IV_nc_id_dim,          &
                    IV_nc_start,IV_nc_count,                                    &
                    modcou_connect_file,IS_max_up,basin_id_file,forcingtot_id_file,IS_forcinguse,forcinguse_id_file,xfac_file,&
-                   IV_connect_id,IV_down,IV_nbup,IM_up,IM_index_up,IS_gagetot,IV_nz,IV_dnz,IV_onz,gage_id_file,&
+                   IV_connect_id,IV_down,IV_nbup,IM_up,IM_index_up,IS_gagetot,IS_gageuse,IV_nz,IV_dnz,IV_onz,gagetot_id_file,&
                    BS_opt_Qinit,BS_opt_forcing,                                &
                    IS_opt_routing,IS_opt_run,IS_opt_phi,                       &
                    IS_O,IS_R,IS_RpO,IS_RpM,ZS_TauM,ZS_TauO,ZS_TauR,ZS_dtO,ZS_dtR,ZS_dtM
@@ -113,7 +113,8 @@ allocate(IV_onz(IS_reachbas))
 allocate(ZV_read_reachtot(IS_reachtot))
 
 if (IS_opt_run==2) then
-     allocate(IV_gage_id(IS_gagetot))
+     allocate(IV_gagetot_id(IS_gagetot))
+     allocate(IV_gageuse_id(IS_gageuse))
      allocate(ZV_read_gagetot(IS_gagetot))
 end if
 

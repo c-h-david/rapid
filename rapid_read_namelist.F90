@@ -20,7 +20,8 @@ use rapid_var, only :                                                          &
                      IS_forcinguse,forcinguse_id_file,                         &
                      k_file,x_file,Qout_nc_file,                               &
                      kfac_file,xfac_file,ZS_knorm_init,ZS_xnorm_init,          &
-                     IS_gagetot,Qobs_file,gage_id_file,Qobsbarrec_file,        &
+                     IS_gagetot,gagetot_id_file,IS_gageuse,gageuse_id_file,    &
+                     Qobs_file,Qobsbarrec_file,                                &
                      ZS_TauM,ZS_dtM,ZS_TauO,ZS_dtO,ZS_TauR,ZS_dtR,             &
                      ZS_phifac,IS_strt_opt,                                    &
                      NL_namelist,namelist_file,                                &

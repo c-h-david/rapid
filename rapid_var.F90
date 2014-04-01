@@ -58,7 +58,7 @@ PetscInt,dimension(:), allocatable :: IV_basin_loc
 
 PetscInt :: IS_gagetot
 !total number of reaches that have observations (gaged reaches), corresponds to
-!the number of lines in gage_id_file 
+!the number of lines in gagetot_id_file 
 PetscInt :: JS_gagetot
 !loop index corresponding to the number of gaged reaches (IS_gagetot)
 
@@ -80,8 +80,10 @@ character(len=100) :: modcou_connect_file
 character(len=100) :: nhdplus_connect_file
 !unit 11 - file with connectivity information following NHDPlus notations
 character(len=100) :: basin_id_file
-!unit 15 - file with all the IDs of the reaches used in subbasin considered
-character(len=100) :: gage_id_file
+!unit 14 - file with all the IDs of the reaches used in subbasin considered
+character(len=100) :: gagetot_id_file
+!unit 15 - file with all the IDs of the reaches that have gage measurements
+character(len=100) :: gageuse_id_file
 !unit 16 - file with all the IDs of the reaches that have gage measurements
 character(len=100) :: forcingtot_id_file
 !unit 17 - file with the IDs where flows can be used as forcing to their 
@@ -225,14 +227,20 @@ Vec :: ZV_Qobs
 PetscScalar :: ZS_norm
 !norm of matrix ZM_Obs, used to calculate the number of gaging stations used
 
+PetscInt :: IS_gageuse
+!Number of gages available in gageuse_id_file
+PetscInt :: JS_gageuse
+!Corresponding index
 PetscInt :: IS_gagebas
 !Number of gages within basin studied.  Will be calculated based on 
-!gage_id_file and basin_id_file
+!gagetot_id_file, gageuse_id_file and basin_id_file
 PetscInt :: JS_gagebas
 !Corresponding index
 
-PetscInt, dimension(:), allocatable :: IV_gage_id
-!vector were are stored the river ID of each gage
+PetscInt, dimension(:), allocatable :: IV_gagetot_id
+!vector were are stored the river ID of each gage available
+PetscInt, dimension(:), allocatable :: IV_gageuse_id
+!vector were are stored the river ID of each gage used in current run
 PetscInt, allocatable, dimension(:) :: IV_gage_index
 !vector where the Fortran 1-based indexes of the gages within the Qobs_file. 
 !Will be allocated size IS_gagebas
@@ -416,11 +424,11 @@ namelist /NL_namelist/                                                         &
                        IS_forcinguse,forcinguse_id_file,                       &
                        k_file,x_file,Qout_nc_file,                             &
                        kfac_file,xfac_file,ZS_knorm_init,ZS_xnorm_init,        &
-                       IS_gagetot,Qobs_file,gage_id_file,Qobsbarrec_file,      &
+                       IS_gagetot,gagetot_id_file,IS_gageuse,gageuse_id_file,  &
+                       Qobs_file,Qobsbarrec_file,                              &
                        ZS_TauM,ZS_dtM,ZS_TauO,ZS_dtO,ZS_TauR,ZS_dtR,           &
                        ZS_phifac,IS_strt_opt
-                       
-
+ 
 character(len=100) :: namelist_file='./rapid_namelist' 
 !unit 88 - Namelist
 
