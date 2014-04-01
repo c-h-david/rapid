@@ -12,9 +12,12 @@ subroutine rapid_obs_mat
 !*******************************************************************************
 use rapid_var, only :                                                          &
                    IS_reachtot,JS_reachtot,IS_reachbas,JS_reachbas,            &
-                   IS_gagetot,JS_gagetot,IS_gagebas,JS_gagebas,                &
-                   nhdplus_connect_file,basin_id_file,gage_id_file,            &
-                   IV_basin_id,IV_gage_id,IV_gage_index,IV_gage_loc,           &
+                   IS_gagetot,JS_gagetot,IS_gageuse,JS_gageuse,                &
+                   IS_gagebas,JS_gagebas,                                      &
+                   nhdplus_connect_file,basin_id_file,                         &
+                   gagetot_id_file,gageuse_id_file,                            &
+                   IV_basin_id,IV_gagetot_id,IV_gageuse_id,                    & 
+                   IV_gage_index,IV_gage_loc,                                  &
                    ZM_Obs,ZS_norm,                                             &
                    ierr,                                                       &
                    IS_one,ZS_one,temp_char   
@@ -45,47 +48,77 @@ implicit none
 !*******************************************************************************
 !Read data files
 !*******************************************************************************
-open(15,file=basin_id_file,status='old')
-!read(15,'(i12)') IV_basin_id
-read(15,*) IV_basin_id
+open(14,file=basin_id_file,status='old')
+!read(14,'(i12)') IV_basin_id
+read(14,*) IV_basin_id
+close(14)
+
+open(15,file=gagetot_id_file,status='old')
+!read(15,'(i12)') IV_gagetot_id
+read(15,*) IV_gagetot_id
 close(15)
 
-open(16,file=gage_id_file,status='old')
-!read(16,'(i12)') IV_gage_id
-read(16,*) IV_gage_id
+open(16,file=gageuse_id_file,status='old')
+!read(16,'(i12)') IV_gageuse_id
+read(16,*) IV_gageuse_id
 close(16)
 
 
 !*******************************************************************************
 !Calculates IS_gagebas, creates the vectors IV_gage_index and IV_gage_loc
 !*******************************************************************************
+!-------------------------------------------------------------------------------
+!Calculates IS_gagebas
+!-------------------------------------------------------------------------------
+write(temp_char,'(i10)') IS_gagetot
+call PetscPrintf(PETSC_COMM_WORLD,'Number of gages in gagetot_file '       //  &
+                 '                :' // temp_char // char(10),ierr)
+write(temp_char,'(i10)') IS_gageuse
+call PetscPrintf(PETSC_COMM_WORLD,'Number of gages in gageuse_file '       //  &
+                 '                :' // temp_char // char(10),ierr)
+
 IS_gagebas=0
-do JS_gagetot=1,IS_gagetot
+!initialize to zero
+
+do JS_gageuse=1,IS_gageuse
      do JS_reachbas=1,IS_reachbas
-          if (IV_gage_id(JS_gagetot)==IV_basin_id(JS_reachbas)) then
+          if (IV_gageuse_id(JS_gageuse)==IV_basin_id(JS_reachbas)) then
                IS_gagebas=IS_gagebas+1
-!               print *, 'IS_gagebas              =', IS_gagebas
-!               print *, 'JS_reachbas             =', JS_reachbas
-!               print *, 'IV_basin_id(JS_reachbas)=', IV_basin_id(JS_reachbas)
-          end if
+          end if 
      end do
 end do
-write(temp_char,'(i10)') IS_gagebas
-call PetscPrintf(PETSC_COMM_WORLD,'Number of gaging stations in basin studied:'&
-                                  // temp_char // char(10),ierr)
-!Calculates IS_gagebas
 
+write(temp_char,'(i10)') IS_gagebas
+call PetscPrintf(PETSC_COMM_WORLD,'Number of gages in gageuse_file '       //  &
+                 'located in basin:' // temp_char // char(10),ierr)
+
+
+!-------------------------------------------------------------------------------
+!Allocates and populates the vectors IV_gage_index and IV_gage_loc
+!-------------------------------------------------------------------------------
 allocate(IV_gage_index(IS_gagebas))
 allocate(IV_gage_loc(IS_gagebas))
+!allocate vector size
+
+do JS_gagebas=1,IS_gagebas
+     IV_gage_index(JS_gagebas)=0
+     IV_gage_loc(JS_gagebas)=0
+end do
+!Initialize both vectors to zero
+
 JS_gagebas=1
-do JS_gagetot=1,IS_gagetot
-     do JS_reachbas=1,IS_reachbas
-          if (IV_gage_id(JS_gagetot)==IV_basin_id(JS_reachbas)) then
-               IV_gage_index(JS_gagebas)=JS_gagetot
-               IV_gage_loc(JS_gagebas)=JS_reachbas-1
-               JS_gagebas=JS_gagebas+1
-          end if
-     end do
+do JS_gageuse=1,IS_gageuse
+do JS_reachbas=1,IS_reachbas
+     if (IV_gageuse_id(JS_gageuse)==IV_basin_id(JS_reachbas)) then
+          do JS_gagetot=1,IS_gagetot
+               if (IV_gageuse_id(JS_gageuse)==IV_gagetot_id(JS_gagetot)) then
+                    IV_gage_index(JS_gagebas)=JS_gagetot
+               end if
+          end do
+          IV_gage_loc(JS_gagebas)=JS_reachbas-1
+          JS_gagebas=JS_gagebas+1
+     end if
+end do
 end do
 !Creates vector IV_gage_index and IV_gage_loc
 
@@ -98,11 +131,11 @@ end do
 !*******************************************************************************
 do JS_reachbas=1,IS_reachbas
      do JS_gagebas=1,IS_gagebas
-          if (IV_gage_id(IV_gage_index(JS_gagebas))==IV_basin_id(JS_reachbas)) then
+          if (IV_gagetot_id(IV_gage_index(JS_gagebas))==IV_basin_id(JS_reachbas)) then
           call MatSetValues(ZM_Obs,IS_one,JS_reachbas-1,IS_one,JS_reachbas-1,  &
                             ZS_one,INSERT_VALUES,ierr)
 !          print *, 'JS_gagebas                           =', JS_gagebas
-!          print *, 'IV_gage_id(IV_gage_index(JS_gagebas))=', IV_gage_id(IV_gage_index(JS_gagebas))
+!          print *, 'IV_gagetot_id(IV_gage_index(JS_gagebas))=', IV_gagetot_id(IV_gage_index(JS_gagebas))
 !          print *, 'JS_reachbas                          =', JS_reachbas
 !          print *, 'IV_basin_id(JS_reachbas)             =', IV_basin_id(JS_reachbas)
           else
