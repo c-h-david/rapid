@@ -18,6 +18,7 @@ use rapid_var, only :                                                          &
                    ZV_Cdenom,ZS_dtR,                                           &
                    ierr, ZS_one,ZV_one
 
+
 implicit none
 
 
@@ -40,7 +41,10 @@ implicit none
 #include "finclude/tao_solver.h" 
 !TAO solver
 
-!IN/OUT
+
+!*******************************************************************************
+!Intent (in/out), and local variables 
+!*******************************************************************************
 Vec, intent(in)    :: ZV_k,ZV_x
 Vec, intent(out)   :: ZV_C1,ZV_C2,ZV_C3,ZM_A 
 
