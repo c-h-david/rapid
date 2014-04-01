@@ -14,55 +14,37 @@ program rapid_main
 !*******************************************************************************
 use netcdf
 use rapid_var, only :                                                          &
-                   IS_reachbas,JS_reachbas,                                    &
+                   namelist_file,                                              &
+                   IS_reachbas,                                                &
                    IV_basin_id,IV_basin_index,IV_basin_loc,                    &
-                   kfac_file,xfac_file,                                        &
-                   k_file,x_file,                                              &
-                   m3_nc_file,Qobs_file,Qinit_file,Qfor_file,                  &
-                   Qobsbarrec_file,                                            &
-                   Qout_file,V_file,Qout_nc_file,babsmax_file,                 &
-                   ZS_knorm_init,ZS_xnorm_init,ZS_kfac,ZS_xfac,ZS_k,ZS_x,      &
-                   ZS_Qout0,ZS_V0,                                             &
+                   m3_nc_file,Qfor_file,                                       &
+                   Qout_file,V_file,Qout_nc_file,                              &
                    IS_M,JS_M,JS_RpM,IS_RpM,                                    &
-                   ZS_dtR,ZS_TauR,                                             &
-                   ZM_Net,                                                     &
-                   IV_gagetot_id,IV_gageuse_id,IV_gage_index,IV_gage_loc,      &
-                   IS_iter, ZV_kfac,                                           &
-                   ZM_A,                                                       &
-                   ZV_k,ZV_x,ZV_p,                                             &
+                   ZS_TauR,                                                    &
                    ZV_pnorm,                                                   &
-                   ZV_pfac,                                                    &
-                   ZV_C1,ZV_C2,ZV_C3,ZV_Cdenom,                                &
-                   ZV_b,ZV_b1,ZV_b2,ZV_b3,ZV_babsmax,                          &
+                   ZV_C1,ZV_C2,ZV_C3,                                          &
                    ZV_Qext,ZV_Qfor,ZV_Qlat,                                    &
-                   ZV_Vext,ZV_Vfor,ZV_Vlat,                                    &
-                   ZV_VinitM,ZV_QoutinitM,                                     &
-                   ZV_QoutinitO,ZV_QoutbarO,                                   &
-                   ZV_QoutR,ZV_QoutinitR,ZV_QoutprevR,ZV_QoutbarR,             &
-                   ZV_VR,ZV_VinitR,ZV_VprevR,ZV_VbarR,ZV_VoutR,                &
-                   ZM_Obs,ZV_Qobs,ZV_temp1,ZV_temp2,ZS_phitemp,ZS_phi,ZS_norm, &
-                   ZV_Qobsbarrec,                                              &
-                   ierr,ksp,pc,tao,taoapp,reason,vecscat,rank,stage,           &
-                   ZV_pointer, ZS_one,ZV_one,IS_one,                           &
+                   ZV_Vlat,                                                    &
+                   ZV_QoutR,ZV_QoutinitR,ZV_QoutbarR,                          &
+                   ZV_VR,ZV_VinitR,ZV_VbarR,                                   &
+                   ZS_phi,                                                     &
+                   ierr,vecscat,rank,stage,                                    &
+                   ZV_pointer, ZS_one,                                         &
                    ZV_read_reachtot,ZV_read_forcingtot,                        &
-                   ZV_SeqZero,temp_char,ZV_1stIndex,ZV_2ndIndex,               &
-                   IS_reachtot,IS_forcingtot,JS_forcingtot,IS_forcingbas,      &
-                   IV_forcing_index,IV_forcing_loc,IV_forcingtot_id,           &
-                   IV_forcinguse_id,ZS_time1,ZS_time2,ZS_time3,                &
-                   ZV_read_gagetot,IS_gagebas,                                 &
+                   ZV_SeqZero,                                                 &
+                   IS_reachtot,IS_forcingbas,                                  &
+                   IV_forcing_index,IV_forcing_loc,                            &
+                   ZS_time1,ZS_time2,ZS_time3,                                 &
                    IS_nc_status,IS_nc_id_fil_m3,IS_nc_id_fil_Qout,             &
                    IS_nc_id_var_m3,IS_nc_id_var_Qout,IS_nc_id_var_comid,       &
                    IS_nc_id_dim_time,IS_nc_id_dim_comid,IV_nc_id_dim,          &
                    IV_nc_start,IV_nc_count,IV_nc_count2,                       &
-                   modcou_connect_file,IS_max_up,basin_id_file,                &
-                   forcingtot_id_file,IS_forcinguse,forcinguse_id_file,        &
-                   IV_connect_id,IV_down,IV_nbup,IM_up,IM_index_up,            &
-                   IS_gagetot,IS_gageuse,IV_nz,IV_dnz,IV_onz,gagetot_id_file,  &
-                   BS_opt_Qinit,BS_opt_forcing,BS_opt_babsmax,                 &
-                   IS_opt_routing,IS_opt_run,IS_opt_phi,                       &
-                   IS_O,IS_R,IS_RpO,IS_RpM,                                    &
-                   ZS_TauM,ZS_TauO,ZS_TauR,ZS_dtO,ZS_dtR,ZS_dtM
+                   BS_opt_forcing,IS_opt_run
 
+#ifndef NO_TAO
+use rapid_var, only :                                                          &
+                   tao,taoapp
+#endif
 
 implicit none
 
@@ -87,173 +69,29 @@ external rapid_phiroutine
 !preconditioners
 #include "finclude/petscviewer.h"
 !viewers (allows writing results in file for example)
+#include "finclude/petsclog.h" 
+!PETSc log
+
+#ifndef NO_TAO
 #include "finclude/tao_solver.h" 
 !TAO solver
-#include "finclude/petsclog.h" 
-!TAO solver
+#endif
 
 
 !*******************************************************************************
-!Read name list, allocate Fortran arrays and compute number of time steps
+!Initialize
 !*******************************************************************************
-call rapid_read_namelist
-
-allocate(IV_basin_id(IS_reachbas))
-allocate(IV_basin_index(IS_reachbas))
-allocate(IV_basin_loc(IS_reachbas))
-
-allocate(IV_connect_id(IS_reachtot))
-allocate(IV_down(IS_reachtot))
-allocate(IV_nbup(IS_reachtot))
-allocate(IM_up(IS_reachtot,IS_max_up))
-allocate(IM_index_up(IS_reachtot,IS_max_up))
-
-allocate(IV_nz(IS_reachbas))
-allocate(IV_dnz(IS_reachbas))
-allocate(IV_onz(IS_reachbas))
-
-allocate(ZV_read_reachtot(IS_reachtot))
-
-if (IS_opt_run==2) then
-     allocate(IV_gagetot_id(IS_gagetot))
-     allocate(IV_gageuse_id(IS_gageuse))
-     allocate(ZV_read_gagetot(IS_gagetot))
-end if
-
-if (BS_opt_forcing) then
-     allocate(IV_forcingtot_id(IS_forcingtot))
-     allocate(IV_forcinguse_id(IS_forcinguse))
-     allocate(ZV_read_forcingtot(IS_forcingtot))
-end if
-
-IS_M=int(ZS_TauM/ZS_dtM)
-IS_O=int(ZS_TauO/ZS_dtO)
-IS_R=int(ZS_TauR/ZS_dtR)
-IS_RpO=int(ZS_dtO/ZS_TauR)
-IS_RpM=int(ZS_dtM/ZS_TauR)
+namelist_file='./rapid_namelist' 
+call rapid_init
 
 
 !*******************************************************************************
-!Initialize libraries and create objects
-!*******************************************************************************
-call rapid_create_obj
-!Initialize libraries and create PETSc and TAO objects (Mat,Vec,taoapp...)
-
-call MPI_Comm_rank(PETSC_COMM_WORLD,rank,ierr)
-!Determine number associated with each processor
-
-
-!*******************************************************************************
-!Prints information about current model run based on info from namelist
-!*******************************************************************************
-if (rank==0 .and. .not. BS_opt_Qinit)                print '(a70)',            &
-       'Not initializing flows                                                 '
-if (rank==0 .and. BS_opt_Qinit)                      print '(a70)',            &
-       'Initializing flows                                                     '
-if (rank==0 .and. .not. BS_opt_forcing)              print '(a70)',            &
-       'Not using forcing                                                      '
-if (rank==0 .and. BS_opt_forcing)                    print '(a70)',            &
-       'Using forcing                                                          '
-if (rank==0 .and. IS_opt_routing==1)                 print '(a70)',            &
-       'Routing with matrix-based Muskingum method                             '
-if (rank==0 .and. IS_opt_routing==2)                 print '(a70)',            &
-       'Routing with traditional Muskingum method                              '
-if (rank==0)                                         print '(a10,a60)',        &
-       'Using:    ', m3_nc_file 
-if (rank==0 .and. IS_opt_run==1)                     print '(a70)',            &
-       'RAPID mode: computing flowrates                                        '
-if (rank==0 .and. IS_opt_run==2 .and. IS_opt_phi==1) print '(a70)',            &
-       'RAPID mode: optimizing parameters, using phi1                          ' 
-if (rank==0 .and. IS_opt_run==2 .and. IS_opt_phi==2) print '(a70)',            &
-       'RAPID mode: optimizing parameters, using phi2                          ' 
-
-
-!*******************************************************************************
-!Calculate Network matrix (only once)
-!*******************************************************************************
-call rapid_net_mat
-!Create network matrix
-
-
-!*******************************************************************************
-!calculates initial flows and volumes
-!*******************************************************************************
-if (.not. BS_opt_Qinit) then
-call VecSet(ZV_QoutinitM,ZS_Qout0,ierr)
-end if
-
-if (BS_opt_Qinit) then
-open(30,file=Qinit_file,status='old')
-!read(30,'(10e10.3)') ZV_read_reachtot
-read(30,*) ZV_read_reachtot
-close(30)
-call VecSetValues(ZV_QoutinitM,IS_reachbas,IV_basin_loc,                       &
-                  ZV_read_reachtot(IV_basin_index),INSERT_VALUES,ierr)
-                  !here we use the output of a simulation as the intitial 
-                  !flow rates.  The simulation has to be made on the entire
-                  !domain, the initial value is taken only for the considered
-                  !basin thanks to the vector IV_basin_index
-call VecAssemblyBegin(ZV_QoutinitM,ierr)
-call VecAssemblyEnd(ZV_QoutinitM,ierr)  
-end if
-!Set initial flowrates for Main procedure
-
-
-call VecSet(ZV_VinitM,ZS_V0,ierr)
-!Set initial volumes for Main procedure
-
-
-!*******************************************************************************
-!MAIN
-!*******************************************************************************
-
-if (IS_opt_run==1) then
-!-------------------------------------------------------------------------------
 !OPTION 1 - use to calculate flows and volumes and generate output data 
-!-------------------------------------------------------------------------------
-open(20,file=k_file,status='old')
-read(20,*) ZV_read_reachtot
-call VecSetValues(ZV_k,IS_reachbas,IV_basin_loc,                               &
-                  ZV_read_reachtot(IV_basin_index),INSERT_VALUES,ierr)
-call VecAssemblyBegin(ZV_k,ierr)
-call VecAssemblyEnd(ZV_k,ierr)
-close(20)
-!get values for k in a file and create the corresponding ZV_k vector
-
-open(21,file=x_file,status='old')
-read(21,*) ZV_read_reachtot
-call VecSetValues(ZV_x,IS_reachbas,IV_basin_loc,                               &
-                  ZV_read_reachtot(IV_basin_index),INSERT_VALUES,ierr)
-call VecAssemblyBegin(ZV_x,ierr)
-call VecAssemblyEnd(ZV_x,ierr)
-close(21)
-!get values for x in a file and create the corresponding ZV_x vector
-
-call VecCopy(ZV_QoutinitM,ZV_QoutinitR,ierr)
-call VecCopy(ZV_VinitM,ZV_VinitR,ierr)
-!copy main initial values into routing initial values 
-
-call rapid_routing_param(ZV_k,ZV_x,ZV_C1,ZV_C2,ZV_C3,ZM_A)
-!calculate Muskingum parameters and matrix ZM_A
-
-call KSPSetOperators(ksp,ZM_A,ZM_A,DIFFERENT_NONZERO_PATTERN,ierr)
-call KSPSetType(ksp,KSPRICHARDSON,ierr)                    !default=richardson
-!call KSPSetInitialGuessNonZero(ksp,PETSC_TRUE,ierr)
-!call KSPSetInitialGuessKnoll(ksp,PETSC_TRUE,ierr)
-call KSPSetFromOptions(ksp,ierr)                           !if runtime options
-
+!*******************************************************************************
+if (IS_opt_run==1) then
 
 !-------------------------------------------------------------------------------
-if (rank==0) then 
-open(99,file=m3_nc_file,status='old')
-close(99)
-IS_nc_status=NF90_OPEN(m3_nc_file,NF90_NOWRITE,IS_nc_id_fil_m3)
-IS_nc_status=NF90_INQ_VARID(IS_nc_id_fil_m3,'m3_riv',IS_nc_id_var_m3)
-IV_nc_start=(/1,1/)
-IV_nc_count=(/IS_reachtot,1/)
-IV_nc_count2=(/IS_reachbas,1/)
-end if
-!-------------------------------------------------------------------------------
+!Create Qout file
 !-------------------------------------------------------------------------------
 if (rank==0) then 
 IS_nc_status=NF90_CREATE(Qout_nc_file,NF90_CLOBBER,IS_nc_id_fil_Qout)
@@ -269,38 +107,48 @@ IS_nc_status=NF90_DEF_VAR(IS_nc_id_fil_Qout,'Qout',NF90_REAL,                  &
                           IV_nc_id_dim,IS_nc_id_var_Qout)
 IS_nc_status=NF90_ENDDEF(IS_nc_id_fil_Qout)
 IS_nc_status=NF90_PUT_VAR(IS_nc_id_fil_Qout,IS_nc_id_var_comid,IV_basin_id)
+if (rank==0) IS_nc_status=NF90_CLOSE(IS_nc_id_fil_Qout)
 end if
-!-------------------------------------------------------------------------------
 
+!-------------------------------------------------------------------------------
+!Open files          
+!-------------------------------------------------------------------------------
+if (rank==0) then 
+open(99,file=m3_nc_file,status='old')
+close(99)
+IS_nc_status=NF90_OPEN(m3_nc_file,NF90_NOWRITE,IS_nc_id_fil_m3)
+IS_nc_status=NF90_INQ_VARID(IS_nc_id_fil_m3,'m3_riv',IS_nc_id_var_m3)
+end if
+if (rank==0) then 
+open(99,file=Qout_nc_file,status='old')
+close(99)
+IS_nc_status=NF90_OPEN(Qout_nc_file,NF90_WRITE,IS_nc_id_fil_Qout)
+IS_nc_status=NF90_INQ_VARID(IS_nc_id_fil_Qout,'Qout',IS_nc_id_var_Qout)
+end if
+if (BS_opt_forcing) open(34,file=Qfor_file,status='old')
+
+!open(40,file=Qout_file)
+!open(41,file=V_file)
+!open(99,file='QoutR_900s.dat')
+!if (BS_opt_forcing) open(34,file=Qfor_file,status='old')
+
+!-------------------------------------------------------------------------------
+!Read, compute and write          
+!-------------------------------------------------------------------------------
 call PetscLogStageRegister('Read Comp Write',stage,ierr)
 call PetscLogStagePush(stage,ierr)
 ZS_time3=0
 
-if (BS_opt_forcing) open(34,file=Qfor_file,status='old')
-!open(40,file=Qout_file)
-!open(41,file=V_file)
-!open(99,file='QoutR_900s.dat')
-
-if (BS_opt_forcing) then
-if (rank==0) print *, 'IS_forcingbas      =', IS_forcingbas
-if (rank==0 .and. IS_forcingbas>0) then
-     call PetscPrintf(PETSC_COMM_WORLD,'WARNING: Forcing used during model run'&
-                 //', outputs calculated with flows measured at stations '     &
-                 //'located on reach ID:'//char(10),ierr)
-     !print *, 'IV_forcingtot_id   =', IV_forcingtot_id
-     print *, 'IV_forcinguse_id   =', IV_forcinguse_id
-     print *, 'IS_forcingbas      =', IS_forcingbas
-     print *, 'IV_forcing_index   =', IV_forcing_index
-     print *, 'IV_forcing_loc     =', IV_forcing_loc
-end if
-end if
-!Warning about forcing downstream basins
+IV_nc_start=(/1,1/)
+IV_nc_count=(/IS_reachtot,1/)
+IV_nc_count2=(/IS_reachbas,1/)
 
 do JS_M=1,IS_M
 
-!can be commented out if no need for upstream forcing---------------------------
-!call VecSet(ZV_Qfor,0*ZS_one,ierr)
-if (IS_forcingbas > 0) then 
+!- + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - +  
+!Read/set upstream forcing
+!- + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - +  
+if (BS_opt_forcing .and. IS_forcingbas > 0) then 
 read(34,*) ZV_read_forcingtot
 call VecSetValues(ZV_Qfor,IS_forcingbas,IV_forcing_loc,                        &
                   ZV_read_forcingtot(IV_forcing_index),INSERT_VALUES,ierr)
@@ -311,12 +159,14 @@ call VecAssemblyEnd(ZV_Qfor,ierr)           !set Qfor based on reading a file
 !loop.
 !call PetscPrintf(PETSC_COMM_WORLD,'ZV_Qfor' // char(10),ierr)
 !call VecView(ZV_Qfor,PETSC_VIEWER_STDOUT_WORLD,ierr)
+!call VecSet(ZV_Qfor,0*ZS_one,ierr)
 end if
-!-------------------------------------------------------------------------------
 
 do JS_RpM=1,IS_RpM
 
-!read input surface and subsurface volumes
+!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+!Read/set surface and subsurface volumes 
+!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 !read(31,*) ZV_read_reachtot
 if (rank==0) then
 IS_nc_status=NF90_GET_VAR(IS_nc_id_fil_m3,IS_nc_id_var_m3,                     &
@@ -327,14 +177,21 @@ end if
 call VecAssemblyBegin(ZV_Vlat,ierr)
 call VecAssemblyEnd(ZV_Vlat,ierr)           !set Vlat based on reading a file
 
+!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 !calculation of Q based on V (here first order explicit approx) 
+!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 call VecCopy(ZV_Vlat,ZV_Qlat,ierr)            !Qlat=Vlat
 call VecScale(ZV_Qlat,1/ZS_TauR,ierr)         !Qlat=Qlat/TauR
 
+!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 !calculation of Qext
+!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 call VecWAXPY(ZV_Qext,ZS_one,ZV_Qlat,ZV_Qfor,ierr)           !Qext=1*Qlat+Qfor
 !Result: Qext=Qlat+Qfor
 
+!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+!Routing procedure
+!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 call PetscGetTime(ZS_time1,ierr)
 
 call rapid_routing(ZV_C1,ZV_C2,ZV_C3,ZV_Qext,                                  &
@@ -344,24 +201,35 @@ call rapid_routing(ZV_C1,ZV_C2,ZV_C3,ZV_Qext,                                  &
 call PetscGetTime(ZS_time2,ierr)
 ZS_time3=ZS_time3+ZS_time2-ZS_time1
 
-
+!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+!Update variables
+!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 call VecCopy(ZV_QoutR,ZV_QoutinitR,ierr)
 call VecCopy(ZV_VR,ZV_VinitR,ierr)
      
+!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 !write outputs         
-!call VecView(ZV_QoutbarR,PETSC_VIEWER_STDOUT_WORLD,ierr)
+!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 call VecScatterBegin(vecscat,ZV_QoutbarR,ZV_SeqZero,                           &
                      INSERT_VALUES,SCATTER_FORWARD,ierr)
 call VecScatterEnd(vecscat,ZV_QoutbarR,ZV_SeqZero,                             &
                         INSERT_VALUES,SCATTER_FORWARD,ierr)
 call VecGetArrayF90(ZV_SeqZero,ZV_pointer,ierr)
-!if (rank==0) write (40,'(10e10.3)') ZV_pointer
 if (rank==0) IS_nc_status=NF90_PUT_VAR(IS_nc_id_fil_Qout,IS_nc_id_var_Qout,    &
                                        ZV_pointer,IV_nc_start,IV_nc_count2)
 call VecRestoreArrayF90(ZV_SeqZero,ZV_pointer,ierr)
 
 if (rank==0) IV_nc_start(2)=IV_nc_start(2)+1
 !do not comment out if writing directly from the routing subroutine
+
+!call VecScatterBegin(vecscat,ZV_QoutbarR,ZV_SeqZero,                           &
+!                     INSERT_VALUES,SCATTER_FORWARD,ierr)
+!call VecScatterEnd(vecscat,ZV_QoutbarR,ZV_SeqZero,                             &
+!                        INSERT_VALUES,SCATTER_FORWARD,ierr)
+!if (rank==0) write (40,'(10e10.3)') ZV_pointer
+!if (rank==0) IS_nc_status=NF90_PUT_VAR(IS_nc_id_fil_Qout,IS_nc_id_var_Qout,    &
+!                                       ZV_pointer,IV_nc_start,IV_nc_count2)
+!call VecRestoreArrayF90(ZV_SeqZero,ZV_pointer,ierr)
 
 !call VecScatterBegin(vecscat,ZV_VbarR,ZV_SeqZero,                              &
 !                     INSERT_VALUES,SCATTER_FORWARD,ierr)
@@ -371,106 +239,60 @@ if (rank==0) IV_nc_start(2)=IV_nc_start(2)+1
 !if (rank==0) write (41,'(10e10.3)') ZV_pointer
 !call VecRestoreArrayF90(ZV_SeqZero,ZV_pointer,ierr)
 
+!call VecView(ZV_QoutbarR,PETSC_VIEWER_STDOUT_WORLD,ierr)
 
 end do
 end do
 
-!close(31)
-if (BS_opt_forcing) close(34)
-!close(40)
-!close(41)
-!close(99)
-if (rank==0) IS_nc_status=NF90_CLOSE(IS_nc_id_fil_m3)
-if (rank==0) IS_nc_status=NF90_CLOSE(IS_nc_id_fil_Qout)
-
+!-------------------------------------------------------------------------------
+!Performance statistics
+!-------------------------------------------------------------------------------
 call PetscPrintf(PETSC_COMM_WORLD,'Cumulative time for routing only'           &
                                   //char(10),ierr)
 print *, 'rank=', rank, 'time=', ZS_time3
 
 call PetscLogStagePop(ierr)
-
-
 call PetscPrintf(PETSC_COMM_WORLD,'Output data created'//char(10),ierr)
+
+
+!-------------------------------------------------------------------------------
+!Close files          
+!-------------------------------------------------------------------------------
+if (rank==0) IS_nc_status=NF90_CLOSE(IS_nc_id_fil_m3)
+if (rank==0) IS_nc_status=NF90_CLOSE(IS_nc_id_fil_Qout)
+if (BS_opt_forcing) close(34)
+
+!close(40)
+!close(41)
+!close(99)
+!if (BS_opt_forcing) close(34)
+
+
 !-------------------------------------------------------------------------------
 !End of OPTION 1
 !-------------------------------------------------------------------------------
 end if
 
 
-
-if (IS_opt_run==2) then
-!-------------------------------------------------------------------------------
+!*******************************************************************************
 !OPTION 2 - Optimization 
+!*******************************************************************************
+if (IS_opt_run==2) then
+#ifndef NO_TAO
+
 !-------------------------------------------------------------------------------
-call rapid_obs_mat
-!Create observation matrix
-
-call VecSetValues(ZV_pnorm,IS_one,IS_one-1,ZS_knorm_init,INSERT_VALUES,ierr)
-call VecSetValues(ZV_pnorm,IS_one,IS_one,ZS_xnorm_init,INSERT_VALUES,ierr)
-call VecAssemblyBegin(ZV_pnorm,ierr)
-call VecAssemblyEnd(ZV_pnorm,ierr)
-!set pnorm to pnorm=(knorm,xnorm)
-
-call VecSetValues(ZV_pfac,IS_one,IS_one-1,ZS_kfac,INSERT_VALUES,ierr)
-call VecSetValues(ZV_pfac,IS_one,IS_one,ZS_xfac,INSERT_VALUES,ierr)
-call VecAssemblyBegin(ZV_pnorm,ierr)
-call VecAssemblyEnd(ZV_pnorm,ierr)
-!set pfac to pfac=(kfac,xfac)
-
-call VecPointWiseMult(ZV_p,ZV_pfac,ZV_pnorm,ierr)
-!set p to p=pfac.*pnorm
-
-open(22,file=kfac_file,status='old')
-read(22,*) ZV_read_reachtot
-close(22)
-call VecSetValues(ZV_kfac,IS_reachbas,IV_basin_loc,                            &
-                  ZV_read_reachtot(IV_basin_index),INSERT_VALUES,ierr)
-                  !only looking at basin, doesn't have to be whole domain here 
-call VecAssemblyBegin(ZV_kfac,ierr)
-call VecAssemblyEnd(ZV_kfac,ierr)  
-!reads kfac and assigns to ZV_kfac
-
-if (IS_opt_phi==2) then
-open(35,file=Qobsbarrec_file,status='old')
-read(35,*) ZV_read_gagetot
-close(35)
-call VecSetValues(ZV_Qobsbarrec,IS_gagebas,IV_gage_loc,                        &
-                  ZV_read_gagetot(IV_gage_index),INSERT_VALUES,ierr)
-                  !here we only look at the observations within the basin
-                  !studied
-call VecAssemblyBegin(ZV_Qobsbarrec,ierr)
-call VecAssemblyEnd(ZV_Qobsbarrec,ierr)  
-!reads Qobsbarrec and assigns to ZV_Qobsbarrec
-!call VecView(ZV_Qobsbarrec,PETSC_VIEWER_STDOUT_WORLD,ierr)
-end if
-
-
-!!-------------------------------------------------------------------------------
+!Only one computation of phi - For testing purposes only
+!-------------------------------------------------------------------------------
 !call PetscLogStageRegister('One comp of phi',stage,ierr)
 !call PetscLogStagePush(stage,ierr)
 !!do JS_M=1,5
 !call rapid_phiroutine(taoapp,ZV_pnorm,ZS_phi,ierr)
 !!enddo
 !call PetscLogStagePop(ierr)
-!!-------------------------------------------------------------------------------
-
 
 !-------------------------------------------------------------------------------
-if (BS_opt_forcing) then
-if (rank==0) print *, 'IS_forcingbas      =', IS_forcingbas
-if (rank==0 .and. IS_forcingbas>0) then
-     call PetscPrintf(PETSC_COMM_WORLD,'WARNING: Forcing used during '         &
-                 //'optimization cost function calculated with flows measured '&
-                 //'at stations located on reach ID:'//char(10),ierr)
-     !print *, 'IV_forcingtot_id   =', IV_forcingtot_id
-     print *, 'IV_forcinguse_id   =', IV_forcinguse_id
-     print *, 'IS_forcingbas      =', IS_forcingbas
-     print *, 'IV_forcing_index   =', IV_forcing_index
-     print *, 'IV_forcing_loc     =', IV_forcing_loc
-end if
-end if
-!Warning about forcing downstream basins
-
+!Optimization procedure
+!-------------------------------------------------------------------------------
 call PetscLogStageRegister('Optimization   ',stage,ierr)
 call PetscLogStagePush(stage,ierr)
 call TaoAppSetObjectiveAndGradientRo(taoapp,rapid_phiroutine,TAO_NULL_OBJECT,  &
@@ -485,51 +307,24 @@ call TaoView(tao,ierr)
 call PetscPrintf(PETSC_COMM_WORLD,'final normalized p=(k,x)'//char(10),ierr)
 call VecView(ZV_pnorm,PETSC_VIEWER_STDOUT_WORLD,ierr)
 call PetscLogStagePop(ierr)
-!-------------------------------------------------------------------------------
 
 !-------------------------------------------------------------------------------
 !End of OPTION 2
 !-------------------------------------------------------------------------------
+#else
+if (rank==0)                                         print '(a70)',            &
+        'ERROR: The optimization mode requires RAPID to be compiled with TAO   '
+#endif
 end if
 
 
 !*******************************************************************************
-!Output maximun absolute values of vector b (right-hand side of linear system)
+!Finalize
 !*******************************************************************************
-if (BS_opt_babsmax) then
-call VecScatterBegin(vecscat,ZV_babsmax,ZV_SeqZero,                            &
-                     INSERT_VALUES,SCATTER_FORWARD,ierr)
-call VecScatterEnd(vecscat,ZV_babsmax,ZV_SeqZero,                              &
-                        INSERT_VALUES,SCATTER_FORWARD,ierr)
-call VecGetArrayF90(ZV_SeqZero,ZV_pointer,ierr)
-if (rank==0) then 
-     open(42,file=babsmax_file)
-     do JS_reachbas=1,IS_reachbas
-          write(42,*) ZV_pointer(JS_reachbas)
-     end do
-     close(42)
-end if
-call VecRestoreArrayF90(ZV_SeqZero,ZV_pointer,ierr)
-end if
+call rapid_final
 
 
 !*******************************************************************************
 !End
 !*******************************************************************************
-call PetscPrintf(PETSC_COMM_WORLD,'--------------------------'//char(10),ierr)
-call VecGetType(ZV_k,temp_char,ierr)
-call PetscPrintf(PETSC_COMM_WORLD,'type of vector: '//temp_char//char(10),ierr)
-call MatGetType(ZM_A,temp_char,ierr)
-call PetscPrintf(PETSC_COMM_WORLD,'type of matrix: '//temp_char//char(10),ierr)
-call KSPGetType(ksp,temp_char,ierr)
-call PetscPrintf(PETSC_COMM_WORLD,'type of KSP   : '//temp_char//char(10),ierr)
-call KSPGetPC(ksp,pc,ierr)
-call PCGetType(pc,temp_char,ierr)
-call PetscPrintf(PETSC_COMM_WORLD,'type of PC    : '//temp_char//char(10),ierr)
-call PetscPrintf(PETSC_COMM_WORLD,char(10)//char(10)//char(10)//char(10),ierr)
-
-call rapid_destro_obj
-!destroy PETSc and TAO objects (Mat,Vec,taoapp...), finalizes the libraries
-
-
 end program rapid_main
