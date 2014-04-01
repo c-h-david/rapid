@@ -14,13 +14,13 @@ program rapid_main
 !*******************************************************************************
 use netcdf
 use rapid_var, only :                                                          &
-                   IS_reachbas,                                                &
+                   IS_reachbas,JS_reachbas,                                    &
                    IV_basin_id,IV_basin_index,IV_basin_loc,                    &
-                   kfac_file,                                                  &
+                   kfac_file,xfac_file,                                        &
                    k_file,x_file,                                              &
-                   m3_sur_file,m3_nc_file,Qobs_file,Qinit_file,Qfor_file,      &
+                   m3_nc_file,Qobs_file,Qinit_file,Qfor_file,                  &
                    Qobsbarrec_file,                                            &
-                   Qout_file,V_file,Qout_nc_file,                              &
+                   Qout_file,V_file,Qout_nc_file,babsmax_file,                 &
                    ZS_knorm_init,ZS_xnorm_init,ZS_kfac,ZS_xfac,ZS_k,ZS_x,      &
                    ZS_Qout0,ZS_V0,                                             &
                    IS_M,JS_M,JS_RpM,IS_RpM,                                    &
@@ -33,7 +33,7 @@ use rapid_var, only :                                                          &
                    ZV_pnorm,                                                   &
                    ZV_pfac,                                                    &
                    ZV_C1,ZV_C2,ZV_C3,ZV_Cdenom,                                &
-                   ZV_b,ZV_b1,ZV_b2,ZV_b3,                                     &
+                   ZV_b,ZV_b1,ZV_b2,ZV_b3,ZV_babsmax,                          &
                    ZV_Qext,ZV_Qfor,ZV_Qlat,                                    &
                    ZV_Vext,ZV_Vfor,ZV_Vlat,                                    &
                    ZV_VinitM,ZV_QoutinitM,                                     &
@@ -54,12 +54,14 @@ use rapid_var, only :                                                          &
                    IS_nc_id_var_m3,IS_nc_id_var_Qout,IS_nc_id_var_comid,       &
                    IS_nc_id_dim_time,IS_nc_id_dim_comid,IV_nc_id_dim,          &
                    IV_nc_start,IV_nc_count,IV_nc_count2,                       &
-                   modcou_connect_file,IS_max_up,basin_id_file,forcingtot_id_file,IS_forcinguse,forcinguse_id_file,xfac_file,&
-                   IV_connect_id,IV_down,IV_nbup,IM_up,IM_index_up,IS_gagetot,IS_gageuse,IV_nz,IV_dnz,IV_onz,gagetot_id_file,&
-                   BS_opt_Qinit,BS_opt_forcing,                                &
+                   modcou_connect_file,IS_max_up,basin_id_file,                &
+                   forcingtot_id_file,IS_forcinguse,forcinguse_id_file,        &
+                   IV_connect_id,IV_down,IV_nbup,IM_up,IM_index_up,            &
+                   IS_gagetot,IS_gageuse,IV_nz,IV_dnz,IV_onz,gagetot_id_file,  &
+                   BS_opt_Qinit,BS_opt_forcing,BS_opt_babsmax,                 &
                    IS_opt_routing,IS_opt_run,IS_opt_phi,                       &
-                   IS_O,IS_R,IS_RpO,IS_RpM,ZS_TauM,ZS_TauO,ZS_TauR,ZS_dtO,ZS_dtR,ZS_dtM
-
+                   IS_O,IS_R,IS_RpO,IS_RpM,                                    &
+                   ZS_TauM,ZS_TauO,ZS_TauR,ZS_dtO,ZS_dtR,ZS_dtM
 
 
 implicit none
@@ -235,7 +237,7 @@ call rapid_routing_param(ZV_k,ZV_x,ZV_C1,ZV_C2,ZV_C3,ZM_A)
 !calculate Muskingum parameters and matrix ZM_A
 
 call KSPSetOperators(ksp,ZM_A,ZM_A,DIFFERENT_NONZERO_PATTERN,ierr)
-call KSPSetType(ksp,KSPCGS,ierr)                           !default is CGS
+call KSPSetType(ksp,KSPRICHARDSON,ierr)                    !default=richardson
 !call KSPSetInitialGuessNonZero(ksp,PETSC_TRUE,ierr)
 !call KSPSetInitialGuessKnoll(ksp,PETSC_TRUE,ierr)
 call KSPSetFromOptions(ksp,ierr)                           !if runtime options
@@ -274,7 +276,6 @@ call PetscLogStageRegister('Read Comp Write',stage,ierr)
 call PetscLogStagePush(stage,ierr)
 ZS_time3=0
 
-!open(31,file=m3_sur_file,status='old')
 if (BS_opt_forcing) open(34,file=Qfor_file,status='old')
 !open(40,file=Qout_file)
 !open(41,file=V_file)
@@ -489,6 +490,26 @@ call PetscLogStagePop(ierr)
 !-------------------------------------------------------------------------------
 !End of OPTION 2
 !-------------------------------------------------------------------------------
+end if
+
+
+!*******************************************************************************
+!Output maximun absolute values of vector b (right-hand side of linear system)
+!*******************************************************************************
+if (BS_opt_babsmax) then
+call VecScatterBegin(vecscat,ZV_babsmax,ZV_SeqZero,                            &
+                     INSERT_VALUES,SCATTER_FORWARD,ierr)
+call VecScatterEnd(vecscat,ZV_babsmax,ZV_SeqZero,                              &
+                        INSERT_VALUES,SCATTER_FORWARD,ierr)
+call VecGetArrayF90(ZV_SeqZero,ZV_pointer,ierr)
+if (rank==0) then 
+     open(42,file=babsmax_file)
+     do JS_reachbas=1,IS_reachbas
+          write(42,*) ZV_pointer(JS_reachbas)
+     end do
+     close(42)
+end if
+call VecRestoreArrayF90(ZV_SeqZero,ZV_pointer,ierr)
 end if
 
 
