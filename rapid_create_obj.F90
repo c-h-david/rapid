@@ -19,17 +19,19 @@ use rapid_var, only :                                                          &
                    ZM_A,                                                       &
                    ZV_k,ZV_x,ZV_p,ZV_pnorm,ZV_pfac,                            &
                    ZV_C1,ZV_C2,ZV_C3,ZV_Cdenom,                                &
-                   ZV_b,ZV_b1,ZV_b2,ZV_b3,ZV_babsmax,                          &
+                   ZV_b,ZV_babsmax,                                            &
                    ZV_Qext,ZV_Qfor,ZV_Qlat,                                    &
                    ZV_Vext,ZV_Vfor,ZV_Vlat,                                    &
-                   ZV_VinitM,ZV_QoutinitM,ZV_QoutinitO,                        &
-                   ZV_QoutbarO,                                                &
+                   ZV_VinitM,ZV_QoutinitM,ZV_QoutinitO,ZV_QoutbarO,            &
                    ZV_QoutR,ZV_QoutinitR,ZV_QoutprevR,ZV_QoutbarR,             &
                    ZV_VR,ZV_VinitR,ZV_VprevR,ZV_VbarR,ZV_VoutR,                &
                    ZV_Qobsbarrec,                                              &
-                   ierr,ksp,tao,taoapp,reason,vecscat,ZV_SeqZero,              &
-                   ZV_1stIndex,ZV_2ndIndex,ZV_pointer,ZS_one,ZV_one,IS_one
+                   ierr,ksp,vecscat,ZV_SeqZero,ZS_one,ZV_one,IS_one
 
+#ifndef NO_TAO
+use rapid_var, only :                                                          &
+                   tao,taoapp,reason,ZV_1stIndex,ZV_2ndIndex
+#endif
 
 implicit none
 
@@ -50,26 +52,22 @@ implicit none
 !preconditioners
 #include "finclude/petscviewer.h"
 !viewers (allows writing results in file for example)
+
+#ifndef NO_TAO
 #include "finclude/tao_solver.h" 
 !TAO solver
+#endif
 
 
 !*******************************************************************************
 !Initialize PETSc and TAO, and create all the objects
 !*******************************************************************************
 
-!Initialize PETSc and TAO-------------------------------------------------------
+!Initialize PETSc --------------------------------------------------------------
 call PetscInitialize(PETSC_NULL_CHARACTER,ierr)
-call TaoInitialize(PETSC_NULL_CHARACTER,ierr)
 
-
-!Create TAO App and KSP solver--------------------------------------------------
-call TaoCreate(PETSC_COMM_WORLD,'tao_nm',tao,ierr)
-
-call TaoApplicationCreate(PETSC_COMM_WORLD,taoapp,ierr)
-
+!Create PETSc object that manages all Krylov methods ---------------------------
 call KSPCreate(PETSC_COMM_WORLD,ksp,ierr)
-
 
 !Matrices-----------------------------------------------------------------------
 call MatCreate(PETSC_COMM_WORLD,ZM_Net,ierr)
@@ -120,9 +118,6 @@ call VecDuplicate(ZV_k,ZV_C3,ierr)
 call VecDuplicate(ZV_k,ZV_Cdenom,ierr)
 
 call VecDuplicate(ZV_k,ZV_b,ierr)
-call VecDuplicate(ZV_k,ZV_b1,ierr)
-call VecDuplicate(ZV_k,ZV_b2,ierr)
-call VecDuplicate(ZV_k,ZV_b3,ierr)
 call VecDuplicate(ZV_k,ZV_babsmax,ierr)
 
 call VecDuplicate(ZV_k,ZV_Qext,ierr)
@@ -177,6 +172,16 @@ call VecScatterCreateToZero(ZV_k,vecscat,ZV_SeqZero,ierr)
 !create scatter context from a distributed vector to a sequential vector on the 
 !zeroth processor.  Also creates the vector ZV_SeqZero
 
+
+!TAO specific-------------------------------------------------------------------
+#ifndef NO_TAO
+call TaoInitialize(PETSC_NULL_CHARACTER,ierr)
+!Initialize TAO
+
+call TaoCreate(PETSC_COMM_WORLD,'tao_nm',tao,ierr)
+!Create TAO App 
+
+call TaoApplicationCreate(PETSC_COMM_WORLD,taoapp,ierr)
 call VecDuplicate(ZV_p,ZV_1stIndex,ierr)
 call VecSetValues(ZV_1stIndex,IS_one,0*IS_one,ZS_one,INSERT_VALUES,ierr)
 call VecAssemblyBegin(ZV_1stIndex,ierr)
@@ -188,6 +193,6 @@ call VecSetValues(ZV_2ndIndex,IS_one,IS_one,ZS_one,INSERT_VALUES,ierr)
 call VecAssemblyBegin(ZV_2ndIndex,ierr)
 call VecAssemblyEnd(ZV_2ndIndex,ierr)
 !ZV_2ndindex=[0;1]
-
+#endif
 
 end subroutine rapid_create_obj

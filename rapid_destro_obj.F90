@@ -20,16 +20,19 @@ use rapid_var, only :                                                          &
                    ZM_A,                                                       &
                    ZV_k,ZV_x,ZV_p,ZV_pnorm,ZV_pfac,                            &
                    ZV_C1,ZV_C2,ZV_C3,ZV_Cdenom,                                &
-                   ZV_b,ZV_b1,ZV_b2,ZV_b3,ZV_babsmax,                          &
+                   ZV_b,ZV_babsmax,                                            &
                    ZV_Qext,ZV_Qfor,ZV_Qlat,                                    &
                    ZV_Vext,ZV_Vfor,ZV_Vlat,                                    &
-                   ZV_VinitM,ZV_QoutinitM,ZV_QoutinitO,                        &
-                   ZV_QoutbarO,                                                &
+                   ZV_VinitM,ZV_QoutinitM,ZV_QoutinitO,ZV_QoutbarO,            &
                    ZV_QoutR,ZV_QoutinitR,ZV_QoutprevR,ZV_QoutbarR,             &
                    ZV_VR,ZV_VinitR,ZV_VprevR,ZV_VbarR,ZV_VoutR,                &
-                   ierr,ksp,tao,taoapp,reason,vecscat,ZV_SeqZero,ZV_Qobsbarrec,&
-                   ZV_1stIndex,ZV_2ndIndex,ZV_pointer,ZS_one,ZV_one,IS_one
+                   ZV_Qobsbarrec,                                              &
+                   ierr,ksp,vecscat,ZV_SeqZero,ZS_one,ZV_one,IS_one
 
+#ifndef NO_TAO
+use rapid_var, only :                                                          &
+                   tao,taoapp,reason,ZV_1stIndex,ZV_2ndIndex
+#endif
 
 implicit none
 
@@ -50,17 +53,26 @@ implicit none
 !preconditioners
 #include "finclude/petscviewer.h"
 !viewers (allows writing results in file for example)
+
+#ifndef NO_TAO
 #include "finclude/tao_solver.h" 
 !TAO solver
+#endif
 
 
 !*******************************************************************************
 !Destruct all objects and finalize PETSc and TAO
 !*******************************************************************************
-call KSPDestroy(ksp,ierr)
-
+!TAO specific-------------------------------------------------------------------
+#ifndef NO_TAO
+call VecDestroy(ZV_1stIndex,ierr)
+call VecDestroy(ZV_2ndIndex,ierr)
 call TaoDestroy(tao,ierr)
 call TaoAppDestroy(taoapp,ierr)
+call TaoFinalize(ierr)
+#endif
+
+call KSPDestroy(ksp,ierr)
 
 call MatDestroy(ZM_A,ierr)
 call MatDestroy(ZM_Net,ierr)
@@ -74,9 +86,6 @@ call VecDestroy(ZV_C3,ierr)
 call VecDestroy(ZV_Cdenom,ierr)
 
 call VecDestroy(ZV_b,ierr)
-call VecDestroy(ZV_b1,ierr)
-call VecDestroy(ZV_b2,ierr)
-call VecDestroy(ZV_b3,ierr)
 call VecDestroy(ZV_babsmax,ierr)
 
 call VecDestroy(ZV_Qext,ierr)
@@ -115,14 +124,10 @@ call VecDestroy(ZV_p,ierr)
 call VecDestroy(ZV_pnorm,ierr)
 call VecDestroy(ZV_pfac,ierr)
 
-call VecDestroy(ZV_1stIndex,ierr)
-call VecDestroy(ZV_2ndIndex,ierr)
-
 call VecDestroy(ZV_SeqZero,ierr)
 call VecScatterDestroy(vecscat,ierr)
 !Need to be destroyed separately even though created together
 
-call TaoFinalize(ierr)
 call PetscFinalize(ierr)
 
 
