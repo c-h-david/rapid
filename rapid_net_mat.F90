@@ -20,14 +20,13 @@ use rapid_var, only :                                                          &
                    JS_reachtot,JS_reachbas,JS_reachtot2,JS_reachbas2,          &
                    IV_basin_id,IV_basin_index,IV_basin_loc,                    &
                    modcou_connect_file,nhdplus_connect_file,basin_id_file,     &
-                   forcingtot_id_file,forcinguse_id_file,gage_id_file,         &
+                   forcingtot_id_file,forcinguse_id_file,                      &
                    ZM_Net,ZM_A,BS_logical,IV_connect_id,                       &
                    IV_down,IV_nbup,IM_up,JS_up,IS_row,IS_col,IM_index_up,      &
                    IV_fromnode,IV_tonode,                                      &
                    IS_forcingtot,JS_forcingtot,IS_forcingbas,JS_forcingbas,    &
                    IS_forcinguse,JS_forcinguse,IV_forcingtot_id,               &
                    IV_forcing_index,IV_forcing_loc,IV_forcinguse_id,           &
-                   IV_gage_id,IS_gagetot,JS_gagetot,                           &
                    ierr,rank,                                                  &
                    IS_one,ZS_one,temp_char,IV_nz,IV_dnz,IV_onz,                &
                    IS_ownfirst,IS_ownlast,                                     &
@@ -67,9 +66,9 @@ do JS_reachtot=1,IS_reachtot
 enddo
 close(10)
 
-open(15,file=basin_id_file,status='old')
-read(15,*) IV_basin_id
-close(15)
+open(14,file=basin_id_file,status='old')
+read(14,*) IV_basin_id
+close(14)
 
 if (BS_opt_forcing) then
      open(17,file=forcingtot_id_file,status='old')
