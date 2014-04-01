@@ -17,12 +17,12 @@ subroutine rapid_net_mat
 !*******************************************************************************
 use rapid_var, only :                                                          &
                    IS_reachtot,IS_reachbas,                                    &
-                   JS_reachtot,JS_reachbas,JS_reachtot2,JS_reachbas2,          &
+                   JS_reachtot,JS_reachbas,JS_reachbas2,                       &
                    IV_basin_id,IV_basin_index,IV_basin_loc,                    &
                    modcou_connect_file,basin_id_file,                          &
                    forcingtot_id_file,forcinguse_id_file,                      &
                    ZM_Net,ZM_A,BS_logical,IV_connect_id,                       &
-                   IV_down,IV_nbup,IM_up,JS_up,IS_row,IS_col,IM_index_up,      &
+                   IV_down,IV_nbup,IM_up,JS_up,IM_index_up,                    &
                    IS_forcingtot,JS_forcingtot,IS_forcingbas,JS_forcingbas,    &
                    IS_forcinguse,JS_forcinguse,IV_forcingtot_id,               &
                    IV_forcing_index,IV_forcing_loc,IV_forcinguse_id,           &
@@ -50,8 +50,6 @@ implicit none
 !preconditioners
 #include "finclude/petscviewer.h"
 !viewers (allows writing results in file for example)
-#include "finclude/tao_solver.h" 
-!TAO solver
 
 
 !*******************************************************************************
@@ -74,9 +72,9 @@ if (BS_opt_forcing) then
      read(17,*) IV_forcingtot_id
      close(17)
 
-     open(18,file=forcinguse_id_file,status='old')
-     read(18,*) IV_forcinguse_id
-     close(18)
+     open(19,file=forcinguse_id_file,status='old')
+     read(19,*) IV_forcinguse_id
+     close(19)
 end if
 
 
