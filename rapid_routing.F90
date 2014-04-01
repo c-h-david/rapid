@@ -25,7 +25,7 @@ use rapid_var, only :                                                          &
                    ZS_one,ZV_one,                                              &
                    vecscat,ZV_SeqZero,ZV_pointer,rank,                         &
                    IS_nc_status,IS_nc_id_fil_Qout,IS_nc_id_var_Qout,           &
-                   IV_nc_start,IV_nc_count,                                    &
+                   IV_nc_start,IV_nc_count2,                                   &
                    IS_reachbas,JS_reachbas,IM_index_up,stage,                  &
                    IS_opt_routing,IV_nbup,IV_basin_index
 
@@ -205,7 +205,7 @@ call VecCopy(ZV_QoutR,ZV_QoutprevR,ierr)              !Qoutprev=Qout
 !!if (rank==0) write (99,'(10e10.3)') ZV_pointer
 !if (rank==0) IS_nc_status=NF90_PUT_VAR(IS_nc_id_fil_Qout,IS_nc_id_var_Qout,    &
 !                                       ZV_pointer,                             &
-!                      [IV_nc_start(1),(IV_nc_start(2)-1)*IS_R+JS_R],IV_nc_count)
+!                     [IV_nc_start(1),(IV_nc_start(2)-1)*IS_R+JS_R],IV_nc_count2)
 !call VecRestoreArrayF90(ZV_SeqZero,ZV_pointer,ierr)
 
 
