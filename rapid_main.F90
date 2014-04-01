@@ -53,7 +53,7 @@ use rapid_var, only :                                                          &
                    IS_nc_status,IS_nc_id_fil_m3,IS_nc_id_fil_Qout,             &
                    IS_nc_id_var_m3,IS_nc_id_var_Qout,IS_nc_id_var_comid,       &
                    IS_nc_id_dim_time,IS_nc_id_dim_comid,IV_nc_id_dim,          &
-                   IV_nc_start,IV_nc_count,                                    &
+                   IV_nc_start,IV_nc_count,IV_nc_count2,                       &
                    modcou_connect_file,IS_max_up,basin_id_file,forcingtot_id_file,IS_forcinguse,forcinguse_id_file,xfac_file,&
                    IV_connect_id,IV_down,IV_nbup,IM_up,IM_index_up,IS_gagetot,IS_gageuse,IV_nz,IV_dnz,IV_onz,gagetot_id_file,&
                    BS_opt_Qinit,BS_opt_forcing,                                &
@@ -249,6 +249,7 @@ IS_nc_status=NF90_OPEN(m3_nc_file,NF90_NOWRITE,IS_nc_id_fil_m3)
 IS_nc_status=NF90_INQ_VARID(IS_nc_id_fil_m3,'m3_riv',IS_nc_id_var_m3)
 IV_nc_start=(/1,1/)
 IV_nc_count=(/IS_reachtot,1/)
+IV_nc_count2=(/IS_reachbas,1/)
 end if
 !-------------------------------------------------------------------------------
 !-------------------------------------------------------------------------------
@@ -256,7 +257,7 @@ if (rank==0) then
 IS_nc_status=NF90_CREATE(Qout_nc_file,NF90_CLOBBER,IS_nc_id_fil_Qout)
 IS_nc_status=NF90_DEF_DIM(IS_nc_id_fil_Qout,'Time',NF90_UNLIMITED,             &
                           IS_nc_id_dim_time)
-IS_nc_status=NF90_DEF_DIM(IS_nc_id_fil_Qout,'COMID',IS_reachtot,               &
+IS_nc_status=NF90_DEF_DIM(IS_nc_id_fil_Qout,'COMID',IS_reachbas,               &
                           IS_nc_id_dim_comid)
 IS_nc_status=NF90_DEF_VAR(IS_nc_id_fil_Qout,'COMID',NF90_INT,                  &
                           IS_nc_id_dim_comid,IS_nc_id_var_comid)
@@ -355,7 +356,7 @@ call VecScatterEnd(vecscat,ZV_QoutbarR,ZV_SeqZero,                             &
 call VecGetArrayF90(ZV_SeqZero,ZV_pointer,ierr)
 !if (rank==0) write (40,'(10e10.3)') ZV_pointer
 if (rank==0) IS_nc_status=NF90_PUT_VAR(IS_nc_id_fil_Qout,IS_nc_id_var_Qout,    &
-                                       ZV_pointer,IV_nc_start,IV_nc_count)
+                                       ZV_pointer,IV_nc_start,IV_nc_count2)
 call VecRestoreArrayF90(ZV_SeqZero,ZV_pointer,ierr)
 
 if (rank==0) IV_nc_start(2)=IV_nc_start(2)+1
