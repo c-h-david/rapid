@@ -9,6 +9,7 @@ subroutine rapid_phiroutine(taoapp,ZV_pnorm,ZS_phi,ierr)
 !between calculated flows and observed flows where observations are available
 !Author: Cedric H. David, 2008 
 
+
 !*******************************************************************************
 !Declaration of variables
 !*******************************************************************************
@@ -16,7 +17,7 @@ use netcdf
 use rapid_var, only :                                                          &
                    IS_reachbas,                                                &
                    IV_basin_index,IV_basin_loc,                                &
-                   m3_sur_file,m3_nc_file,Qobs_file,Qfor_file,                 &
+                   m3_nc_file,Qobs_file,Qfor_file,                             &
                    JS_O,IS_O,JS_RpO,IS_RpO,ZS_TauR,                            &
                    ZM_Obs,ZV_Qobs,                                             &
                    ZV_temp1,ZV_temp2,ZS_phitemp,ZS_phifac,ZV_kfac,             &
@@ -61,7 +62,9 @@ implicit none
 !TAO solver
 
 
-!IN/OUT
+!*******************************************************************************
+!Intent (in/out), and local variables 
+!*******************************************************************************
 Vec, intent(in) :: ZV_pnorm
 TAO_APPLICATION, intent(inout)  :: taoapp
 PetscErrorCode, intent(out) :: ierr
@@ -115,7 +118,6 @@ IV_nc_start=(/1,IS_strt_opt/)
 IV_nc_count=(/IS_reachtot,1/)
 
 
-!open(31,file=m3_sur_file,status='old')
 open(33,file=Qobs_file,status='old')
 if (BS_opt_forcing) open(34,file=Qfor_file,status='old')
 
