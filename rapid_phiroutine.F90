@@ -123,14 +123,10 @@ do JS_O=1,IS_O
 
 !can be commented out if no need for upstream forcing---------------------------
 if (BS_opt_forcing .and. IS_forcingbas>0) then
-read(34,*) ZV_read_gagetot
+read(34,*) ZV_read_forcingtot
 call VecSetValues(ZV_Qfor,IS_forcingbas,IV_forcing_loc,                        &
-                  ZV_read_gagetot(IV_forcing_index),INSERT_VALUES,ierr)
+                  ZV_read_forcingtot(IV_forcing_index),INSERT_VALUES,ierr)
                   !here we only look at the forcing within the basin studied 
-!read(34,*) ZV_read_forcingtot
-!call VecSetValues(ZV_Qfor,IS_forcingbas,IV_forcing_loc,                        &
-!                  ZV_read_forcingtot(IV_forcing_index),INSERT_VALUES,ierr)
-!                  !here we only look at the forcing within the basin studied 
 call VecAssemblyBegin(ZV_Qfor,ierr)
 call VecAssemblyEnd(ZV_Qfor,ierr)           !set Qfor based on reading a file
 !Qfor is only available everyday, this is why it's not included in the following 
