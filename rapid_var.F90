@@ -3,7 +3,6 @@
 !*******************************************************************************
 module rapid_var
 
-
 !PURPOSE
 !Module where all the variables are defined 
 !Author: Cedric H. David, 2008 
@@ -77,8 +76,6 @@ PetscInt :: JS_forcinguse
 !*******************************************************************************
 character(len=100) :: modcou_connect_file
 !unit 10 - file with connectivity information following MODCOU notations
-character(len=100) :: nhdplus_connect_file
-!unit 11 - file with connectivity information following NHDPlus notations
 character(len=100) :: basin_id_file
 !unit 14 - file with all the IDs of the reaches used in subbasin considered
 character(len=100) :: gagetot_id_file
@@ -102,8 +99,6 @@ character(len=100) :: xfac_file
 
 character(len=100) :: Qinit_file
 !unit 30 - file where initial flowrates can be stored to run the model with them
-character(len=100) :: m3_sur_file
-!unit 31 - file where the surface inflow volumes (forced) are given
 character(len=100) :: m3_nc_file
 
 character(len=100) :: Qobs_file
@@ -118,6 +113,9 @@ character(len=100) :: Qout_file
 !unit 40 - file where model-calculated flows are stored
 character(len=100) :: V_file
 !unit 41 - file where model-calculated volumes are stored
+character(len=100) :: babsmax_file
+!unit 42 - file where the maximum of the absolute values of the right-hand-side
+!are stored
 
 character(len=100) :: Qout_nc_file
 
@@ -188,7 +186,8 @@ Mat :: ZM_Net
 Logical :: BS_logical
 !Boolean used during network matrix creation to give warnings if connectivity pb
 
-!Variables for MODCOU network 
+PetscInt, dimension(:), allocatable :: IV_connect_id
+!unique IDs of reaches in modcou_connect_file
 PetscInt, dimension(:), allocatable :: IV_down
 !vector of the downstream river reach of each river reach (corresponds to ipere)
 PetscInt, dimension(:), allocatable :: IV_nbup
@@ -205,16 +204,6 @@ PetscInt :: IS_row,IS_col
 PetscInt,dimension (:,:), allocatable :: IM_index_up
 !matrix with the index of the upstream river reaches of each river reach
 !index goes from 1 to IS_reachbas 
-
-!Variables for NHDPlus network
-PetscInt, dimension(:), allocatable :: IV_connect_id
-!unique IDs of reaches in nhdplus_connect_file
-integer*8, dimension(:),allocatable :: IV_fromnode
-!fromnode in nhdplus_connect_file.  Different type because very long integer
-integer*8, dimension(:),allocatable :: IV_tonode
-!tonode in nhdplus_connect_file
-PetscInt, dimension(:), allocatable :: IV_diverg
-!divergence flag in nhdplus_connect_file
 
 
 !*******************************************************************************
@@ -301,7 +290,7 @@ Vec :: ZV_p, ZV_pnorm,ZV_pfac
 !corresponding factors p=pnorm*pfac
 Vec :: ZV_C1,ZV_C2,ZV_C3,ZV_Cdenom 
 !Muskingum method constants (last is the common denominator, for calculations)
-Vec :: ZV_b,ZV_b1,ZV_b2,ZV_b3
+Vec :: ZV_b,ZV_b1,ZV_b2,ZV_b3,ZV_babsmax
 !Used for linear system A*Qout=b, (b=b1+b2+b3) 
 
 !Input variables (contribution)
@@ -404,6 +393,8 @@ logical :: BS_opt_Qinit
 !.false. --> no initialization       .true. --> initialization
 logical :: BS_opt_forcing
 !.false. --> no forcing              .true. --> forcing
+logical :: BS_opt_babsmax
+!.false. --> no output babsmax       .true. --> output babsmax
 PetscInt :: IS_opt_routing
 !1       --> matrix-based Muskingum  2      --> traditional Muskingum
 PetscInt :: IS_opt_run
@@ -416,13 +407,14 @@ PetscInt :: IS_opt_phi
 !Namelist
 !*******************************************************************************
 namelist /NL_namelist/                                                         &
-                       BS_opt_Qinit,BS_opt_forcing,                            &
+                       BS_opt_Qinit,BS_opt_forcing,BS_opt_babsmax,             &
                        IS_opt_routing,IS_opt_run,IS_opt_phi,                   &
                        IS_reachtot,modcou_connect_file,m3_nc_file,IS_max_up,   &
                        IS_reachbas,basin_id_file,                              &
                        Qinit_file,                                             &
                        IS_forcingtot,forcingtot_id_file,Qfor_file,             &
                        IS_forcinguse,forcinguse_id_file,                       &
+                       babsmax_file,                                           &
                        k_file,x_file,Qout_nc_file,                             &
                        kfac_file,xfac_file,ZS_knorm_init,ZS_xnorm_init,        &
                        IS_gagetot,gagetot_id_file,IS_gageuse,gageuse_id_file,  &
