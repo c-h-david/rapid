@@ -19,7 +19,7 @@ use netcdf
 use rapid_var, only :                                                          &
                    ZS_dtR,IS_R,JS_R,                                           &
                    ZM_Net,                                                     &
-                   ZV_b,ZV_b1,ZV_b2,ZV_b3,                                     &
+                   ZV_b,ZV_b1,ZV_b2,ZV_b3,ZV_babsmax,                          &
                    ZV_QoutprevR,ZV_VprevR,ZV_VoutR,ZV_Vext,                    &
                    ierr,ksp,                                                   &
                    ZS_one,ZV_one,                                              &
@@ -27,7 +27,9 @@ use rapid_var, only :                                                          &
                    IS_nc_status,IS_nc_id_fil_Qout,IS_nc_id_var_Qout,           &
                    IV_nc_start,IV_nc_count2,                                   &
                    IS_reachbas,JS_reachbas,IM_index_up,stage,                  &
-                   IS_opt_routing,IV_nbup,IV_basin_index
+                   IS_opt_routing,IV_nbup,IV_basin_index,                      &
+                   BS_opt_babsmax
+
 
 implicit none
 
@@ -51,19 +53,18 @@ implicit none
 #include "finclude/tao_solver.h" 
 !TAO solver
 
-!IN/OUT
-!Vec, intent(in)    :: ZV_C1,ZV_C2,ZV_C3,ZV_Qext,                               &
-!                      ZV_QoutinitR,ZV_VinitR 
-!Vec, intent(out)   :: ZV_QoutR,ZV_QoutbarR,ZV_VR,ZV_VbarR
 
+!*******************************************************************************
+!Intent (in/out), and local variables 
+!*******************************************************************************
 Vec, intent(in)    :: ZV_C1,ZV_C2,ZV_C3,ZV_Qext,                               &
                       ZV_QoutinitR,ZV_VinitR 
-Vec  :: ZV_QoutR,ZV_QoutbarR,ZV_VR,ZV_VbarR
 
+Vec  :: ZV_QoutR,ZV_QoutbarR,ZV_VR,ZV_VbarR
 PetscInt :: IS_localsize,JS_localsize
 PetscScalar, pointer :: ZV_QoutR_p(:),ZV_QoutprevR_p(:),ZV_QoutinitR_p(:),     &
                         ZV_QoutbarR_p(:),ZV_Qext_p(:),ZV_C1_p(:),ZV_C2_p(:),   &
-                        ZV_C3_p(:),ZV_b_p(:)
+                        ZV_C3_p(:),ZV_b_p(:),ZV_babsmax_p(:)
 
 
 !*******************************************************************************
@@ -148,6 +149,7 @@ do JS_localsize=1,IS_localsize
                          *ZV_Qext_p(JS_localsize)                              &
                          +ZV_C3_p(JS_localsize)*ZV_QoutprevR_p(JS_localsize)
 end do
+
 call VecRestoreArrayF90(ZV_b,ZV_b_p,ierr)
 call VecRestoreArrayF90(ZV_C1,ZV_C1_p,ierr)
 call VecRestoreArrayF90(ZV_C2,ZV_C2_p,ierr)
@@ -162,6 +164,21 @@ call VecRestoreArrayF90(ZV_Qext,ZV_Qext_p,ierr)
 !-------------------------------------------------------------------------------
 call KSPSolve(ksp,ZV_b,ZV_QoutR,ierr)                      !solves A*Qout=b
 
+
+!-------------------------------------------------------------------------------
+!Calculation of babsmax
+!-------------------------------------------------------------------------------
+if (BS_opt_babsmax) then
+call VecGetArrayF90(ZV_b,ZV_b_p,ierr)
+call VecGetArrayF90(ZV_babsmax,ZV_babsmax_p,ierr)
+do JS_localsize=1,IS_localsize
+     if (ZV_babsmax_p(JS_localsize)<=abs(ZV_b_p(JS_localsize))) then
+          ZV_babsmax_p(JS_localsize)=abs(ZV_b_p(JS_localsize))
+     end if
+end do
+call VecRestoreArrayF90(ZV_b,ZV_b_p,ierr)
+call VecGetArrayF90(ZV_babsmax,ZV_babsmax_p,ierr)
+end if
 
 !-------------------------------------------------------------------------------
 !Calculation of V (this part can be commented to accelerate parameter 
