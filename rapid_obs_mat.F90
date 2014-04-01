@@ -14,13 +14,14 @@ use rapid_var, only :                                                          &
                    IS_reachtot,JS_reachtot,IS_reachbas,JS_reachbas,            &
                    IS_gagetot,JS_gagetot,IS_gageuse,JS_gageuse,                &
                    IS_gagebas,JS_gagebas,                                      &
-                   nhdplus_connect_file,basin_id_file,                         &
+                   basin_id_file,                                              &
                    gagetot_id_file,gageuse_id_file,                            &
                    IV_basin_id,IV_gagetot_id,IV_gageuse_id,                    & 
                    IV_gage_index,IV_gage_loc,                                  &
                    ZM_Obs,ZS_norm,                                             &
                    ierr,                                                       &
                    IS_one,ZS_one,temp_char   
+
 
 implicit none
 

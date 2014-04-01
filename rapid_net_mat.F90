@@ -19,11 +19,10 @@ use rapid_var, only :                                                          &
                    IS_reachtot,IS_reachbas,                                    &
                    JS_reachtot,JS_reachbas,JS_reachtot2,JS_reachbas2,          &
                    IV_basin_id,IV_basin_index,IV_basin_loc,                    &
-                   modcou_connect_file,nhdplus_connect_file,basin_id_file,     &
+                   modcou_connect_file,basin_id_file,                          &
                    forcingtot_id_file,forcinguse_id_file,                      &
                    ZM_Net,ZM_A,BS_logical,IV_connect_id,                       &
                    IV_down,IV_nbup,IM_up,JS_up,IS_row,IS_col,IM_index_up,      &
-                   IV_fromnode,IV_tonode,                                      &
                    IS_forcingtot,JS_forcingtot,IS_forcingbas,JS_forcingbas,    &
                    IS_forcinguse,JS_forcinguse,IV_forcingtot_id,               &
                    IV_forcing_index,IV_forcing_loc,IV_forcinguse_id,           &
