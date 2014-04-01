@@ -11,7 +11,7 @@ subroutine rapid_obs_mat
 !Declaration of variables
 !*******************************************************************************
 use rapid_var, only :                                                          &
-                   IS_reachtot,JS_reachtot,IS_reachbas,JS_reachbas,            &
+                   IS_reachbas,JS_reachbas,                                    &
                    IS_gagetot,JS_gagetot,IS_gageuse,JS_gageuse,                &
                    IS_gagebas,JS_gagebas,                                      &
                    basin_id_file,                                              &
@@ -42,8 +42,6 @@ implicit none
 !preconditioners
 #include "finclude/petscviewer.h"
 !viewers (allows writing results in file for example)
-#include "finclude/tao_solver.h" 
-!TAO solver
 
 
 !*******************************************************************************
