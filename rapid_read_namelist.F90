@@ -11,13 +11,14 @@ subroutine rapid_read_namelist
 !Declaration of variables
 !*******************************************************************************
 use rapid_var, only :                                                          &
-                     BS_opt_Qinit,BS_opt_forcing,                              &
+                     BS_opt_Qinit,BS_opt_forcing,BS_opt_babsmax,               &
                      IS_opt_routing,IS_opt_run,IS_opt_phi,                     &
                      IS_reachtot,modcou_connect_file,m3_nc_file,IS_max_up,     &
                      IS_reachbas,basin_id_file,                                &
                      Qinit_file,                                               &
                      IS_forcingtot,forcingtot_id_file,Qfor_file,               &
                      IS_forcinguse,forcinguse_id_file,                         &
+                     babsmax_file,                                             &
                      k_file,x_file,Qout_nc_file,                               &
                      kfac_file,xfac_file,ZS_knorm_init,ZS_xnorm_init,          &
                      IS_gagetot,gagetot_id_file,IS_gageuse,gageuse_id_file,    &
