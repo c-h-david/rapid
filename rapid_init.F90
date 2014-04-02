@@ -37,7 +37,7 @@ use rapid_var, only :                                                          &
                    IV_basin_id,IV_basin_index,IV_basin_loc,IV_connect_id,      &
                    IV_down,IV_nbup,IM_up,IM_index_up,IS_max_up,                &
                    IV_nz,IV_dnz,IV_onz,                                        &
-                   BS_opt_Qinit,BS_opt_Qfinal,BS_opt_forcing,                  &
+                   BS_opt_Qinit,BS_opt_Qfinal,BS_opt_forcing,BS_opt_influence, &
                    IS_opt_run,IS_opt_routing,IS_opt_phi,                       &
                    ZV_read_reachtot,ZV_read_forcingtot,ZV_read_gagetot,        &
                    ZS_TauM,ZS_TauO,ZS_TauR,ZS_dtO,ZS_dtR,ZS_dtM,               &
@@ -49,6 +49,7 @@ use rapid_var, only :                                                          &
                    IV_forcing_index,IV_forcing_loc,                            &
                    ZV_QoutinitM,ZV_QoutinitO,ZV_QoutinitR,                     &
                    ZV_VinitM,ZV_VinitR,                                        &
+                   ZV_QoutRabsmin,                                             &
                    IS_M,IS_O,IS_R,IS_RpO,IS_RpM,                               &
                    kfac_file,xfac_file,x_file,k_file,m3_nc_file,Qinit_file,    &
                    Qobsbarrec_file,                                            &
@@ -57,7 +58,7 @@ use rapid_var, only :                                                          &
                    ZV_k,ZV_x,ZV_kfac,ZV_p,ZV_pnorm,ZV_pfac,                    &
                    ZS_knorm_init,ZS_xnorm_init,ZS_kfac,ZS_xfac,                &
                    ZV_C1,ZV_C2,ZV_C3,ZM_A,                                     &
-                   ierr,ksp,pc,rank,IS_one
+                   ierr,ksp,pc,rank,IS_one,ZS_one
 
 
 implicit none
@@ -157,14 +158,21 @@ if (rank==0 .and. IS_opt_routing==1)                       print '(a70)',      &
        'Routing with matrix-based Muskingum method                             '
 if (rank==0 .and. IS_opt_routing==2)                       print '(a70)',      &
        'Routing with traditional Muskingum method                              '
-if (rank==0)                                               print '(a10,a60)',  &
-       'Using:    ', m3_nc_file 
 if (rank==0 .and. IS_opt_run==1)                           print '(a70)',      &
        'RAPID mode: computing flowrates                                        '
 if (rank==0 .and. IS_opt_run==2 .and. IS_opt_phi==1)       print '(a70)',      &
        'RAPID mode: optimizing parameters, using phi1                          ' 
 if (rank==0 .and. IS_opt_run==2 .and. IS_opt_phi==2)       print '(a70)',      &
        'RAPID mode: optimizing parameters, using phi2                          ' 
+if (rank==0)                                               print '(a10,a60)',  &
+       'Using    :', m3_nc_file 
+if (rank==0 .and. IS_opt_run==1)                           print '(a10,a60)',  &
+       'Using    :',k_file 
+if (rank==0 .and. IS_opt_run==1)                           print '(a10,a60)',  &
+       'Using    :',x_file 
+if (rank==0 .and. IS_opt_run==2)                           print '(a10,a60)',  &
+       'Using    :',kfac_file 
+call PetscPrintf(PETSC_COMM_WORLD,'--------------------------'//char(10),ierr)
 
 !-------------------------------------------------------------------------------
 !Calculate Network matrix
@@ -187,6 +195,7 @@ if (rank==0 .and. IS_forcingbas>0) then
      print *, 'IV_forcing_index   =', IV_forcing_index
      print *, 'IV_forcing_loc     =', IV_forcing_loc
 end if
+call PetscPrintf(PETSC_COMM_WORLD,'--------------------------'//char(10),ierr)
 end if
 !Warning about forcing downstream basins
 
@@ -214,6 +223,12 @@ end if
 call VecSet(ZV_VinitM,ZS_V0,ierr)
 !Set initial volumes for Main procedure
 
+!-------------------------------------------------------------------------------
+!Set large value to ZV_QoutRabsmin
+!-------------------------------------------------------------------------------
+if (BS_opt_influence) then
+call VecSet(ZV_QoutRabsmin,ZS_one*999999999,ierr)
+end if
 
 !*******************************************************************************
 !Initialization procedure for OPTION 1
