@@ -20,7 +20,8 @@ use rapid_var, only :                                                          &
                    ZS_dtR,IS_R,JS_R,                                           &
                    ZM_Net,                                                     &
                    ZV_b,ZV_babsmax,                                            &
-                   ZV_QoutprevR,ZV_VprevR,ZV_QoutRabsmin,ZV_VoutR,ZV_Vext,     &
+                   ZV_QoutprevR,ZV_VprevR,ZV_QoutRabsmin,ZV_QoutRabsmax,       &
+                   ZV_VoutR,ZV_Vext,                                           &
                    ierr,ksp,                                                   &
                    ZS_one,IS_ksp_iter,IS_ksp_iter_max,                         &
                    vecscat,ZV_SeqZero,ZV_pointer,rank,                         &
@@ -63,7 +64,8 @@ Vec                :: ZV_VR,ZV_VbarR
 PetscInt :: IS_localsize,JS_localsize
 PetscScalar, pointer :: ZV_QoutR_p(:),ZV_QoutprevR_p(:),ZV_QoutinitR_p(:),     &
                         ZV_QoutbarR_p(:),ZV_Qext_p(:),ZV_C1_p(:),ZV_C2_p(:),   &
-                        ZV_C3_p(:),ZV_b_p(:),ZV_babsmax_p(:),ZV_QoutRabsmin_p(:)
+                        ZV_C3_p(:),ZV_b_p(:),                                  &
+                        ZV_babsmax_p(:),ZV_QoutRabsmin_p(:),ZV_QoutRabsmax_p(:)
 
 
 !*******************************************************************************
@@ -131,7 +133,7 @@ if (IS_ksp_iter>IS_ksp_iter_max) IS_ksp_iter_max=IS_ksp_iter
 
 
 !-------------------------------------------------------------------------------
-!Calculation of babsmax and QoutRabsmin
+!Calculation of babsmax, QoutRabsmin and QoutRabsmax
 !-------------------------------------------------------------------------------
 if (BS_opt_influence) then
 
@@ -147,13 +149,18 @@ call VecRestoreArrayF90(ZV_babsmax,ZV_babsmax_p,ierr)
 
 call VecGetArrayF90(ZV_QoutR,ZV_QoutR_p,ierr)
 call VecGetArrayF90(ZV_QoutRabsmin,ZV_QoutRabsmin_p,ierr)
+call VecGetArrayF90(ZV_QoutRabsmax,ZV_QoutRabsmax_p,ierr)
 do JS_localsize=1,IS_localsize
      if (ZV_QoutRabsmin_p(JS_localsize)>=abs(ZV_QoutR_p(JS_localsize))) then
          ZV_QoutRabsmin_p(JS_localsize) =abs(ZV_QoutR_p(JS_localsize))
      end if
+     if (ZV_QoutRabsmax_p(JS_localsize)<=abs(ZV_QoutR_p(JS_localsize))) then
+         ZV_QoutRabsmax_p(JS_localsize) =abs(ZV_QoutR_p(JS_localsize))
+     end if
 end do
 call VecRestoreArrayF90(ZV_QoutR,ZV_QoutR_p,ierr)
 call VecRestoreArrayF90(ZV_QoutRabsmin,ZV_QoutRabsmin_p,ierr)
+call VecRestoreArrayF90(ZV_QoutRabsmax,ZV_QoutRabsmax_p,ierr)
 
 end if
 
