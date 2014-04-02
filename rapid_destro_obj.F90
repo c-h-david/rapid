@@ -25,7 +25,7 @@ use rapid_var, only :                                                          &
                    ZV_Vext,ZV_Vfor,ZV_Vlat,                                    &
                    ZV_VinitM,ZV_QoutinitM,ZV_QoutinitO,ZV_QoutbarO,            &
                    ZV_QoutR,ZV_QoutinitR,ZV_QoutprevR,ZV_QoutbarR,             &
-                   ZV_QoutRabsmin,                                             &
+                   ZV_QoutRabsmin,ZV_QoutRabsmax,                              &
                    ZV_VR,ZV_VinitR,ZV_VprevR,ZV_VbarR,ZV_VoutR,                &
                    ZV_Qobsbarrec,                                              &
                    ierr,ksp,vecscat,ZV_SeqZero,ZS_one,ZV_one,IS_one
@@ -105,6 +105,7 @@ call VecDestroy(ZV_QoutinitR,ierr)
 call VecDestroy(ZV_QoutprevR,ierr)
 call VecDestroy(ZV_QoutbarR,ierr)
 call VecDestroy(ZV_QoutRabsmin,ierr)
+call VecDestroy(ZV_QoutRabsmax,ierr)
 
 call VecDestroy(ZV_VinitM,ierr)
 
