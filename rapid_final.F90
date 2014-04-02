@@ -9,7 +9,7 @@ subroutine rapid_final
 !option is chosen.  
 !Finalization Initialization tasks specific to Option 1
 !     -Output final instantaneous flow
-!     -Output babsmax and QoutRabsmin
+!     -Output babsmax, QoutRabsmin and QoutRabsmax
 !Finalization Initialization tasks specific to Option 2
 !     -N/A
 !Finalization tasks common to all RAPID options:
@@ -25,9 +25,10 @@ use rapid_var, only :                                                          &
                    IS_reachbas,JS_reachbas,                                    &
                    IS_opt_routing,IS_opt_run,                                  &
                    BS_opt_Qfinal,BS_opt_influence,                             &
-                   Qfinal_file,babsmax_file,QoutRabsmin_file,                  &
+                   Qfinal_file,babsmax_file,QoutRabsmin_file,QoutRabsmax_file, &
                    ksp,vecscat,ZV_babsmax,ZV_QoutR,ZV_SeqZero,ierr,            &
-                   ZV_pointer,rank,ZV_k,temp_char,ZV_QoutRabsmin,              &
+                   ZV_pointer,rank,ZV_k,temp_char,                             &
+                   ZV_QoutRabsmin,ZV_QoutRabsmax,                              &
                    temp_char2,ZM_A,pc,                                         &
                    IS_ksp_iter_max
 
@@ -113,6 +114,25 @@ if (rank==0) then
           write(43,*) ZV_pointer(JS_reachbas)
      end do
      close(43)
+end if
+call VecRestoreArrayF90(ZV_SeqZero,ZV_pointer,ierr)
+end if
+
+!-------------------------------------------------------------------------------
+!Output maximum absolute values of instantaneous flow 
+!-------------------------------------------------------------------------------
+if (BS_opt_influence) then
+call VecScatterBegin(vecscat,ZV_QoutRabsmax,ZV_SeqZero,                        &
+                     INSERT_VALUES,SCATTER_FORWARD,ierr)
+call VecScatterEnd(vecscat,ZV_QoutRabsmax,ZV_SeqZero,                          &
+                        INSERT_VALUES,SCATTER_FORWARD,ierr)
+call VecGetArrayF90(ZV_SeqZero,ZV_pointer,ierr)
+if (rank==0) then 
+     open(44,file=QoutRabsmax_file)
+     do JS_reachbas=1,IS_reachbas
+          write(44,*) ZV_pointer(JS_reachbas)
+     end do
+     close(44)
 end if
 call VecRestoreArrayF90(ZV_SeqZero,ZV_pointer,ierr)
 end if
