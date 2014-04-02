@@ -19,14 +19,14 @@ use netcdf
 use rapid_var, only :                                                          &
                    ZS_dtR,IS_R,JS_R,                                           &
                    ZM_Net,                                                     &
-                   ZV_b,ZV_b1,ZV_b2,ZV_b3,ZV_babsmax,                          &
+                   ZV_b,ZV_babsmax,                                            &
                    ZV_QoutprevR,ZV_VprevR,ZV_VoutR,ZV_Vext,                    &
                    ierr,ksp,                                                   &
-                   ZS_one,ZV_one,                                              &
+                   ZS_one,                                                     &
                    vecscat,ZV_SeqZero,ZV_pointer,rank,                         &
                    IS_nc_status,IS_nc_id_fil_Qout,IS_nc_id_var_Qout,           &
                    IV_nc_start,IV_nc_count2,                                   &
-                   IS_reachbas,JS_reachbas,IM_index_up,stage,                  &
+                   IS_reachbas,JS_reachbas,IM_index_up,                        &
                    IS_opt_routing,IV_nbup,IV_basin_index,                      &
                    BS_opt_babsmax
 
@@ -50,8 +50,6 @@ implicit none
 !preconditioners
 #include "finclude/petscviewer.h"
 !viewers (allows writing results in file for example)
-#include "finclude/tao_solver.h" 
-!TAO solver
 
 
 !*******************************************************************************
@@ -59,8 +57,9 @@ implicit none
 !*******************************************************************************
 Vec, intent(in)    :: ZV_C1,ZV_C2,ZV_C3,ZV_Qext,                               &
                       ZV_QoutinitR,ZV_VinitR 
+Vec, intent(out)   :: ZV_QoutR,ZV_QoutbarR
+Vec                :: ZV_VR,ZV_VbarR
 
-Vec  :: ZV_QoutR,ZV_QoutbarR,ZV_VR,ZV_VbarR
 PetscInt :: IS_localsize,JS_localsize
 PetscScalar, pointer :: ZV_QoutR_p(:),ZV_QoutprevR_p(:),ZV_QoutinitR_p(:),     &
                         ZV_QoutbarR_p(:),ZV_Qext_p(:),ZV_C1_p(:),ZV_C2_p(:),   &
@@ -99,41 +98,6 @@ call VecAXPY(ZV_QoutbarR,ZS_one/IS_R,ZV_QoutprevR,ierr)
 !-------------------------------------------------------------------------------
 !Calculation of the right hand size, b
 !-------------------------------------------------------------------------------
-!!calculation of the vector b for Ay=b, here Qext(t)=Qext(t+dt)
-!call VecCopy(ZV_Qext,ZV_b1,ierr)                           !b1=Qext
-!call VecPointwiseMult(ZV_b1,ZV_C1,ZV_b1,ierr)              !b1=C1.*b1
-!!result b1=C1.*(Qext)
-!
-!!call MatMult(ZM_Net,ZV_QoutprevR,ZV_b2,ierr)               !b2=Net*Qoutprev
-!call VecAXPY(ZV_b2,ZS_one,ZV_Qext,ierr)                    !b2=b2+1*Qext
-!call VecPointwiseMult(ZV_b2,ZV_C2,ZV_b2,ierr)              !b2=C2.*b2
-!!result b2=C2.*(Net*Qoutprev+Qext)
-!
-!call VecPointwiseMult(ZV_b3,ZV_C3,ZV_QoutprevR,ierr)       !b3=C3.*Qoutprev
-!!result b3=C3.*Qoutprev
-!
-!call VecSet(ZV_b,0*ZS_one,ierr)                            !b=0
-!call VecAXPY(ZV_b,ZS_one,ZV_b1,ierr)                       !b=b+b1
-!call VecAXPY(ZV_b,ZS_one,ZV_b2,ierr)                       !b=b+b2
-!call VecAXPY(ZV_b,ZS_one,ZV_b3,ierr)                       !b=b+b3
-!!result b=b1+b2+b3
-
-
-!call VecWAXPY(ZV_b1,ZS_one,ZV_C1,ZV_C2,ierr)               !b1=C1+C2
-!call VecPointwiseMult(ZV_b,ZV_b1,ZV_Qext,ierr)             !b=b1.*Qext
-!!result b=(C1+C2).*(Qext)
-!
-!!call MatMult(ZM_Net,ZV_QoutprevR,ZV_b2,ierr)               !b2=Net*Qoutprev
-!call VecPointwiseMult(ZV_b2,ZV_C2,ZV_b2,ierr)              !b2=C2.*b2
-!call VecAXPY(ZV_b,ZS_one,ZV_b2,ierr)
-!!result b=b+C2.*(Net*Qoutprev)
-!
-!call VecPointwiseMult(ZV_b3,ZV_C3,ZV_QoutprevR,ierr)       !b3=C3.*Qoutprev
-!call VecAXPY(ZV_b,ZS_one,ZV_b3,ierr)
-!!result b=b+C3.*Qoutprev
-
-
-
 call MatMult(ZM_Net,ZV_QoutprevR,ZV_b,ierr)                !b2=Net*Qoutprev
 
 call VecGetArrayF90(ZV_b,ZV_b_p,ierr)
@@ -270,19 +234,6 @@ end do
 !-------------------------------------------------------------------------------
 !Calculation of Qout
 !-------------------------------------------------------------------------------
-!do JS_reachbas=1,IS_reachbas
-!     ZV_QoutR_p(JS_reachbas)=                                                  &
-!                ZV_C1_p(JS_reachbas)*                                          &
-!                              (sum(ZV_QoutR_p(IM_index_up(JS_reachbas,:)))     &
-!                               +ZV_Qext_p(JS_reachbas)                    )    &
-!               +ZV_C2_p(JS_reachbas)*                                          &
-!                              (sum(ZV_QoutprevR_p(IM_index_up(JS_reachbas,:))) &
-!                               +ZV_Qext_p(JS_reachbas)                        )&
-!               +ZV_C3_p(JS_reachbas)*ZV_QoutprevR_p(JS_reachbas)
-!end do
-!!Not taking into account the knowledge of how many upstream locations exist.
-!!Similar to poor preallocation of network matrix
-
 do JS_reachbas=1,IS_reachbas
      ZV_QoutR_p(JS_reachbas)=                                                  &
                 ZV_C1_p(JS_reachbas)*                                          &
@@ -296,7 +247,7 @@ do JS_reachbas=1,IS_reachbas
                +ZV_C3_p(JS_reachbas)*ZV_QoutprevR_p(JS_reachbas)
 end do
 !Taking into account the knowledge of how many upstream locations exist.
-!Similar to better preallocation of network matrix
+!Similar to exact preallocation of network matrix
 
 !-------------------------------------------------------------------------------
 !Reset previous
