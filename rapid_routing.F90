@@ -20,15 +20,15 @@ use rapid_var, only :                                                          &
                    ZS_dtR,IS_R,JS_R,                                           &
                    ZM_Net,                                                     &
                    ZV_b,ZV_babsmax,                                            &
-                   ZV_QoutprevR,ZV_VprevR,ZV_VoutR,ZV_Vext,                    &
+                   ZV_QoutprevR,ZV_VprevR,ZV_QoutRabsmin,ZV_VoutR,ZV_Vext,     &
                    ierr,ksp,                                                   &
-                   ZS_one,                                                     &
+                   ZS_one,IS_ksp_iter,IS_ksp_iter_max,                         &
                    vecscat,ZV_SeqZero,ZV_pointer,rank,                         &
                    IS_nc_status,IS_nc_id_fil_Qout,IS_nc_id_var_Qout,           &
                    IV_nc_start,IV_nc_count2,                                   &
                    IS_reachbas,JS_reachbas,IM_index_up,                        &
                    IS_opt_routing,IV_nbup,IV_basin_index,                      &
-                   BS_opt_babsmax
+                   BS_opt_influence
 
 
 implicit none
@@ -63,7 +63,7 @@ Vec                :: ZV_VR,ZV_VbarR
 PetscInt :: IS_localsize,JS_localsize
 PetscScalar, pointer :: ZV_QoutR_p(:),ZV_QoutprevR_p(:),ZV_QoutinitR_p(:),     &
                         ZV_QoutbarR_p(:),ZV_Qext_p(:),ZV_C1_p(:),ZV_C2_p(:),   &
-                        ZV_C3_p(:),ZV_b_p(:),ZV_babsmax_p(:)
+                        ZV_C3_p(:),ZV_b_p(:),ZV_babsmax_p(:),ZV_QoutRabsmin_p(:)
 
 
 !*******************************************************************************
@@ -122,26 +122,39 @@ call VecRestoreArrayF90(ZV_QoutprevR,ZV_QoutprevR_p,ierr)
 call VecRestoreArrayF90(ZV_Qext,ZV_Qext_p,ierr)
 
 
-
 !-------------------------------------------------------------------------------
 !Calculation of Qout
 !-------------------------------------------------------------------------------
 call KSPSolve(ksp,ZV_b,ZV_QoutR,ierr)                      !solves A*Qout=b
+call KSPGetIterationNumber(ksp,IS_ksp_iter,ierr)
+if (IS_ksp_iter>IS_ksp_iter_max) IS_ksp_iter_max=IS_ksp_iter
 
 
 !-------------------------------------------------------------------------------
-!Calculation of babsmax
+!Calculation of babsmax and QoutRabsmin
 !-------------------------------------------------------------------------------
-if (BS_opt_babsmax) then
+if (BS_opt_influence) then
+
 call VecGetArrayF90(ZV_b,ZV_b_p,ierr)
 call VecGetArrayF90(ZV_babsmax,ZV_babsmax_p,ierr)
 do JS_localsize=1,IS_localsize
      if (ZV_babsmax_p(JS_localsize)<=abs(ZV_b_p(JS_localsize))) then
-          ZV_babsmax_p(JS_localsize)=abs(ZV_b_p(JS_localsize))
+         ZV_babsmax_p(JS_localsize) =abs(ZV_b_p(JS_localsize))
      end if
 end do
 call VecRestoreArrayF90(ZV_b,ZV_b_p,ierr)
-call VecGetArrayF90(ZV_babsmax,ZV_babsmax_p,ierr)
+call VecRestoreArrayF90(ZV_babsmax,ZV_babsmax_p,ierr)
+
+call VecGetArrayF90(ZV_QoutR,ZV_QoutR_p,ierr)
+call VecGetArrayF90(ZV_QoutRabsmin,ZV_QoutRabsmin_p,ierr)
+do JS_localsize=1,IS_localsize
+     if (ZV_QoutRabsmin_p(JS_localsize)>=abs(ZV_QoutR_p(JS_localsize))) then
+         ZV_QoutRabsmin_p(JS_localsize) =abs(ZV_QoutR_p(JS_localsize))
+     end if
+end do
+call VecRestoreArrayF90(ZV_QoutR,ZV_QoutR_p,ierr)
+call VecRestoreArrayF90(ZV_QoutRabsmin,ZV_QoutRabsmin_p,ierr)
+
 end if
 
 !-------------------------------------------------------------------------------
