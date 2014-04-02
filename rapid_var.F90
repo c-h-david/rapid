@@ -126,6 +126,9 @@ character(len=100) :: babsmax_file
 character(len=100) :: QoutRabsmin_file
 !unit 43 - file where the minimum of the absolute values of the instantaneous 
 !flows are stored 
+character(len=100) :: QoutRabsmax_file
+!unit 44 - file where the maximum of the absolute values of the instantaneous 
+!flows are stored 
 character(len=100) :: Qout_nc_file
 
 
@@ -317,7 +320,8 @@ Vec :: ZV_QoutO,ZV_QoutinitO,ZV_QoutprevO,ZV_QoutbarO
 Vec :: ZV_VO,ZV_VinitO,ZV_VprevO,ZV_VbarO
 
 !Routing only variables
-Vec :: ZV_QoutR,ZV_QoutinitR,ZV_QoutprevR,ZV_QoutbarR,ZV_QoutRabsmin
+Vec :: ZV_QoutR,ZV_QoutinitR,ZV_QoutprevR,ZV_QoutbarR
+Vec :: ZV_QoutRabsmin,ZV_QoutRabsmax
 Vec :: ZV_VR,ZV_VinitR,ZV_VprevR,ZV_VbarR
 Vec :: ZV_VoutR
 
@@ -433,7 +437,7 @@ namelist /NL_namelist/                                                         &
                        IS_forcingtot,forcingtot_id_file,forcingtot_tp_file,    &
                        Qfor_file,                                              &
                        IS_forcinguse,forcinguse_id_file,                       &
-                       babsmax_file,QoutRabsmin_file,                          &
+                       babsmax_file,QoutRabsmin_file,QoutRabsmax_file,         &
                        k_file,x_file,Qout_nc_file,                             &
                        kfac_file,xfac_file,ZS_knorm_init,ZS_xnorm_init,        &
                        IS_gagetot,gagetot_id_file,IS_gageuse,gageuse_id_file,  &
