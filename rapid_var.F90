@@ -123,7 +123,9 @@ character(len=100) :: V_file
 character(len=100) :: babsmax_file
 !unit 42 - file where the maximum of the absolute values of the right-hand-side
 !are stored
-
+character(len=100) :: QoutRabsmin_file
+!unit 43 - file where the minimum of the absolute values of the instantaneous 
+!flows are stored 
 character(len=100) :: Qout_nc_file
 
 
@@ -315,7 +317,7 @@ Vec :: ZV_QoutO,ZV_QoutinitO,ZV_QoutprevO,ZV_QoutbarO
 Vec :: ZV_VO,ZV_VinitO,ZV_VprevO,ZV_VbarO
 
 !Routing only variables
-Vec :: ZV_QoutR,ZV_QoutinitR,ZV_QoutprevR,ZV_QoutbarR
+Vec :: ZV_QoutR,ZV_QoutinitR,ZV_QoutprevR,ZV_QoutbarR,ZV_QoutRabsmin
 Vec :: ZV_VR,ZV_VinitR,ZV_VprevR,ZV_VbarR
 Vec :: ZV_VoutR
 
@@ -336,6 +338,8 @@ VecScatter :: vecscat
 PetscLogEvent :: stage
 !Stage for investigating performance
 
+PetscInt :: IS_ksp_iter, IS_ksp_iter_max
+!integer where the number of iterations in KSP is solved
 PetscInt :: IS_one=1
 !integer of value 1.  to be used in MatSetValues and VecSet. Directly using 
 !the value 1 in the functions crashes PETSc
@@ -359,7 +363,7 @@ PetscScalar :: ZS_time1, ZS_time2, ZS_time3
 
 PetscScalar, pointer :: ZV_pointer(:)
 !used to point to a PETSc vector and to output formatted as needed in a file
-character(len=10) :: temp_char
+character(len=10) :: temp_char,temp_char2
 !usefull to print variables on output.  write a variable in this character and
 !then use PetscPrintf
 
@@ -401,13 +405,13 @@ PetscInt, dimension(IS_nc_ndim) :: IV_nc_id_dim, IV_nc_start, IV_nc_count,     &
 !Declaration of variables - runtime options
 !*******************************************************************************
 logical :: BS_opt_Qinit
-!.false. --> no read initial flow   .true. --> read initial flow
+!.false. --> no read initial flow    .true. --> read initial flow
 logical :: BS_opt_Qfinal
 !.false. --> no write final flow     .true. --> write final flow 
 logical :: BS_opt_forcing
 !.false. --> no forcing              .true. --> forcing
-logical :: BS_opt_babsmax
-!.false. --> no output babsmax       .true. --> output babsmax
+logical :: BS_opt_influence
+!.false. --> no output influence     .true. --> output influence
 PetscInt :: IS_opt_routing
 !1       --> matrix-based Muskingum  2      --> traditional Muskingum
 PetscInt :: IS_opt_run
@@ -421,7 +425,7 @@ PetscInt :: IS_opt_phi
 !*******************************************************************************
 namelist /NL_namelist/                                                         &
                        BS_opt_Qinit,BS_opt_Qfinal,                             &
-                       BS_opt_forcing,BS_opt_babsmax,                          &
+                       BS_opt_forcing,BS_opt_influence,                        &
                        IS_opt_routing,IS_opt_run,IS_opt_phi,                   &
                        IS_reachtot,modcou_connect_file,m3_nc_file,IS_max_up,   &
                        IS_reachbas,basin_id_file,                              &
@@ -429,7 +433,7 @@ namelist /NL_namelist/                                                         &
                        IS_forcingtot,forcingtot_id_file,forcingtot_tp_file,    &
                        Qfor_file,                                              &
                        IS_forcinguse,forcinguse_id_file,                       &
-                       babsmax_file,                                           &
+                       babsmax_file,QoutRabsmin_file,                          &
                        k_file,x_file,Qout_nc_file,                             &
                        kfac_file,xfac_file,ZS_knorm_init,ZS_xnorm_init,        &
                        IS_gagetot,gagetot_id_file,IS_gageuse,gageuse_id_file,  &
