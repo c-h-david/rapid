@@ -27,10 +27,13 @@ implicit none
 !preconditioners
 #include "finclude/petscviewer.h"
 !viewers (allows writing results in file for example)
-#include "finclude/tao_solver.h" 
-!TAO solver
 !#include "finclude/petsclog.h" 
 !Profiling log
+
+#ifndef NO_TAO
+#include "finclude/tao_solver.h" 
+!TAO solver
+#endif
 
 
 !*******************************************************************************
@@ -85,8 +88,10 @@ character(len=100) :: gageuse_id_file
 character(len=100) :: forcingtot_id_file
 !unit 17 - file with the IDs where flows can be used as forcing to their 
 !corresponding downstream reach  
+character(len=100) :: forcingtot_tp_file 
+!unit 18 - file in which the type of forcing can be stored 
 character(len=100) :: forcinguse_id_file
-!unit 18 - file with the IDs of the reaches with forcing used 
+!unit 19 - file with the IDs of the reaches with forcing used 
 
 character(len=100) :: k_file
 !unit 20 - file with values for k (possibly from previous param. estim.)
@@ -99,6 +104,8 @@ character(len=100) :: xfac_file
 
 character(len=100) :: Qinit_file
 !unit 30 - file where initial flowrates can be stored to run the model with them
+character(len=100) :: Qfinal_file
+!unit 31 - file where final flowrates can be stored at the end of model run 
 character(len=100) :: m3_nc_file
 
 character(len=100) :: Qobs_file
@@ -290,8 +297,8 @@ Vec :: ZV_p, ZV_pnorm,ZV_pfac
 !corresponding factors p=pnorm*pfac
 Vec :: ZV_C1,ZV_C2,ZV_C3,ZV_Cdenom 
 !Muskingum method constants (last is the common denominator, for calculations)
-Vec :: ZV_b,ZV_b1,ZV_b2,ZV_b3,ZV_babsmax
-!Used for linear system A*Qout=b, (b=b1+b2+b3) 
+Vec :: ZV_b,ZV_babsmax
+!Used for linear system A*Qout=b
 
 !Input variables (contribution)
 Vec :: ZV_Qext,ZV_Qfor,ZV_Qlat
@@ -314,7 +321,7 @@ Vec :: ZV_VoutR
 
 
 !*******************************************************************************
-!Declaration of variables - PETSc and TAO specific objects
+!Declaration of variables - PETSc specific objects and variables
 !*******************************************************************************
 PetscErrorCode :: ierr
 !needed for error check of PETSc functions
@@ -322,12 +329,6 @@ KSP :: ksp
 !object used for linear system solver
 PC :: pc
 !preconditioner object
-TAO_SOLVER :: tao
-!TAO solver object
-TAO_APPLICATION :: taoapp
-!TAO application object
-TaoTerminateReason :: reason
-!TAO terminate reason object
 PetscMPIInt :: rank
 !integer where the number of each processor is stored, 0 will be main processor 
 VecScatter :: vecscat
@@ -335,10 +336,6 @@ VecScatter :: vecscat
 PetscLogEvent :: stage
 !Stage for investigating performance
 
-
-!*******************************************************************************
-!Declaration of variables - PETSc and TAO useful variables
-!*******************************************************************************
 PetscInt :: IS_one=1
 !integer of value 1.  to be used in MatSetValues and VecSet. Directly using 
 !the value 1 in the functions crashes PETSc
@@ -349,9 +346,7 @@ Vec :: ZV_one
 Vec :: ZV_SeqZero
 !Sequential vector of size IS_reachbas, allows for gathering data on zeroth 
 !precessor before writing in file
-Vec :: ZV_1stIndex, ZV_2ndIndex
-!ZV_1stIndex=[1;0], ZV_2ndIndex=[0,1].  Used with VecDot to extract first and 
-!second indexes of the vector of parameter
+
 PetscScalar,dimension(:), allocatable :: ZV_read_reachtot
 !temp vector that stores information from a 'read', before setting the value
 !in the object, this vector has the size of the total number of reaches
@@ -360,6 +355,7 @@ PetscScalar,dimension(:), allocatable :: ZV_read_gagetot
 PetscScalar,dimension(:), allocatable :: ZV_read_forcingtot
 !same as previous, with size IS_forcingtot
 PetscScalar :: ZS_time1, ZS_time2, ZS_time3
+!to estimate computing time
 
 PetscScalar, pointer :: ZV_pointer(:)
 !used to point to a PETSc vector and to output formatted as needed in a file
@@ -373,6 +369,21 @@ PetscInt, dimension(:), allocatable :: IV_nz, IV_dnz, IV_onz
 PetscInt :: IS_ownfirst, IS_ownlast
 !Ownership of each processor
 
+
+!*******************************************************************************
+!Declaration of variables - TAO specific objects and variables
+!*******************************************************************************
+#ifndef NO_TAO
+TAO_SOLVER :: tao
+!TAO solver object
+TAO_APPLICATION :: taoapp
+!TAO application object
+TaoTerminateReason :: reason
+!TAO terminate reason object
+Vec :: ZV_1stIndex, ZV_2ndIndex
+!ZV_1stIndex=[1;0], ZV_2ndIndex=[0,1].  Used with VecDot to extract first and 
+!second indexes of the vector of parameter
+#endif
 
 !*******************************************************************************
 !Declaration of variables - netCDF variables
@@ -390,7 +401,9 @@ PetscInt, dimension(IS_nc_ndim) :: IV_nc_id_dim, IV_nc_start, IV_nc_count,     &
 !Declaration of variables - runtime options
 !*******************************************************************************
 logical :: BS_opt_Qinit
-!.false. --> no initialization       .true. --> initialization
+!.false. --> no read initial flow   .true. --> read initial flow
+logical :: BS_opt_Qfinal
+!.false. --> no write final flow     .true. --> write final flow 
 logical :: BS_opt_forcing
 !.false. --> no forcing              .true. --> forcing
 logical :: BS_opt_babsmax
@@ -407,12 +420,14 @@ PetscInt :: IS_opt_phi
 !Namelist
 !*******************************************************************************
 namelist /NL_namelist/                                                         &
-                       BS_opt_Qinit,BS_opt_forcing,BS_opt_babsmax,             &
+                       BS_opt_Qinit,BS_opt_Qfinal,                             &
+                       BS_opt_forcing,BS_opt_babsmax,                          &
                        IS_opt_routing,IS_opt_run,IS_opt_phi,                   &
                        IS_reachtot,modcou_connect_file,m3_nc_file,IS_max_up,   &
                        IS_reachbas,basin_id_file,                              &
-                       Qinit_file,                                             &
-                       IS_forcingtot,forcingtot_id_file,Qfor_file,             &
+                       Qinit_file,Qfinal_file,                                 &
+                       IS_forcingtot,forcingtot_id_file,forcingtot_tp_file,    &
+                       Qfor_file,                                              &
                        IS_forcinguse,forcinguse_id_file,                       &
                        babsmax_file,                                           &
                        k_file,x_file,Qout_nc_file,                             &
@@ -422,7 +437,7 @@ namelist /NL_namelist/                                                         &
                        ZS_TauM,ZS_dtM,ZS_TauO,ZS_dtO,ZS_TauR,ZS_dtR,           &
                        ZS_phifac,IS_strt_opt
  
-character(len=100) :: namelist_file='./rapid_namelist' 
+character(len=100) :: namelist_file
 !unit 88 - Namelist
 
 
