@@ -28,8 +28,8 @@ use rapid_var, only :                                                          &
                    ZV_QoutR,ZV_QoutinitR,ZV_QoutbarR,                          &
                    ZV_VR,ZV_VinitR,ZV_VbarR,                                   &
                    ZS_phi,                                                     &
-                   ierr,vecscat,rank,stage,                                    &
-                   ZV_pointer, ZS_one,                                         &
+                   ierr,vecscat,rank,stage,temp_char,temp_char2,               &
+                   ZV_pointer,ZS_one,                                          &
                    ZV_read_reachtot,ZV_read_forcingtot,                        &
                    ZV_SeqZero,                                                 &
                    IS_reachtot,IS_forcingbas,                                  &
@@ -249,7 +249,13 @@ end do
 !-------------------------------------------------------------------------------
 call PetscPrintf(PETSC_COMM_WORLD,'Cumulative time for routing only'           &
                                   //char(10),ierr)
-print *, 'rank=', rank, 'time=', ZS_time3
+!print '(a10,i7,a2,a10,f7.2)', 'Rank     :',rank,', ','Time     :',ZS_time3
+write(temp_char ,'(i10)')   rank
+write(temp_char2,'(f10.2)') ZS_time3
+call PetscSynchronizedPrintf(PETSC_COMM_WORLD,'Rank     :'//temp_char //', '// &
+                                              'Time     :'//temp_char2//       &
+                                               char(10),ierr)
+call PetscSynchronizedFlush(PETSC_COMM_WORLD,ierr)
 
 call PetscLogStagePop(ierr)
 call PetscPrintf(PETSC_COMM_WORLD,'Output data created'//char(10),ierr)
