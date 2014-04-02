@@ -160,8 +160,8 @@ call PetscPrintf(PETSC_COMM_WORLD,'Number of gaging stations used (based on norm
 !*******************************************************************************
 !End
 !*******************************************************************************
-call PetscPrintf(PETSC_COMM_WORLD,'Observation matrix created',ierr)
-call PetscPrintf(PETSC_COMM_WORLD,char(10),ierr)
+call PetscPrintf(PETSC_COMM_WORLD,'Observation matrix created'//char(10),ierr)
+call PetscPrintf(PETSC_COMM_WORLD,'--------------------------'//char(10),ierr)
 
 !call PetscPrintf(PETSC_COMM_WORLD,'ZM_Obs:'//char(10),ierr)
 !call MatView(ZM_Obs,PETSC_VIEWER_STDOUT_WORLD,ierr)

@@ -417,6 +417,7 @@ end if
 !*******************************************************************************
 !End
 !*******************************************************************************
+call PetscPrintf(PETSC_COMM_WORLD,'--------------------------'//char(10),ierr)
 !call PetscPrintf(PETSC_COMM_WORLD,'ZM_Net'//char(10),ierr)
 !call MatView(ZM_Net,PETSC_VIEWER_STDOUT_WORLD,ierr)
 
