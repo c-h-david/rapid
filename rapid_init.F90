@@ -49,7 +49,7 @@ use rapid_var, only :                                                          &
                    IV_forcing_index,IV_forcing_loc,                            &
                    ZV_QoutinitM,ZV_QoutinitO,ZV_QoutinitR,                     &
                    ZV_VinitM,ZV_VinitR,                                        &
-                   ZV_QoutRabsmin,                                             &
+                   ZV_babsmax,ZV_QoutRabsmin,ZV_QoutRabsmax,                   &
                    IS_M,IS_O,IS_R,IS_RpO,IS_RpM,                               &
                    kfac_file,xfac_file,x_file,k_file,m3_nc_file,Qinit_file,    &
                    Qobsbarrec_file,                                            &
@@ -224,10 +224,12 @@ call VecSet(ZV_VinitM,ZS_V0,ierr)
 !Set initial volumes for Main procedure
 
 !-------------------------------------------------------------------------------
-!Set large value to ZV_QoutRabsmin
+!Initialize default values for ZV_QoutRabsmin, ZV_QoutRabsmax and ZV_babsmax
 !-------------------------------------------------------------------------------
 if (BS_opt_influence) then
+call VecSet(ZV_babsmax    ,ZS_one*0        ,ierr)
 call VecSet(ZV_QoutRabsmin,ZS_one*999999999,ierr)
+call VecSet(ZV_QoutRabsmax,ZS_one*0        ,ierr)
 end if
 
 !*******************************************************************************
