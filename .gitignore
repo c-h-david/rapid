@@ -17,3 +17,8 @@
 #Initial releases of RAPID included batch submission scripts for supercomputers
 #-------------------------------------------------------------------------------
 job_*
+
+#-------------------------------------------------------------------------------
+#Legacy name for BSD 3-clause license of RAPID between 20120831 - 20131113 
+#-------------------------------------------------------------------------------
+rapid_license.txt
