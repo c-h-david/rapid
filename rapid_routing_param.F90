@@ -16,7 +16,7 @@ subroutine rapid_routing_param(ZV_k,ZV_x,                                      &
 use rapid_var, only :                                                          &
                    ZM_Net,                                                     &
                    ZV_Cdenom,ZS_dtR,                                           &
-                   ierr, ZS_one,ZV_one
+                   ierr,ZS_one,ZV_one
 
 
 implicit none
@@ -38,8 +38,6 @@ implicit none
 !preconditioners
 #include "finclude/petscviewer.h"
 !viewers (allows writing results in file for example)
-#include "finclude/tao_solver.h" 
-!TAO solver
 
 
 !*******************************************************************************
