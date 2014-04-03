@@ -14,9 +14,9 @@ subroutine rapid_routing_param(ZV_k,ZV_x,                                      &
 !Declaration of variables
 !*******************************************************************************
 use rapid_var, only :                                                          &
-                   ZM_Net,                                                     &
+                   ZM_Net,ZM_T,ZM_TC1,                                         &
                    ZV_Cdenom,ZS_dtR,                                           &
-                   ierr,ZS_one,ZV_one
+                   ierr,ZS_one,ZV_one,IS_opt_routing
 
 
 implicit none
@@ -83,8 +83,13 @@ call MatCopy(ZM_Net,ZM_A,DIFFERENT_NONZERO_PATTERN,ierr)   !A=Net
 call MatDiagonalScale(ZM_A,ZV_C1,ZV_one,ierr)              !A=diag(C1)*A
 call MatScale(ZM_A,-ZS_one,ierr)                           !A=-A
 call MatShift(ZM_A,ZS_one,ierr)                            !A=A+1*I
-!!Result:A=I-diag(C1)*Net
+!Result:A=I-diag(C1)*Net
 
+if (IS_opt_routing==3) then
+call MatCopy(ZM_T,ZM_TC1,DIFFERENT_NONZERO_PATTERN,ierr)        !TC1=T
+call MatDiagonalScale(ZM_TC1,ZV_C1,ZV_one,ierr)            !TC1=diag(C1)*TC1
+!Result:TC1=T*diag(C1)
+end if
 
 !*******************************************************************************
 !End 
