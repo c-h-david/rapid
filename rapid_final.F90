@@ -151,13 +151,13 @@ call VecGetType(ZV_k,temp_char,ierr)
 call PetscPrintf(PETSC_COMM_WORLD,'type of vector: '//temp_char//char(10),ierr)
 call MatGetType(ZM_A,temp_char,ierr)
 call PetscPrintf(PETSC_COMM_WORLD,'type of matrix: '//temp_char//char(10),ierr)
-if (IS_opt_routing==1) then 
+if (IS_opt_routing==1 .or. IS_opt_routing==3) then 
      call KSPGetType(ksp,temp_char,ierr)
 else
      temp_char='No KSP'
 end if
 call PetscPrintf(PETSC_COMM_WORLD,'type of KSP   : '//temp_char//char(10),ierr)
-if (IS_opt_routing==1) then 
+if (IS_opt_routing==1 .or. IS_opt_routing==3) then 
      call KSPGetPC(ksp,pc,ierr)
      call PCGetType(pc,temp_char,ierr)
 else
