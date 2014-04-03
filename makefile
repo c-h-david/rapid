@@ -26,6 +26,16 @@ NETCDF_INCLUDE=-I ${TACC_NETCDF_INC}
 #*******************************************************************************
 #makefile instructions 
 #*******************************************************************************
+
+#-------------------------------------------------------------------------------
+#Test that environment variables are properly read by make
+#-------------------------------------------------------------------------------
+dummy: 
+	echo ${FLINKER} ${FPPFLAGS}
+
+#-------------------------------------------------------------------------------
+#Link RAPID
+#-------------------------------------------------------------------------------
 rapid:	rapid_main.o \
 	rapid_init.o \
 	rapid_read_namelist.o \
@@ -43,6 +53,7 @@ rapid:	rapid_main.o \
 	rapid_close_Vlat_file.o \
 	rapid_close_Qobs_file.o \
 	rapid_close_Qfor_file.o \
+	rapid_get_Qdam.o \
 	rapid_net_mat.o \
 	rapid_net_mat_brk.o \
 	rapid_obs_mat.o \
@@ -71,6 +82,7 @@ rapid:	rapid_main.o \
 	rapid_close_Vlat_file.o \
 	rapid_close_Qobs_file.o \
 	rapid_close_Qfor_file.o \
+	rapid_get_Qdam.o \
 	rapid_net_mat.o \
 	rapid_net_mat_brk.o \
 	rapid_routing.o \
@@ -83,9 +95,9 @@ rapid:	rapid_main.o \
 	${TAO_FORTRAN_LIB} ${TAO_LIB} ${PETSC_LIB} ${NETCDF_LIB}
 	${RM} *.o *.mod 
 
-dummy: 
-	echo ${FLINKER} ${FPPFLAGS}
-
+#-------------------------------------------------------------------------------
+#Compile RAPID
+#-------------------------------------------------------------------------------
 rapid_main.o: 	rapid_main.F90 rapid_var.o 
 	-${FLINKER} ${FPPFLAGS} -c rapid_main.F90 ${PETSC_FC_INCLUDES} ${TAO_INCLUDE} ${NETCDF_INCLUDE}
 
@@ -116,6 +128,9 @@ rapid_net_mat_brk.o: 	rapid_net_mat_brk.F90 rapid_var.o
 
 rapid_net_mat.o: 	rapid_net_mat.F90 rapid_var.o
 	-${FLINKER} ${FPPFLAGS} -c rapid_net_mat.F90 ${PETSC_FC_INCLUDES}
+
+rapid_get_Qdam.o: 	rapid_get_Qdam.F90 rapid_var.o
+	-${FLINKER} ${FPPFLAGS} -c rapid_get_Qdam.F90 ${PETSC_FC_INCLUDES}
 
 rapid_close_Qfor_file.o: 	rapid_close_Qfor_file.F90 rapid_var.o
 	-${FLINKER} ${FPPFLAGS} -c rapid_close_Qfor_file.F90
@@ -165,6 +180,9 @@ rapid_read_namelist.o:	rapid_read_namelist.F90 rapid_var.o
 rapid_var.o:	rapid_var.F90
 	-${FLINKER} ${FPPFLAGS} -c rapid_var.F90 ${PETSC_FC_INCLUDES} ${TAO_INCLUDE} 
 	
+#-------------------------------------------------------------------------------
+#Clean
+#-------------------------------------------------------------------------------
 clean::
 	${RM} *.o *.mod rapid
 
