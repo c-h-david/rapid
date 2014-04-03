@@ -40,7 +40,7 @@ use rapid_var, only :                                                          &
                    BS_opt_Qinit,BS_opt_Qfinal,BS_opt_forcing,BS_opt_influence, &
                    IS_opt_run,IS_opt_routing,IS_opt_phi,                       &
                    ZV_read_reachtot,ZV_read_forcingtot,ZV_read_gagetot,        &
-                   ZS_TauM,ZS_TauO,ZS_TauR,ZS_dtO,ZS_dtR,ZS_dtM,               &
+                   ZS_TauM,ZS_TauO,ZS_TauR,ZS_dtO,ZS_dtR,ZS_dtM,ZS_dtF,        &
                    IS_gagetot,IS_gageuse,IS_gagebas,                           &
                    IV_gagetot_id,IV_gageuse_id,                                &
                    IV_gage_index,IV_gage_loc,                                  &
@@ -50,7 +50,7 @@ use rapid_var, only :                                                          &
                    ZV_QoutinitM,ZV_QoutinitO,ZV_QoutinitR,                     &
                    ZV_VinitM,ZV_VinitR,                                        &
                    ZV_babsmax,ZV_QoutRabsmin,ZV_QoutRabsmax,                   &
-                   IS_M,IS_O,IS_R,IS_RpO,IS_RpM,                               &
+                   IS_M,IS_O,IS_R,IS_RpO,IS_RpM,IS_RpF,                        &
                    kfac_file,xfac_file,x_file,k_file,Vlat_file,Qinit_file,     &
                    Qobsbarrec_file,                                            &
                    ZS_Qout0,ZS_V0,                                             &
@@ -129,6 +129,7 @@ IS_O=int(ZS_TauO/ZS_dtO)
 IS_R=int(ZS_TauR/ZS_dtR)
 IS_RpO=int(ZS_dtO/ZS_TauR)
 IS_RpM=int(ZS_dtM/ZS_TauR)
+IS_RpF=int(ZS_dtF/ZS_TauR)
 
 !-------------------------------------------------------------------------------
 !Initialize libraries and create objects common to all options
