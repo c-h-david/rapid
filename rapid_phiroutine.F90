@@ -2,7 +2,7 @@
 !Subroutine phiroutine
 !*******************************************************************************
 #ifndef NO_TAO
-subroutine rapid_phiroutine(taoapp,ZV_pnorm,ZS_phi,ierr)
+subroutine rapid_phiroutine(tao,ZV_pnorm,ZS_phi,IS_dummy,ierr)
 
 !PURPOSE
 !calculates a cost function phi as a function of model parameters, using means
@@ -59,7 +59,7 @@ implicit none
 !preconditioners
 #include "finclude/petscviewer.h"
 !viewers (allows writing results in file for example)
-#include "finclude/tao_solver.h" 
+#include "finclude/taosolver.h" 
 !TAO solver
 
 
@@ -67,9 +67,10 @@ implicit none
 !Intent (in/out), and local variables 
 !*******************************************************************************
 Vec, intent(in) :: ZV_pnorm
-TAO_APPLICATION, intent(inout)  :: taoapp
+TaoSolver, intent(inout)  :: tao
 PetscErrorCode, intent(out) :: ierr
 PetscScalar, intent(out):: ZS_phi
+PetscInt, intent (in) :: IS_dummy
 
 
 !*******************************************************************************
