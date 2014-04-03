@@ -16,7 +16,7 @@ use rapid_var, only :                                                          &
                    IS_nc_status,IS_nc_id_fil_Qout,                             &
                    IS_nc_id_dim_time,IS_nc_id_dim_comid,IV_nc_id_dim,          &
                    IS_nc_id_var_Qout,IS_nc_id_var_comid,                       &
-                   IV_basin_id,IS_reachbas
+                   IV_riv_bas_id,IS_riv_bas
 implicit none
 
 
@@ -39,7 +39,7 @@ if (rank==0) then
      IS_nc_status=NF90_CREATE(Qout_file,NF90_CLOBBER,IS_nc_id_fil_Qout)
      IS_nc_status=NF90_DEF_DIM(IS_nc_id_fil_Qout,'Time',NF90_UNLIMITED,        &
                                IS_nc_id_dim_time)
-     IS_nc_status=NF90_DEF_DIM(IS_nc_id_fil_Qout,'COMID',IS_reachbas,          &
+     IS_nc_status=NF90_DEF_DIM(IS_nc_id_fil_Qout,'COMID',IS_riv_bas,           &
                                IS_nc_id_dim_comid)
      IS_nc_status=NF90_DEF_VAR(IS_nc_id_fil_Qout,'COMID',NF90_INT,             &
                                IS_nc_id_dim_comid,IS_nc_id_var_comid)
@@ -48,7 +48,8 @@ if (rank==0) then
      IS_nc_status=NF90_DEF_VAR(IS_nc_id_fil_Qout,'Qout',NF90_REAL,             &
                                IV_nc_id_dim,IS_nc_id_var_Qout)
      IS_nc_status=NF90_ENDDEF(IS_nc_id_fil_Qout)
-     IS_nc_status=NF90_PUT_VAR(IS_nc_id_fil_Qout,IS_nc_id_var_comid,IV_basin_id)
+     IS_nc_status=NF90_PUT_VAR(IS_nc_id_fil_Qout,IS_nc_id_var_comid,           &
+                               IV_riv_bas_id)
      IS_nc_status=NF90_CLOSE(IS_nc_id_fil_Qout)
 
 end if
