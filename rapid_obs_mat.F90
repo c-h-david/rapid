@@ -118,6 +118,21 @@ end do
 
 
 !*******************************************************************************
+!Preallocation of the observation matrix
+!*******************************************************************************
+call MatSeqAIJSetPreallocation(ZM_Obs,1*IS_one,PETSC_NULL_INTEGER,ierr)
+call MatMPIAIJSetPreallocation(ZM_Obs,1*IS_one,PETSC_NULL_INTEGER,0*IS_one,    &
+                               PETSC_NULL_INTEGER,ierr)
+!Very basic preallocation assuming that all reaches have one gage.  Cannot use
+!IV_obs_loc1 for preallocation because it is of size IS_obs_bas and not 
+!IS_riv_bas. To do a better preallocation one needs to count the diagonal 
+!elements in a new vector
+
+!call PetscPrintf(PETSC_COMM_WORLD,'Observation matrix preallocated'//char(10), &
+!                 ierr)
+
+
+!*******************************************************************************
 !Creation of the observation matrix
 !*******************************************************************************
 do JS_riv_bas=1,IS_riv_bas

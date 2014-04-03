@@ -143,6 +143,21 @@ end do
 !*******************************************************************************
 !Matrix preallocation
 !*******************************************************************************
+!call MatSeqAIJSetPreallocation(ZM_Net,3*IS_one,PETSC_NULL_INTEGER,ierr)
+!call MatMPIAIJSetPreallocation(ZM_Net,3*IS_one,PETSC_NULL_INTEGER,2*IS_one,    &
+!                               PETSC_NULL_INTEGER,ierr)
+!call MatSeqAIJSetPreallocation(ZM_A,4*IS_one,PETSC_NULL_INTEGER,ierr)
+!call MatMPIAIJSetPreallocation(ZM_A,4*IS_one,PETSC_NULL_INTEGER,2*IS_one,      &
+!                               PETSC_NULL_INTEGER,ierr)
+!call MatSeqAIJSetPreallocation(ZM_T,4*IS_one,PETSC_NULL_INTEGER,ierr)
+!call MatMPIAIJSetPreallocation(ZM_T,4*IS_one,PETSC_NULL_INTEGER,2*IS_one,      &
+!                               PETSC_NULL_INTEGER,ierr)
+!call MatSeqAIJSetPreallocation(ZM_TC1,4*IS_one,PETSC_NULL_INTEGER,ierr)
+!call MatMPIAIJSetPreallocation(ZM_TC1,4*IS_one,PETSC_NULL_INTEGER,2*IS_one,    &
+!                               PETSC_NULL_INTEGER,ierr)
+!Very basic preallocation assuming no more than 3 upstream elements anywhere
+!Not used here because proper preallocation is done below
+
 call MatSeqAIJSetPreallocation(ZM_Net,PETSC_NULL_INTEGER,IV_nz,ierr)
 call MatMPIAIJSetPreallocation(ZM_Net,                                         &
                                PETSC_NULL_INTEGER,                             &
