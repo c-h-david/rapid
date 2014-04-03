@@ -3,7 +3,7 @@
 !*******************************************************************************
 subroutine rapid_init
 
-!PURPOSE
+!Purpose:
 !This subroutine allows to initialize RAPID for both regular runs and 
 !optimization runs, by performing slightly different tasks depending on what 
 !option is chosen.  
@@ -25,7 +25,8 @@ subroutine rapid_init
 !     -Compute the observation matrix
 !     -Read kfac and Qobsbarrec
 !     -Set initial values for the vector pnorm
-!Author: Cedric H. David, 2012 
+!Author: 
+!Cedric H. David, 2012. 
 
 
 !*******************************************************************************
@@ -55,6 +56,7 @@ use rapid_var, only :                                                          &
                    IS_dam_tot,IS_dam_use,IS_dam_bas,                           &
                    IV_dam_tot_id,IV_dam_use_id,                                &
                    IV_dam_index,IV_dam_loc2,IV_dam_pos,                        &
+                   ZV_Qin_dam,ZV_Qout_dam,                                     &
                    ZV_QoutinitM,ZV_QoutinitO,ZV_QoutinitR,                     &
                    ZV_VinitM,ZV_VinitR,                                        &
                    ZV_babsmax,ZV_QoutRabsmin,ZV_QoutRabsmax,                   &
@@ -139,6 +141,8 @@ if (BS_opt_dam) then
      allocate(IV_dam_tot_id(IS_dam_tot))
      allocate(IV_dam_use_id(IS_dam_use))
      allocate(ZV_read_dam_tot(IS_dam_tot))
+     allocate(ZV_Qin_dam(IS_dam_tot))
+     allocate(ZV_Qout_dam(IS_dam_tot))
 end if
 
 !-------------------------------------------------------------------------------
