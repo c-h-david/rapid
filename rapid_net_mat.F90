@@ -87,7 +87,7 @@ end do
 
 
 !*******************************************************************************
-!Matrix preallocation
+!Prepare for matrix preallocation
 !*******************************************************************************
 IS_ownfirst=0
 IS_ownlast=0
@@ -111,11 +111,14 @@ if (IV_riv_tot_id(IV_riv_index(JS_riv_bas))==                                  &
      !of nonzeros depends on row and column in an parallel matrix
      
      IV_nz(JS_riv_bas2)=IV_nz(JS_riv_bas2)+1 
-     !The size of IV_nz is IS_riv_bas, IV_nz is the same accross computing cores
+     !The size of IV_nz is IS_riv_bas, IV_nz is the same across computing cores
 
-     if (JS_riv_bas>=IS_ownfirst+1 .and. JS_riv_bas < IS_ownlast+1) then
+     if ((JS_riv_bas >=IS_ownfirst+1 .and.  JS_riv_bas< IS_ownlast+1) .and.    &
+         (JS_riv_bas2>=IS_ownfirst+1 .and. JS_riv_bas2< IS_ownlast+1)) then
           IV_dnz(JS_riv_bas2)=IV_dnz(JS_riv_bas2)+1 
-     else
+     end if
+     if ((JS_riv_bas < IS_ownfirst+1 .or.  JS_riv_bas >=IS_ownlast+1) .and.    &
+         (JS_riv_bas2>=IS_ownfirst+1 .and. JS_riv_bas2< IS_ownlast+1)) then
           IV_onz(JS_riv_bas2)=IV_onz(JS_riv_bas2)+1 
      end if
      !The size of IV_dnz and of IV_onz is IS_riv_bas. The values of IV_dnz and 
@@ -129,6 +132,14 @@ end do
 end do
 end do
 
+!print *, 'rank', rank, 'IV_nz(:)' , IV_nz(:)
+!print *, 'rank', rank, 'IV_dnz(:)', IV_dnz(:)
+!print *, 'rank', rank, 'IV_onz(:)', IV_onz(:)
+
+
+!*******************************************************************************
+!Matrix preallocation
+!*******************************************************************************
 call MatSeqAIJSetPreallocation(ZM_Net,PETSC_NULL_INTEGER,IV_nz,ierr)
 call MatMPIAIJSetPreallocation(ZM_Net,                                         &
                                PETSC_NULL_INTEGER,                             &
