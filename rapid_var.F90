@@ -301,7 +301,10 @@ PetscInt, allocatable, dimension(:) :: IV_dam_pos
 ![1,IS_riv_bas] except when a dam ID is outside of basin studied where it is 0. 
 !Applied on the river ID itself.
 
-PetscScalar, allocatable, dimension(:) :: ZV_Qin_dam,ZV_Qout_dam
+PetscScalar, allocatable, dimension(:) :: ZV_Qin_dam,ZV_Qin_dam_prev
+PetscScalar, allocatable, dimension(:) :: ZV_Qout_dam,ZV_Qout_dam_prev
+!Fortran vectors where the inflows and outflows for the dam module are saved. 
+!These will be allocated to size IS_dam_tot
 
 
 !*******************************************************************************
