@@ -18,7 +18,7 @@ use netcdf
 use rapid_var, only :                                                          &
                    IS_reachbas,                                                &
                    IV_basin_index,IV_basin_loc,                                &
-                   m3_nc_file,Qobs_file,Qfor_file,                             &
+                   Vlat_file,Qobs_file,Qfor_file,                              &
                    JS_O,IS_O,JS_RpO,IS_RpO,ZS_TauR,                            &
                    ZM_Obs,ZV_Qobs,                                             &
                    ZV_temp1,ZV_temp2,ZS_phitemp,ZS_phifac,ZV_kfac,             &
@@ -35,8 +35,8 @@ use rapid_var, only :                                                          &
                    ksp,                                                        &
                    ZS_one,temp_char,rank,                                      &
                    ZV_read_reachtot,ZV_read_forcingtot,ZV_read_gagetot,        &
-                   IS_nc_status,IS_nc_id_fil_m3,IS_nc_id_var_m3,IV_nc_start,   &
-                   IV_nc_count,                                                &
+                   IS_nc_status,IS_nc_id_fil_Vlat,IS_nc_id_var_Vlat,           &
+                   IV_nc_start,IV_nc_count,                                    &
                    IS_opt_phi,BS_opt_forcing,IS_strt_opt
 
 
@@ -105,14 +105,10 @@ call VecCopy(ZV_QoutinitO,ZV_QoutinitR,ierr)
 !-------------------------------------------------------------------------------
 !Open files
 !-------------------------------------------------------------------------------
-if (rank==0) then
-open(99,file=m3_nc_file,status='old')
-close(99)
-IS_nc_status=NF90_OPEN(m3_nc_file,NF90_NOWRITE,IS_nc_id_fil_m3)
-IS_nc_status=NF90_INQ_VARID(IS_nc_id_fil_m3,'m3_riv',IS_nc_id_var_m3)
-end if
-if (BS_opt_forcing) open(34,file=Qfor_file,status='old')
-open(33,file=Qobs_file,status='old')
+call rapid_open_Vlat_file(Vlat_file)
+call rapid_open_Qobs_file(Qobs_file)
+if (BS_opt_forcing) call rapid_open_Qfor_file(Qfor_file)
+
 
 !-------------------------------------------------------------------------------
 !Read and compute
@@ -127,16 +123,7 @@ do JS_O=1,IS_O
 !Read/set upstream forcing
 !- + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + 
 if (BS_opt_forcing .and. IS_forcingbas>0) then
-read(34,*) ZV_read_forcingtot
-call VecSetValues(ZV_Qfor,IS_forcingbas,IV_forcing_loc,                        &
-                  ZV_read_forcingtot(IV_forcing_index),INSERT_VALUES,ierr)
-                  !here we only look at the forcing within the basin studied 
-call VecAssemblyBegin(ZV_Qfor,ierr)
-call VecAssemblyEnd(ZV_Qfor,ierr)           !set Qfor based on reading a file
-!Qfor is only available everyday, this is why it's not included in the following 
-!loop.
-!call PetscPrintf(PETSC_COMM_WORLD,'ZV_Qfor' // char(10),ierr)
-!call VecView(ZV_Qfor,PETSC_VIEWER_STDOUT_WORLD,ierr)
+     call rapid_read_Qfor_file
 end if 
 
 !- + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + 
@@ -149,15 +136,8 @@ do JS_RpO=1,IS_RpO   !loop needed since there forcing more frequent than obs
 !- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 !Read/set surface and subsurface volumes
 !- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-if (rank==0) then
-IS_nc_status=NF90_GET_VAR(IS_nc_id_fil_m3,IS_nc_id_var_m3,ZV_read_reachtot,    &
-                          IV_nc_start,IV_nc_count)
+call rapid_read_Vlat_file
 IV_nc_start(2)=IV_nc_start(2)+1
-call VecSetValues(ZV_Vlat,IS_reachbas,IV_basin_loc,                            &
-                  ZV_read_reachtot(IV_basin_index),INSERT_VALUES,ierr)
-end if
-call VecAssemblyBegin(ZV_Vlat,ierr)
-call VecAssemblyEnd(ZV_Vlat,ierr)           !set Vlat based on reading a file
 
 !- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 !calculation of Q based on V (here first order explicit approx) 
@@ -191,13 +171,7 @@ enddo                !end of loop to account for forcing more frequent than obs
 !-------------------------------------------------------------------------------
 !Calculate objective function for current day
 !-------------------------------------------------------------------------------
-read(33,*) ZV_read_gagetot
-call VecSetValues(ZV_Qobs,IS_gagebas,IV_gage_loc,                              &
-                  ZV_read_gagetot(IV_gage_index),INSERT_VALUES,ierr)
-                  !here we only look at the observations within the basin
-                  !studied
-call VecAssemblyBegin(ZV_Qobs,ierr)
-call VecAssemblyEnd(ZV_Qobs,ierr)           !set Qobs based on reading a file
+call rapid_read_Qobs_file
 
 !-------------------------------------------------------------------------------
 !Objective function #1 - for current day - square error
@@ -232,9 +206,9 @@ enddo
 !-------------------------------------------------------------------------------
 !Close files 
 !-------------------------------------------------------------------------------
-if (rank==0) IS_nc_status=NF90_CLOSE(IS_nc_id_fil_m3)
-close(34)
-close(33)
+call rapid_close_Vlat_file
+call rapid_close_Qobs_file
+call rapid_close_Qfor_file
 
 
 !*******************************************************************************
