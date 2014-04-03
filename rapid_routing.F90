@@ -18,9 +18,10 @@ subroutine rapid_routing(ZV_C1,ZV_C2,ZV_C3,ZV_Qext,                            &
 use netcdf
 use rapid_var, only :                                                          &
                    ZS_dtR,IS_R,JS_R,                                           &
-                   ZM_Net,                                                     &
-                   ZV_b,ZV_babsmax,                                            &
+                   ZM_Net,ZM_TC1,                                              &
+                   ZV_b,ZV_babsmax,ZV_bhat,                                    &
                    ZV_QoutprevR,ZV_VprevR,ZV_QoutRabsmin,ZV_QoutRabsmax,       &
+                   ZV_QoutRhat,                                                &
                    ZV_VoutR,ZV_Vext,                                           &
                    ierr,ksp,                                                   &
                    ZS_one,IS_ksp_iter,IS_ksp_iter_max,                         &
@@ -155,6 +156,25 @@ call VecRestoreArrayF90(ZV_QoutR,ZV_QoutR_p,ierr)
 call VecRestoreArrayF90(ZV_QoutprevR,ZV_QoutprevR_p,ierr)
 call VecRestoreArrayF90(ZV_b,ZV_b_p,ierr)
 end if
+
+!-------------------------------------------------------------------------------
+!Routing with PETSc using a matrix method with transboundary matrix
+!-------------------------------------------------------------------------------
+if (IS_opt_routing==3) then
+
+call KSPSolve(ksp,ZV_b,ZV_QoutRhat,ierr)                     !solves A*Qouthat=b
+call KSPGetIterationNumber(ksp,IS_ksp_iter,ierr)
+if (IS_ksp_iter>IS_ksp_iter_max) IS_ksp_iter_max=IS_ksp_iter
+
+call MatMult(ZM_TC1,ZV_QoutRhat,ZV_bhat,ierr)
+call VecAYPX(ZV_bhat,ZS_one,ZV_b,ierr)
+
+call KSPSolve(ksp,ZV_bhat,ZV_QoutR,ierr)                     !solves A*Qout=bhat
+call KSPGetIterationNumber(ksp,IS_ksp_iter,ierr)
+if (IS_ksp_iter>IS_ksp_iter_max) IS_ksp_iter_max=IS_ksp_iter
+
+end if
+
 
 !-------------------------------------------------------------------------------
 !Calculation of babsmax, QoutRabsmin and QoutRabsmax
