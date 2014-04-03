@@ -1,6 +1,6 @@
 subroutine rapid_net_mat
 
-!PURPOSE
+!Purpose:
 !This subroutine is specific for RAPID connectivity tables.  
 !Creates a sparse network matrix.  "1" is recorded at Net(i,j) if the reach 
 !in column j flows into the reach in line i. If some connection are missing
@@ -10,7 +10,8 @@ subroutine rapid_net_mat
 !A transboundary matrix is also created whose elements in the diagonal blocks 
 !are all null and the elements in the off-diagonal blocks are equal to those of 
 !the network matrix. 
-!Author: Cedric H. David, 2013
+!Author: 
+!Cedric H. David, 2013.
 
 
 !*******************************************************************************

@@ -3,8 +3,10 @@
 !*******************************************************************************
 subroutine rapid_open_Vlat_file(Vlat_file) 
 
-!PURPOSE
-!Author: Cedric H. David, 2013
+!Purpose:
+!Open Vlat_file from Fortran/netCDF.
+!Author: 
+!Cedric H. David, 2013.
 
 
 !*******************************************************************************

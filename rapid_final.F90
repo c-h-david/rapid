@@ -3,7 +3,7 @@
 !*******************************************************************************
 subroutine rapid_final
 
-!PURPOSE
+!Purpose:
 !This subroutine allows to finalize RAPID for both regular runs and 
 !optimization runs, by performing slightly different tasks depending on what 
 !option is chosen.  
@@ -15,7 +15,8 @@ subroutine rapid_final
 !Finalization tasks common to all RAPID options:
 !     -Prints some information about the types of objects used during simulation
 !     -Destroy all PETSc and TAO objects 
-!Author: Cedric H. David, 2012 
+!Author: 
+!Cedric H. David, 2012. 
 
 
 !*******************************************************************************

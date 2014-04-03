@@ -3,8 +3,10 @@
 !*******************************************************************************
 subroutine rapid_open_Qout_file(Qout_file) 
 
-!PURPOSE
-!Author: Cedric H. David, 2013
+!Purpose:
+!Open Qout_file from Fortran/netCDF.
+!Author: 
+!Cedric H. David, 2013.
 
 
 !*******************************************************************************

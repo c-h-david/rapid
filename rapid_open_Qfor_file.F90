@@ -3,10 +3,10 @@
 !*******************************************************************************
 subroutine rapid_open_Qfor_file(Qfor_file) 
 
-!PURPOSE
-!Open file with flow forced into the river network after breaking upstream
-!connectivity
-!Author: Cedric H. David, 2013
+!Purpose:
+!Open Qfor_file from Fortran.
+!Author: 
+!Cedric H. David, 2013.
 
 
 !*******************************************************************************

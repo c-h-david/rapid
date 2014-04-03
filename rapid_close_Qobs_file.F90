@@ -3,8 +3,10 @@
 !*******************************************************************************
 subroutine rapid_close_Qobs_file
 
-!PURPOSE
-!Author: Cedric H. David, 2013
+!Purpose:
+!Close Qobs_file from Fortran.
+!Author: 
+!Cedric H. David, 2013.
 
 
 !*******************************************************************************

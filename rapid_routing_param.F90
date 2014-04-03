@@ -4,10 +4,11 @@
 subroutine rapid_routing_param(ZV_k,ZV_x,                                      &
                                ZV_C1,ZV_C2,ZV_C3,ZM_A) 
 
-!PURPOSE
+!Purpose:
 !Calculates the Muskingum method (McCarthy 1938) parameters C1, C2 and C3.  
 !Also calculates the matrix A used for linear system solver. 
-!Author: Cedric H. David, 2010 
+!Author: 
+!Cedric H. David, 2010. 
 
 
 !*******************************************************************************

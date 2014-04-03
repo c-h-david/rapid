@@ -3,8 +3,10 @@
 !*******************************************************************************
 subroutine rapid_open_Qobs_file(Qobs_file) 
 
-!PURPOSE
-!Author: Cedric H. David, 2013
+!Purpose:
+!Open Qobs_file from Fortran.
+!Author: 
+!Cedric H. David, 2013.
 
 
 !*******************************************************************************

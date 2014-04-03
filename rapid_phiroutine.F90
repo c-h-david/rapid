@@ -4,11 +4,12 @@
 #ifndef NO_TAO
 subroutine rapid_phiroutine(tao,ZV_pnorm,ZS_phi,IS_dummy,ierr)
 
-!PURPOSE
+!Purpose:
 !calculates a cost function phi as a function of model parameters, using means
 !over a given period of time.  The cost function represents the square error
-!between calculated flows and observed flows where observations are available
-!Author: Cedric H. David, 2008 
+!between calculated flows and observed flows where observations are available.
+!Author: 
+!Cedric H. David, 2008. 
 
 
 !*******************************************************************************

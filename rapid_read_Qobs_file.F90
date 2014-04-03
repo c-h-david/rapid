@@ -3,8 +3,10 @@
 !*******************************************************************************
 subroutine rapid_read_Qobs_file
 
-!PURPOSE
-!Author: Cedric H. David, 2013
+!Purpose:
+!Read Qobs_file from Fortran.
+!Author: 
+!Cedric H. David, 2013.
 
 
 !*******************************************************************************

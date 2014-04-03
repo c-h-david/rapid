@@ -3,8 +3,10 @@
 !*******************************************************************************
 subroutine rapid_close_Qout_file
 
-!PURPOSE
-!Author: Cedric H. David, 2013
+!Purpose:
+!Close Qout_file from Fortran/netCDF.
+!Author: 
+!Cedric H. David, 2013.
 
 
 !*******************************************************************************

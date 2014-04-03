@@ -3,8 +3,10 @@
 !*******************************************************************************
 subroutine rapid_write_Qout_file
 
-!PURPOSE
-!Author: Cedric H. David, 2013
+!Purpose:
+!Write into Qout_file from Fortran/netCDF.
+!Author: 
+!Cedric H. David, 2013.
 
 
 !*******************************************************************************

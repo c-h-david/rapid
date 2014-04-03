@@ -1,10 +1,11 @@
 subroutine rapid_obs_mat
 
-!PURPOSE
+!Purpose:
 !Creates a kronecker-type diagonal sparse matrix.  "1" is recorded at the line 
 !and column where observations are available.  Calculates IS_obs_bas.  Also 
-!creates vectors IV_obs_index and IV_obs_loc1
-!Author: Cedric H. David, 2008 
+!creates vectors IV_obs_index and IV_obs_loc1.
+!Author: 
+!Cedric H. David, 2008. 
 
 
 !*******************************************************************************
