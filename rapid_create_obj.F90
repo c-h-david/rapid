@@ -13,7 +13,7 @@ subroutine rapid_create_obj
 !Declaration of variables
 !*******************************************************************************
 use rapid_var, only :                                                          &
-                   IS_reachbas,                                                &
+                   IS_riv_bas,                                                 &
                    ZM_Net,                                                     &
                    ZM_Obs,ZV_Qobs,ZV_temp1,ZV_temp2,ZV_kfac,                   &
                    ZM_A,                                                       &
@@ -72,8 +72,7 @@ call KSPCreate(PETSC_COMM_WORLD,ksp,ierr)
 
 !Matrices-----------------------------------------------------------------------
 call MatCreate(PETSC_COMM_WORLD,ZM_Net,ierr)
-call MatSetSizes(ZM_Net,PETSC_DECIDE,PETSC_DECIDE,IS_reachbas,IS_reachbas,ierr)
-!call MatSetType(ZM_Net,MATMPIAIJ,ierr) !Unnecessary, the type is picked at runtime
+call MatSetSizes(ZM_Net,PETSC_DECIDE,PETSC_DECIDE,IS_riv_bas,IS_riv_bas,ierr)
 call MatSetFromOptions(ZM_Net,ierr)
 !call MatSeqAIJSetPreallocation(ZM_Net,3*IS_one,PETSC_NULL_INTEGER,ierr)
 !call MatMPIAIJSetPreallocation(ZM_Net,3*IS_one,PETSC_NULL_INTEGER,2*IS_one,    &
@@ -82,8 +81,7 @@ call MatSetFromOptions(ZM_Net,ierr)
 !Not used here because proper preallocation is done within rapid_net_mat.F90
 
 call MatCreate(PETSC_COMM_WORLD,ZM_A,ierr)
-call MatSetSizes(ZM_A,PETSC_DECIDE,PETSC_DECIDE,IS_reachbas,IS_reachbas,ierr)
-!call MatSetType(ZM_A,MATMPIAIJ,ierr) !Unnecessary, the type is picked at runtime
+call MatSetSizes(ZM_A,PETSC_DECIDE,PETSC_DECIDE,IS_riv_bas,IS_riv_bas,ierr)
 call MatSetFromOptions(ZM_A,ierr)
 !call MatSeqAIJSetPreallocation(ZM_A,4*IS_one,PETSC_NULL_INTEGER,ierr)
 !call MatMPIAIJSetPreallocation(ZM_A,4*IS_one,PETSC_NULL_INTEGER,2*IS_one,      &
@@ -92,23 +90,22 @@ call MatSetFromOptions(ZM_A,ierr)
 !Not used here because proper preallocation is done within rapid_net_mat.F90
 
 call MatCreate(PETSC_COMM_WORLD,ZM_Obs,ierr)
-call MatSetSizes(ZM_Obs,PETSC_DECIDE,PETSC_DECIDE,IS_reachbas,IS_reachbas,ierr)
-!call MatSetType(ZM_Obs,MATMPIAIJ,ierr) !Unnecessary, the type is picked at runtime
+call MatSetSizes(ZM_Obs,PETSC_DECIDE,PETSC_DECIDE,IS_riv_bas,IS_riv_bas,ierr)
 call MatSetFromOptions(ZM_Obs,ierr)
 call MatSeqAIJSetPreallocation(ZM_Obs,1*IS_one,PETSC_NULL_INTEGER,ierr)
 call MatMPIAIJSetPreallocation(ZM_Obs,1*IS_one,PETSC_NULL_INTEGER,0*IS_one,    &
                                PETSC_NULL_INTEGER,ierr)
 !Very basic preallocation assuming that all reaches have one gage.
 
-!These matrices are all square of size IS_reachbas.  PETSC_DECIDE allows PETSc 
+!These matrices are all square of size IS_riv_bas.  PETSC_DECIDE allows PETSc 
 !to determine the local sizes on its own. MatSetFromOptions allows to use many
 !different options at runtime, such as "-mat_type aijmumps".
 
 
-!Vectors of size IS_reachbas----------------------------------------------------
-!call VecCreateMPI(PETSC_COMM_WORLD,PETSC_DECIDE,IS_reachbas,ZV_k,ierr)
+!Vectors of size IS_riv_bas----------------------------------------------------
+!call VecCreateMPI(PETSC_COMM_WORLD,PETSC_DECIDE,IS_riv_bas,ZV_k,ierr)
 call VecCreate(PETSC_COMM_WORLD,ZV_k,ierr)
-call VecSetSizes(ZV_k,PETSC_DECIDE,IS_reachbas,ierr)
+call VecSetSizes(ZV_k,PETSC_DECIDE,IS_riv_bas,ierr)
 call VecSetFromOptions(ZV_k,ierr)
 !same remarks as above for sizes
 
