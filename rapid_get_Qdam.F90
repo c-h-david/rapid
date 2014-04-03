@@ -16,7 +16,7 @@ use rapid_var, only :                                                          &
                    rank,ierr,vecscat,ZV_pointer,ZV_SeqZero,ZS_one,             &
                    IS_dam_bas,                                                 &
                    ZM_Net,ZV_Qext,ZV_Qdam,                                     &
-                   ZV_Qin_dam,ZV_Qout_dam,                                     &
+                   ZV_Qin_dam,ZV_Qout_dam,ZV_Qin_dam_prev,ZV_Qout_dam_prev,    &
                    ZV_QoutbarR,ZV_QinbarR,                                     &
                    IV_dam_loc2,IV_dam_index,IV_dam_pos
 
@@ -50,12 +50,17 @@ implicit none
 
 
 !*******************************************************************************
-!Read file
+!Compute inflow into dams
 !*******************************************************************************
-if (rank==0) ZV_Qin_dam=0 
 call MatMult(ZM_Net,ZV_QoutbarR,ZV_QinbarR,ierr)           
 call VecAXPY(ZV_QinbarR,ZS_one,ZV_Qext,ierr)
 !QinbarR=Net*QoutbarR+Qext
+
+
+!*******************************************************************************
+!Set values from PETSc vector into Fortran vector 
+!*******************************************************************************
+if (rank==0) ZV_Qin_dam=0 
 call VecScatterBegin(vecscat,ZV_QinbarR,ZV_SeqZero,                            &
                      INSERT_VALUES,SCATTER_FORWARD,ierr)
 call VecScatterEnd(vecscat,ZV_QinbarR,ZV_SeqZero,                              &
@@ -67,27 +72,39 @@ call VecRestoreArrayF90(ZV_SeqZero,ZV_pointer,ierr)
 
 
 !*******************************************************************************
-!Read file
+!Compute outflow from dams
 !*******************************************************************************
+!-------------------------------------------------------------------------------
+!If dam module does not exit, outflow is saCompute outflow from subroutine
+!-------------------------------------------------------------------------------
 if (rank==0) then 
-     ZV_Qout_dam=0 
-!     call dam_linear(ZV_Qin_dam,ZV_Qout_dam)
      ZV_Qout_dam=ZV_Qin_dam
+end if
+
+!!-------------------------------------------------------------------------------
+!!If dam module does exist, use it
+!!-------------------------------------------------------------------------------
+!if (rank==0) then 
+!     call dam_linear(ZV_Qin_dam_prev,ZV_Qout_dam_prev,ZV_Qout_dam)
+!end if
+
+!-------------------------------------------------------------------------------
+!Re-initialize values
+!-------------------------------------------------------------------------------
+if (rank==0) then 
+     ZV_Qin_dam_prev=ZV_Qin_dam
+     ZV_Qout_dam_prev=ZV_Qout_dam
 end if
 
 
 !*******************************************************************************
-!Set values in PETSc vector
+!Set values from Fortran vector into PETSc vector 
 !*******************************************************************************
 if (rank==0) then
      call VecSetValues(ZV_Qdam,IS_dam_bas,IV_dam_loc2,                         &
                        ZV_Qout_dam(IV_dam_index),INSERT_VALUES,ierr)
 end if
 
-
-!*******************************************************************************
-!Assemble PETSc vector
-!*******************************************************************************
 call VecAssemblyBegin(ZV_Qdam,ierr)
 call VecAssemblyEnd(ZV_Qdam,ierr)           
 
@@ -95,8 +112,10 @@ call VecAssemblyEnd(ZV_Qdam,ierr)
 !*******************************************************************************
 !Optional - Write information in stdout 
 !*******************************************************************************
-!if (rank==0) print *, 'Qin_dam =', ZV_Qin_dam
-!if (rank==0) print *, 'Qout_dam=', ZV_Qout_dam
+!if (rank==0) print *, 'Qin_dam_prev  =', ZV_Qin_dam_prev
+!if (rank==0) print *, 'Qout_dam_prev =', ZV_Qout_dam_prev
+!if (rank==0) print *, 'Qin_dam       =', ZV_Qin_dam
+!if (rank==0) print *, 'Qout_dam      =', ZV_Qout_dam
 !call VecView(ZV_Qdam,PETSC_VIEWER_STDOUT_WORLD,ierr)
 
 
