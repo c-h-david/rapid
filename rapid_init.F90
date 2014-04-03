@@ -66,7 +66,7 @@ use rapid_var, only :                                                          &
                    ZV_k,ZV_x,ZV_kfac,ZV_p,ZV_pnorm,ZV_pfac,                    &
                    ZS_knorm_init,ZS_xnorm_init,ZS_kfac,ZS_xfac,                &
                    ZV_C1,ZV_C2,ZV_C3,ZM_A,                                     &
-                   ierr,ksp,pc,rank,IS_one,ZS_one
+                   ierr,ksp,pc,rank,ncore,IS_one,ZS_one
 
 
 implicit none
@@ -160,6 +160,9 @@ call rapid_create_obj
 call MPI_Comm_rank(PETSC_COMM_WORLD,rank,ierr)
 !Determine number associated with each processor
 
+call MPI_Comm_size(PETSC_COMM_WORLD,ncore,ierr)
+!Determine total number of cores used
+
 !-------------------------------------------------------------------------------
 !Prints information about current model run based on info from namelist
 !-------------------------------------------------------------------------------
@@ -179,6 +182,8 @@ if (rank==0 .and. IS_opt_routing==1)                       print '(a70)',      &
        'Routing with matrix-based Muskingum method                             '
 if (rank==0 .and. IS_opt_routing==2)                       print '(a70)',      &
        'Routing with traditional Muskingum method                              '
+if (rank==0 .and. IS_opt_routing==3)                       print '(a70)',      &
+       'Routing with matrix-based Muskingum method using transboundary matrix  '
 if (rank==0 .and. IS_opt_run==1)                           print '(a70)',      &
        'RAPID mode: computing flowrates                                        '
 if (rank==0 .and. IS_opt_run==2 .and. IS_opt_phi==1)       print '(a70)',      &
@@ -238,6 +243,7 @@ call VecSet(ZV_QoutRabsmin,ZS_one*999999999,ierr)
 call VecSet(ZV_QoutRabsmax,ZS_one*0        ,ierr)
 end if
 
+
 !*******************************************************************************
 !Initialization procedure for OPTION 1
 !*******************************************************************************
@@ -281,6 +287,7 @@ call KSPSetType(ksp,KSPRICHARDSON,ierr)                    !default=richardson
 !call KSPSetInitialGuessNonZero(ksp,PETSC_TRUE,ierr)
 !call KSPSetInitialGuessKnoll(ksp,PETSC_TRUE,ierr)
 call KSPSetFromOptions(ksp,ierr)                           !if runtime options
+if (IS_opt_routing==3) call KSPSetType(ksp,KSPPREONLY,ierr)!default=preonly
 
 !-------------------------------------------------------------------------------
 !End of initialization procedure for OPTION 1
