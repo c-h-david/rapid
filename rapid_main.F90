@@ -15,8 +15,8 @@ program rapid_main
 use netcdf
 use rapid_var, only :                                                          &
                    namelist_file,                                              &
-                   IS_reachbas,                                                &
-                   IV_basin_id,IV_basin_index,IV_basin_loc,                    &
+                   IS_riv_bas,                                                 &
+                   IV_riv_bas_id,IV_riv_index,IV_riv_loc1,                     &
                    Vlat_file,Qfor_file,                                        &
                    Qout_file,V_file,                                           &
                    IS_M,JS_M,JS_RpM,IS_RpM,IS_RpF,                             &
@@ -30,16 +30,16 @@ use rapid_var, only :                                                          &
                    ZS_phi,                                                     &
                    ierr,vecscat,rank,stage,temp_char,temp_char2,               &
                    ZV_pointer,ZS_one,                                          &
-                   ZV_read_reachtot,ZV_read_forcingtot,                        &
+                   ZV_read_riv_tot,ZV_read_for_tot,                            &
                    ZV_SeqZero,                                                 &
-                   IS_reachtot,IS_forcingbas,                                  &
-                   IV_forcing_index,IV_forcing_loc,                            &
+                   IS_riv_tot,IS_for_bas,                                      &
+                   IV_for_index,IV_for_loc2,                                   &
                    ZS_time1,ZS_time2,ZS_time3,                                 &
                    IS_nc_status,IS_nc_id_fil_Vlat,IS_nc_id_fil_Qout,           &
                    IS_nc_id_var_Vlat,IS_nc_id_var_Qout,IS_nc_id_var_comid,     &
                    IS_nc_id_dim_time,IS_nc_id_dim_comid,IV_nc_id_dim,          &
                    IV_nc_start,IV_nc_count,IV_nc_count2,                       &
-                   BS_opt_forcing,IS_opt_run
+                   BS_opt_for,IS_opt_run
 
 #ifndef NO_TAO
 use rapid_var, only :                                                          &
@@ -100,7 +100,7 @@ call rapid_create_Qout_file(Qout_file)
 !-------------------------------------------------------------------------------
 call rapid_open_Qout_file(Qout_file)
 call rapid_open_Vlat_file(Vlat_file)
-if (BS_opt_forcing) call rapid_open_Qfor_file(Qfor_file)
+if (BS_opt_for) call rapid_open_Qfor_file(Qfor_file)
 
 !-------------------------------------------------------------------------------
 !Read, compute and write          
@@ -110,8 +110,8 @@ call PetscLogStagePush(stage,ierr)
 ZS_time3=0
 
 IV_nc_start=(/1,1/)
-IV_nc_count=(/IS_reachtot,1/)
-IV_nc_count2=(/IS_reachbas,1/)
+IV_nc_count=(/IS_riv_tot,1/)
+IV_nc_count2=(/IS_riv_bas,1/)
 
 do JS_M=1,IS_M
 
@@ -120,7 +120,7 @@ do JS_RpM=1,IS_RpM
 !- + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - +  
 !Read/set upstream forcing
 !- + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - +  
-if (BS_opt_forcing .and. IS_forcingbas>0                                       &
+if (BS_opt_for .and. IS_for_bas>0                                              &
                    .and. mod((JS_M-1)*IS_RpM+JS_RpM,IS_RpF)==1) then
      call rapid_read_Qfor_file
 end if 
@@ -177,7 +177,6 @@ end do
 !-------------------------------------------------------------------------------
 call PetscPrintf(PETSC_COMM_WORLD,'Cumulative time for routing only'           &
                                   //char(10),ierr)
-!print '(a10,i7,a2,a10,f7.2)', 'Rank     :',rank,', ','Time     :',ZS_time3
 write(temp_char ,'(i10)')   rank
 write(temp_char2,'(f10.2)') ZS_time3
 call PetscSynchronizedPrintf(PETSC_COMM_WORLD,'Rank     :'//temp_char //', '// &
@@ -194,7 +193,7 @@ call PetscPrintf(PETSC_COMM_WORLD,'Output data created'//char(10),ierr)
 !-------------------------------------------------------------------------------
 call rapid_close_Qout_file
 call rapid_close_Vlat_file
-if (BS_opt_forcing) call rapid_close_Qfor_file(Qfor_file)
+if (BS_opt_for) call rapid_close_Qfor_file(Qfor_file)
 
 
 !-------------------------------------------------------------------------------
