@@ -14,7 +14,7 @@ subroutine rapid_destro_obj
 !Declaration of variables
 !*******************************************************************************
 use rapid_var, only :                                                          &
-                   IS_reachbas,                                                &
+                   IS_riv_bas,                                                 &
                    ZM_Net,                                                     &
                    ZM_Obs,ZV_Qobs,ZV_temp1,ZV_temp2,ZV_kfac,                   &
                    ZM_A,                                                       &

@@ -22,7 +22,7 @@ subroutine rapid_final
 !Declaration of variables
 !*******************************************************************************
 use rapid_var, only :                                                          &
-                   IS_reachbas,JS_reachbas,                                    &
+                   IS_riv_bas,JS_riv_bas,                                      &
                    IS_opt_routing,IS_opt_run,                                  &
                    BS_opt_Qfinal,BS_opt_influence,                             &
                    Qfinal_file,babsmax_file,QoutRabsmin_file,QoutRabsmax_file, &
@@ -72,8 +72,8 @@ call VecScatterEnd(vecscat,ZV_QoutR,ZV_SeqZero,                                &
 call VecGetArrayF90(ZV_SeqZero,ZV_pointer,ierr)
 if (rank==0) then 
      open(31,file=Qfinal_file)
-     do JS_reachbas=1,IS_reachbas
-          write(31,*) ZV_pointer(JS_reachbas)
+     do JS_riv_bas=1,IS_riv_bas
+          write(31,*) ZV_pointer(JS_riv_bas)
      end do
      close(31)
 end if
@@ -91,8 +91,8 @@ call VecScatterEnd(vecscat,ZV_babsmax,ZV_SeqZero,                              &
 call VecGetArrayF90(ZV_SeqZero,ZV_pointer,ierr)
 if (rank==0) then 
      open(42,file=babsmax_file)
-     do JS_reachbas=1,IS_reachbas
-          write(42,*) ZV_pointer(JS_reachbas)
+     do JS_riv_bas=1,IS_riv_bas
+          write(42,*) ZV_pointer(JS_riv_bas)
      end do
      close(42)
 end if
@@ -110,8 +110,8 @@ call VecScatterEnd(vecscat,ZV_QoutRabsmin,ZV_SeqZero,                          &
 call VecGetArrayF90(ZV_SeqZero,ZV_pointer,ierr)
 if (rank==0) then 
      open(43,file=QoutRabsmin_file)
-     do JS_reachbas=1,IS_reachbas
-          write(43,*) ZV_pointer(JS_reachbas)
+     do JS_riv_bas=1,IS_riv_bas
+          write(43,*) ZV_pointer(JS_riv_bas)
      end do
      close(43)
 end if
@@ -129,8 +129,8 @@ call VecScatterEnd(vecscat,ZV_QoutRabsmax,ZV_SeqZero,                          &
 call VecGetArrayF90(ZV_SeqZero,ZV_pointer,ierr)
 if (rank==0) then 
      open(44,file=QoutRabsmax_file)
-     do JS_reachbas=1,IS_reachbas
-          write(44,*) ZV_pointer(JS_reachbas)
+     do JS_riv_bas=1,IS_riv_bas
+          write(44,*) ZV_pointer(JS_riv_bas)
      end do
      close(44)
 end if
@@ -169,7 +169,7 @@ call PetscPrintf(PETSC_COMM_WORLD,char(10),ierr)
 call PetscPrintf(PETSC_COMM_WORLD,'RAPID compiled and run without TAO',ierr)
 call PetscPrintf(PETSC_COMM_WORLD,char(10),ierr)
 #endif
-write(temp_char ,'(i10)')   rank
+write(temp_char ,'(i10)') rank
 write(temp_char2,'(i10)') IS_ksp_iter_max
 call PetscSynchronizedPrintf(PETSC_COMM_WORLD,'Rank     :'//temp_char //', '// &
                                               'Max KSP  :'//temp_char2//       &
