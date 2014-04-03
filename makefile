@@ -38,6 +38,7 @@ rapid:	rapid_main.o \
 	rapid_close_Qobs_file.o \
 	rapid_close_Qfor_file.o \
 	rapid_net_mat.o \
+	rapid_net_mat_brk.o \
 	rapid_obs_mat.o \
 	rapid_routing.o \
 	rapid_routing_param.o \
@@ -65,6 +66,7 @@ rapid:	rapid_main.o \
 	rapid_close_Qobs_file.o \
 	rapid_close_Qfor_file.o \
 	rapid_net_mat.o \
+	rapid_net_mat_brk.o \
 	rapid_routing.o \
 	rapid_routing_param.o \
 	rapid_obs_mat.o \
@@ -102,6 +104,9 @@ rapid_routing_param.o: 	rapid_routing_param.F90 rapid_var.o
 
 rapid_obs_mat.o: 	rapid_obs_mat.F90 rapid_var.o
 	-${FLINKER} ${FPPFLAGS} -c rapid_obs_mat.F90 ${PETSC_INCLUDE}
+
+rapid_net_mat_brk.o: 	rapid_net_mat_brk.F90 rapid_var.o
+	-${FLINKER} ${FPPFLAGS} -c rapid_net_mat_brk.F90 ${PETSC_INCLUDE}
 
 rapid_net_mat.o: 	rapid_net_mat.F90 rapid_var.o
 	-${FLINKER} ${FPPFLAGS} -c rapid_net_mat.F90 ${PETSC_INCLUDE}
