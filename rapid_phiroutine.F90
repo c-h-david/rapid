@@ -19,7 +19,7 @@ use rapid_var, only :                                                          &
                    IS_reachbas,                                                &
                    IV_basin_index,IV_basin_loc,                                &
                    Vlat_file,Qobs_file,Qfor_file,                              &
-                   JS_O,IS_O,JS_RpO,IS_RpO,ZS_TauR,                            &
+                   JS_O,IS_O,JS_RpO,IS_RpO,ZS_TauR,IS_RpF,                     &
                    ZM_Obs,ZV_Qobs,                                             &
                    ZV_temp1,ZV_temp2,ZS_phitemp,ZS_phifac,ZV_kfac,             &
                    IS_reachtot,IS_forcingbas,IV_forcing_index,IV_forcing_loc,  &
@@ -120,28 +120,25 @@ IV_nc_count=(/IS_reachtot,1/)
 do JS_O=1,IS_O
 
 !- + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + 
-!Read/set upstream forcing
-!- + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + 
-if (BS_opt_forcing .and. IS_forcingbas>0) then
-     call rapid_read_Qfor_file
-end if 
-
-!- + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + 
 !calculate mean daily flow
 !- + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + 
 call VecSet(ZV_QoutbarO,0*ZS_one,ierr)                 !QoutbarO=0
 
-do JS_RpO=1,IS_RpO   !loop needed since there forcing more frequent than obs
+do JS_RpO=1,IS_RpO   !loop needed here since Vlat is more frequent than Qobs
 
 !- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-!Read/set surface and subsurface volumes
+!Read/set upstream forcing
 !- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+if (BS_opt_forcing .and. IS_forcingbas>0                                       &
+                   .and. mod((JS_O-1)*IS_RpO+JS_RpO,IS_RpF)==1) then
+     call rapid_read_Qfor_file
+end if 
+
+!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+!Read/set surface and subsurface volumes 
+!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 call rapid_read_Vlat_file
-IV_nc_start(2)=IV_nc_start(2)+1
 
-!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-!calculation of Q based on V (here first order explicit approx) 
-!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 call VecCopy(ZV_Vlat,ZV_Qlat,ierr)            !Qlat=Vlat
 call VecScale(ZV_Qlat,1/ZS_TauR,ierr)         !Qlat=Qlat/TauR
 
@@ -166,16 +163,22 @@ call VecCopy(ZV_QoutR,ZV_QoutinitR,ierr)
 call VecAXPY(ZV_QoutbarO,ZS_one/IS_RpO,ZV_QoutbarR,ierr)
 !Qoutbar=QoutbarO+QoutbarR/IS_RpO
 
+!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+!Update netCDF location         
+!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+IV_nc_start(2)=IV_nc_start(2)+1
+
+
 enddo                !end of loop to account for forcing more frequent than obs
 
-!-------------------------------------------------------------------------------
+!- + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + 
 !Calculate objective function for current day
-!-------------------------------------------------------------------------------
+!- + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + 
 call rapid_read_Qobs_file
 
-!-------------------------------------------------------------------------------
+!- + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + 
 !Objective function #1 - for current day - square error
-!-------------------------------------------------------------------------------
+!- + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + 
 if (IS_opt_phi==1) then
 call VecWAXPY(ZV_temp1,-ZS_one,ZV_Qobs,ZV_QoutbarO,ierr)  !temp1=Qoutbar-Qobs
 call VecScale(ZV_temp1,ZS_phifac,ierr)                    !if phi too big      
@@ -184,9 +187,9 @@ call VecDot(ZV_temp1,ZV_temp2,ZS_phitemp,ierr)            !phitemp=temp1.temp2
 !result phitemp=(Qoutbar-Qobs)^T*Obs*(Qoutbar-Qobs)
 end if
 
-!-------------------------------------------------------------------------------
+!- + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + 
 !Objective function #2 - for current day - square error normalized by avg flow
-!-------------------------------------------------------------------------------
+!- + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + 
 if (IS_opt_phi==2) then
 call VecWAXPY(ZV_temp1,-ZS_one,ZV_Qobs,ZV_QoutbarO,ierr)  !temp1=Qoutbar-Qobs
 call VecPointWiseMult(ZV_temp1,ZV_temp1,ZV_Qobsbarrec,ierr)!temp1=temp1.*Qobsbarrec
@@ -195,9 +198,9 @@ call VecDot(ZV_temp1,ZV_temp2,ZS_phitemp,ierr)            !phitemp=temp1.temp2
 !result phitemp=[(Qoutbar-Qobs).*Qobsbarrec]^T*Obs*[(Qoutbar-Qobs).*Qobsbarrec]
 end if
 
-!-------------------------------------------------------------------------------
+!- + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + 
 !adds daily objective function to total objective function
-!-------------------------------------------------------------------------------
+!- + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + 
 ZS_phi=ZS_phi+ZS_phitemp
 !increments phi for each time step during the desired period of optimization
 
