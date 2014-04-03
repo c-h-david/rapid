@@ -3,10 +3,11 @@
 !*******************************************************************************
 program rapid_main
 
-!PURPOSE
+!Purpose:
 !Allows to route water through a river network, and to estimate optimal 
 !parameters using the inverse method 
-!Author: Cedric H. David, 2008 
+!Author: 
+!Cedric H. David, 2008.
 
 
 !*******************************************************************************
@@ -15,7 +16,6 @@ program rapid_main
 use netcdf
 use rapid_var, only :                                                          &
                    namelist_file,                                              &
-                   IS_riv_bas,                                                 &
                    IV_riv_bas_id,IV_riv_index,IV_riv_loc1,                     &
                    Vlat_file,Qfor_file,                                        &
                    Qout_file,V_file,                                           &
@@ -23,23 +23,22 @@ use rapid_var, only :                                                          &
                    ZS_TauR,                                                    &
                    ZV_pnorm,                                                   &
                    ZV_C1,ZV_C2,ZV_C3,                                          &
-                   ZV_Qext,ZV_Qfor,ZV_Qlat,                                    &
+                   ZV_Qext,ZV_Qfor,ZV_Qlat,ZV_Qhum,ZV_Qdam,                    &
                    ZV_Vlat,                                                    &
                    ZV_QoutR,ZV_QoutinitR,ZV_QoutbarR,                          &
                    ZV_VR,ZV_VinitR,ZV_VbarR,                                   &
                    ZS_phi,                                                     &
-                   ierr,vecscat,rank,stage,temp_char,temp_char2,               &
-                   ZV_pointer,ZS_one,                                          &
+                   ierr,rank,stage,temp_char,temp_char2,                       &
+                   ZS_one,                                                     &
                    ZV_read_riv_tot,ZV_read_for_tot,                            &
-                   ZV_SeqZero,                                                 &
-                   IS_riv_tot,IS_for_bas,                                      &
+                   IS_riv_tot,IS_riv_bas,IS_for_bas,IS_dam_bas,                &
                    IV_for_index,IV_for_loc2,                                   &
                    ZS_time1,ZS_time2,ZS_time3,                                 &
                    IS_nc_status,IS_nc_id_fil_Vlat,IS_nc_id_fil_Qout,           &
                    IS_nc_id_var_Vlat,IS_nc_id_var_Qout,IS_nc_id_var_comid,     &
                    IS_nc_id_dim_time,IS_nc_id_dim_comid,IV_nc_id_dim,          &
                    IV_nc_start,IV_nc_count,IV_nc_count2,                       &
-                   BS_opt_for,IS_opt_run
+                   BS_opt_for,BS_opt_hum,BS_opt_dam,IS_opt_run
 
 #ifndef NO_TAO
 use rapid_var, only :                                                          &
@@ -117,12 +116,28 @@ do JS_M=1,IS_M
 
 do JS_RpM=1,IS_RpM
 
-!- + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - +  
+!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+!Run dam model based on previous values of QoutbarR and Qext to get Qdam
+!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+if (BS_opt_dam .and. IS_dam_bas>0) then
+
+call rapid_get_Qdam
+
+end if
+
+!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+!Read/set human forcing
+!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+!To be added
+
+!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 !Read/set upstream forcing
-!- + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - +  
+!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 if (BS_opt_for .and. IS_for_bas>0                                              &
                    .and. mod((JS_M-1)*IS_RpM+JS_RpM,IS_RpF)==1) then
-     call rapid_read_Qfor_file
+
+call rapid_read_Qfor_file
+
 end if 
 
 !- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
@@ -136,8 +151,10 @@ call VecScale(ZV_Qlat,1/ZS_TauR,ierr)         !Qlat=Qlat/TauR
 !- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 !calculation of Qext
 !- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-call VecWAXPY(ZV_Qext,ZS_one,ZV_Qlat,ZV_Qfor,ierr)           !Qext=1*Qlat+Qfor
-!Result: Qext=Qlat+Qfor
+call VecCopy(ZV_Qlat,ZV_Qext,ierr)                            !Qext=Qlat
+if (BS_opt_for) call VecAXPY(ZV_Qext,ZS_one,ZV_Qfor,ierr)     !Qext=Qext+1*Qfor
+if (BS_opt_dam) call VecAXPY(ZV_Qext,ZS_one,ZV_Qdam,ierr)     !Qext=Qext+1*Qdam
+if (BS_opt_hum) call VecAXPY(ZV_Qext,ZS_one,ZV_Qhum,ierr)     !Qext=Qext+1*Qhum
 
 !- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 !Routing procedure
