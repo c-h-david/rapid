@@ -30,7 +30,7 @@ use rapid_var, only :                                                          &
 
 #ifndef NO_TAO
 use rapid_var, only :                                                          &
-                   tao,taoapp,reason,ZV_1stIndex,ZV_2ndIndex
+                   tao,reason,ZV_1stIndex,ZV_2ndIndex
 #endif
 
 implicit none
@@ -54,7 +54,7 @@ implicit none
 !viewers (allows writing results in file for example)
 
 #ifndef NO_TAO
-#include "finclude/tao_solver.h" 
+#include "finclude/taosolver.h" 
 !TAO solver
 #endif
 
@@ -73,46 +73,27 @@ call KSPCreate(PETSC_COMM_WORLD,ksp,ierr)
 call MatCreate(PETSC_COMM_WORLD,ZM_Net,ierr)
 call MatSetSizes(ZM_Net,PETSC_DECIDE,PETSC_DECIDE,IS_riv_bas,IS_riv_bas,ierr)
 call MatSetFromOptions(ZM_Net,ierr)
-!call MatSeqAIJSetPreallocation(ZM_Net,3*IS_one,PETSC_NULL_INTEGER,ierr)
-!call MatMPIAIJSetPreallocation(ZM_Net,3*IS_one,PETSC_NULL_INTEGER,2*IS_one,    &
-!                               PETSC_NULL_INTEGER,ierr)
-!Very basic preallocation assuming no more than 3 upstream elements anywhere
-!Not used here because proper preallocation is done within rapid_net_mat.F90
+call MatSetUp(ZM_Net,ierr)
 
 call MatCreate(PETSC_COMM_WORLD,ZM_A,ierr)
 call MatSetSizes(ZM_A,PETSC_DECIDE,PETSC_DECIDE,IS_riv_bas,IS_riv_bas,ierr)
 call MatSetFromOptions(ZM_A,ierr)
-!call MatSeqAIJSetPreallocation(ZM_A,4*IS_one,PETSC_NULL_INTEGER,ierr)
-!call MatMPIAIJSetPreallocation(ZM_A,4*IS_one,PETSC_NULL_INTEGER,2*IS_one,      &
-!                               PETSC_NULL_INTEGER,ierr)
-!Very basic preallocation assuming no more than 3 upstream elements anywhere
-!Not used here because proper preallocation is done within rapid_net_mat.F90
+call MatSetUp(ZM_A,ierr)
 
 call MatCreate(PETSC_COMM_WORLD,ZM_T,ierr)
 call MatSetSizes(ZM_T,PETSC_DECIDE,PETSC_DECIDE,IS_riv_bas,IS_riv_bas,ierr)
 call MatSetFromOptions(ZM_T,ierr)
-!call MatSeqAIJSetPreallocation(ZM_T,4*IS_one,PETSC_NULL_INTEGER,ierr)
-!call MatMPIAIJSetPreallocation(ZM_T,4*IS_one,PETSC_NULL_INTEGER,2*IS_one,      &
-!                               PETSC_NULL_INTEGER,ierr)
-!Very basic preallocation assuming no more than 3 upstream elements anywhere
-!Not used here because proper preallocation is done within rapid_net_mat.F90
+call MatSetUp(ZM_T,ierr)
 
 call MatCreate(PETSC_COMM_WORLD,ZM_TC1,ierr)
 call MatSetSizes(ZM_TC1,PETSC_DECIDE,PETSC_DECIDE,IS_riv_bas,IS_riv_bas,ierr)
 call MatSetFromOptions(ZM_TC1,ierr)
-!call MatSeqAIJSetPreallocation(ZM_TC1,4*IS_one,PETSC_NULL_INTEGER,ierr)
-!call MatMPIAIJSetPreallocation(ZM_TC1,4*IS_one,PETSC_NULL_INTEGER,2*IS_one,      &
-!                               PETSC_NULL_INTEGER,ierr)
-!Very basic preallocation assuming no more than 3 upstream elements anywhere
-!Not used here because proper preallocation is done within rapid_net_mat.F90
+call MatSetUp(ZM_TC1,ierr)
 
 call MatCreate(PETSC_COMM_WORLD,ZM_Obs,ierr)
 call MatSetSizes(ZM_Obs,PETSC_DECIDE,PETSC_DECIDE,IS_riv_bas,IS_riv_bas,ierr)
 call MatSetFromOptions(ZM_Obs,ierr)
-call MatSeqAIJSetPreallocation(ZM_Obs,1*IS_one,PETSC_NULL_INTEGER,ierr)
-call MatMPIAIJSetPreallocation(ZM_Obs,1*IS_one,PETSC_NULL_INTEGER,0*IS_one,    &
-                               PETSC_NULL_INTEGER,ierr)
-!Very basic preallocation assuming that all reaches have one gage.
+call MatSetUp(ZM_Obs,ierr)
 
 !These matrices are all square of size IS_riv_bas.  PETSC_DECIDE allows PETSc 
 !to determine the local sizes on its own. MatSetFromOptions allows to use many
@@ -197,10 +178,10 @@ call VecScatterCreateToZero(ZV_k,vecscat,ZV_SeqZero,ierr)
 call TaoInitialize(PETSC_NULL_CHARACTER,ierr)
 !Initialize TAO
 
-call TaoCreate(PETSC_COMM_WORLD,'tao_nm',tao,ierr)
+call TaoCreate(PETSC_COMM_WORLD,tao,ierr)
+call TaoSetType(tao,'tao_nm',ierr)
 !Create TAO App 
 
-call TaoApplicationCreate(PETSC_COMM_WORLD,taoapp,ierr)
 call VecDuplicate(ZV_p,ZV_1stIndex,ierr)
 call VecSetValues(ZV_1stIndex,IS_one,0*IS_one,ZS_one,INSERT_VALUES,ierr)
 call VecAssemblyBegin(ZV_1stIndex,ierr)
