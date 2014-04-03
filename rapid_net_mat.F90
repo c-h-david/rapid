@@ -19,7 +19,7 @@ use rapid_var, only :                                                          &
                    IS_reachtot,IS_reachbas,                                    &
                    JS_reachtot,JS_reachbas,JS_reachbas2,                       &
                    IV_basin_id,IV_basin_index,IV_basin_loc,                    &
-                   modcou_connect_file,basin_id_file,                          &
+                   rapid_connect_file,basin_id_file,                           &
                    forcingtot_id_file,forcinguse_id_file,                      &
                    ZM_Net,ZM_A,BS_logical,IV_connect_id,                       &
                    IV_down,IV_nbup,IM_up,JS_up,IM_index_up,                    &
@@ -55,7 +55,7 @@ implicit none
 !*******************************************************************************
 !Read data files
 !*******************************************************************************
-open(10,file=modcou_connect_file,status='old')
+open(10,file=rapid_connect_file,status='old')
 do JS_reachtot=1,IS_reachtot
 !     read(10,'(7i7)') IV_connect_id(JS_reachtot), IV_down(JS_reachtot),        &
      read(10,*) IV_connect_id(JS_reachtot), IV_down(JS_reachtot),              &
