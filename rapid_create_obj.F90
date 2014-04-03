@@ -3,10 +3,11 @@
 !*******************************************************************************
 subroutine rapid_create_obj 
 
-!PURPOSE
+!Purpose:
 !All PETSc and TAO objects need be created (requirement of both mathematical 
 !libraries).  PETSc and TAO also need be initialized.  This is what's done here.
-!Author: Cedric H. David, 2008 
+!Author: 
+!Cedric H. David, 2008.
 
 
 !*******************************************************************************
@@ -19,10 +20,10 @@ use rapid_var, only :                                                          &
                    ZV_k,ZV_x,ZV_p,ZV_pnorm,ZV_pfac,                            &
                    ZV_C1,ZV_C2,ZV_C3,ZV_Cdenom,                                &
                    ZV_b,ZV_babsmax,ZV_bhat,                                    &
-                   ZV_Qext,ZV_Qfor,ZV_Qlat,                                    &
+                   ZV_Qext,ZV_Qfor,ZV_Qlat,ZV_Qhum,ZV_Qdam,                    &
                    ZV_Vext,ZV_Vfor,ZV_Vlat,                                    &
                    ZV_VinitM,ZV_QoutinitM,ZV_QoutinitO,ZV_QoutbarO,            &
-                   ZV_QoutR,ZV_QoutinitR,ZV_QoutprevR,ZV_QoutbarR,             &
+                   ZV_QoutR,ZV_QoutinitR,ZV_QoutprevR,ZV_QoutbarR,ZV_QinbarR,  &
                    ZV_QoutRabsmin,ZV_QoutRabsmax,ZV_QoutRhat,                  &
                    ZV_VR,ZV_VinitR,ZV_VprevR,ZV_VbarR,ZV_VoutR,                &
                    ZV_Qobsbarrec,                                              &
@@ -120,6 +121,8 @@ call VecDuplicate(ZV_k,ZV_bhat,ierr)
 call VecDuplicate(ZV_k,ZV_Qext,ierr)
 call VecDuplicate(ZV_k,ZV_Qfor,ierr)
 call VecDuplicate(ZV_k,ZV_Qlat,ierr)
+call VecDuplicate(ZV_k,ZV_Qhum,ierr)
+call VecDuplicate(ZV_k,ZV_Qdam,ierr)
 call VecDuplicate(ZV_k,ZV_Vext,ierr)
 call VecDuplicate(ZV_k,ZV_Vfor,ierr)
 call VecDuplicate(ZV_k,ZV_Vlat,ierr)
@@ -132,6 +135,7 @@ call VecDuplicate(ZV_k,ZV_QoutR,ierr)
 call VecDuplicate(ZV_k,ZV_QoutinitR,ierr)
 call VecDuplicate(ZV_k,ZV_QoutprevR,ierr)
 call VecDuplicate(ZV_k,ZV_QoutbarR,ierr)
+call VecDuplicate(ZV_k,ZV_QinbarR,ierr)
 call VecDuplicate(ZV_k,ZV_QoutRabsmin,ierr)
 call VecDuplicate(ZV_k,ZV_QoutRabsmax,ierr)
 call VecDuplicate(ZV_k,ZV_QoutRhat,ierr)
