@@ -3,9 +3,10 @@
 !*******************************************************************************
 module rapid_var
 
-!PURPOSE
-!Module where all the variables are defined 
-!Author: Cedric H. David, 2008 
+!Purpose:
+!Module where all the variables are defined. 
+!Author: 
+!Cedric H. David, 2008. 
 
 
 implicit none
@@ -295,9 +296,12 @@ PetscInt, allocatable, dimension(:) :: IV_dam_loc2
 !flow data are going to be applied. This is of size IS_dam_bas and its elements 
 !belong to [0,IS_riv_bas-1]. Applied on the river ID downstream.
 PetscInt, allocatable, dimension(:) :: IV_dam_pos
-!vector where the C (0-based) vector indexes of where flows will be given to the 
-!above dam model. This is of size IS_dam_tot and its elements belong to 
-![0,IS_riv_bas-1]. Applied on the river ID itself.
+!vector where the Fortran 1-based vector indexes of where flows will be given to 
+!the above dam model. This is of size IS_dam_tot and its elements belong to 
+![1,IS_riv_bas] except when a dam ID is outside of basin studied where it is 0. 
+!Applied on the river ID itself.
+
+PetscScalar, allocatable, dimension(:) :: ZV_Qin_dam,ZV_Qout_dam
 
 
 !*******************************************************************************
@@ -339,7 +343,7 @@ Vec :: ZV_QoutO,ZV_QoutinitO,ZV_QoutprevO,ZV_QoutbarO
 Vec :: ZV_VO,ZV_VinitO,ZV_VprevO,ZV_VbarO
 
 !Routing only variables
-Vec :: ZV_QoutR,ZV_QoutinitR,ZV_QoutprevR,ZV_QoutbarR,ZV_QoutRhat
+Vec :: ZV_QoutR,ZV_QoutinitR,ZV_QoutprevR,ZV_QoutbarR,ZV_QoutRhat,ZV_QinbarR
 Vec :: ZV_QoutRabsmin,ZV_QoutRabsmax
 Vec :: ZV_VR,ZV_VinitR,ZV_VprevR,ZV_VbarR
 Vec :: ZV_VoutR
