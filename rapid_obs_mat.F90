@@ -148,12 +148,17 @@ call PetscPrintf(PETSC_COMM_WORLD,'Number of gage IDs in '           //        &
 
 
 !*******************************************************************************
+!Display matrix on stdout
+!*******************************************************************************
+!call PetscPrintf(PETSC_COMM_WORLD,'ZM_Obs:'//char(10),ierr)
+!call MatView(ZM_Obs,PETSC_VIEWER_STDOUT_WORLD,ierr)
+
+
+!*******************************************************************************
 !End
 !*******************************************************************************
 call PetscPrintf(PETSC_COMM_WORLD,'Observation matrix created'//char(10),ierr)
 call PetscPrintf(PETSC_COMM_WORLD,'--------------------------'//char(10),ierr)
 
-!call PetscPrintf(PETSC_COMM_WORLD,'ZM_Obs:'//char(10),ierr)
-!call MatView(ZM_Obs,PETSC_VIEWER_STDOUT_WORLD,ierr)
 
 end subroutine rapid_obs_mat
