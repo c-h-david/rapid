@@ -1,6 +1,6 @@
 subroutine rapid_net_mat_brk
 
-!PURPOSE
+!Purpose:
 !This subroutine modifies the network and transboundary matrices based on a list
 !of river IDs. 
 !The connectivity is broken between each given river ID and its downstream 
@@ -25,7 +25,8 @@ subroutine rapid_net_mat_brk
 !   in the current modeling domain using the 0-based ZV_Qdam
 ! - IV_dam_pos(IS_dam_bas) allows to know where to read the flow values for the 
 !   dam model in the current modeling domain using the 0-based ZV_Qdam
-!Author: Cedric H. David, 2013 
+!Author: 
+!Cedric H. David, 2013. 
 
 
 !*******************************************************************************
@@ -348,7 +349,7 @@ call PetscPrintf(PETSC_COMM_WORLD,'         Total number of dam IDs in ' //    &
                  'this simulation:' // temp_char // char(10),ierr)
 
 !-------------------------------------------------------------------------------
-!Allocate and initialize IV_dam_bas_id,IV_dam_index and IV_dam_loc2
+!Allocate and initialize IV_dam_bas_id, IV_dam_index, IV_dam_loc2, IV_dam_pos
 !-------------------------------------------------------------------------------
 allocate(IV_dam_bas_id(IS_dam_bas))
 allocate(IV_dam_index(IS_dam_bas))
@@ -411,7 +412,7 @@ end do
 do JS_dam_tot=1,IS_dam_tot
 do JS_riv_bas=1,IS_riv_bas
      if (IV_dam_tot_id(JS_dam_tot)==IV_riv_bas_id(JS_riv_bas)) then
-          IV_dam_pos(JS_dam_tot)=JS_riv_bas-1
+          IV_dam_pos(JS_dam_tot)=JS_riv_bas
      end if
 end do
 end do
