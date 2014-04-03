@@ -11,8 +11,8 @@ subroutine rapid_read_Qfor_file
 !Global variables
 !*******************************************************************************
 use rapid_var, only :                                                          &
-                   rank,ierr,ZV_read_forcingtot,                                                  &
-                   ZV_Qfor,IS_forcingbas,IV_forcing_loc,IV_forcing_index,ZV_read_forcingtot
+                   rank,ierr,ZV_read_for_tot,                                  &
+                   ZV_Qfor,IS_for_bas,IV_for_loc2,IV_for_index,ZV_read_for_tot
 
 
 implicit none
@@ -46,15 +46,15 @@ implicit none
 !*******************************************************************************
 !Read file
 !*******************************************************************************
-if (rank==0) read(34,*) ZV_read_forcingtot
+if (rank==0) read(34,*) ZV_read_for_tot
 
 
 !*******************************************************************************
 !Set values in PETSc vector
 !*******************************************************************************
 if (rank==0) then
-call VecSetValues(ZV_Qfor,IS_forcingbas,IV_forcing_loc,                        &
-                  ZV_read_forcingtot(IV_forcing_index),INSERT_VALUES,ierr)
+call VecSetValues(ZV_Qfor,IS_for_bas,IV_for_loc2,                              &
+                  ZV_read_for_tot(IV_for_index),INSERT_VALUES,ierr)
                   !here we only look at the forcing within the basin studied 
 end if
 

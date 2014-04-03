@@ -27,8 +27,8 @@ use rapid_var, only :                                                          &
                    vecscat,ZV_SeqZero,ZV_pointer,rank,                         &
                    IS_nc_status,IS_nc_id_fil_Qout,IS_nc_id_var_Qout,           &
                    IV_nc_start,IV_nc_count2,                                   &
-                   IS_reachbas,JS_reachbas,IM_index_up,                        &
-                   IS_opt_routing,IV_nbup,IV_basin_index,                      &
+                   IS_riv_bas,JS_riv_bas,IM_index_up,                          &
+                   IS_opt_routing,IV_nbup,IV_riv_index,                        &
                    BS_opt_influence
 
 
@@ -142,11 +142,11 @@ call VecGetArrayF90(ZV_QoutR,ZV_QoutR_p,ierr)
 call VecGetArrayF90(ZV_QoutprevR,ZV_QoutprevR_p,ierr)
 call VecGetArrayF90(ZV_b,ZV_b_p,ierr)
 
-do JS_reachbas=1,IS_reachbas
-     ZV_QoutR_p(JS_reachbas)=ZV_b_p(JS_reachbas)                               &
-                            +sum(ZV_C1_p(JS_reachbas)                          &
-                                  *ZV_QoutR_p(IM_index_up(JS_reachbas,1:       &
-                                   IV_nbup(IV_basin_index(JS_reachbas))))) 
+do JS_riv_bas=1,IS_riv_bas
+     ZV_QoutR_p(JS_riv_bas)=ZV_b_p(JS_riv_bas)                                 &
+                            +sum(ZV_C1_p(JS_riv_bas)                           &
+                                  *ZV_QoutR_p(IM_index_up(JS_riv_bas,1:        &
+                                   IV_nbup(IV_riv_index(JS_riv_bas))))) 
 end do
 !Taking into account the knowledge of how many upstream locations exist.
 !Similar to exact preallocation of network matrix

@@ -12,7 +12,7 @@ subroutine rapid_read_Qobs_file
 !*******************************************************************************
 use rapid_var, only :                                                          &
                    rank,ierr,                                                  &
-                   ZV_Qobs,IS_gagebas,IV_gage_loc,IV_gage_index,ZV_read_gagetot
+                   ZV_Qobs,IS_obs_bas,IV_obs_loc1,IV_obs_index,ZV_read_obs_tot
 
 implicit none
 
@@ -45,15 +45,15 @@ implicit none
 !*******************************************************************************
 !Read file
 !*******************************************************************************
-if (rank==0) read(33,*) ZV_read_gagetot
+if (rank==0) read(33,*) ZV_read_obs_tot
 
 
 !*******************************************************************************
 !Set values in PETSc vector
 !*******************************************************************************
 if (rank==0) then
-call VecSetValues(ZV_Qobs,IS_gagebas,IV_gage_loc,                              &
-                  ZV_read_gagetot(IV_gage_index),INSERT_VALUES,ierr)
+call VecSetValues(ZV_Qobs,IS_obs_bas,IV_obs_loc1,                              &
+                  ZV_read_obs_tot(IV_obs_index),INSERT_VALUES,ierr)
                   !here we only look at the observations within the basin
                   !studied
 end if

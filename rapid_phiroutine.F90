@@ -16,14 +16,14 @@ subroutine rapid_phiroutine(taoapp,ZV_pnorm,ZS_phi,ierr)
 !*******************************************************************************
 use netcdf
 use rapid_var, only :                                                          &
-                   IS_reachbas,                                                &
-                   IV_basin_index,IV_basin_loc,                                &
+                   IS_riv_bas,                                                 &
+                   IV_riv_index,IV_riv_loc1,                                   &
                    Vlat_file,Qobs_file,Qfor_file,                              &
                    JS_O,IS_O,JS_RpO,IS_RpO,ZS_TauR,IS_RpF,                     &
                    ZM_Obs,ZV_Qobs,                                             &
                    ZV_temp1,ZV_temp2,ZS_phitemp,ZS_phifac,ZV_kfac,             &
-                   IS_reachtot,IS_forcingbas,IV_forcing_index,IV_forcing_loc,  &
-                   IS_gagebas,IV_gage_index,IV_gage_loc,                       &
+                   IS_riv_tot,IS_for_bas,IV_for_index,IV_for_loc2,             &
+                   IS_obs_bas,IV_obs_index,IV_obs_loc1,                        &
                    ZS_knorm,ZS_xnorm,ZV_k,ZV_x,ZS_kfac,ZS_xfac,                &
                    ZV_1stIndex,ZV_2ndIndex,                                    &
                    ZV_C1,ZV_C2,ZV_C3,ZM_A,                                     &
@@ -34,10 +34,10 @@ use rapid_var, only :                                                          &
                    ZV_Qobsbarrec,                                              &
                    ksp,                                                        &
                    ZS_one,temp_char,rank,                                      &
-                   ZV_read_reachtot,ZV_read_forcingtot,ZV_read_gagetot,        &
+                   ZV_read_riv_tot,ZV_read_for_tot,ZV_read_obs_tot,            &
                    IS_nc_status,IS_nc_id_fil_Vlat,IS_nc_id_var_Vlat,           &
                    IV_nc_start,IV_nc_count,                                    &
-                   IS_opt_phi,BS_opt_forcing,IS_strt_opt
+                   IS_opt_phi,BS_opt_for,IS_strt_opt
 
 
 implicit none
@@ -107,14 +107,14 @@ call VecCopy(ZV_QoutinitO,ZV_QoutinitR,ierr)
 !-------------------------------------------------------------------------------
 call rapid_open_Vlat_file(Vlat_file)
 call rapid_open_Qobs_file(Qobs_file)
-if (BS_opt_forcing) call rapid_open_Qfor_file(Qfor_file)
+if (BS_opt_for) call rapid_open_Qfor_file(Qfor_file)
 
 
 !-------------------------------------------------------------------------------
 !Read and compute
 !-------------------------------------------------------------------------------
 IV_nc_start=(/1,IS_strt_opt/)
-IV_nc_count=(/IS_reachtot,1/)
+IV_nc_count=(/IS_riv_tot,1/)
 
 
 do JS_O=1,IS_O
@@ -129,7 +129,7 @@ do JS_RpO=1,IS_RpO   !loop needed here since Vlat is more frequent than Qobs
 !- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 !Read/set upstream forcing
 !- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-if (BS_opt_forcing .and. IS_forcingbas>0                                       &
+if (BS_opt_for .and. IS_for_bas>0                                              &
                    .and. mod((JS_O-1)*IS_RpO+JS_RpO,IS_RpF)==1) then
      call rapid_read_Qfor_file
 end if 
