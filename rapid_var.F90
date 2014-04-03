@@ -53,6 +53,7 @@ logical :: BS_opt_influence
 !.false. --> no output influence     .true. --> output influence
 PetscInt :: IS_opt_routing
 !1       --> matrix-based Muskingum  2      --> traditional Muskingum
+!3       --> Transbnd. matrix-based
 PetscInt :: IS_opt_run
 !1       --> regular run             2      --> parameter optimization
 PetscInt :: IS_opt_phi
@@ -306,6 +307,10 @@ Mat :: ZM_Net
 !Network matrix
 Mat :: ZM_A
 !Matrix used to solve linear system 
+Mat :: ZM_T
+!Transboundary matrix
+Mat :: ZM_TC1
+!Matrix used as a trick to solve linear system faster
 Logical :: BS_logical
 !Boolean used during network matrix creation to give warnings if connectivity pb
 
@@ -316,7 +321,7 @@ Vec :: ZV_p, ZV_pnorm,ZV_pfac
 !corresponding factors p=pnorm*pfac
 Vec :: ZV_C1,ZV_C2,ZV_C3,ZV_Cdenom 
 !Muskingum method constants (last is the common denominator, for calculations)
-Vec :: ZV_b,ZV_babsmax
+Vec :: ZV_b,ZV_babsmax,ZV_bhat
 !Used for linear system A*Qout=b
 
 !Input variables (contribution)
@@ -334,7 +339,7 @@ Vec :: ZV_QoutO,ZV_QoutinitO,ZV_QoutprevO,ZV_QoutbarO
 Vec :: ZV_VO,ZV_VinitO,ZV_VprevO,ZV_VbarO
 
 !Routing only variables
-Vec :: ZV_QoutR,ZV_QoutinitR,ZV_QoutprevR,ZV_QoutbarR
+Vec :: ZV_QoutR,ZV_QoutinitR,ZV_QoutprevR,ZV_QoutbarR,ZV_QoutRhat
 Vec :: ZV_QoutRabsmin,ZV_QoutRabsmax
 Vec :: ZV_VR,ZV_VinitR,ZV_VprevR,ZV_VbarR
 Vec :: ZV_VoutR
@@ -395,6 +400,8 @@ PC :: pc
 !preconditioner object
 PetscMPIInt :: rank
 !integer where the number of each processor is stored, 0 will be main processor 
+PetscMPIInt :: ncore
+!integer where the number of cores used is stored 
 VecScatter :: vecscat
 !Allows for scattering and gathering vectors from in parallel environement
 PetscLogEvent :: stage
