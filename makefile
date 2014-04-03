@@ -24,6 +24,19 @@ rapid:	rapid_main.o \
 	rapid_init.o \
 	rapid_read_namelist.o \
 	rapid_create_obj.o \
+	rapid_create_Qout_file.o \
+	rapid_open_Qout_file.o \
+	rapid_open_Vlat_file.o \
+	rapid_open_Qobs_file.o \
+	rapid_open_Qfor_file.o \
+	rapid_write_Qout_file.o \
+	rapid_read_Vlat_file.o \
+	rapid_read_Qobs_file.o \
+	rapid_read_Qfor_file.o \
+	rapid_close_Qout_file.o \
+	rapid_close_Vlat_file.o \
+	rapid_close_Qobs_file.o \
+	rapid_close_Qfor_file.o \
 	rapid_net_mat.o \
 	rapid_obs_mat.o \
 	rapid_routing.o \
@@ -38,6 +51,19 @@ rapid:	rapid_main.o \
 	rapid_init.o \
 	rapid_read_namelist.o \
 	rapid_create_obj.o \
+	rapid_create_Qout_file.o \
+	rapid_open_Qout_file.o \
+	rapid_open_Vlat_file.o \
+	rapid_open_Qobs_file.o \
+	rapid_open_Qfor_file.o \
+	rapid_write_Qout_file.o \
+	rapid_read_Vlat_file.o \
+	rapid_read_Qobs_file.o \
+	rapid_read_Qfor_file.o \
+	rapid_close_Qout_file.o \
+	rapid_close_Vlat_file.o \
+	rapid_close_Qobs_file.o \
+	rapid_close_Qfor_file.o \
 	rapid_net_mat.o \
 	rapid_routing.o \
 	rapid_routing_param.o \
@@ -47,7 +73,7 @@ rapid:	rapid_main.o \
 	rapid_final.o \
 	rapid_var.o \
 	${TAO_FORTRAN_LIB} ${TAO_LIB} ${PETSC_LIB} ${NETCDF_LIB}
-	${RM} rapid_main.o
+	${RM} *.o *.mod 
 
 dummy: 
 	echo ${FLINKER} ${FPPFLAGS}
@@ -80,6 +106,45 @@ rapid_obs_mat.o: 	rapid_obs_mat.F90 rapid_var.o
 rapid_net_mat.o: 	rapid_net_mat.F90 rapid_var.o
 	-${FLINKER} ${FPPFLAGS} -c rapid_net_mat.F90 ${PETSC_INCLUDE}
 
+rapid_close_Qfor_file.o: 	rapid_close_Qfor_file.F90 rapid_var.o
+	-${FLINKER} ${FPPFLAGS} -c rapid_close_Qfor_file.F90
+
+rapid_close_Qobs_file.o: 	rapid_close_Qobs_file.F90 rapid_var.o
+	-${FLINKER} ${FPPFLAGS} -c rapid_close_Qobs_file.F90
+
+rapid_close_Vlat_file.o: 	rapid_close_Vlat_file.F90 rapid_var.o
+	-${FLINKER} ${FPPFLAGS} -c rapid_close_Vlat_file.F90 ${NETCDF_INCLUDE} 
+
+rapid_close_Qout_file.o: 	rapid_close_Qout_file.F90 rapid_var.o
+	-${FLINKER} ${FPPFLAGS} -c rapid_close_Qout_file.F90 ${NETCDF_INCLUDE} 
+
+rapid_read_Qfor_file.o: 	rapid_read_Qfor_file.F90 rapid_var.o
+	-${FLINKER} ${FPPFLAGS} -c rapid_read_Qfor_file.F90 ${PETSC_INCLUDE}
+
+rapid_read_Qobs_file.o: 	rapid_read_Qobs_file.F90 rapid_var.o
+	-${FLINKER} ${FPPFLAGS} -c rapid_read_Qobs_file.F90 ${PETSC_INCLUDE}
+
+rapid_read_Vlat_file.o: 	rapid_read_Vlat_file.F90 rapid_var.o
+	-${FLINKER} ${FPPFLAGS} -c rapid_read_Vlat_file.F90 ${PETSC_INCLUDE} ${NETCDF_INCLUDE}
+
+rapid_write_Qout_file.o: 	rapid_write_Qout_file.F90 rapid_var.o
+	-${FLINKER} ${FPPFLAGS} -c rapid_write_Qout_file.F90 ${PETSC_INCLUDE} ${NETCDF_INCLUDE}
+
+rapid_open_Qfor_file.o: 	rapid_open_Qfor_file.F90 rapid_var.o
+	-${FLINKER} ${FPPFLAGS} -c rapid_open_Qfor_file.F90 
+
+rapid_open_Qobs_file.o: 	rapid_open_Qobs_file.F90 rapid_var.o
+	-${FLINKER} ${FPPFLAGS} -c rapid_open_Qobs_file.F90 
+
+rapid_open_Vlat_file.o: 	rapid_open_Vlat_file.F90 rapid_var.o
+	-${FLINKER} ${FPPFLAGS} -c rapid_open_Vlat_file.F90 ${NETCDF_INCLUDE}
+
+rapid_open_Qout_file.o: 	rapid_open_Qout_file.F90 rapid_var.o
+	-${FLINKER} ${FPPFLAGS} -c rapid_open_Qout_file.F90 ${NETCDF_INCLUDE}
+
+rapid_create_Qout_file.o: 	rapid_create_Qout_file.F90 rapid_var.o
+	-${FLINKER} ${FPPFLAGS} -c rapid_create_Qout_file.F90 ${NETCDF_INCLUDE}
+
 rapid_create_obj.o: 	rapid_create_obj.F90 rapid_var.o
 	-${FLINKER} ${FPPFLAGS} -c rapid_create_obj.F90 ${PETSC_INCLUDE} ${TAO_INCLUDE}
 
@@ -90,5 +155,5 @@ rapid_var.o:	rapid_var.F90
 	-${FLINKER} ${FPPFLAGS} -c rapid_var.F90 ${PETSC_INCLUDE} ${TAO_INCLUDE} 
 	
 clean::
-	rm -f *.o *.mod rapid
+	${RM} *.o *.mod rapid
 
