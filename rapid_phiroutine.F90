@@ -37,7 +37,7 @@ use rapid_var, only :                                                          &
                    ZV_read_riv_tot,ZV_read_for_tot,ZV_read_obs_tot,            &
                    IS_nc_status,IS_nc_id_fil_Vlat,IS_nc_id_var_Vlat,           &
                    IV_nc_start,IV_nc_count,                                    &
-                   IS_opt_phi,BS_opt_for,IS_strt_opt
+                   IS_opt_phi,BS_opt_for,IS_strt_opt,IS_opt_routing
 
 
 implicit none
@@ -93,6 +93,7 @@ call KSPSetOperators(ksp,ZM_A,ZM_A,DIFFERENT_NONZERO_PATTERN,ierr)
 call KSPSetType(ksp,KSPRICHARDSON,ierr)                    !default=richardson
 call KSPSetFromOptions(ksp,ierr)                           !if runtime options
 !Set KSP to use matrix ZM_A
+if (IS_opt_routing==3) call KSPSetType(ksp,KSPPREONLY,ierr)!default=preonly
 
 call VecCopy(ZV_QoutinitO,ZV_QoutinitR,ierr)
 !copy initial optimization variables into initial routing variables
