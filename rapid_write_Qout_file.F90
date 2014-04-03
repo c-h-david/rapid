@@ -14,7 +14,7 @@ use netcdf
 use rapid_var, only :                                                          &
                    rank,ierr,vecscat,ZV_SeqZero,ZV_pointer,                    &
                    IS_nc_status,IS_nc_id_fil_Qout,IS_nc_id_var_Qout,           &
-                   IV_nc_start,IV_nc_count2,                                    &
+                   IV_nc_start,IV_nc_count2,                                   &
                    ZV_QoutbarR
 
 implicit none
