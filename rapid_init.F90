@@ -33,20 +33,28 @@ subroutine rapid_init
 !*******************************************************************************
 use netcdf
 use rapid_var, only :                                                          &
-                   IS_reachtot,IS_reachbas,                                    &
-                   IV_basin_id,IV_basin_index,IV_basin_loc,IV_connect_id,      &
+                   IS_riv_tot,IS_riv_bas,                                      &
+                   IV_riv_bas_id,IV_riv_index,IV_riv_loc1,IV_riv_tot_id,       &
                    IV_down,IV_nbup,IM_up,IM_index_up,IS_max_up,                &
                    IV_nz,IV_dnz,IV_onz,                                        &
-                   BS_opt_Qinit,BS_opt_Qfinal,BS_opt_forcing,BS_opt_influence, &
+                   BS_opt_Qinit,BS_opt_Qfinal,BS_opt_influence,                & 
+                   BS_opt_dam,BS_opt_for,BS_opt_hum,                           &
                    IS_opt_run,IS_opt_routing,IS_opt_phi,                       &
-                   ZV_read_reachtot,ZV_read_forcingtot,ZV_read_gagetot,        &
+                   ZV_read_riv_tot,ZV_read_obs_tot,ZV_read_hum_tot,            &
+                   ZV_read_for_tot,ZV_read_dam_tot,                            &
                    ZS_TauM,ZS_TauO,ZS_TauR,ZS_dtO,ZS_dtR,ZS_dtM,ZS_dtF,        &
-                   IS_gagetot,IS_gageuse,IS_gagebas,                           &
-                   IV_gagetot_id,IV_gageuse_id,                                &
-                   IV_gage_index,IV_gage_loc,                                  &
-                   IS_forcingtot,IS_forcinguse,IS_forcingbas,                  &
-                   IV_forcingtot_id,IV_forcinguse_id,                          &
-                   IV_forcing_index,IV_forcing_loc,                            &
+                   IS_obs_tot,IS_obs_use,IS_obs_bas,                           &
+                   IV_obs_tot_id,IV_obs_use_id,                                &
+                   IV_obs_index,IV_obs_loc1,                                   &
+                   IS_hum_tot,IS_hum_use,IS_hum_bas,                           &
+                   IV_hum_tot_id,IV_hum_use_id,                                &
+                   IV_hum_index,IV_hum_loc1,                                   &
+                   IS_for_tot,IS_for_use,IS_for_bas,                           &
+                   IV_for_tot_id,IV_for_use_id,                                &
+                   IV_for_index,IV_for_loc2,                                   &
+                   IS_dam_tot,IS_dam_use,IS_dam_bas,                           &
+                   IV_dam_tot_id,IV_dam_use_id,                                &
+                   IV_dam_index,IV_dam_loc2,IV_dam_pos,                        &
                    ZV_QoutinitM,ZV_QoutinitO,ZV_QoutinitR,                     &
                    ZV_VinitM,ZV_VinitR,                                        &
                    ZV_babsmax,ZV_QoutRabsmin,ZV_QoutRabsmax,                   &
@@ -93,32 +101,44 @@ implicit none
 !-------------------------------------------------------------------------------
 call rapid_read_namelist
 
-allocate(IV_basin_id(IS_reachbas))
-allocate(IV_basin_index(IS_reachbas))
-allocate(IV_basin_loc(IS_reachbas))
+allocate(IV_riv_bas_id(IS_riv_bas))
+allocate(IV_riv_index(IS_riv_bas))
+allocate(IV_riv_loc1(IS_riv_bas))
 
-allocate(IV_connect_id(IS_reachtot))
-allocate(IV_down(IS_reachtot))
-allocate(IV_nbup(IS_reachtot))
-allocate(IM_up(IS_reachtot,IS_max_up))
-allocate(IM_index_up(IS_reachtot,IS_max_up))
+allocate(IV_riv_tot_id(IS_riv_tot))
+allocate(IV_down(IS_riv_tot))
+allocate(IV_nbup(IS_riv_tot))
+allocate(IM_up(IS_riv_tot,IS_max_up))
+allocate(IM_index_up(IS_riv_tot,IS_max_up))
 
-allocate(IV_nz(IS_reachbas))
-allocate(IV_dnz(IS_reachbas))
-allocate(IV_onz(IS_reachbas))
+allocate(IV_nz(IS_riv_bas))
+allocate(IV_dnz(IS_riv_bas))
+allocate(IV_onz(IS_riv_bas))
 
-allocate(ZV_read_reachtot(IS_reachtot))
+allocate(ZV_read_riv_tot(IS_riv_tot))
 
 if (IS_opt_run==2) then
-     allocate(IV_gagetot_id(IS_gagetot))
-     allocate(IV_gageuse_id(IS_gageuse))
-     allocate(ZV_read_gagetot(IS_gagetot))
+     allocate(IV_obs_tot_id(IS_obs_tot))
+     allocate(IV_obs_use_id(IS_obs_use))
+     allocate(ZV_read_obs_tot(IS_obs_tot))
 end if
 
-if (BS_opt_forcing) then
-     allocate(IV_forcingtot_id(IS_forcingtot))
-     allocate(IV_forcinguse_id(IS_forcinguse))
-     allocate(ZV_read_forcingtot(IS_forcingtot))
+if (BS_opt_hum) then
+     allocate(IV_hum_tot_id(IS_hum_tot))
+     allocate(IV_hum_use_id(IS_hum_use))
+     allocate(ZV_read_hum_tot(IS_hum_tot))
+end if
+
+if (BS_opt_for) then
+     allocate(IV_for_tot_id(IS_for_tot))
+     allocate(IV_for_use_id(IS_for_use))
+     allocate(ZV_read_for_tot(IS_for_tot))
+end if
+
+if (BS_opt_dam) then
+     allocate(IV_dam_tot_id(IS_dam_tot))
+     allocate(IV_dam_use_id(IS_dam_use))
+     allocate(ZV_read_dam_tot(IS_dam_tot))
 end if
 
 !-------------------------------------------------------------------------------
@@ -151,9 +171,9 @@ if (rank==0 .and. .not. BS_opt_Qfinal .and. IS_opt_run==1) print '(a70)',      &
        'Not writing final flows into a file                                    '
 if (rank==0 .and. BS_opt_Qfinal .and. IS_opt_run==1)       print '(a70)',      &
        'Writing final flows into a file                                        '
-if (rank==0 .and. .not. BS_opt_forcing)                    print '(a70)',      &
+if (rank==0 .and. .not. BS_opt_for)                        print '(a70)',      &
        'Not using forcing                                                      '
-if (rank==0 .and. BS_opt_forcing)                          print '(a70)',      &
+if (rank==0 .and. BS_opt_for)                              print '(a70)',      &
        'Using forcing                                                          '
 if (rank==0 .and. IS_opt_routing==1)                       print '(a70)',      &
        'Routing with matrix-based Muskingum method                             '
@@ -179,26 +199,11 @@ call PetscPrintf(PETSC_COMM_WORLD,'--------------------------'//char(10),ierr)
 !Calculate Network matrix
 !-------------------------------------------------------------------------------
 call rapid_net_mat
-!Create network matrix
 
 !-------------------------------------------------------------------------------
-!Print warning when forcing is used (needs be after rapid_net_mat)
+!Breaks connections in Network matrix
 !-------------------------------------------------------------------------------
-if (BS_opt_forcing) then
-if (rank==0) print *, 'IS_forcingbas      =', IS_forcingbas
-if (rank==0 .and. IS_forcingbas>0) then
-     call PetscPrintf(PETSC_COMM_WORLD,'WARNING: Forcing option used: '        &
-                 //'measured flow replaced computed flows '                    &
-                 //'for stations located on reach ID:'//char(10),ierr)
-     !print *, 'IV_forcingtot_id   =', IV_forcingtot_id
-     print *, 'IV_forcinguse_id   =', IV_forcinguse_id
-     print *, 'IS_forcingbas      =', IS_forcingbas
-     print *, 'IV_forcing_index   =', IV_forcing_index
-     print *, 'IV_forcing_loc     =', IV_forcing_loc
-end if
-call PetscPrintf(PETSC_COMM_WORLD,'--------------------------'//char(10),ierr)
-end if
-!Warning about forcing downstream basins
+if (BS_opt_for .or. BS_opt_dam) call rapid_net_mat_brk
 
 !-------------------------------------------------------------------------------
 !calculates or set initial flows and volumes
@@ -209,14 +214,14 @@ end if
 
 if (BS_opt_Qinit) then
 open(30,file=Qinit_file,status='old')
-read(30,*) ZV_read_reachtot
+read(30,*) ZV_read_riv_tot
 close(30)
-call VecSetValues(ZV_QoutinitM,IS_reachbas,IV_basin_loc,                       &
-                  ZV_read_reachtot(IV_basin_index),INSERT_VALUES,ierr)
+call VecSetValues(ZV_QoutinitM,IS_riv_bas,IV_riv_loc1,                          &
+                  ZV_read_riv_tot(IV_riv_index),INSERT_VALUES,ierr)
                   !here we use the output of a simulation as the intitial 
                   !flow rates.  The simulation has to be made on the entire
                   !domain, the initial value is taken only for the considered
-                  !basin thanks to the vector IV_basin_index
+                  !basin thanks to the vector IV_riv_index
 call VecAssemblyBegin(ZV_QoutinitM,ierr)
 call VecAssemblyEnd(ZV_QoutinitM,ierr)  
 end if
@@ -248,18 +253,18 @@ call VecCopy(ZV_VinitM,ZV_VinitR,ierr)
 !Read/set k and x
 !-------------------------------------------------------------------------------
 open(20,file=k_file,status='old')
-read(20,*) ZV_read_reachtot
-call VecSetValues(ZV_k,IS_reachbas,IV_basin_loc,                               &
-                  ZV_read_reachtot(IV_basin_index),INSERT_VALUES,ierr)
+read(20,*) ZV_read_riv_tot
+call VecSetValues(ZV_k,IS_riv_bas,IV_riv_loc1,                                 &
+                  ZV_read_riv_tot(IV_riv_index),INSERT_VALUES,ierr)
 call VecAssemblyBegin(ZV_k,ierr)
 call VecAssemblyEnd(ZV_k,ierr)
 close(20)
 !get values for k in a file and create the corresponding ZV_k vector
 
 open(21,file=x_file,status='old')
-read(21,*) ZV_read_reachtot
-call VecSetValues(ZV_x,IS_reachbas,IV_basin_loc,                               &
-                  ZV_read_reachtot(IV_basin_index),INSERT_VALUES,ierr)
+read(21,*) ZV_read_riv_tot
+call VecSetValues(ZV_x,IS_riv_bas,IV_riv_loc1,                                 &
+                  ZV_read_riv_tot(IV_riv_index),INSERT_VALUES,ierr)
 call VecAssemblyBegin(ZV_x,ierr)
 call VecAssemblyEnd(ZV_x,ierr)
 close(21)
@@ -305,10 +310,10 @@ call VecCopy(ZV_QoutinitM,ZV_QoutinitO,ierr)
 !Read/set kfac, xfac and Qobsbarrec
 !-------------------------------------------------------------------------------
 open(22,file=kfac_file,status='old')
-read(22,*) ZV_read_reachtot
+read(22,*) ZV_read_riv_tot
 close(22)
-call VecSetValues(ZV_kfac,IS_reachbas,IV_basin_loc,                            &
-                  ZV_read_reachtot(IV_basin_index),INSERT_VALUES,ierr)
+call VecSetValues(ZV_kfac,IS_riv_bas,IV_riv_loc1,                              &
+                  ZV_read_riv_tot(IV_riv_index),INSERT_VALUES,ierr)
                   !only looking at basin, doesn't have to be whole domain here 
 call VecAssemblyBegin(ZV_kfac,ierr)
 call VecAssemblyEnd(ZV_kfac,ierr)  
@@ -316,10 +321,10 @@ call VecAssemblyEnd(ZV_kfac,ierr)
 
 if (IS_opt_phi==2) then
 open(35,file=Qobsbarrec_file,status='old')
-read(35,*) ZV_read_gagetot
+read(35,*) ZV_read_obs_tot
 close(35)
-call VecSetValues(ZV_Qobsbarrec,IS_gagebas,IV_gage_loc,                        &
-                  ZV_read_gagetot(IV_gage_index),INSERT_VALUES,ierr)
+call VecSetValues(ZV_Qobsbarrec,IS_obs_bas,IV_obs_loc1,                        &
+                  ZV_read_obs_tot(IV_obs_index),INSERT_VALUES,ierr)
                   !here we only look at the observations within the basin
                   !studied
 call VecAssemblyBegin(ZV_Qobsbarrec,ierr)
