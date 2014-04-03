@@ -152,9 +152,10 @@ call MatAssemblyEnd(ZM_Obs,MAT_FINAL_ASSEMBLY,ierr)
 !*******************************************************************************
 call MatNorm(ZM_Obs,NORM_FROBENIUS,ZS_norm,ierr)
 ZS_norm=ZS_norm*ZS_norm
-write(temp_char,'(f5.1)') ZS_norm
-call PetscPrintf(PETSC_COMM_WORLD,'Number of gaging stations used (based on norm): '           &
-                                  // temp_char // char(10),ierr)
+write(temp_char,'(f10.1)') ZS_norm
+call PetscPrintf(PETSC_COMM_WORLD,'Number of gages used (based on '        //  &
+                 'norm)            :' // temp_char // char(10),ierr)
+
 
 
 !*******************************************************************************
