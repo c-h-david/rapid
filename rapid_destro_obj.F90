@@ -31,7 +31,7 @@ use rapid_var, only :                                                          &
 
 #ifndef NO_TAO
 use rapid_var, only :                                                          &
-                   tao,taoapp,reason,ZV_1stIndex,ZV_2ndIndex
+                   tao,reason,ZV_1stIndex,ZV_2ndIndex
 #endif
 
 implicit none
@@ -55,7 +55,7 @@ implicit none
 !viewers (allows writing results in file for example)
 
 #ifndef NO_TAO
-#include "finclude/tao_solver.h" 
+#include "finclude/taosolver.h" 
 !TAO solver
 #endif
 
@@ -68,7 +68,6 @@ implicit none
 call VecDestroy(ZV_1stIndex,ierr)
 call VecDestroy(ZV_2ndIndex,ierr)
 call TaoDestroy(tao,ierr)
-call TaoAppDestroy(taoapp,ierr)
 call TaoFinalize(ierr)
 #endif
 
