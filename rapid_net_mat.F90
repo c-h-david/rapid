@@ -106,19 +106,22 @@ do JS_up=1,IV_nbup(IV_riv_index(JS_riv_bas2))
 
 if (IV_riv_tot_id(IV_riv_index(JS_riv_bas))==                                  &
     IM_up(IV_riv_index(JS_riv_bas2),JS_up)) then
-
      !Here JS_riv_bas is determined upstream of JS_riv_bas2
+     !both IS_riv_bas2 and IS_riv_bas are used here because the location
+     !of nonzeros depends on row and column in an parallel matrix
+     
      IV_nz(JS_riv_bas2)=IV_nz(JS_riv_bas2)+1 
+     !The size of IV_nz is IS_riv_bas, IV_nz is the same accross computing cores
+
      if (JS_riv_bas>=IS_ownfirst+1 .and. JS_riv_bas < IS_ownlast+1) then
           IV_dnz(JS_riv_bas2)=IV_dnz(JS_riv_bas2)+1 
      else
           IV_onz(JS_riv_bas2)=IV_onz(JS_riv_bas2)+1 
      end if
-     !both IS_riv_bas2 and IS_riv_bas are used here because the location
-     !of nonzeros depends on row and column in an parallel matrix
-
-     IM_index_up(JS_riv_bas2,JS_up)=JS_riv_bas
-     !used for traditional Muskingum method
+     !The size of IV_dnz and of IV_onz is IS_riv_bas. The values of IV_dnz and 
+     !IV_onz are not the same across computing cores.  For each core, the  
+     !only the values located in the range (IS_ownfirst+1:IS_ownlast) are 
+     !correct but only these are used in the preallocation below.
 
 end if 
 
@@ -138,7 +141,6 @@ call MatMPIAIJSetPreallocation(ZM_A,                                           &
                                IV_dnz(IS_ownfirst+1:IS_ownlast)+1,             &
                                PETSC_NULL_INTEGER,                             &
                                IV_onz(IS_ownfirst+1:IS_ownlast),ierr)
-
 call PetscPrintf(PETSC_COMM_WORLD,'Network matrix preallocated'//char(10),ierr)
 
 
@@ -147,28 +149,41 @@ call PetscPrintf(PETSC_COMM_WORLD,'Network matrix preallocated'//char(10),ierr)
 !*******************************************************************************
 if (rank==0) then
 !only first processor sets values
+
 do JS_riv_bas=1,IS_riv_bas
-     if (IV_nbup(IV_riv_index(JS_riv_bas))/=0) then
-          do JS_up=1,IV_nbup(IV_riv_index(JS_riv_bas))
-               do JS_riv_bas2=1,IS_riv_bas
+do JS_riv_bas2=1,IS_riv_bas
+do JS_up=1,IV_nbup(IV_riv_index(JS_riv_bas2))
 
-     if (  IM_up(IV_riv_index(JS_riv_bas),JS_up)==                             &
-           IV_riv_tot_id(IV_riv_index(JS_riv_bas2))  ) then
-          call MatSetValues(ZM_Net,IS_one,JS_riv_bas-1,IS_one,JS_riv_bas2-1,   &
-                            ZS_one,INSERT_VALUES,ierr)
-          CHKERRQ(ierr)
-          call MatSetValues(ZM_A  ,IS_one,JS_riv_bas-1,IS_one,JS_riv_bas2-1,   &
-                            ZS_one,INSERT_VALUES,ierr)
-          CHKERRQ(ierr)
-     end if
+if (IV_riv_tot_id(IV_riv_index(JS_riv_bas))==                                  &
+    IM_up(IV_riv_index(JS_riv_bas2),JS_up)) then
+     !Here JS_riv_bas is determined upstream of JS_riv_bas2
+     !both IS_riv_bas2 and IS_riv_bas are used here because the location
+     !of nonzeros depends on row and column in a parallel matrix
 
-                end do
-          enddo
-     end if
+     call MatSetValues(ZM_Net,IS_one,JS_riv_bas2-1,IS_one,JS_riv_bas-1,        &
+                       ZS_one,INSERT_VALUES,ierr)
+     CHKERRQ(ierr)
+     call MatSetValues(ZM_A  ,IS_one,JS_riv_bas2-1,IS_one,JS_riv_bas-1,        &
+                       0*ZS_one,INSERT_VALUES,ierr)
+     CHKERRQ(ierr)
+     !zeros (instead of -C1is) are used here on the off-diagonal of ZM_A because 
+     !C1is are not yet computed, because ZM_A will later populated based on 
+     !ZM_Net, and because ZM_Net may be later modified for forcing or dams.
+
+     IM_index_up(JS_riv_bas2,JS_up)=JS_riv_bas
+     !used for traditional Muskingum method
+
+end if 
+
+end do
+end do
 call MatSetValues(ZM_A  ,IS_one,JS_riv_bas-1,IS_one,JS_riv_bas-1,              &
                   0*ZS_one,INSERT_VALUES,ierr)
 CHKERRQ(ierr)
-enddo
+!zeros (instead of ones) are used on the main diagonal of ZM_A because ZM_A will
+!be diagonally scaled by ZV_C1 before the diagonal is populated by ones.
+end do
+
 end if
 
 call MatAssemblyBegin(ZM_Net,MAT_FINAL_ASSEMBLY,ierr)
@@ -238,11 +253,19 @@ call PetscPrintf(PETSC_COMM_WORLD,'Checked for missing connections between '// &
 
 
 !*******************************************************************************
+!Display matrices on stdout
+!*******************************************************************************
+!call PetscPrintf(PETSC_COMM_WORLD,'ZM_Net'//char(10),ierr)
+!call MatView(ZM_Net,PETSC_VIEWER_STDOUT_WORLD,ierr)
+
+!call PetscPrintf(PETSC_COMM_WORLD,'ZM_A'//char(10),ierr)
+!call MatView(ZM_A,PETSC_VIEWER_STDOUT_WORLD,ierr)
+
+
+!*******************************************************************************
 !End
 !*******************************************************************************
 call PetscPrintf(PETSC_COMM_WORLD,'--------------------------'//char(10),ierr)
-!call PetscPrintf(PETSC_COMM_WORLD,'ZM_Net'//char(10),ierr)
-!call MatView(ZM_Net,PETSC_VIEWER_STDOUT_WORLD,ierr)
 
 
 end subroutine rapid_net_mat
