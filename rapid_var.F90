@@ -31,7 +31,7 @@ implicit none
 !Profiling log
 
 #ifndef NO_TAO
-#include "finclude/tao_solver.h" 
+#include "finclude/taosolver.h" 
 !TAO solver
 #endif
 
@@ -451,11 +451,9 @@ PetscInt :: IS_ownfirst, IS_ownlast
 !Declaration of variables - TAO specific objects and variables
 !*******************************************************************************
 #ifndef NO_TAO
-TAO_SOLVER :: tao
+TaoSolver :: tao
 !TAO solver object
-TAO_APPLICATION :: taoapp
-!TAO application object
-TaoTerminateReason :: reason
+TaoSolverTerminationReason :: reason
 !TAO terminate reason object
 Vec :: ZV_1stIndex, ZV_2ndIndex
 !ZV_1stIndex=[1;0], ZV_2ndIndex=[0,1].  Used with VecDot to extract first and 
