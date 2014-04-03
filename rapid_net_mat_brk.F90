@@ -1,7 +1,8 @@
 subroutine rapid_net_mat_brk
 
 !PURPOSE
-!This subroutine modifies the network matrix based on a list of river IDs. 
+!This subroutine modifies the network and transboundary matrices based on a list
+!of river IDs. 
 !The connectivity is broken between each given river ID and its downstream 
 !river.
 !When forcing option is activated, the flow exiting each given river ID is 
@@ -34,7 +35,7 @@ use rapid_var, only :                                                          &
                    IS_riv_tot,IS_riv_bas,                                      &
                    JS_riv_tot,JS_riv_bas,JS_riv_bas2,                          &
                    IV_riv_bas_id,IV_riv_index,IV_riv_loc1,                     &
-                   ZM_Net,ZM_A,BS_logical,IV_riv_tot_id,IV_down,               &
+                   ZM_Net,ZM_T,BS_logical,IV_riv_tot_id,IV_down,               &
                    IV_nbup,JS_up,IM_index_up,                                  &
                    for_tot_id_file,for_use_id_file,                            &
                    IS_for_tot,JS_for_tot,IV_for_tot_id,                        &
@@ -49,7 +50,7 @@ use rapid_var, only :                                                          &
                    ierr,rank,                                                  &
                    IS_one,ZS_one,temp_char,IV_nz,IV_dnz,IV_onz,                &
                    IS_ownfirst,IS_ownlast,                                     &
-                   BS_opt_for,BS_opt_dam
+                   BS_opt_for,BS_opt_dam,IS_opt_routing
 
 implicit none
 
@@ -200,7 +201,7 @@ end if
 !Warning about forcing downstream basins
 
 !-------------------------------------------------------------------------------
-!Breaks matrix connectivity in case forcing used is inside basin studied
+!Breaks Net matrix connectivity in case forcing used is inside basin studied
 !-------------------------------------------------------------------------------
 if (IS_for_bas>0) then 
 call PetscPrintf(PETSC_COMM_WORLD,'Modifying network matrix'//char(10),ierr)
@@ -252,6 +253,50 @@ call MatAssemblyEnd(ZM_Net,MAT_FINAL_ASSEMBLY,ierr)
 call PetscPrintf(PETSC_COMM_WORLD,'Network matrix modified for forcing'//      &
                  char(10),ierr)
 call PetscPrintf(PETSC_COMM_WORLD,'--------------------------'//char(10),ierr)
+
+!-------------------------------------------------------------------------------
+!Breaks T matrix connectivity in case forcing is used inside basin studied
+!-------------------------------------------------------------------------------
+if (IS_opt_routing==3) then
+
+if (IS_for_bas>0) then 
+call PetscPrintf(PETSC_COMM_WORLD,'Modifying transboundary matrix'//           &
+                 char(10),ierr)
+end if
+
+do JS_for_bas=1,IS_for_bas
+     do JS_riv_bas=1,IS_riv_bas
+          if (IV_for_bas_id(JS_for_bas)==IV_riv_bas_id(JS_riv_bas)) then
+
+     do JS_riv_bas2=1,IS_riv_bas
+          if (IV_down(IV_riv_index(JS_riv_bas))==IV_riv_bas_id(JS_riv_bas2))then
+          !here JS_riv_bas2 is determined as directly downstream of JS_riv_bas
+          !and the connection between both needs be broken
+
+if ((JS_riv_bas < IS_ownfirst+1 .or.  JS_riv_bas >=IS_ownlast+1) .and.         &
+    (JS_riv_bas2>=IS_ownfirst+1 .and. JS_riv_bas2< IS_ownlast+1)) then
+
+     call MatSetValues(ZM_T,IS_one,JS_riv_bas2-1,IS_one,JS_riv_bas-1,          &
+                       0*ZS_one,INSERT_VALUES,ierr)
+     CHKERRQ(ierr)
+     !Breaks connection of transboundary matrix
+
+end if
+
+          end if
+     end do 
+
+          end if
+     end do
+end do
+call MatAssemblyBegin(ZM_T,MAT_FINAL_ASSEMBLY,ierr)
+call MatAssemblyEnd(ZM_T,MAT_FINAL_ASSEMBLY,ierr)
+!!sparse matrices need be assembled once their elements have been filled
+call PetscPrintf(PETSC_COMM_WORLD,'Transboundary matrix modified for forcing'//&
+                 char(10),ierr)
+call PetscPrintf(PETSC_COMM_WORLD,'--------------------------'//char(10),ierr)
+
+end if
 
 !-------------------------------------------------------------------------------
 !End if forcing is used
@@ -441,6 +486,50 @@ call PetscPrintf(PETSC_COMM_WORLD,'Network matrix modified for dams'//         &
 call PetscPrintf(PETSC_COMM_WORLD,'--------------------------'//char(10),ierr)
 
 !-------------------------------------------------------------------------------
+!Breaks T matrix connectivity in case dam model is used inside basin studied
+!-------------------------------------------------------------------------------
+if (IS_opt_routing==3) then
+
+if (IS_dam_bas>0) then 
+call PetscPrintf(PETSC_COMM_WORLD,'Modifying transboundary matrix'//           &
+                 char(10),ierr)
+end if
+
+do JS_dam_bas=1,IS_dam_bas
+     do JS_riv_bas=1,IS_riv_bas
+          if (IV_dam_bas_id(JS_dam_bas)==IV_riv_bas_id(JS_riv_bas)) then
+
+     do JS_riv_bas2=1,IS_riv_bas
+          if (IV_down(IV_riv_index(JS_riv_bas))==IV_riv_bas_id(JS_riv_bas2))then
+          !here JS_riv_bas2 is determined as directly downstream of JS_riv_bas
+          !and the connection between both needs be broken
+
+if ((JS_riv_bas < IS_ownfirst+1 .or.  JS_riv_bas >=IS_ownlast+1) .and.         &
+    (JS_riv_bas2>=IS_ownfirst+1 .and. JS_riv_bas2< IS_ownlast+1)) then
+
+     call MatSetValues(ZM_T,IS_one,JS_riv_bas2-1,IS_one,JS_riv_bas-1,          &
+                       0*ZS_one,INSERT_VALUES,ierr)
+     CHKERRQ(ierr)
+     !Breaks connection of transboundary matrix
+
+end if
+
+          end if
+     end do 
+
+          end if
+     end do
+end do
+call MatAssemblyBegin(ZM_T,MAT_FINAL_ASSEMBLY,ierr)
+call MatAssemblyEnd(ZM_T,MAT_FINAL_ASSEMBLY,ierr)
+!!sparse matrices need be assembled once their elements have been filled
+call PetscPrintf(PETSC_COMM_WORLD,'Transboundary matrix modified for dams'//   &
+                 char(10),ierr)
+call PetscPrintf(PETSC_COMM_WORLD,'--------------------------'//char(10),ierr)
+
+end if
+
+!-------------------------------------------------------------------------------
 !End if dam model is used
 !-------------------------------------------------------------------------------
 end if
@@ -451,6 +540,11 @@ end if
 !*******************************************************************************
 !call PetscPrintf(PETSC_COMM_WORLD,'ZM_Net'//char(10),ierr)
 !call MatView(ZM_Net,PETSC_VIEWER_STDOUT_WORLD,ierr)
+!
+!if (IS_opt_routing==3) then
+!     call PetscPrintf(PETSC_COMM_WORLD,'ZM_T'//char(10),ierr)
+!     call MatView(ZM_T,PETSC_VIEWER_STDOUT_WORLD,ierr)
+!end if
 
 
 !*******************************************************************************
