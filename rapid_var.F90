@@ -177,15 +177,15 @@ PetscInt :: IS_R
 PetscInt :: JS_R
 !Index of river routing procedure
 
-PetscInt :: IS_RpO
-!Number routing procedures needed per optimization time step 
-PetscInt :: JS_RpO
-!Index 
+PetscScalar :: ZS_dtF
+!Time step of forcing data, in seconds  
 
-PetscInt :: IS_RpM
-!Number routing procedures needed per optimization time step 
-PetscInt :: JS_RpM
-!Index 
+PetscInt :: IS_RpO, JS_RpO
+!Number routing procedures needed per optimization time step, and index
+PetscInt :: IS_RpM, JS_RpM
+!Number routing procedures needed per main time step, and index 
+PetscInt :: IS_RpF
+!Number routing procedures needed per forcing time step 
 
 
 !*******************************************************************************
@@ -432,7 +432,7 @@ namelist /NL_namelist/                                                         &
                        IS_reachtot,rapid_connect_file,Vlat_file,IS_max_up,     &
                        IS_reachbas,basin_id_file,                              &
                        Qinit_file,Qfinal_file,                                 &
-                       IS_forcingtot,forcingtot_id_file,forcingtot_tp_file,    &
+                       IS_forcingtot,forcingtot_id_file,                       &
                        Qfor_file,                                              &
                        IS_forcinguse,forcinguse_id_file,                       &
                        babsmax_file,QoutRabsmin_file,QoutRabsmax_file,         &
@@ -440,7 +440,7 @@ namelist /NL_namelist/                                                         &
                        kfac_file,xfac_file,ZS_knorm_init,ZS_xnorm_init,        &
                        IS_gagetot,gagetot_id_file,IS_gageuse,gageuse_id_file,  &
                        Qobs_file,Qobsbarrec_file,                              &
-                       ZS_TauM,ZS_dtM,ZS_TauO,ZS_dtO,ZS_TauR,ZS_dtR,           &
+                       ZS_TauM,ZS_dtM,ZS_TauO,ZS_dtO,ZS_TauR,ZS_dtR,ZS_dtF,    &
                        ZS_phifac,IS_strt_opt
  
 character(len=100) :: namelist_file
