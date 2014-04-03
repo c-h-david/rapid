@@ -43,7 +43,7 @@ use rapid_var, only :                                                          &
 
 #ifndef NO_TAO
 use rapid_var, only :                                                          &
-                   tao,taoapp
+                   tao
 #endif
 
 implicit none
@@ -73,7 +73,7 @@ external rapid_phiroutine
 !PETSc log
 
 #ifndef NO_TAO
-#include "finclude/tao_solver.h" 
+#include "finclude/taosolver.h" 
 !TAO solver
 #endif
 
@@ -214,7 +214,7 @@ if (IS_opt_run==2) then
 !call PetscLogStageRegister('One comp of phi',stage,ierr)
 !call PetscLogStagePush(stage,ierr)
 !!do JS_M=1,5
-!call rapid_phiroutine(taoapp,ZV_pnorm,ZS_phi,ierr)
+!call rapid_phiroutine(tao,ZV_pnorm,ZS_phi,PETSC_NULL,ierr)
 !!enddo
 !call PetscLogStagePop(ierr)
 
@@ -223,15 +223,13 @@ if (IS_opt_run==2) then
 !-------------------------------------------------------------------------------
 call PetscLogStageRegister('Optimization   ',stage,ierr)
 call PetscLogStagePush(stage,ierr)
-call TaoAppSetObjectiveAndGradientRo(taoapp,rapid_phiroutine,TAO_NULL_OBJECT,  &
-                                     ierr)
-call TaoAppSetInitialSolutionVec(taoapp,ZV_pnorm,ierr)
-call TaoSetTolerances(tao,1.0d-4,1.0d-4,TAO_NULL_OBJECT,TAO_NULL_OBJECT,ierr)
-call TaoSetOptions(taoapp,tao,ierr)
+call TaoSetObjectiveRoutine(tao,rapid_phiroutine,PETSC_NULL_OBJECT,ierr)
+call TaoSetInitialVector(tao,ZV_pnorm,ierr)
+call TaoSetTolerances(tao,1.0d-4,1.0d-4,PETSC_NULL_OBJECT,PETSC_NULL_OBJECT,   &
+                      PETSC_NULL_OBJECT,ierr)
+call TaoSolve(tao,ierr)
 
-call TaoSolveApplication(taoapp,tao,ierr)
-
-call TaoView(tao,ierr)
+call TaoView(tao,PETSC_VIEWER_STDOUT_WORLD,ierr)
 call PetscPrintf(PETSC_COMM_WORLD,'final normalized p=(k,x)'//char(10),ierr)
 call VecView(ZV_pnorm,PETSC_VIEWER_STDOUT_WORLD,ierr)
 call PetscLogStagePop(ierr)
