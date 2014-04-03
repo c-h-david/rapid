@@ -35,6 +35,7 @@ use rapid_var, only :                                                          &
                    JS_riv_tot,JS_riv_bas,JS_riv_bas2,                          &
                    IV_riv_bas_id,IV_riv_index,IV_riv_loc1,                     &
                    ZM_Net,ZM_A,BS_logical,IV_riv_tot_id,IV_down,               &
+                   IV_nbup,JS_up,IM_index_up,                                  &
                    for_tot_id_file,for_use_id_file,                            &
                    IS_for_tot,JS_for_tot,IV_for_tot_id,                        &
                    IS_for_use,JS_for_use,IV_for_use_id,                        &
@@ -219,7 +220,15 @@ do JS_for_bas=1,IS_for_bas
           call MatSetValues(ZM_Net,IS_one,JS_riv_bas2-1,IS_one,JS_riv_bas-1,   &
                             0*ZS_one,INSERT_VALUES,ierr)
           CHKERRQ(ierr)
-          
+          !Breaks connection for matrix-based Muskingum method
+
+          do JS_up=1,IV_nbup(IV_riv_index(JS_riv_bas2))
+               if (IM_index_up(JS_riv_bas2,JS_up)==JS_riv_bas) then
+                    IM_index_up(JS_riv_bas2,JS_up)=0
+               end if
+          end do
+          !Breaks connection for traditional Muskingum method
+
           write(temp_char,'(i10)') IV_riv_bas_id(JS_riv_bas)
           call PetscPrintf(PETSC_COMM_WORLD,                                   &
                            '         connection broken downstream of reach ID' &
@@ -228,6 +237,8 @@ do JS_for_bas=1,IS_for_bas
           call PetscPrintf(PETSC_COMM_WORLD,                                   &
                            ' forcing data will be used for reach ID'           &
                            // temp_char // char(10),ierr)
+          !Writes information on connection that was just broken in stdout
+
           end if
      end do 
 
@@ -395,6 +406,15 @@ do JS_dam_bas=1,IS_dam_bas
           call MatSetValues(ZM_Net,IS_one,JS_riv_bas2-1,IS_one,JS_riv_bas-1,   &
                             0*ZS_one,INSERT_VALUES,ierr)
           CHKERRQ(ierr)
+          !Breaks connection for matrix-based Muskingum method
+
+          do JS_up=1,IV_nbup(IV_riv_index(JS_riv_bas2))
+               if (IM_index_up(JS_riv_bas2,JS_up)==JS_riv_bas) then
+                    IM_index_up(JS_riv_bas2,JS_up)=0
+               end if
+          end do
+          !Breaks connection for traditional Muskingum method
+
           
           write(temp_char,'(i10)') IV_riv_bas_id(JS_riv_bas)
           call PetscPrintf(PETSC_COMM_WORLD,                                   &
@@ -404,6 +424,8 @@ do JS_dam_bas=1,IS_dam_bas
           call PetscPrintf(PETSC_COMM_WORLD,                                   &
                            ' forcing data will be used for reach ID'           &
                            // temp_char // char(10),ierr)
+          !Writes information on connection that was just broken in stdout
+
           end if
      end do 
 
@@ -422,6 +444,13 @@ call PetscPrintf(PETSC_COMM_WORLD,'--------------------------'//char(10),ierr)
 !End if dam model is used
 !-------------------------------------------------------------------------------
 end if
+
+
+!*******************************************************************************
+!Display matrix on stdout
+!*******************************************************************************
+!call PetscPrintf(PETSC_COMM_WORLD,'ZM_Net'//char(10),ierr)
+!call MatView(ZM_Net,PETSC_VIEWER_STDOUT_WORLD,ierr)
 
 
 !*******************************************************************************
