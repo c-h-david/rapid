@@ -19,7 +19,7 @@ use rapid_var, only :                                                          &
                    IV_basin_id,IV_basin_index,IV_basin_loc,                    &
                    Vlat_file,Qfor_file,                                        &
                    Qout_file,V_file,                                           &
-                   IS_M,JS_M,JS_RpM,IS_RpM,                                    &
+                   IS_M,JS_M,JS_RpM,IS_RpM,IS_RpF,                             &
                    ZS_TauR,                                                    &
                    ZV_pnorm,                                                   &
                    ZV_C1,ZV_C2,ZV_C3,                                          &
@@ -115,14 +115,15 @@ IV_nc_count2=(/IS_reachbas,1/)
 
 do JS_M=1,IS_M
 
+do JS_RpM=1,IS_RpM
+
 !- + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - +  
 !Read/set upstream forcing
 !- + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - +  
-if (BS_opt_forcing .and. IS_forcingbas>0) then
+if (BS_opt_forcing .and. IS_forcingbas>0                                       &
+                   .and. mod((JS_M-1)*IS_RpM+JS_RpM,IS_RpF)==1) then
      call rapid_read_Qfor_file
 end if 
-
-do JS_RpM=1,IS_RpM
 
 !- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 !Read/set surface and subsurface volumes 
@@ -161,6 +162,9 @@ call VecCopy(ZV_VR,ZV_VinitR,ierr)
 !- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 call rapid_write_Qout_file
 
+!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+!Update netCDF location         
+!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 if (rank==0) IV_nc_start(2)=IV_nc_start(2)+1
 !do not comment out if writing directly from the routing subroutine
 
