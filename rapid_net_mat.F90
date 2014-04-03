@@ -7,7 +7,10 @@ subroutine rapid_net_mat
 !between the subbasin and the entire domain, gives warnings.  Also creates two 
 !Fortran vectors that are useful for PETSc programming within this river routing 
 !model (IV_riv_index,IV_riv_loc1).  
-!Author: Cedric H. David, 2008 
+!A transboundary matrix is also created whose elements in the diagonal blocks 
+!are all null and the elements in the off-diagonal blocks are equal to those of 
+!the network matrix. 
+!Author: Cedric H. David, 2013
 
 
 !*******************************************************************************
@@ -18,11 +21,11 @@ use rapid_var, only :                                                          &
                    JS_riv_tot,JS_riv_bas,JS_riv_bas2,                          &
                    IV_riv_bas_id,IV_riv_index,IV_riv_loc1,                     &
                    rapid_connect_file,riv_bas_id_file,                         &
-                   ZM_Net,ZM_A,BS_logical,IV_riv_tot_id,                       &
+                   ZM_Net,ZM_A,ZM_T,ZM_TC1,BS_logical,IV_riv_tot_id,           &
                    IV_down,IV_nbup,IM_up,JS_up,IM_index_up,                    &
                    ierr,rank,                                                  &
                    IS_one,ZS_one,temp_char,IV_nz,IV_dnz,IV_onz,                &
-                   IS_ownfirst,IS_ownlast
+                   IS_ownfirst,IS_ownlast,IS_opt_routing
 
 implicit none
 
@@ -152,6 +155,18 @@ call MatMPIAIJSetPreallocation(ZM_A,                                           &
                                IV_dnz(IS_ownfirst+1:IS_ownlast)+1,             &
                                PETSC_NULL_INTEGER,                             &
                                IV_onz(IS_ownfirst+1:IS_ownlast),ierr)
+call MatSeqAIJSetPreallocation(ZM_T,PETSC_NULL_INTEGER,0*IV_nz,ierr)
+call MatMPIAIJSetPreallocation(ZM_T,                                           &
+                               PETSC_NULL_INTEGER,                             &
+                               0*IV_dnz(IS_ownfirst+1:IS_ownlast),             &
+                               PETSC_NULL_INTEGER,                             &
+                               IV_onz(IS_ownfirst+1:IS_ownlast),ierr)
+call MatSeqAIJSetPreallocation(ZM_TC1,PETSC_NULL_INTEGER,0*IV_nz,ierr)
+call MatMPIAIJSetPreallocation(ZM_TC1,                                         &
+                               PETSC_NULL_INTEGER,                             &
+                               0*IV_dnz(IS_ownfirst+1:IS_ownlast),             &
+                               PETSC_NULL_INTEGER,                             &
+                               IV_onz(IS_ownfirst+1:IS_ownlast),ierr)
 call PetscPrintf(PETSC_COMM_WORLD,'Network matrix preallocated'//char(10),ierr)
 
 
@@ -174,12 +189,16 @@ if (IV_riv_tot_id(IV_riv_index(JS_riv_bas))==                                  &
      call MatSetValues(ZM_Net,IS_one,JS_riv_bas2-1,IS_one,JS_riv_bas-1,        &
                        ZS_one,INSERT_VALUES,ierr)
      CHKERRQ(ierr)
+     !Actual values used for ZM_Net
+
      call MatSetValues(ZM_A  ,IS_one,JS_riv_bas2-1,IS_one,JS_riv_bas-1,        &
                        0*ZS_one,INSERT_VALUES,ierr)
      CHKERRQ(ierr)
      !zeros (instead of -C1is) are used here on the off-diagonal of ZM_A because 
-     !C1is are not yet computed, because ZM_A will later populated based on 
-     !ZM_Net, and because ZM_Net may be later modified for forcing or dams.
+     !C1is are not yet computed, because ZM_A will later be populated based on 
+     !ZM_Net, and because ZM_Net may be later modified for forcing or dams. 
+     !Also when running RAPID in optimization mode, it is necessary to recreate
+     !ZM_A from scratch every time the parameters C1is are updated
 
      IM_index_up(JS_riv_bas2,JS_up)=JS_riv_bas
      !used for traditional Muskingum method
@@ -203,6 +222,54 @@ call MatAssemblyBegin(ZM_A  ,MAT_FINAL_ASSEMBLY,ierr)
 call MatAssemblyEnd(ZM_A  ,MAT_FINAL_ASSEMBLY,ierr)
 !sparse matrices need be assembled once their elements have been filled
 call PetscPrintf(PETSC_COMM_WORLD,'Network matrix created'//char(10),ierr)
+
+
+!*******************************************************************************
+!Creates transboundary matrix
+!*******************************************************************************
+if (IS_opt_routing==3) then
+
+do JS_riv_bas=1,IS_riv_bas
+do JS_riv_bas2=1,IS_riv_bas
+do JS_up=1,IV_nbup(IV_riv_index(JS_riv_bas2))
+
+if (IV_riv_tot_id(IV_riv_index(JS_riv_bas))==                                  &
+    IM_up(IV_riv_index(JS_riv_bas2),JS_up)) then
+     !Here JS_riv_bas is determined upstream of JS_riv_bas2
+     !both IS_riv_bas2 and IS_riv_bas are used here because the location
+     !of nonzeros depends on row and column in a parallel matrix
+
+     if ((JS_riv_bas < IS_ownfirst+1 .or.  JS_riv_bas >=IS_ownlast+1) .and.    &
+         (JS_riv_bas2>=IS_ownfirst+1 .and. JS_riv_bas2< IS_ownlast+1)) then
+
+     call MatSetValues(ZM_T,IS_one,JS_riv_bas2-1,IS_one,JS_riv_bas-1,          &
+                       ZS_one,INSERT_VALUES,ierr)
+     CHKERRQ(ierr)
+     !Actual values (ones) used for ZM_T
+
+     call MatSetValues(ZM_TC1,IS_one,JS_riv_bas2-1,IS_one,JS_riv_bas-1,        &
+                       0*ZS_one,INSERT_VALUES,ierr)
+     CHKERRQ(ierr)
+     !zeros (instead of C1is) are used here everywhere in ZM_TC1 because 
+     !C1is are not yet computed, because ZM_TC1 will later be populated based on 
+     !ZM_T, and because ZM_T may be later modified for forcing or dams. 
+     !Also when running RAPID in optimization mode, it is necessary to recreate
+     !ZM_TC1 from scratch every time the parameters C1is are updated
+
+     end if
+end if 
+
+end do
+end do
+end do
+
+call MatAssemblyBegin(ZM_T,MAT_FINAL_ASSEMBLY,ierr)
+call MatAssemblyEnd(ZM_T,MAT_FINAL_ASSEMBLY,ierr)
+call MatAssemblyBegin(ZM_TC1,MAT_FINAL_ASSEMBLY,ierr)
+call MatAssemblyEnd(ZM_TC1,MAT_FINAL_ASSEMBLY,ierr)
+call PetscPrintf(PETSC_COMM_WORLD,'Transboundary matrix created'//char(10),ierr)
+
+end if
 
 
 !*******************************************************************************
@@ -268,9 +335,17 @@ call PetscPrintf(PETSC_COMM_WORLD,'Checked for missing connections between '// &
 !*******************************************************************************
 !call PetscPrintf(PETSC_COMM_WORLD,'ZM_Net'//char(10),ierr)
 !call MatView(ZM_Net,PETSC_VIEWER_STDOUT_WORLD,ierr)
-
+!
 !call PetscPrintf(PETSC_COMM_WORLD,'ZM_A'//char(10),ierr)
 !call MatView(ZM_A,PETSC_VIEWER_STDOUT_WORLD,ierr)
+!
+!if (IS_opt_routing==3) then
+!     call PetscPrintf(PETSC_COMM_WORLD,'ZM_T'//char(10),ierr)
+!     call MatView(ZM_T,PETSC_VIEWER_STDOUT_WORLD,ierr)
+!
+!     call PetscPrintf(PETSC_COMM_WORLD,'ZM_TC1'//char(10),ierr)
+!     call MatView(ZM_TC1,PETSC_VIEWER_STDOUT_WORLD,ierr)
+!end if
 
 
 !*******************************************************************************
