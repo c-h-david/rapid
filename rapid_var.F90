@@ -77,8 +77,8 @@ PetscInt :: JS_forcinguse
 !*******************************************************************************
 !Declaration of variables - input and output files
 !*******************************************************************************
-character(len=100) :: modcou_connect_file
-!unit 10 - file with connectivity information following MODCOU notations
+character(len=100) :: rapid_connect_file
+!unit 10 - file with connectivity information using RAPID connectivity format
 character(len=100) :: basin_id_file
 !unit 14 - file with all the IDs of the reaches used in subbasin considered
 character(len=100) :: gagetot_id_file
@@ -106,7 +106,7 @@ character(len=100) :: Qinit_file
 !unit 30 - file where initial flowrates can be stored to run the model with them
 character(len=100) :: Qfinal_file
 !unit 31 - file where final flowrates can be stored at the end of model run 
-character(len=100) :: m3_nc_file
+character(len=100) :: Vlat_file
 
 character(len=100) :: Qobs_file
 !unit 33 - file where the flowrates observations are given
@@ -116,8 +116,6 @@ character(len=100) :: Qfor_file
 character(len=100) :: Qobsbarrec_file
 !unit 35 - file where the reciprocal (1/xi) of the average forcing are stored.
 
-character(len=100) :: Qout_file
-!unit 40 - file where model-calculated flows are stored
 character(len=100) :: V_file
 !unit 41 - file where model-calculated volumes are stored
 character(len=100) :: babsmax_file
@@ -129,7 +127,7 @@ character(len=100) :: QoutRabsmin_file
 character(len=100) :: QoutRabsmax_file
 !unit 44 - file where the maximum of the absolute values of the instantaneous 
 !flows are stored 
-character(len=100) :: Qout_nc_file
+character(len=100) :: Qout_file
 
 
 !*******************************************************************************
@@ -199,7 +197,7 @@ Logical :: BS_logical
 !Boolean used during network matrix creation to give warnings if connectivity pb
 
 PetscInt, dimension(:), allocatable :: IV_connect_id
-!unique IDs of reaches in modcou_connect_file
+!unique IDs of reaches in rapid_connect_file
 PetscInt, dimension(:), allocatable :: IV_down
 !vector of the downstream river reach of each river reach (corresponds to ipere)
 PetscInt, dimension(:), allocatable :: IV_nbup
@@ -258,7 +256,7 @@ Vec :: ZV_temp1,ZV_temp2
 !temporary vectors, used for calculations
 PetscScalar :: ZS_phifac
 PetscInt :: IS_strt_opt
-!first time step at which m3_riv data is read during optimization
+!first time step at which Vlat data is read during optimization
 
 Vec :: ZV_kfac
 !Vector of size IS_reachbas a multiplication factor for k for all river reaches
@@ -397,8 +395,8 @@ Vec :: ZV_1stIndex, ZV_2ndIndex
 !Declaration of variables - netCDF variables
 !*******************************************************************************
 PetscInt :: IS_nc_status
-PetscInt :: IS_nc_id_fil_m3,IS_nc_id_fil_Qout
-PetscInt :: IS_nc_id_var_m3,IS_nc_id_var_Qout,IS_nc_id_var_comid
+PetscInt :: IS_nc_id_fil_Vlat,IS_nc_id_fil_Qout
+PetscInt :: IS_nc_id_var_Vlat,IS_nc_id_var_Qout,IS_nc_id_var_comid
 PetscInt :: IS_nc_id_dim_comid,IS_nc_id_dim_time
 PetscInt, parameter :: IS_nc_ndim=2
 PetscInt, dimension(IS_nc_ndim) :: IV_nc_id_dim, IV_nc_start, IV_nc_count,     &
@@ -431,14 +429,14 @@ namelist /NL_namelist/                                                         &
                        BS_opt_Qinit,BS_opt_Qfinal,                             &
                        BS_opt_forcing,BS_opt_influence,                        &
                        IS_opt_routing,IS_opt_run,IS_opt_phi,                   &
-                       IS_reachtot,modcou_connect_file,m3_nc_file,IS_max_up,   &
+                       IS_reachtot,rapid_connect_file,Vlat_file,IS_max_up,     &
                        IS_reachbas,basin_id_file,                              &
                        Qinit_file,Qfinal_file,                                 &
                        IS_forcingtot,forcingtot_id_file,forcingtot_tp_file,    &
                        Qfor_file,                                              &
                        IS_forcinguse,forcinguse_id_file,                       &
                        babsmax_file,QoutRabsmin_file,QoutRabsmax_file,         &
-                       k_file,x_file,Qout_nc_file,                             &
+                       k_file,x_file,Qout_file,                                &
                        kfac_file,xfac_file,ZS_knorm_init,ZS_xnorm_init,        &
                        IS_gagetot,gagetot_id_file,IS_gageuse,gageuse_id_file,  &
                        Qobs_file,Qobsbarrec_file,                              &
