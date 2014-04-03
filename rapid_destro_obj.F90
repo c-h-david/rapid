@@ -15,17 +15,16 @@ subroutine rapid_destro_obj
 !*******************************************************************************
 use rapid_var, only :                                                          &
                    IS_riv_bas,                                                 &
-                   ZM_Net,                                                     &
+                   ZM_Net,ZM_A,ZM_T,ZM_TC1,                                    &
                    ZM_Obs,ZV_Qobs,ZV_temp1,ZV_temp2,ZV_kfac,                   &
-                   ZM_A,                                                       &
                    ZV_k,ZV_x,ZV_p,ZV_pnorm,ZV_pfac,                            &
                    ZV_C1,ZV_C2,ZV_C3,ZV_Cdenom,                                &
-                   ZV_b,ZV_babsmax,                                            &
+                   ZV_b,ZV_babsmax,ZV_bhat,                                    &
                    ZV_Qext,ZV_Qfor,ZV_Qlat,                                    &
                    ZV_Vext,ZV_Vfor,ZV_Vlat,                                    &
                    ZV_VinitM,ZV_QoutinitM,ZV_QoutinitO,ZV_QoutbarO,            &
                    ZV_QoutR,ZV_QoutinitR,ZV_QoutprevR,ZV_QoutbarR,             &
-                   ZV_QoutRabsmin,ZV_QoutRabsmax,                              &
+                   ZV_QoutRabsmin,ZV_QoutRabsmax,ZV_QoutRhat,                  &
                    ZV_VR,ZV_VinitR,ZV_VprevR,ZV_VbarR,ZV_VoutR,                &
                    ZV_Qobsbarrec,                                              &
                    ierr,ksp,vecscat,ZV_SeqZero,ZS_one,ZV_one,IS_one
@@ -77,6 +76,8 @@ call KSPDestroy(ksp,ierr)
 
 call MatDestroy(ZM_A,ierr)
 call MatDestroy(ZM_Net,ierr)
+call MatDestroy(ZM_T,ierr)
+call MatDestroy(ZM_TC1,ierr)
 call MatDestroy(ZM_Obs,ierr)
 
 call VecDestroy(ZV_k,ierr)
@@ -88,6 +89,7 @@ call VecDestroy(ZV_Cdenom,ierr)
 
 call VecDestroy(ZV_b,ierr)
 call VecDestroy(ZV_babsmax,ierr)
+call VecDestroy(ZV_bhat,ierr)
 
 call VecDestroy(ZV_Qext,ierr)
 call VecDestroy(ZV_Qfor,ierr)
@@ -106,6 +108,7 @@ call VecDestroy(ZV_QoutprevR,ierr)
 call VecDestroy(ZV_QoutbarR,ierr)
 call VecDestroy(ZV_QoutRabsmin,ierr)
 call VecDestroy(ZV_QoutRabsmax,ierr)
+call VecDestroy(ZV_QoutRhat,ierr)
 
 call VecDestroy(ZV_VinitM,ierr)
 

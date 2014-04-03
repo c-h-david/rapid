@@ -14,17 +14,16 @@ subroutine rapid_create_obj
 !*******************************************************************************
 use rapid_var, only :                                                          &
                    IS_riv_bas,                                                 &
-                   ZM_Net,                                                     &
+                   ZM_Net,ZM_A,ZM_T,ZM_TC1,                                    &
                    ZM_Obs,ZV_Qobs,ZV_temp1,ZV_temp2,ZV_kfac,                   &
-                   ZM_A,                                                       &
                    ZV_k,ZV_x,ZV_p,ZV_pnorm,ZV_pfac,                            &
                    ZV_C1,ZV_C2,ZV_C3,ZV_Cdenom,                                &
-                   ZV_b,ZV_babsmax,                                            &
+                   ZV_b,ZV_babsmax,ZV_bhat,                                    &
                    ZV_Qext,ZV_Qfor,ZV_Qlat,                                    &
                    ZV_Vext,ZV_Vfor,ZV_Vlat,                                    &
                    ZV_VinitM,ZV_QoutinitM,ZV_QoutinitO,ZV_QoutbarO,            &
                    ZV_QoutR,ZV_QoutinitR,ZV_QoutprevR,ZV_QoutbarR,             &
-                   ZV_QoutRabsmin,ZV_QoutRabsmax,                              &
+                   ZV_QoutRabsmin,ZV_QoutRabsmax,ZV_QoutRhat,                  &
                    ZV_VR,ZV_VinitR,ZV_VprevR,ZV_VbarR,ZV_VoutR,                &
                    ZV_Qobsbarrec,                                              &
                    ierr,ksp,vecscat,ZV_SeqZero,ZS_one,ZV_one,IS_one
@@ -89,6 +88,24 @@ call MatSetFromOptions(ZM_A,ierr)
 !Very basic preallocation assuming no more than 3 upstream elements anywhere
 !Not used here because proper preallocation is done within rapid_net_mat.F90
 
+call MatCreate(PETSC_COMM_WORLD,ZM_T,ierr)
+call MatSetSizes(ZM_T,PETSC_DECIDE,PETSC_DECIDE,IS_riv_bas,IS_riv_bas,ierr)
+call MatSetFromOptions(ZM_T,ierr)
+!call MatSeqAIJSetPreallocation(ZM_T,4*IS_one,PETSC_NULL_INTEGER,ierr)
+!call MatMPIAIJSetPreallocation(ZM_T,4*IS_one,PETSC_NULL_INTEGER,2*IS_one,      &
+!                               PETSC_NULL_INTEGER,ierr)
+!Very basic preallocation assuming no more than 3 upstream elements anywhere
+!Not used here because proper preallocation is done within rapid_net_mat.F90
+
+call MatCreate(PETSC_COMM_WORLD,ZM_TC1,ierr)
+call MatSetSizes(ZM_TC1,PETSC_DECIDE,PETSC_DECIDE,IS_riv_bas,IS_riv_bas,ierr)
+call MatSetFromOptions(ZM_TC1,ierr)
+!call MatSeqAIJSetPreallocation(ZM_TC1,4*IS_one,PETSC_NULL_INTEGER,ierr)
+!call MatMPIAIJSetPreallocation(ZM_TC1,4*IS_one,PETSC_NULL_INTEGER,2*IS_one,      &
+!                               PETSC_NULL_INTEGER,ierr)
+!Very basic preallocation assuming no more than 3 upstream elements anywhere
+!Not used here because proper preallocation is done within rapid_net_mat.F90
+
 call MatCreate(PETSC_COMM_WORLD,ZM_Obs,ierr)
 call MatSetSizes(ZM_Obs,PETSC_DECIDE,PETSC_DECIDE,IS_riv_bas,IS_riv_bas,ierr)
 call MatSetFromOptions(ZM_Obs,ierr)
@@ -117,6 +134,7 @@ call VecDuplicate(ZV_k,ZV_Cdenom,ierr)
 
 call VecDuplicate(ZV_k,ZV_b,ierr)
 call VecDuplicate(ZV_k,ZV_babsmax,ierr)
+call VecDuplicate(ZV_k,ZV_bhat,ierr)
 
 call VecDuplicate(ZV_k,ZV_Qext,ierr)
 call VecDuplicate(ZV_k,ZV_Qfor,ierr)
@@ -135,6 +153,7 @@ call VecDuplicate(ZV_k,ZV_QoutprevR,ierr)
 call VecDuplicate(ZV_k,ZV_QoutbarR,ierr)
 call VecDuplicate(ZV_k,ZV_QoutRabsmin,ierr)
 call VecDuplicate(ZV_k,ZV_QoutRabsmax,ierr)
+call VecDuplicate(ZV_k,ZV_QoutRhat,ierr)
 
 call VecDuplicate(ZV_k,ZV_VinitM,ierr)
 
