@@ -1,12 +1,12 @@
 !*******************************************************************************
-!Module to declare variables
+!Module - rapid_var
 !*******************************************************************************
 module rapid_var
 
 !Purpose:
 !Module where all the variables are defined. 
 !Author: 
-!Cedric H. David, 2008. 
+!Cedric H. David, 2008-2014. 
 
 
 implicit none

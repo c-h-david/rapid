@@ -1,3 +1,18 @@
+#*******************************************************************************
+#rapid_script.sh
+#*******************************************************************************
+
+#Purpose:
+#This script allows running RAPID and save the outputs generated for both stdout 
+#stderr in a text file of which the name is automatically created here based on 
+#the current date.  
+#Author:
+#Cedric H. David, 2010-2014
+
+
+#*******************************************************************************
+#Instructions
+#*******************************************************************************
 FILE=$(date +"%Y-%m-%d_%H-%M-%S_rapid_stdout.txt")
 /usr/bin/time mpiexec                  \
               -n 1                     \

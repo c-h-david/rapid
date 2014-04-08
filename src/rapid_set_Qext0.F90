@@ -1,5 +1,5 @@
 !*******************************************************************************
-!Initialize subroutine
+!Subroutine - rapid_set_Qext0
 !*******************************************************************************
 subroutine rapid_set_Qext0
 
@@ -15,7 +15,7 @@ subroutine rapid_set_Qext0
 !since the modifications made on the network matrix make it difficult to use
 !ZV_Qin_dam_prev without creating a new variable.
 !Author: 
-!Cedric H. David, 2013.
+!Cedric H. David, 2013-2014.
 
 
 !*******************************************************************************

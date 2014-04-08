@@ -1,5 +1,5 @@
 !*******************************************************************************
-!RAPID main program
+!Program - rapid_main
 !*******************************************************************************
 program rapid_main
 
@@ -7,7 +7,7 @@ program rapid_main
 !Allows to route water through a river network, and to estimate optimal 
 !parameters using the inverse method 
 !Author: 
-!Cedric H. David, 2008.
+!Cedric H. David, 2008-2014.
 
 
 !*******************************************************************************

@@ -1,3 +1,6 @@
+!*******************************************************************************
+!Subroutine - rapid_net_mat_brk
+!*******************************************************************************
 subroutine rapid_net_mat_brk
 
 !Purpose:
@@ -26,7 +29,7 @@ subroutine rapid_net_mat_brk
 ! - IV_dam_pos(IS_dam_bas) allows to know where to read the flow values for the 
 !   dam model in the current modeling domain using the 0-based ZV_Qdam
 !Author: 
-!Cedric H. David, 2013. 
+!Cedric H. David, 2013-2014. 
 
 
 !*******************************************************************************

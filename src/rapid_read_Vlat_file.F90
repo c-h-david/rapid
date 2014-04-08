@@ -6,7 +6,7 @@ subroutine rapid_read_Vlat_file
 !Purpose:
 !Read Vlat_file from Fortran.
 !Author: 
-!Cedric H. David, 2013.
+!Cedric H. David, 2013-2014.
 
 
 !*******************************************************************************

@@ -1,5 +1,5 @@
 !*******************************************************************************
-!Subroutine rapid_final 
+!Subroutine - rapid_final 
 !*******************************************************************************
 subroutine rapid_final
 
@@ -16,7 +16,7 @@ subroutine rapid_final
 !     -Prints some information about the types of objects used during simulation
 !     -Destroy all PETSc and TAO objects 
 !Author: 
-!Cedric H. David, 2012. 
+!Cedric H. David, 2012-2014. 
 
 
 !*******************************************************************************

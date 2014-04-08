@@ -10,7 +10,7 @@ subroutine rapid_routing(ZV_C1,ZV_C2,ZV_C3,ZV_Qext,                            &
 !method (McCarthy 1938).  Also calculates the volume of each reach using a
 !simple first order approximation
 !Author: 
-!Cedric H. David, 2008. 
+!Cedric H. David, 2008-2014. 
 
 
 !*******************************************************************************

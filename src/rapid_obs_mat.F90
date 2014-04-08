@@ -1,3 +1,6 @@
+!*******************************************************************************
+!Subroutine - rapid_obs_mat
+!*******************************************************************************
 subroutine rapid_obs_mat
 
 !Purpose:
@@ -5,7 +8,7 @@ subroutine rapid_obs_mat
 !and column where observations are available.  Calculates IS_obs_bas.  Also 
 !creates vectors IV_obs_index and IV_obs_loc1.
 !Author: 
-!Cedric H. David, 2008. 
+!Cedric H. David, 2008-2014. 
 
 
 !*******************************************************************************

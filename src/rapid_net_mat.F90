@@ -1,3 +1,6 @@
+!*******************************************************************************
+!Subroutine - rapid_net_mat
+!*******************************************************************************
 subroutine rapid_net_mat
 
 !Purpose:
@@ -11,7 +14,7 @@ subroutine rapid_net_mat
 !are all null and the elements in the off-diagonal blocks are equal to those of 
 !the network matrix. 
 !Author: 
-!Cedric H. David, 2013.
+!Cedric H. David, 2008-2014.
 
 
 !*******************************************************************************

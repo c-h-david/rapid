@@ -1,5 +1,5 @@
 !*******************************************************************************
-!Subroutine phiroutine
+!Subroutine - rapid_phiroutine
 !*******************************************************************************
 #ifndef NO_TAO
 subroutine rapid_phiroutine(tao,ZV_pnorm,ZS_phi,IS_dummy,ierr)
@@ -9,7 +9,7 @@ subroutine rapid_phiroutine(tao,ZV_pnorm,ZS_phi,IS_dummy,ierr)
 !over a given period of time.  The cost function represents the square error
 !between calculated flows and observed flows where observations are available.
 !Author: 
-!Cedric H. David, 2008. 
+!Cedric H. David, 2008-2014. 
 
 
 !*******************************************************************************

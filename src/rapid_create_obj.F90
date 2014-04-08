@@ -1,5 +1,5 @@
 !*******************************************************************************
-!subroutine create_petsc_objects 
+!Subroutine - rapid_create_obj
 !*******************************************************************************
 subroutine rapid_create_obj 
 
@@ -7,7 +7,7 @@ subroutine rapid_create_obj
 !All PETSc and TAO objects need be created (requirement of both mathematical 
 !libraries).  PETSc and TAO also need be initialized.  This is what's done here.
 !Author: 
-!Cedric H. David, 2008.
+!Cedric H. David, 2008-2014.
 
 
 !*******************************************************************************
