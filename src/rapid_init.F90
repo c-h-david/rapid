@@ -32,7 +32,6 @@ subroutine rapid_init
 !*******************************************************************************
 !Declaration of variables
 !*******************************************************************************
-use netcdf
 use rapid_var, only :                                                          &
                    IS_riv_tot,IS_riv_bas,                                      &
                    IV_riv_bas_id,IV_riv_index,IV_riv_loc1,IV_riv_tot_id,       &
@@ -57,6 +56,7 @@ use rapid_var, only :                                                          &
                    IV_dam_tot_id,IV_dam_use_id,                                &
                    IV_dam_index,IV_dam_loc2,IV_dam_pos,                        &
                    ZV_Qin_dam,ZV_Qout_dam,ZV_Qin_dam_prev,ZV_Qout_dam_prev,    &
+                   ZV_Qin_dam0,ZV_Qout_dam0,                                   &
                    ZV_QoutinitM,ZV_QoutinitO,ZV_QoutinitR,                     &
                    ZV_VinitM,ZV_VinitR,                                        &
                    ZV_babsmax,ZV_QoutRabsmin,ZV_QoutRabsmax,                   &
@@ -145,6 +145,8 @@ if (BS_opt_dam) then
      allocate(ZV_Qin_dam_prev(IS_dam_tot))
      allocate(ZV_Qout_dam(IS_dam_tot))
      allocate(ZV_Qout_dam_prev(IS_dam_tot))
+     allocate(ZV_Qin_dam0(IS_dam_tot))
+     allocate(ZV_Qout_dam0(IS_dam_tot))
 end if
 
 !-------------------------------------------------------------------------------
