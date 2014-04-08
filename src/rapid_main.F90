@@ -13,7 +13,6 @@ program rapid_main
 !*******************************************************************************
 !Declaration of variables
 !*******************************************************************************
-use netcdf
 use rapid_var, only :                                                          &
                    namelist_file,                                              &
                    IV_riv_bas_id,IV_riv_index,IV_riv_loc1,                     &
@@ -102,6 +101,21 @@ call rapid_open_Vlat_file(Vlat_file)
 if (BS_opt_for) call rapid_open_Qfor_file(Qfor_file)
 
 !-------------------------------------------------------------------------------
+!Make sure the vectors potentially used for inflow to dams are initially null
+!-------------------------------------------------------------------------------
+call VecSet(ZV_Qext,0*ZS_one,ierr)                         !Qext=0
+call VecSet(ZV_QoutbarR,0*ZS_one,ierr)                     !QoutbarR=0
+!This should be done by PETSc but just to be safe
+
+!-------------------------------------------------------------------------------
+!Set initial value of Qext from Qout_dam0
+!-------------------------------------------------------------------------------
+if (BS_opt_dam .and. IS_dam_bas>0) then
+     call rapid_set_Qext0                                  !Qext from Qout_dam0
+     !call VecView(ZV_Qext,PETSC_VIEWER_STDOUT_WORLD,ierr)
+end if
+
+!-------------------------------------------------------------------------------
 !Read, compute and write          
 !-------------------------------------------------------------------------------
 call PetscLogStageRegister('Read Comp Write',stage,ierr)
@@ -117,18 +131,12 @@ do JS_M=1,IS_M
 do JS_RpM=1,IS_RpM
 
 !- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-!Run dam model based on previous values of QoutbarR and Qext to get Qdam
+!Read/set surface and subsurface volumes 
 !- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-if (BS_opt_dam .and. IS_dam_bas>0) then
+call rapid_read_Vlat_file
 
-call rapid_get_Qdam
-
-end if
-
-!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-!Read/set human forcing
-!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-!To be added
+call VecCopy(ZV_Vlat,ZV_Qlat,ierr)            !Qlat=Vlat
+call VecScale(ZV_Qlat,1/ZS_TauR,ierr)         !Qlat=Qlat/TauR
 
 !- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 !Read/set upstream forcing
@@ -141,12 +149,18 @@ call rapid_read_Qfor_file
 end if 
 
 !- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-!Read/set surface and subsurface volumes 
+!Run dam model based on previous values of QoutbarR and Qext to get Qdam
 !- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-call rapid_read_Vlat_file
+if (BS_opt_dam .and. IS_dam_bas>0) then
 
-call VecCopy(ZV_Vlat,ZV_Qlat,ierr)            !Qlat=Vlat
-call VecScale(ZV_Qlat,1/ZS_TauR,ierr)         !Qlat=Qlat/TauR
+call rapid_get_Qdam
+
+end if
+
+!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+!Read/set human forcing
+!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+!To be added
 
 !- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 !calculation of Qext
