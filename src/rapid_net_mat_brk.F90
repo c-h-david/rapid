@@ -406,9 +406,9 @@ end if
 end do
 end do
 
-!!-------------------------------------------------------------------------------
-!!Populate IV_dam_pos
-!!-------------------------------------------------------------------------------
+!-------------------------------------------------------------------------------
+!Populate IV_dam_pos
+!-------------------------------------------------------------------------------
 do JS_dam_tot=1,IS_dam_tot
 do JS_riv_bas=1,IS_riv_bas
      if (IV_dam_tot_id(JS_dam_tot)==IV_riv_bas_id(JS_riv_bas)) then
@@ -427,8 +427,11 @@ if (rank==0 .and. IS_dam_bas>0) then
      print *, '        IV_dam_bas_id   =', IV_dam_bas_id
      print *, '        IV_dam_index    =', IV_dam_index
      print *, '        IV_dam_loc2     =', IV_dam_loc2
-     print *, '        IV_dam_pos      =', IV_dam_pos
 end if
+
+if (rank==0 .and. IS_dam_tot>0) then
+     print *, '        IV_dam_pos      =', IV_dam_pos
+end if 
 !Warning about forcing downstream basins
 
 !-------------------------------------------------------------------------------
@@ -468,7 +471,7 @@ do JS_dam_bas=1,IS_dam_bas
                             // temp_char,ierr)
           write(temp_char,'(i10)') IV_riv_bas_id(JS_riv_bas2)
           call PetscPrintf(PETSC_COMM_WORLD,                                   &
-                           ' forcing data will be used for reach ID'           &
+                           ' dam data will be used for reach ID'           &
                            // temp_char // char(10),ierr)
           !Writes information on connection that was just broken in stdout
 
