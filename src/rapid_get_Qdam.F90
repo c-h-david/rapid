@@ -14,12 +14,12 @@ subroutine rapid_get_Qdam
 !*******************************************************************************
 use rapid_var, only :                                                          &
                    rank,ierr,vecscat,ZV_pointer,ZV_SeqZero,ZS_one,             &
-                   IS_dam_bas,                                                 &
-                   ZM_Net,ZV_Qext,ZV_Qdam,                                     &
-                   ZV_Qin_dam,ZV_Qout_dam,ZV_Qin_dam_prev,ZV_Qout_dam_prev,    &
-                   ZV_QoutbarR,ZV_QinbarR,                                     &
-                   IV_dam_loc2,IV_dam_index,IV_dam_pos
+                   ZM_Net,ZV_Qext,ZV_Qdam,ZV_QoutbarR,ZV_QinbarR,              &
+                   IS_dam_bas,IV_dam_index,IV_dam_loc2,                        &
+                   IV_dam_pos
 
+use rapid_var, only :                                                          &
+                   ZV_Qin_dam,ZV_Qout_dam,ZV_Qin_dam_prev,ZV_Qout_dam_prev
 
 implicit none
 
@@ -50,51 +50,56 @@ implicit none
 
 
 !*******************************************************************************
-!Compute inflow into dams
+!Compute previous inflow from river network and outside of river network to dams
 !*******************************************************************************
+!-------------------------------------------------------------------------------
+!Compute inflow into dams from previous river flow
+!-------------------------------------------------------------------------------
 call MatMult(ZM_Net,ZV_QoutbarR,ZV_QinbarR,ierr)           
 call VecAXPY(ZV_QinbarR,ZS_one,ZV_Qext,ierr)
 !QinbarR=Net*QoutbarR+Qext
 
-
-!*******************************************************************************
+!-------------------------------------------------------------------------------
 !Set values from PETSc vector into Fortran vector 
-!*******************************************************************************
-if (rank==0) ZV_Qin_dam=0 
+!-------------------------------------------------------------------------------
+if (rank==0) ZV_Qin_dam_prev=0 
 call VecScatterBegin(vecscat,ZV_QinbarR,ZV_SeqZero,                            &
                      INSERT_VALUES,SCATTER_FORWARD,ierr)
 call VecScatterEnd(vecscat,ZV_QinbarR,ZV_SeqZero,                              &
                         INSERT_VALUES,SCATTER_FORWARD,ierr)
 call VecGetArrayF90(ZV_SeqZero,ZV_pointer,ierr)
-if (rank==0) ZV_Qin_dam=ZV_pointer(IV_dam_pos) 
+if (rank==0) ZV_Qin_dam_prev=ZV_pointer(IV_dam_pos) 
 call VecRestoreArrayF90(ZV_SeqZero,ZV_pointer,ierr)
-!Get values from ZV_QinbarR (PETSc) into ZV_Qin_dam (Fortran)
+!Get values from ZV_QinbarR (PETSc) into ZV_Qin_dam_prev (Fortran)
 
 
 !*******************************************************************************
 !Compute outflow from dams
 !*******************************************************************************
 !-------------------------------------------------------------------------------
-!If dam module does not exit, outflow is saCompute outflow from subroutine
+!If dam module does not exist, outflow is computed from this subroutine
 !-------------------------------------------------------------------------------
 if (rank==0) then 
-     ZV_Qout_dam=ZV_Qin_dam
+     ZV_Qout_dam=ZV_Qin_dam_prev
 end if
 
-!!-------------------------------------------------------------------------------
-!!If dam module does exist, use it
-!!-------------------------------------------------------------------------------
+!-------------------------------------------------------------------------------
+!If dam module does exist, use it
+!-------------------------------------------------------------------------------
 !if (rank==0) then 
 !     call dam_linear(ZV_Qin_dam_prev,ZV_Qout_dam_prev,ZV_Qout_dam)
 !end if
 
-!-------------------------------------------------------------------------------
-!Re-initialize values
-!-------------------------------------------------------------------------------
-if (rank==0) then 
-     ZV_Qin_dam_prev=ZV_Qin_dam
-     ZV_Qout_dam_prev=ZV_Qout_dam
-end if
+
+!*******************************************************************************
+!Optional - Write information in stdout 
+!*******************************************************************************
+!if (rank==0) print *, 'Qin_dam_prev  =', ',', ZV_Qin_dam_prev
+!if (rank==0) print *, 'Qin_dam_prev  =', ',', ZV_Qin_dam_prev(1)
+!if (rank==0) print *, 'Qout_dam_prev =', ',', ZV_Qout_dam_prev
+!if (rank==0) print *, 'Qout_dam_prev =', ',', ZV_Qout_dam_prev(1)
+!if (rank==0) print *, ZV_Qin_dam_prev(1), ',', ZV_Qout_dam_prev(1)
+!call VecView(ZV_Qdam,PETSC_VIEWER_STDOUT_WORLD,ierr)
 
 
 !*******************************************************************************
@@ -110,13 +115,11 @@ call VecAssemblyEnd(ZV_Qdam,ierr)
 
 
 !*******************************************************************************
-!Optional - Write information in stdout 
+!Update ZV_Qout_dam_prev - After calling dam_linear to not override init. values 
 !*******************************************************************************
-!if (rank==0) print *, 'Qin_dam_prev  =', ZV_Qin_dam_prev
-!if (rank==0) print *, 'Qout_dam_prev =', ZV_Qout_dam_prev
-!if (rank==0) print *, 'Qin_dam       =', ZV_Qin_dam
-!if (rank==0) print *, 'Qout_dam      =', ZV_Qout_dam
-!call VecView(ZV_Qdam,PETSC_VIEWER_STDOUT_WORLD,ierr)
+if (rank==0) then 
+     ZV_Qout_dam_prev=ZV_Qout_dam
+end if
 
 
 !*******************************************************************************
