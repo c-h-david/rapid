@@ -94,6 +94,7 @@ rapid:	rapid_main.o \
 	rapid_var.o \
 	${TAO_FORTRAN_LIB} ${TAO_LIB} ${PETSC_LIB} ${NETCDF_LIB}
 	${RM} *.o *.mod 
+	ln -s ../code/rapid ../run/rapid
 
 #-------------------------------------------------------------------------------
 #Compile RAPID
@@ -129,7 +130,7 @@ rapid_net_mat_brk.o: 	rapid_net_mat_brk.F90 rapid_var.o
 rapid_net_mat.o: 	rapid_net_mat.F90 rapid_var.o
 	-${FLINKER} ${FPPFLAGS} -c rapid_net_mat.F90 ${PETSC_FC_INCLUDES}
 
-rapid_get_Qdam.o: 	rapid_get_Qdam.F90 rapid_var.o
+rapid_get_Qdam.o: 	rapid_get_Qdam.F90 rapid_var.o 
 	-${FLINKER} ${FPPFLAGS} -c rapid_get_Qdam.F90 ${PETSC_FC_INCLUDES}
 
 rapid_close_Qfor_file.o: 	rapid_close_Qfor_file.F90 rapid_var.o
@@ -184,5 +185,5 @@ rapid_var.o:	rapid_var.F90
 #Clean
 #-------------------------------------------------------------------------------
 clean::
-	${RM} *.o *.mod rapid
+	${RM} *.o *.mod rapid ../run/rapid
 
