@@ -303,6 +303,7 @@ PetscInt, allocatable, dimension(:) :: IV_dam_pos
 
 PetscScalar, allocatable, dimension(:) :: ZV_Qin_dam,ZV_Qin_dam_prev
 PetscScalar, allocatable, dimension(:) :: ZV_Qout_dam,ZV_Qout_dam_prev
+PetscScalar, allocatable, dimension(:) :: ZV_Qin_dam0,ZV_Qout_dam0
 !Fortran vectors where the inflows and outflows for the dam module are saved. 
 !These will be allocated to size IS_dam_tot
 
