@@ -15,7 +15,6 @@ subroutine rapid_phiroutine(tao,ZV_pnorm,ZS_phi,IS_dummy,ierr)
 !*******************************************************************************
 !Declaration of variables
 !*******************************************************************************
-use netcdf
 use rapid_var, only :                                                          &
                    IS_riv_bas,                                                 &
                    IV_riv_index,IV_riv_loc1,                                   &
@@ -38,7 +37,8 @@ use rapid_var, only :                                                          &
                    ZV_read_riv_tot,ZV_read_for_tot,ZV_read_obs_tot,            &
                    IS_nc_status,IS_nc_id_fil_Vlat,IS_nc_id_var_Vlat,           &
                    IV_nc_start,IV_nc_count,                                    &
-                   IS_opt_phi,BS_opt_for,IS_strt_opt,IS_opt_routing
+                   IS_opt_phi,BS_opt_for,IS_strt_opt,IS_opt_routing,           &
+                   BS_opt_dam,IS_dam_bas,ZV_Qdam,BS_opt_hum,ZV_Qhum
 
 
 implicit none
@@ -97,8 +97,31 @@ call KSPSetFromOptions(ksp,ierr)                           !if runtime options
 !Set KSP to use matrix ZM_A
 if (IS_opt_routing==3) call KSPSetType(ksp,KSPPREONLY,ierr)!default=preonly
 
+
+!*******************************************************************************
+!Set initial values to assure subroutine always starts from same conditions 
+!*******************************************************************************
+
+!-------------------------------------------------------------------------------
+!Set initial value of instantaneous flow
+!-------------------------------------------------------------------------------
 call VecCopy(ZV_QoutinitO,ZV_QoutinitR,ierr)
 !copy initial optimization variables into initial routing variables
+
+!-------------------------------------------------------------------------------
+!Make sure the vectors potentially used for inflow to dams are initially null
+!-------------------------------------------------------------------------------
+call VecSet(ZV_Qext,0*ZS_one,ierr)                         !Qext=0
+call VecSet(ZV_QoutbarR,0*ZS_one,ierr)                     !QoutbarR=0
+!This matters only if rapid_get_Qdam is called because it uses these values
+
+!-------------------------------------------------------------------------------
+!Set initial value of Qext from Qout_dam0
+!-------------------------------------------------------------------------------
+if (BS_opt_dam .and. IS_dam_bas>0) then
+     call rapid_set_Qext0                                  !Qext from Qout_dam0
+     !call VecView(ZV_Qext,PETSC_VIEWER_STDOUT_WORLD,ierr)
+end if
 
 
 !*******************************************************************************
@@ -129,14 +152,6 @@ call VecSet(ZV_QoutbarO,0*ZS_one,ierr)                 !QoutbarO=0
 
 do JS_RpO=1,IS_RpO   !loop needed here since Vlat is more frequent than Qobs
 
-!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-!Read/set upstream forcing
-!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-if (BS_opt_for .and. IS_for_bas>0                                              &
-                   .and. mod((JS_O-1)*IS_RpO+JS_RpO,IS_RpF)==1) then
-     call rapid_read_Qfor_file
-end if 
-
 !- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 !Read/set surface and subsurface volumes 
 !- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
@@ -145,11 +160,37 @@ call rapid_read_Vlat_file
 call VecCopy(ZV_Vlat,ZV_Qlat,ierr)            !Qlat=Vlat
 call VecScale(ZV_Qlat,1/ZS_TauR,ierr)         !Qlat=Qlat/TauR
 
-!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-!calculation of Qext 
-!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-call VecWAXPY(ZV_Qext,ZS_one,ZV_Qlat,ZV_Qfor,ierr)           !Qext=1*Qlat+Qfor
-!Result: Qext=Qlat+Qfor
+!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+!Read/set upstream forcing
+!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+if (BS_opt_for .and. IS_for_bas>0                                              &
+                   .and. mod((JS_O-1)*IS_RpO+JS_RpO,IS_RpF)==1) then
+
+call rapid_read_Qfor_file
+
+end if 
+
+!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+!Run dam model based on previous values of QoutbarR and Qext to get Qdam
+!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+if (BS_opt_dam .and. IS_dam_bas>0) then
+
+call rapid_get_Qdam
+
+end if
+
+!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+!Read/set human forcing
+!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+!To be added
+
+!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+!calculation of Qext
+!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+call VecCopy(ZV_Qlat,ZV_Qext,ierr)                            !Qext=Qlat
+if (BS_opt_for) call VecAXPY(ZV_Qext,ZS_one,ZV_Qfor,ierr)     !Qext=Qext+1*Qfor
+if (BS_opt_dam) call VecAXPY(ZV_Qext,ZS_one,ZV_Qdam,ierr)     !Qext=Qext+1*Qdam
+if (BS_opt_hum) call VecAXPY(ZV_Qext,ZS_one,ZV_Qhum,ierr)     !Qext=Qext+1*Qhum
 
 !- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 !Routing procedure
