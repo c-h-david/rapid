@@ -27,7 +27,8 @@ use rapid_var, only:                                                           &
                    IS_dam_tot,JS_dam_tot,IV_dam_pos 
 
 use rapid_var, only:                                                           &
-                   ZV_Qin_dam_prev,ZV_Qin_dam0
+                   ZV_Qin_dam_prev,ZV_Qin_dam0,                                &
+                   ZV_Qout_dam_prev,ZV_Qout_dam0
 
 
 implicit none
@@ -54,6 +55,13 @@ implicit none
 
 
 !*******************************************************************************
+!Set Qdam to zero, because this is called at the beginning of every phiroutine
+!*******************************************************************************
+call VecSet(ZV_Qdam,0*ZS_one,ierr)                            !Qdam=0
+!call VecView(ZV_Qdam,PETSC_VIEWER_STDOUT_WORLD,ierr)
+
+
+!*******************************************************************************
 !Set values of Qin_dam0 into Qdam to allow proper initialization
 !*******************************************************************************
 if (rank==0) then
@@ -70,6 +78,8 @@ end if
 
 call VecAssemblyBegin(ZV_Qdam,ierr)
 call VecAssemblyEnd(ZV_Qdam,ierr)      
+!call VecView(ZV_Qdam,PETSC_VIEWER_STDOUT_WORLD,ierr)
+!the values of Qindam0 are set here where the dams are, not downstream of them
 
 
 !*******************************************************************************
@@ -79,6 +89,13 @@ call VecCopy(ZV_Qdam,ZV_Qext,ierr)                            !Qext=Qdam
 call VecSet(ZV_Qdam,0*ZS_one,ierr)                            !Qdam=0
 !call VecView(ZV_Qext,PETSC_VIEWER_STDOUT_WORLD,ierr)
 
+
+!*******************************************************************************
+!Initialize Qout_dam_prev again or its values differ with each phiroutine call
+!*******************************************************************************
+if (rank==0) then
+     ZV_Qout_dam_prev=ZV_Qout_dam0
+end if
 
 !*******************************************************************************
 !End
