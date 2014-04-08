@@ -64,64 +64,64 @@ PetscInt :: IS_opt_phi
 !*******************************************************************************
 !Declaration of variables - input and output files
 !*******************************************************************************
-character(len=100) :: rapid_connect_file
+character(len=120) :: rapid_connect_file
 !unit 10 - file with connectivity information using RAPID connectivity format
-character(len=100) :: riv_bas_id_file
+character(len=120) :: riv_bas_id_file
 !unit 11 - file with all the IDs of the reaches in _riv considered
-character(len=100) :: obs_tot_id_file
+character(len=120) :: obs_tot_id_file
 !unit 12 - file with all the IDs of the all reaches with gage measurements
-character(len=100) :: obs_use_id_file
+character(len=120) :: obs_use_id_file
 !unit 13 - file with all the IDs of the reaches used
-character(len=100) :: hum_tot_id_file
+character(len=120) :: hum_tot_id_file
 !unit 14 - file with all the IDs of the reaches with human-induced flow added
-character(len=100) :: hum_use_id_file
+character(len=120) :: hum_use_id_file
 !unit 15 - file with all the IDs of the reaches used
-character(len=100) :: for_tot_id_file
+character(len=120) :: for_tot_id_file
 !unit 16 - file with all the IDs where flows can be used as forcing to their 
 !corresponding downstream reach  
-character(len=100) :: for_use_id_file
+character(len=120) :: for_use_id_file
 !unit 17 - file with all the IDs of the reaches used 
-character(len=100) :: dam_tot_id_file
+character(len=120) :: dam_tot_id_file
 !unit 18 - file with all the IDs of the reaches where the dam model runs and 
 !flows to their corresponding downstream reach  
-character(len=100) :: dam_use_id_file
+character(len=120) :: dam_use_id_file
 !unit 19 - file with all the IDs of the reaches used
 
-character(len=100) :: k_file
+character(len=120) :: k_file
 !unit 20 - file with values for k (possibly from previous param. estim.)
-character(len=100) :: x_file
+character(len=120) :: x_file
 !unit 21 - file with values for x (possibly from previous param. estim.)
-character(len=100) :: kfac_file  
+character(len=120) :: kfac_file  
 !unit 22 - file with kfac for all reaches of the domain
-character(len=100) :: xfac_file
+character(len=120) :: xfac_file
 !unit 23 - file with xfac for all reaches of the domain
 
-character(len=100) :: Qinit_file
+character(len=120) :: Qinit_file
 !unit 30 - file where initial flowrates can be stored to run the model with them
-character(len=100) :: Qfinal_file
+character(len=120) :: Qfinal_file
 !unit 31 - file where final flowrates can be stored at the end of model run 
-character(len=100) :: Vlat_file
+character(len=120) :: Vlat_file
 
-character(len=100) :: Qobs_file
+character(len=120) :: Qobs_file
 !unit 33 - file where the flowrates observations are given
-character(len=100) :: Qfor_file
+character(len=120) :: Qfor_file
 !unit 34 - file where forcing flowrates are stored.  Forcing is taken as the
 !flow coming from upstream reach.
-character(len=100) :: Qobsbarrec_file
+character(len=120) :: Qobsbarrec_file
 !unit 35 - file where the reciprocal (1/xi) of the average obs are stored.
 
-character(len=100) :: V_file
+character(len=120) :: V_file
 !unit 41 - file where model-calculated volumes are stored
-character(len=100) :: babsmax_file
+character(len=120) :: babsmax_file
 !unit 42 - file where the maximum of the absolute values of the right-hand-side
 !are stored
-character(len=100) :: QoutRabsmin_file
+character(len=120) :: QoutRabsmin_file
 !unit 43 - file where the minimum of the absolute values of the instantaneous 
 !flows are stored 
-character(len=100) :: QoutRabsmax_file
+character(len=120) :: QoutRabsmax_file
 !unit 44 - file where the maximum of the absolute values of the instantaneous 
 !flows are stored 
-character(len=100) :: Qout_file
+character(len=120) :: Qout_file
 
 
 !*******************************************************************************
@@ -505,7 +505,7 @@ namelist /NL_namelist/                                                         &
                        ZS_TauM,ZS_dtM,ZS_TauO,ZS_dtO,ZS_TauR,ZS_dtR,ZS_dtF,    &
                        ZS_phifac,IS_strt_opt
  
-character(len=100) :: namelist_file
+character(len=120) :: namelist_file
 !unit 88 - Namelist
 
 
