@@ -152,8 +152,10 @@ end if
 !-------------------------------------------------------------------------------
 !Make sure some Fortran arrays are initialized to zero
 !-------------------------------------------------------------------------------
-ZV_Qin_dam0 =0
-ZV_Qout_dam0=0
+if (BS_opt_dam) then
+     ZV_Qin_dam0 =0
+     ZV_Qout_dam0=0
+end if
 !These are not populated anywhere before being used and hold meaningless values
 
 !-------------------------------------------------------------------------------
