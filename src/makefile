@@ -106,7 +106,7 @@ rapid:	rapid_main.o \
 	rapid_var.o \
 	${TAO_FORTRAN_LIB} ${TAO_LIB} ${PETSC_LIB} ${NETCDF_LIB}
 	${RM} *.o *.mod 
-	ln -s ../src/rapid ../run/rapid
+	ln -sf ../src/rapid ../run/rapid
 
 #-------------------------------------------------------------------------------
 #Compile RAPID
