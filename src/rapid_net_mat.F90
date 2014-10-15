@@ -77,11 +77,20 @@ enddo
 
 
 do JS_riv_bas=1,IS_riv_bas
-do JS_riv_tot=1,IS_riv_tot
-     if (IV_riv_bas_id(JS_riv_bas)==IV_riv_tot_id(JS_riv_tot)) then
-          IV_riv_index(JS_riv_bas)=JS_riv_tot
-     end if 
-end do
+     BS_logical=.false.
+     do JS_riv_tot=1,IS_riv_tot
+          if (IV_riv_bas_id(JS_riv_bas)==IV_riv_tot_id(JS_riv_tot)) then
+               IV_riv_index(JS_riv_bas)=JS_riv_tot
+               BS_logical=.true.
+          end if
+     end do
+     if (.not. BS_logical) then
+          write(temp_char,'(i10)') IV_riv_bas_id(JS_riv_bas)
+          call PetscPrintf(PETSC_COMM_WORLD,                                   &
+                           'ERROR: reach ID' // temp_char //                   &
+                           ' not included in domain' // char(10),ierr)
+          stop
+     end if
 end do 
 !vector with (Fortran, 1-based) indexes corresponding to reaches of basin 
 !within whole network
