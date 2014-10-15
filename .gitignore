@@ -3,7 +3,7 @@
 #*******************************************************************************
 
 #Purpose:
-#The git program is informed here to ignore the following files while performing 
+#The git program is informed here to ignore the following files while performing
 #its distributed revision control and source code management. 
 #Author:
 #Cedric H. David, 2014-2014
@@ -22,3 +22,20 @@ job_*
 #Legacy name for BSD 3-clause license of RAPID between 20120831 - 20131113 
 #-------------------------------------------------------------------------------
 rapid_license.txt
+
+#-------------------------------------------------------------------------------
+#The input and output files stored in sub-directories of
+#-------------------------------------------------------------------------------
+input/
+output/
+
+#-------------------------------------------------------------------------------
+#The files added by users to the run directory except for rapid_script.sh
+#-------------------------------------------------------------------------------
+run/*
+!run/rapid_script.sh
+
+#-------------------------------------------------------------------------------
+#The RAPID executable
+#-------------------------------------------------------------------------------
+src/rapid
