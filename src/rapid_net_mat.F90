@@ -4,12 +4,9 @@
 subroutine rapid_net_mat
 
 !Purpose:
-!This subroutine is specific for RAPID connectivity tables.  
-!Creates a sparse network matrix.  "1" is recorded at Net(i,j) if the reach 
-!in column j flows into the reach in line i. If some connection are missing
-!between the subbasin and the entire domain, gives warnings.  Also creates two 
-!Fortran vectors that are useful for PETSc programming within this river routing 
-!model (IV_riv_index,IV_riv_loc1).  
+!This creates a sparse network matrix.  "1" is recorded at Net(i,j) if the reach 
+!in column j flows into the reach in line i. If some connections are missing
+!between the subbasin and the entire domain, gives warnings.  
 !A transboundary matrix is also created whose elements in the diagonal blocks 
 !are all null and the elements in the off-diagonal blocks are equal to those of 
 !the network matrix. 
@@ -23,8 +20,7 @@ subroutine rapid_net_mat
 use rapid_var, only :                                                          &
                    IS_riv_tot,IS_riv_bas,                                      &
                    JS_riv_tot,JS_riv_bas,JS_riv_bas2,                          &
-                   IV_riv_bas_id,IV_riv_index,IV_riv_loc1,                     &
-                   rapid_connect_file,riv_bas_id_file,                         &
+                   IV_riv_bas_id,IV_riv_index,                                 &
                    ZM_Net,ZM_A,ZM_T,ZM_TC1,BS_logical,IV_riv_tot_id,           &
                    IV_down,IV_nbup,IM_up,JS_up,IM_index_up,                    &
                    ierr,rank,                                                  &
@@ -50,56 +46,6 @@ implicit none
 !preconditioners
 #include "finclude/petscviewer.h"
 !viewers (allows writing results in file for example)
-
-
-!*******************************************************************************
-!Read data files
-!*******************************************************************************
-open(10,file=rapid_connect_file,status='old')
-do JS_riv_tot=1,IS_riv_tot
-     read(10,*) IV_riv_tot_id(JS_riv_tot), IV_down(JS_riv_tot),                &
-                IV_nbup(JS_riv_tot), IM_up(JS_riv_tot,:)
-enddo
-close(10)
-
-open(11,file=riv_bas_id_file,status='old')
-read(11,*) IV_riv_bas_id
-close(11)
-
-
-!*******************************************************************************
-!Creates vectors with indexes for basin considered
-!*******************************************************************************
-do JS_riv_bas=1,IS_riv_bas
-     IV_riv_loc1(JS_riv_bas)=JS_riv_bas-1
-enddo
-!vector with zero-base index corresponding to one-base index
-
-
-do JS_riv_bas=1,IS_riv_bas
-     BS_logical=.false.
-     do JS_riv_tot=1,IS_riv_tot
-          if (IV_riv_bas_id(JS_riv_bas)==IV_riv_tot_id(JS_riv_tot)) then
-               IV_riv_index(JS_riv_bas)=JS_riv_tot
-               BS_logical=.true.
-          end if
-     end do
-     if (.not. BS_logical) then
-          write(temp_char,'(i10)') IV_riv_bas_id(JS_riv_bas)
-          call PetscPrintf(PETSC_COMM_WORLD,                                   &
-                           'ERROR: reach ID' // temp_char //                   &
-                           ' not included in domain' // char(10),ierr)
-          stop
-     end if
-end do 
-!vector with (Fortran, 1-based) indexes corresponding to reaches of basin 
-!within whole network
-!IV_riv_index has two advantages.  1) it is needed in order to read inflow  
-!data (Vlat for ex).  2) It allows to avoid one other nested loop in the 
-!following, which reduces tremendously the computation time.
-
-!print *, IV_riv_loc1 
-!print *, IV_riv_index 
 
 
 !*******************************************************************************
