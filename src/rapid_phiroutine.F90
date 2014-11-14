@@ -5,7 +5,7 @@
 subroutine rapid_phiroutine(tao,ZV_pnorm,ZS_phi,IS_dummy,ierr)
 
 !Purpose:
-!calculates a cost function phi as a function of model parameters, using means
+!Calculates a cost function phi as a function of model parameters, using means
 !over a given period of time.  The cost function represents the square error
 !between calculated flows and observed flows where observations are available.
 !Author: 
@@ -16,15 +16,12 @@ subroutine rapid_phiroutine(tao,ZV_pnorm,ZS_phi,IS_dummy,ierr)
 !Declaration of variables
 !*******************************************************************************
 use rapid_var, only :                                                          &
-                   IS_riv_bas,                                                 &
-                   IV_riv_index,IV_riv_loc1,                                   &
-                   Vlat_file,Qobs_file,Qfor_file,                              &
-                   JS_O,IS_O,JS_RpO,IS_RpO,ZS_TauR,IS_RpF,                     &
+                   Vlat_file,Qobs_file,Qfor_file,Qhum_file,                    &
+                   JS_O,IS_O,JS_RpO,IS_RpO,ZS_TauR,IS_RpF,IS_RpH,              &
                    ZM_Obs,ZV_Qobs,                                             &
                    ZV_temp1,ZV_temp2,ZS_phitemp,ZS_phifac,ZV_kfac,             &
-                   IS_riv_tot,IS_for_bas,IV_for_index,IV_for_loc2,             &
-                   IS_obs_bas,IV_obs_index,IV_obs_loc1,                        &
-                   ZS_knorm,ZS_xnorm,ZV_k,ZV_x,ZS_kfac,ZS_xfac,                &
+                   IS_riv_tot,IS_for_bas,IS_hum_bas,                           &
+                   ZS_knorm,ZS_xnorm,ZV_k,ZV_x,ZS_xfac,                        &
                    ZV_1stIndex,ZV_2ndIndex,                                    &
                    ZV_C1,ZV_C2,ZV_C3,ZM_A,                                     &
                    ZV_QoutinitO,ZV_QoutinitR,                                  &
@@ -33,9 +30,7 @@ use rapid_var, only :                                                          &
                    ZV_Vlat,ZV_Qlat,ZV_Qfor,ZV_Qext,                            &
                    ZV_Qobsbarrec,                                              &
                    ksp,                                                        &
-                   ZS_one,temp_char,rank,                                      &
-                   ZV_read_riv_tot,ZV_read_for_tot,ZV_read_obs_tot,            &
-                   IS_nc_status,IS_nc_id_fil_Vlat,IS_nc_id_var_Vlat,           &
+                   ZS_one,temp_char,                                           &
                    IV_nc_start,IV_nc_count,                                    &
                    IS_opt_phi,BS_opt_for,IS_strt_opt,IS_opt_routing,           &
                    BS_opt_dam,IS_dam_bas,ZV_Qdam,BS_opt_hum,ZV_Qhum
@@ -134,6 +129,7 @@ end if
 call rapid_open_Vlat_file(Vlat_file)
 call rapid_open_Qobs_file(Qobs_file)
 if (BS_opt_for) call rapid_open_Qfor_file(Qfor_file)
+if (BS_opt_hum) call rapid_open_Qhum_file(Qhum_file)
 
 
 !-------------------------------------------------------------------------------
@@ -180,9 +176,14 @@ call rapid_get_Qdam
 end if
 
 !- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-!Read/set human forcing
+!Read/set human induced flows 
 !- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-!To be added
+if (BS_opt_hum .and. IS_hum_bas>0                                              &
+                   .and. mod((JS_O-1)*IS_RpO+JS_RpO,IS_RpH)==1) then
+
+call rapid_read_Qhum_file
+
+end if 
 
 !- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 !calculation of Qext
@@ -256,6 +257,7 @@ enddo
 call rapid_close_Vlat_file
 call rapid_close_Qobs_file
 call rapid_close_Qfor_file
+call rapid_close_Qhum_file
 
 
 !*******************************************************************************
