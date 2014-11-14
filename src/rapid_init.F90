@@ -14,6 +14,7 @@ subroutine rapid_init
 !     -Create all PETSc and TAO objects 
 !     -Print information and warnings
 !     -Determine IDs for various computing cores
+!     -Compute helpful arrays 
 !     -Compute the network matrix
 !     -Initialize values of flow and volume for main procedure
 !Initialization tasks specific to Option 1
@@ -42,33 +43,30 @@ use rapid_var, only :                                                          &
                    IS_opt_run,IS_opt_routing,IS_opt_phi,                       &
                    ZV_read_riv_tot,ZV_read_obs_tot,ZV_read_hum_tot,            &
                    ZV_read_for_tot,ZV_read_dam_tot,                            &
-                   ZS_TauM,ZS_TauO,ZS_TauR,ZS_dtO,ZS_dtR,ZS_dtM,ZS_dtF,        &
+                   ZS_TauM,ZS_TauO,ZS_TauR,ZS_dtO,ZS_dtR,ZS_dtM,ZS_dtF,ZS_dtH, &
                    IS_obs_tot,IS_obs_use,IS_obs_bas,                           &
                    IV_obs_tot_id,IV_obs_use_id,                                &
                    IV_obs_index,IV_obs_loc1,                                   &
-                   IS_hum_tot,IS_hum_use,IS_hum_bas,                           &
+                   IS_hum_tot,IS_hum_use,                                      &
                    IV_hum_tot_id,IV_hum_use_id,                                &
-                   IV_hum_index,IV_hum_loc1,                                   &
-                   IS_for_tot,IS_for_use,IS_for_bas,                           &
+                   IS_for_tot,IS_for_use,                                      &
                    IV_for_tot_id,IV_for_use_id,                                &
-                   IV_for_index,IV_for_loc2,                                   &
-                   IS_dam_tot,IS_dam_use,IS_dam_bas,                           &
+                   IS_dam_tot,IS_dam_use,                                      &
                    IV_dam_tot_id,IV_dam_use_id,                                &
-                   IV_dam_index,IV_dam_loc2,IV_dam_pos,                        &
                    ZV_Qin_dam,ZV_Qout_dam,ZV_Qin_dam_prev,ZV_Qout_dam_prev,    &
                    ZV_Qin_dam0,ZV_Qout_dam0,                                   &
                    ZV_QoutinitM,ZV_QoutinitO,ZV_QoutinitR,                     &
                    ZV_VinitM,ZV_VinitR,                                        &
                    ZV_babsmax,ZV_QoutRabsmin,ZV_QoutRabsmax,                   &
-                   IS_M,IS_O,IS_R,IS_RpO,IS_RpM,IS_RpF,                        &
-                   kfac_file,xfac_file,x_file,k_file,Vlat_file,Qinit_file,     &
+                   IS_M,IS_O,IS_R,IS_RpO,IS_RpM,IS_RpF,IS_RpH,                 &
+                   kfac_file,x_file,k_file,Vlat_file,Qinit_file,               &
                    Qobsbarrec_file,                                            &
                    ZS_Qout0,ZS_V0,                                             &
                    ZV_Qobsbarrec,                                              &
                    ZV_k,ZV_x,ZV_kfac,ZV_p,ZV_pnorm,ZV_pfac,                    &
                    ZS_knorm_init,ZS_xnorm_init,ZS_kfac,ZS_xfac,                &
                    ZV_C1,ZV_C2,ZV_C3,ZM_A,                                     &
-                   ierr,ksp,pc,rank,ncore,IS_one,ZS_one
+                   ierr,ksp,rank,ncore,IS_one,ZS_one
 
 
 implicit none
@@ -167,6 +165,7 @@ IS_R=int(ZS_TauR/ZS_dtR)
 IS_RpO=int(ZS_dtO/ZS_TauR)
 IS_RpM=int(ZS_dtM/ZS_TauR)
 IS_RpF=int(ZS_dtF/ZS_TauR)
+IS_RpH=int(ZS_dtH/ZS_TauR)
 
 !-------------------------------------------------------------------------------
 !Initialize libraries and create objects common to all options
@@ -195,6 +194,10 @@ if (rank==0 .and. .not. BS_opt_for)                        print '(a70)',      &
        'Not using forcing                                                      '
 if (rank==0 .and. BS_opt_for)                              print '(a70)',      &
        'Using forcing                                                          '
+if (rank==0 .and. .not. BS_opt_hum)                        print '(a70)',      &
+       'Not using human-induced flows                                          '
+if (rank==0 .and. BS_opt_hum)                              print '(a70)',      &
+       'Using human-induced flows                                              '
 if (rank==0 .and. IS_opt_routing==1)                       print '(a70)',      &
        'Routing with matrix-based Muskingum method                             '
 if (rank==0 .and. IS_opt_routing==2)                       print '(a70)',      &
@@ -216,6 +219,11 @@ if (rank==0 .and. IS_opt_run==1)                           print '(a10,a60)',  &
 if (rank==0 .and. IS_opt_run==2)                           print '(a10,a60)',  &
        'Using    :',kfac_file 
 call PetscPrintf(PETSC_COMM_WORLD,'--------------------------'//char(10),ierr)
+
+!-------------------------------------------------------------------------------
+!Calculate helpful arrays
+!-------------------------------------------------------------------------------
+call rapid_arrays
 
 !-------------------------------------------------------------------------------
 !Calculate Network matrix
