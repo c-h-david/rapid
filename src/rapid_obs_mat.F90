@@ -4,9 +4,8 @@
 subroutine rapid_obs_mat
 
 !Purpose:
-!Creates a kronecker-type diagonal sparse matrix.  "1" is recorded at the line 
-!and column where observations are available.  Calculates IS_obs_bas.  Also 
-!creates vectors IV_obs_index and IV_obs_loc1.
+!Creates a kronecker-type diagonal sparse matrix.  "1" is recorded at the row 
+!and column where observations are available.  
 !Author: 
 !Cedric H. David, 2008-2014. 
 
@@ -16,11 +15,9 @@ subroutine rapid_obs_mat
 !*******************************************************************************
 use rapid_var, only :                                                          &
                    IS_riv_bas,JS_riv_bas,                                      &
-                   IS_obs_tot,JS_obs_tot,IS_obs_use,JS_obs_use,                &
                    IS_obs_bas,JS_obs_bas,                                      &
-                   obs_tot_id_file,obs_use_id_file,                            &
-                   IV_riv_bas_id,IV_obs_tot_id,IV_obs_use_id,                  & 
-                   IV_obs_index,IV_obs_loc1,                                   &
+                   IV_riv_bas_id,IV_obs_tot_id,                                & 
+                   IV_obs_index,                                               &
                    ZM_Obs,ZS_norm,                                             &
                    ierr,                                                       &
                    IS_one,ZS_one,temp_char   
@@ -45,80 +42,6 @@ implicit none
 !preconditioners
 #include "finclude/petscviewer.h"
 !viewers (allows writing results in file for example)
-
-
-!*******************************************************************************
-!Read data files
-!*******************************************************************************
-open(12,file=obs_tot_id_file,status='old')
-read(12,*) IV_obs_tot_id
-close(12)
-
-open(13,file=obs_use_id_file,status='old')
-read(13,*) IV_obs_use_id
-close(13)
-
-
-!*******************************************************************************
-!Calculates IS_obs_bas, creates the vectors IV_obs_index and IV_obs_loc1
-!*******************************************************************************
-!-------------------------------------------------------------------------------
-!Calculates IS_obs_bas
-!-------------------------------------------------------------------------------
-write(temp_char,'(i10)') IS_obs_tot
-call PetscPrintf(PETSC_COMM_WORLD,'Number of gage IDs in obs_tot_file '    //  &
-                 '                  :' // temp_char // char(10),ierr)
-write(temp_char,'(i10)') IS_obs_use
-call PetscPrintf(PETSC_COMM_WORLD,'Number of gage IDs in obs_use_file '    //  &
-                 '                  :' // temp_char // char(10),ierr)
-
-IS_obs_bas=0
-!initialize to zero
-
-do JS_obs_use=1,IS_obs_use
-     do JS_riv_bas=1,IS_riv_bas
-          if (IV_obs_use_id(JS_obs_use)==IV_riv_bas_id(JS_riv_bas)) then
-               IS_obs_bas=IS_obs_bas+1
-          end if 
-     end do
-end do
-
-write(temp_char,'(i10)') IS_obs_bas
-call PetscPrintf(PETSC_COMM_WORLD,'Number of gage IDs in '                 //  &
-                 'this simulation                :'//temp_char // char(10),ierr)
-
-
-!-------------------------------------------------------------------------------
-!Allocates and populates the vectors IV_obs_index and IV_obs_loc1
-!-------------------------------------------------------------------------------
-allocate(IV_obs_index(IS_obs_bas))
-allocate(IV_obs_loc1(IS_obs_bas))
-!allocate vector size
-
-do JS_obs_bas=1,IS_obs_bas
-     IV_obs_index(JS_obs_bas)=0
-     IV_obs_loc1(JS_obs_bas)=0
-end do
-!Initialize both vectors to zero
-
-JS_obs_bas=1
-do JS_obs_use=1,IS_obs_use
-do JS_riv_bas=1,IS_riv_bas
-     if (IV_obs_use_id(JS_obs_use)==IV_riv_bas_id(JS_riv_bas)) then
-          do JS_obs_tot=1,IS_obs_tot
-               if (IV_obs_use_id(JS_obs_use)==IV_obs_tot_id(JS_obs_tot)) then
-                    IV_obs_index(JS_obs_bas)=JS_obs_tot
-               end if
-          end do
-          IV_obs_loc1(JS_obs_bas)=JS_riv_bas-1
-          JS_obs_bas=JS_obs_bas+1
-     end if
-end do
-end do
-!Creates vector IV_obs_index and IV_obs_loc1
-
-!print *, 'IV_obs_index=', IV_obs_index 
-!print *, 'IV_obs_loc1  =', IV_obs_loc1 
 
 
 !*******************************************************************************
