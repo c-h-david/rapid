@@ -109,6 +109,9 @@ character(len=120) :: Qfor_file
 !flow coming from upstream reach.
 character(len=120) :: Qobsbarrec_file
 !unit 35 - file where the reciprocal (1/xi) of the average obs are stored.
+character(len=120) :: Qhum_file
+!unit 36 - file where human-induced flowrates are stored.  These flows are added 
+!upstream.
 
 character(len=120) :: V_file
 !unit 41 - file where model-calculated volumes are stored
@@ -156,6 +159,8 @@ PetscInt :: JS_R
 
 PetscScalar :: ZS_dtF
 !Time step of forcing data, in seconds  
+PetscScalar :: ZS_dtH
+!Time step of human-induced data, in seconds  
 
 PetscInt :: IS_RpO, JS_RpO
 !Number routing procedures needed per optimization time step, and index
@@ -163,6 +168,8 @@ PetscInt :: IS_RpM, JS_RpM
 !Number routing procedures needed per main time step, and index 
 PetscInt :: IS_RpF
 !Number routing procedures needed per forcing time step 
+PetscInt :: IS_RpH
+!Number routing procedures needed per human-induced time step
 
 
 !*******************************************************************************
@@ -238,6 +245,8 @@ PetscInt, dimension(:), allocatable :: IV_hum_tot_id
 !IDs of the reaches where human-induced flow data are available
 PetscInt, dimension(:), allocatable :: IV_hum_use_id
 !IDs of the reaches where human-induced flow data will be used if in sub_riv
+PetscInt, dimension(:), allocatable :: IV_hum_bas_id
+!IDs of the reaches where human-indeced flow data to be used is in sub_riv
 PetscInt, allocatable, dimension(:) :: IV_hum_index
 !vector where the Fortran 1-based indexes of the human-induced flow data are 
 !stored. This is of size IS_hum_bas and its elements belong to [1,IS_hum_tot]. 
@@ -491,6 +500,7 @@ namelist /NL_namelist/                                                         &
                        IS_riv_tot,rapid_connect_file,Vlat_file,IS_max_up,      &
                        iS_riv_bas,riv_bas_id_file,                             &
                        Qinit_file,Qfinal_file,                                 &
+                       Qhum_file,                                              &
                        IS_hum_tot,hum_tot_id_file,                             &
                        IS_hum_use,hum_use_id_file,                             &
                        IS_for_tot,for_tot_id_file,                             &
@@ -503,7 +513,8 @@ namelist /NL_namelist/                                                         &
                        kfac_file,xfac_file,ZS_knorm_init,ZS_xnorm_init,        &
                        IS_obs_tot,obs_tot_id_file,IS_obs_use,obs_use_id_file,  &
                        Qobs_file,Qobsbarrec_file,                              &
-                       ZS_TauM,ZS_dtM,ZS_TauO,ZS_dtO,ZS_TauR,ZS_dtR,ZS_dtF,    &
+                       ZS_TauM,ZS_dtM,ZS_TauO,ZS_dtO,ZS_TauR,ZS_dtR,           &
+                       ZS_dtF,ZS_dtH,                                          &
                        ZS_phifac,IS_strt_opt
  
 character(len=120) :: namelist_file
