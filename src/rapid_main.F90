@@ -15,10 +15,9 @@ program rapid_main
 !*******************************************************************************
 use rapid_var, only :                                                          &
                    namelist_file,                                              &
-                   IV_riv_bas_id,IV_riv_index,IV_riv_loc1,                     &
-                   Vlat_file,Qfor_file,                                        &
-                   Qout_file,V_file,                                           &
-                   IS_M,JS_M,JS_RpM,IS_RpM,IS_RpF,                             &
+                   Vlat_file,Qfor_file,Qhum_file,                              &
+                   Qout_file,                                                  &
+                   IS_M,JS_M,JS_RpM,IS_RpM,IS_RpF,IS_RpH,                      &
                    ZS_TauR,                                                    &
                    ZV_pnorm,                                                   &
                    ZV_C1,ZV_C2,ZV_C3,                                          &
@@ -29,13 +28,8 @@ use rapid_var, only :                                                          &
                    ZS_phi,                                                     &
                    ierr,rank,stage,temp_char,temp_char2,                       &
                    ZS_one,                                                     &
-                   ZV_read_riv_tot,ZV_read_for_tot,                            &
-                   IS_riv_tot,IS_riv_bas,IS_for_bas,IS_dam_bas,                &
-                   IV_for_index,IV_for_loc2,                                   &
+                   IS_riv_tot,IS_riv_bas,IS_for_bas,IS_dam_bas,IS_hum_bas,     &
                    ZS_time1,ZS_time2,ZS_time3,                                 &
-                   IS_nc_status,IS_nc_id_fil_Vlat,IS_nc_id_fil_Qout,           &
-                   IS_nc_id_var_Vlat,IS_nc_id_var_Qout,IS_nc_id_var_comid,     &
-                   IS_nc_id_dim_time,IS_nc_id_dim_comid,IV_nc_id_dim,          &
                    IV_nc_start,IV_nc_count,IV_nc_count2,                       &
                    BS_opt_for,BS_opt_hum,BS_opt_dam,IS_opt_run
 
@@ -99,6 +93,7 @@ call rapid_create_Qout_file(Qout_file)
 call rapid_open_Qout_file(Qout_file)
 call rapid_open_Vlat_file(Vlat_file)
 if (BS_opt_for) call rapid_open_Qfor_file(Qfor_file)
+if (BS_opt_hum) call rapid_open_Qhum_file(Qhum_file)
 
 !-------------------------------------------------------------------------------
 !Make sure the vectors potentially used for inflow to dams are initially null
@@ -158,9 +153,14 @@ call rapid_get_Qdam
 end if
 
 !- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-!Read/set human forcing
+!Read/set human induced flows 
 !- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-!To be added
+if (BS_opt_hum .and. IS_hum_bas>0                                              &
+                   .and. mod((JS_M-1)*IS_RpM+JS_RpM,IS_RpH)==1) then
+
+call rapid_read_Qhum_file
+
+end if 
 
 !- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 !calculation of Qext
@@ -225,6 +225,7 @@ call PetscPrintf(PETSC_COMM_WORLD,'Output data created'//char(10),ierr)
 call rapid_close_Qout_file
 call rapid_close_Vlat_file
 if (BS_opt_for) call rapid_close_Qfor_file(Qfor_file)
+if (BS_opt_hum) call rapid_close_Qhum_file(Qhum_file)
 
 
 !-------------------------------------------------------------------------------
