@@ -6,7 +6,7 @@ module rapid_var
 !Purpose:
 !Module where all the variables are defined. 
 !Author: 
-!Cedric H. David, 2008-2014. 
+!Cedric H. David, 2008-2015. 
 
 
 implicit none
