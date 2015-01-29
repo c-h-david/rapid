@@ -59,10 +59,10 @@ subroutine rapid_arrays
 !*******************************************************************************
 use rapid_var, only :                                                          &
                    rapid_connect_file,                                         &
-                   IS_riv_tot,JS_riv_tot,                                      &
-                   IV_riv_tot_id,IV_down,IV_nbup,IM_up,                        &
+                   IS_riv_tot,JS_riv_tot,JS_up,                                &
+                   IV_riv_tot_id,IV_down,IV_nbup,IM_up,IM_index_up,            &
                    riv_bas_id_file,                                            &
-                   IS_riv_bas,JS_riv_bas,                                      &
+                   IS_riv_bas,JS_riv_bas,JS_riv_bas2,                          &
                    IV_riv_bas_id,IV_riv_index,IV_riv_loc1,                     &
                    BS_opt_hum,                                                 &
                    hum_tot_id_file,                                            &
@@ -154,9 +154,12 @@ close(11)
 !This is actually given in the namelist
 
 !-------------------------------------------------------------------------------
-!Allocate IV_riv_index and IV_riv_loc1
+!Allocate and initialize IV_riv_index, IV_riv_loc1, and IM_index_up
 !-------------------------------------------------------------------------------
-!This is actually done in rapid_init.F90
+!Allocation is actually done in rapid_init.F90
+IV_riv_index=0
+IV_riv_loc1=0
+IM_index_up=0
 
 !-------------------------------------------------------------------------------
 !Populate IV_riv_index
@@ -167,6 +170,7 @@ do JS_riv_bas=1,IS_riv_bas
           if (IV_riv_bas_id(JS_riv_bas)==IV_riv_tot_id(JS_riv_tot)) then
                IV_riv_index(JS_riv_bas)=JS_riv_tot
                BS_logical=.true.
+               exit
           end if
      end do
      if (.not. BS_logical) then
@@ -192,11 +196,30 @@ enddo
 !vector with zero-base index corresponding to one-base index
 
 !-------------------------------------------------------------------------------
-!Optional, display IV_rib_index and IV_riv_loc1
+!Populate IM_index_up
+!-------------------------------------------------------------------------------
+do JS_riv_bas2=1,IS_riv_bas
+do JS_up=1, IV_nbup(IV_riv_index(JS_riv_bas2))
+do JS_riv_bas=1,IS_riv_bas
+    if (IV_riv_bas_id(JS_riv_bas)==                                            &
+        IM_up(IV_riv_index(JS_riv_bas2),JS_up)) then
+          IM_index_up(JS_riv_bas2,JS_up)=JS_riv_bas
+          exit
+     end if 
+end do
+end do
+end do
+!Used in traditional Muskingum method and to quicken matrix prealloc. & creation
+
+!-------------------------------------------------------------------------------
+!Optional, display IV_riv_loc1, IV_riv_index, and IM_index_up
 !-------------------------------------------------------------------------------
 !if (rank==0) then
 !     print *, IV_riv_loc1 
 !     print *, IV_riv_index 
+!     do JS_riv_bas=1,IS_riv_bas
+!          print *, IM_index_up(JS_riv_bas,:)
+!     end do
 !end if
 
 
