@@ -62,12 +62,11 @@ end do
 
 call MatGetOwnerShipRange(ZM_Net,IS_ownfirst,IS_ownlast,ierr)
 
-do JS_riv_bas=1,IS_riv_bas
 do JS_riv_bas2=1,IS_riv_bas
 do JS_up=1,IV_nbup(IV_riv_index(JS_riv_bas2))
+if (IM_index_up(JS_riv_bas2,JS_up)/=0) then
 
-if (IV_riv_tot_id(IV_riv_index(JS_riv_bas))==                                  &
-    IM_up(IV_riv_index(JS_riv_bas2),JS_up)) then
+     JS_riv_bas=IM_index_up(JS_riv_bas2,JS_up)
      !Here JS_riv_bas is determined upstream of JS_riv_bas2
      !both IS_riv_bas2 and IS_riv_bas are used here because the location
      !of nonzeros depends on row and column in an parallel matrix
@@ -88,9 +87,7 @@ if (IV_riv_tot_id(IV_riv_index(JS_riv_bas))==                                  &
      !only the values located in the range (IS_ownfirst+1:IS_ownlast) are 
      !correct but only these are used in the preallocation below.
 
-end if 
-
-end do
+end if
 end do
 end do
 
@@ -150,12 +147,11 @@ call PetscPrintf(PETSC_COMM_WORLD,'Network matrix preallocated'//char(10),ierr)
 if (rank==0) then
 !only first processor sets values
 
-do JS_riv_bas=1,IS_riv_bas
 do JS_riv_bas2=1,IS_riv_bas
 do JS_up=1,IV_nbup(IV_riv_index(JS_riv_bas2))
+if (IM_index_up(JS_riv_bas2,JS_up)/=0) then
 
-if (IV_riv_tot_id(IV_riv_index(JS_riv_bas))==                                  &
-    IM_up(IV_riv_index(JS_riv_bas2),JS_up)) then
+     JS_riv_bas=IM_index_up(JS_riv_bas2,JS_up)
      !Here JS_riv_bas is determined upstream of JS_riv_bas2
      !both IS_riv_bas2 and IS_riv_bas are used here because the location
      !of nonzeros depends on row and column in a parallel matrix
@@ -174,14 +170,9 @@ if (IV_riv_tot_id(IV_riv_index(JS_riv_bas))==                                  &
      !Also when running RAPID in optimization mode, it is necessary to recreate
      !ZM_A from scratch every time the parameters C1is are updated
 
-     IM_index_up(JS_riv_bas2,JS_up)=JS_riv_bas
-     !used for traditional Muskingum method
-
-end if 
-
+end if
 end do
-end do
-call MatSetValues(ZM_A  ,IS_one,JS_riv_bas-1,IS_one,JS_riv_bas-1,              &
+call MatSetValues(ZM_A  ,IS_one,JS_riv_bas2-1,IS_one,JS_riv_bas2-1,            &
                   0*ZS_one,INSERT_VALUES,ierr)
 CHKERRQ(ierr)
 !zeros (instead of ones) are used on the main diagonal of ZM_A because ZM_A will
@@ -203,12 +194,11 @@ call PetscPrintf(PETSC_COMM_WORLD,'Network matrix created'//char(10),ierr)
 !*******************************************************************************
 if (IS_opt_routing==3) then
 
-do JS_riv_bas=1,IS_riv_bas
 do JS_riv_bas2=1,IS_riv_bas
 do JS_up=1,IV_nbup(IV_riv_index(JS_riv_bas2))
+if (IM_index_up(JS_riv_bas2,JS_up)/=0) then
 
-if (IV_riv_tot_id(IV_riv_index(JS_riv_bas))==                                  &
-    IM_up(IV_riv_index(JS_riv_bas2),JS_up)) then
+     JS_riv_bas=IM_index_up(JS_riv_bas2,JS_up)
      !Here JS_riv_bas is determined upstream of JS_riv_bas2
      !both IS_riv_bas2 and IS_riv_bas are used here because the location
      !of nonzeros depends on row and column in a parallel matrix
@@ -231,9 +221,8 @@ if (IV_riv_tot_id(IV_riv_index(JS_riv_bas))==                                  &
      !ZM_TC1 from scratch every time the parameters C1is are updated
 
      end if
-end if 
 
-end do
+end if
 end do
 end do
 
@@ -249,57 +238,54 @@ end if
 !*******************************************************************************
 !Checks for missing connections and gives warning
 !*******************************************************************************
-do JS_riv_bas=1,IS_riv_bas
-     do JS_riv_tot=1,IS_riv_tot
-          if (IV_down(JS_riv_tot)==                                            &
-              IV_riv_tot_id(IV_riv_index(JS_riv_bas))) then             
-          !Within connectivity table, index JS_riv_tot has been determined as
-          !Flowing into reach located at index JS_riv_bas.  The following is 
-          !to check that the reach corresponding to JS_riv_tot is within the 
-          !basin too. If not, gives a warning.
-          BS_logical=.false.
-          do JS_riv_bas2=1,IS_riv_bas
-          BS_logical=( BS_logical .or.                                         &
-                       (IV_riv_tot_id(JS_riv_tot)==IV_riv_bas_id(JS_riv_bas2)) )
-          end do 
-          if (.not. BS_logical) then
-          write(temp_char,'(i10)') IV_riv_tot_id(JS_riv_tot)
-          call PetscPrintf(PETSC_COMM_WORLD,                                   &
-                           'WARNING: reach ID' // temp_char,ierr)
-          write(temp_char,'(i10)') IV_riv_bas_id(JS_riv_bas)
-          call PetscPrintf(PETSC_COMM_WORLD,                                   &
-                           ' should be connected upstream   of reach ID'       &
-                           // temp_char // char(10),ierr)
-          call PetscPrintf(PETSC_COMM_WORLD,                                   &
-                           '         Make sure upstream forcing is available'  &
-                           // char(10),ierr)
-          end if 
-          end if     
+do JS_riv_tot=1,IS_riv_tot
+     BS_logical=.false.
+     do JS_riv_bas=1,IS_riv_bas
+          if (IV_riv_index(JS_riv_bas)==JS_riv_tot) then
+               !print *, 'river ID', IV_riv_tot_id(JS_riv_tot), 'is in basin'
+               BS_logical=.true.
+               exit
+          end if
+     end do
+     if (.not. BS_logical) then 
+          !print *, 'river ID', IV_riv_tot_id(JS_riv_tot), 'is not in basin'
+          do JS_riv_bas=1,IS_riv_bas
 
-          if (IV_down(IV_riv_index(JS_riv_bas))==                              &
-              IV_riv_tot_id(JS_riv_tot)) then             
-          !Within connectivity table, index JS_riv_tot has been determined as
-          !Flowing out of reach located at index JS_riv_bas.  The following is 
-          !to check that the reach corresponding to JS_riv_tot is within the 
-          !basin too. If not, gives a warning.
-          BS_logical=.false.
-          do JS_riv_bas2=1,IS_riv_bas
-          BS_logical=( BS_logical .or.                                         &
-                       (IV_riv_tot_id(JS_riv_tot)==IV_riv_bas_id(JS_riv_bas2)) )
-          end do 
-          if (.not. BS_logical) then
-          write(temp_char,'(i10)') IV_riv_tot_id(JS_riv_tot)
-          call PetscPrintf(PETSC_COMM_WORLD,                                   &
-                           'WARNING: reach ID' // temp_char,ierr)
-          write(temp_char,'(i10)') IV_riv_bas_id(JS_riv_bas)
-          call PetscPrintf(PETSC_COMM_WORLD,                                   &
-                           ' should be connected downstream of reach ID'       &
-                           // temp_char // char(10),ierr)
-          end if 
-               
+!-------------------------------------------------------------------------------
+!Looking for missing upstream connections
+!-------------------------------------------------------------------------------
+if(IV_down(JS_riv_tot)==IV_riv_bas_id(JS_riv_bas)) then
+     write(temp_char,'(i10)') IV_riv_tot_id(JS_riv_tot)
+     call PetscPrintf(PETSC_COMM_WORLD,                                        &
+                      'WARNING: reach ID' // temp_char,ierr)
+     write(temp_char,'(i10)') IV_riv_bas_id(JS_riv_bas)
+     call PetscPrintf(PETSC_COMM_WORLD,                                        &
+                      ' should be connected upstream of reach ID'              &
+                      // temp_char // char(10),ierr)
+     call PetscPrintf(PETSC_COMM_WORLD,                                        &
+                      '         Make sure upstream forcing is available'       &
+                      // char(10),ierr)
+end if
+!-------------------------------------------------------------------------------
+!Looking for missing upstream connections
+!-------------------------------------------------------------------------------
+if (IV_down(IV_riv_index(JS_riv_bas))==IV_riv_tot_id(JS_riv_tot)) then
+     write(temp_char,'(i10)') IV_riv_tot_id(JS_riv_tot)
+     call PetscPrintf(PETSC_COMM_WORLD,                                        &
+                      'WARNING: reach ID' // temp_char,ierr)
+     write(temp_char,'(i10)') IV_riv_bas_id(JS_riv_bas)
+     call PetscPrintf(PETSC_COMM_WORLD,                                        &
+                      ' should be connected downstream of reach ID'            &
+                      // temp_char // char(10),ierr)
+     exit
+end if
+!-------------------------------------------------------------------------------
+!Done looking
+!-------------------------------------------------------------------------------
+
+          end do
      end if
 end do
-end do 
 call PetscPrintf(PETSC_COMM_WORLD,'Checked for missing connections between '// &
                  'basin studied and rest of domain'//char(10),ierr)
 
