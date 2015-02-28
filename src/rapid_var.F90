@@ -199,13 +199,22 @@ PetscInt,dimension (:,:), allocatable :: IM_index_up
 !index goes from 1 to IS_riv_bas 
 PetscInt, dimension(:),allocatable :: IV_riv_bas_id
 !unique IDs in riv_bas_id_file, of length IS_riv_bas
-integer*8, dimension(:), allocatable :: IV_riv_index
+PetscInt, dimension(:), allocatable :: IV_riv_index
 !indexes (Fortran, 1-based) of the reaches in the _riv within the whole network
 !size IS_riv_bas
 PetscInt,dimension(:), allocatable :: IV_riv_loc1
 !vector giving the zero-base index corresponding to the river reaches within 
 !the _riv studied only, to be used in VecSetValues. size IS_riv_bas
-
+Mat :: ZM_hsh_tot
+!flat matrix with size IS_riv_id_max*ncore that serves a hashtable-like purpose 
+!in which the index over the domain (JS_riv_tot) is stored at the location of 
+!each reach ID. Each row contains the exact same data.
+Mat :: ZM_hsh_bas
+!flat matrix with size IS_riv_id_max*ncore that serves a hashtable-like purpose 
+!in which the index over the basin (JS_riv_bas) is stored at the location of 
+!each reach ID. Each row contains the exact same data.
+PetscInt :: IS_riv_id_max=1000000000
+!Maximum value allowed for the unique integer IDs corresponding to each reach
 
 !*******************************************************************************
 !Declaration of variables - Observation flow variables
@@ -431,6 +440,8 @@ PetscInt :: IS_one=1
 !the value 1 in the functions crashes PETSc
 PetscScalar :: ZS_one=1
 !Scalars of values 1 and 0, same remark as above
+PetscScalar :: ZS_val
+!Temporary scalar used to store the results of MatGetValues()
 Vec :: ZV_one
 !vector with only ones, useful for creation of matrices here
 Vec :: ZV_SeqZero
