@@ -16,6 +16,7 @@ subroutine rapid_destro_obj
 !*******************************************************************************
 use rapid_var, only :                                                          &
                    IS_riv_bas,                                                 &
+                   ZM_hsh_tot,ZM_hsh_bas,                                      &
                    ZM_Net,ZM_A,ZM_T,ZM_TC1,                                    &
                    ZM_Obs,ZV_Qobs,ZV_temp1,ZV_temp2,ZV_kfac,                   &
                    ZV_k,ZV_x,ZV_p,ZV_pnorm,ZV_pfac,                            &
@@ -73,6 +74,9 @@ call TaoFinalize(ierr)
 #endif
 
 call KSPDestroy(ksp,ierr)
+
+call MatDestroy(ZM_hsh_tot,ierr)
+call MatDestroy(ZM_hsh_bas,ierr)
 
 call MatDestroy(ZM_A,ierr)
 call MatDestroy(ZM_Net,ierr)
