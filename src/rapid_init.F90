@@ -173,12 +173,6 @@ IS_RpH=int(ZS_dtH/ZS_TauR)
 call rapid_create_obj
 !Initialize libraries and create PETSc and TAO objects (Mat,Vec,taoapp...)
 
-call MPI_Comm_rank(PETSC_COMM_WORLD,rank,ierr)
-!Determine number associated with each processor
-
-call MPI_Comm_size(PETSC_COMM_WORLD,ncore,ierr)
-!Determine total number of cores used
-
 !-------------------------------------------------------------------------------
 !Prints information about current model run based on info from namelist
 !-------------------------------------------------------------------------------
