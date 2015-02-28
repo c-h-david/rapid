@@ -17,7 +17,7 @@ subroutine rapid_net_mat_brk
 !*******************************************************************************
 use rapid_var, only :                                                          &
                    IS_riv_bas,JS_riv_bas,JS_riv_bas2,                          &
-                   IV_riv_bas_id,IV_riv_index,IV_riv_loc1,                     &
+                   IV_riv_bas_id,IV_riv_index,                                 &
                    ZM_Net,ZM_T,IV_down,IV_nbup,JS_up,IM_index_up,              &
                    IS_for_bas,JS_for_bas,IV_for_bas_id,                        &
                    IS_dam_bas,JS_dam_bas,IV_dam_bas_id,                        &
