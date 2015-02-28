@@ -69,6 +69,7 @@ rapid:	rapid_main.o \
 	rapid_close_Qhum_file.o \
 	rapid_get_Qdam.o \
 	rapid_set_Qext0.o \
+	rapid_hsh_mat.o \
 	rapid_net_mat.o \
 	rapid_net_mat_brk.o \
 	rapid_obs_mat.o \
@@ -103,6 +104,7 @@ rapid:	rapid_main.o \
 	rapid_close_Qhum_file.o \
 	rapid_get_Qdam.o \
 	rapid_set_Qext0.o \
+	rapid_hsh_mat.o \
 	rapid_net_mat.o \
 	rapid_net_mat_brk.o \
 	rapid_routing.o \
@@ -148,6 +150,9 @@ rapid_net_mat_brk.o: 	rapid_net_mat_brk.F90 rapid_var.mod
 
 rapid_net_mat.o: 	rapid_net_mat.F90 rapid_var.mod
 	-${FLINKER} ${FPPFLAGS} -c rapid_net_mat.F90 ${PETSC_FC_INCLUDES}
+
+rapid_hsh_mat.o: 	rapid_hsh_mat.F90 rapid_var.mod
+	-${FLINKER} ${FPPFLAGS} -c rapid_hsh_mat.F90 ${PETSC_FC_INCLUDES}
 
 rapid_get_Qdam.o: 	rapid_get_Qdam.F90 rapid_var.mod 
 	-${FLINKER} ${FPPFLAGS} -c rapid_get_Qdam.F90 ${PETSC_FC_INCLUDES}
