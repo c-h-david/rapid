@@ -20,10 +20,10 @@ subroutine rapid_net_mat
 use rapid_var, only :                                                          &
                    IS_riv_tot,IS_riv_bas,                                      &
                    JS_riv_tot,JS_riv_bas,JS_riv_bas2,                          &
-                   IV_riv_bas_id,IV_riv_index,                                 &
+                   IV_riv_bas_id,IV_riv_index,ZM_hsh_bas,                      &
                    ZM_Net,ZM_A,ZM_T,ZM_TC1,BS_logical,IV_riv_tot_id,           &
                    IV_down,IV_nbup,IM_up,JS_up,IM_index_up,                    &
-                   ierr,rank,                                                  &
+                   ierr,rank,ZS_val,                                           &
                    IS_one,ZS_one,temp_char,IV_nz,IV_dnz,IV_onz,                &
                    IS_ownfirst,IS_ownlast,IS_opt_routing
 
@@ -60,7 +60,7 @@ do JS_riv_bas=1,IS_riv_bas
 end do
 !Initialize to zero
 
-call MatGetOwnerShipRange(ZM_Net,IS_ownfirst,IS_ownlast,ierr)
+call MatGetOwnershipRange(ZM_Net,IS_ownfirst,IS_ownlast,ierr)
 
 do JS_riv_bas2=1,IS_riv_bas
 do JS_up=1,IV_nbup(IV_riv_index(JS_riv_bas2))
@@ -239,22 +239,29 @@ end if
 !Checks for missing connections and gives warning
 !*******************************************************************************
 do JS_riv_tot=1,IS_riv_tot
-     BS_logical=.false.
-     do JS_riv_bas=1,IS_riv_bas
-          if (IV_riv_index(JS_riv_bas)==JS_riv_tot) then
-               !print *, 'river ID', IV_riv_tot_id(JS_riv_tot), 'is in basin'
-               BS_logical=.true.
-               exit
-          end if
-     end do
-     if (.not. BS_logical) then 
-          !print *, 'river ID', IV_riv_tot_id(JS_riv_tot), 'is not in basin'
-          do JS_riv_bas=1,IS_riv_bas
+     ZS_val=-999
+     call MatGetValues(ZM_hsh_bas,                                             &
+                       IS_one,rank,                                            &
+                       IS_one,IV_riv_tot_id(JS_riv_tot)-1,                     & 
+                       ZS_val,ierr)
+     CHKERRQ(ierr)
+     JS_riv_bas2=ZS_val
+     if (JS_riv_bas2>0) then
+          !print *, 'Reach ID', IV_riv_tot_id(JS_riv_tot), 'is in basin'
+     else
+          !print *, 'Reach ID', IV_riv_tot_id(JS_riv_tot), 'is not in basin'
 
 !-------------------------------------------------------------------------------
 !Looking for missing upstream connections
 !-------------------------------------------------------------------------------
-if(IV_down(JS_riv_tot)==IV_riv_bas_id(JS_riv_bas)) then
+ZS_val=-999
+call MatGetValues(ZM_hsh_bas,                                                  &
+                  IS_one,rank,                                                 &
+                  IS_one,IV_down(JS_riv_tot)-1,                                & 
+                  ZS_val,ierr)
+CHKERRQ(ierr)
+JS_riv_bas=ZS_val
+if(JS_riv_bas>0) then
      write(temp_char,'(i10)') IV_riv_tot_id(JS_riv_tot)
      call PetscPrintf(PETSC_COMM_WORLD,                                        &
                       'WARNING: reach ID' // temp_char,ierr)
@@ -269,7 +276,15 @@ end if
 !-------------------------------------------------------------------------------
 !Looking for missing upstream connections
 !-------------------------------------------------------------------------------
-if (IV_down(IV_riv_index(JS_riv_bas))==IV_riv_tot_id(JS_riv_tot)) then
+do JS_up=1,IV_nbup(JS_riv_tot)
+ZS_val=-999
+call MatGetValues(ZM_hsh_bas,                                                  &
+                  IS_one,rank,                                                 &
+                  IS_one,IM_up(JS_riv_tot,JS_up)-1,                            & 
+                  ZS_val,ierr)
+CHKERRQ(ierr)
+JS_riv_bas=ZS_val
+if (JS_riv_bas>0) then
      write(temp_char,'(i10)') IV_riv_tot_id(JS_riv_tot)
      call PetscPrintf(PETSC_COMM_WORLD,                                        &
                       'WARNING: reach ID' // temp_char,ierr)
@@ -277,13 +292,12 @@ if (IV_down(IV_riv_index(JS_riv_bas))==IV_riv_tot_id(JS_riv_tot)) then
      call PetscPrintf(PETSC_COMM_WORLD,                                        &
                       ' should be connected downstream of reach ID'            &
                       // temp_char // char(10),ierr)
-     exit
 end if
+end do
 !-------------------------------------------------------------------------------
 !Done looking
 !-------------------------------------------------------------------------------
 
-          end do
      end if
 end do
 call PetscPrintf(PETSC_COMM_WORLD,'Checked for missing connections between '// &
