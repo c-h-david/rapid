@@ -15,6 +15,7 @@ subroutine rapid_create_obj
 !*******************************************************************************
 use rapid_var, only :                                                          &
                    IS_riv_bas,                                                 &
+                   ZM_hsh_tot,ZM_hsh_bas,IS_riv_id_max,                        &
                    ZM_Net,ZM_A,ZM_T,ZM_TC1,                                    &
                    ZM_Obs,ZV_Qobs,ZV_temp1,ZV_temp2,ZV_kfac,                   &
                    ZV_k,ZV_x,ZV_p,ZV_pnorm,ZV_pfac,                            &
@@ -27,7 +28,7 @@ use rapid_var, only :                                                          &
                    ZV_QoutRabsmin,ZV_QoutRabsmax,ZV_QoutRhat,                  &
                    ZV_VR,ZV_VinitR,ZV_VprevR,ZV_VbarR,ZV_VoutR,                &
                    ZV_Qobsbarrec,                                              &
-                   ierr,ksp,vecscat,ZV_SeqZero,ZS_one,ZV_one,IS_one
+                   ierr,ksp,vecscat,ZV_SeqZero,ZS_one,ZV_one,IS_one,ncore,rank
 
 #ifndef NO_TAO
 use rapid_var, only :                                                          &
@@ -67,6 +68,12 @@ implicit none
 !Initialize PETSc --------------------------------------------------------------
 call PetscInitialize(PETSC_NULL_CHARACTER,ierr)
 
+!Determine number associated with each processor -------------------------------
+call MPI_Comm_rank(PETSC_COMM_WORLD,rank,ierr)
+
+!Determine total number of cores used ------------------------------------------
+call MPI_Comm_size(PETSC_COMM_WORLD,ncore,ierr)
+
 !Create PETSc object that manages all Krylov methods ---------------------------
 call KSPCreate(PETSC_COMM_WORLD,ksp,ierr)
 
@@ -95,13 +102,23 @@ call MatCreate(PETSC_COMM_WORLD,ZM_Obs,ierr)
 call MatSetSizes(ZM_Obs,PETSC_DECIDE,PETSC_DECIDE,IS_riv_bas,IS_riv_bas,ierr)
 call MatSetFromOptions(ZM_Obs,ierr)
 call MatSetUp(ZM_Obs,ierr)
-
 !These matrices are all square of size IS_riv_bas.  PETSC_DECIDE allows PETSc 
 !to determine the local sizes on its own. MatSetFromOptions allows to use many
 !different options at runtime, such as "-mat_type aijmumps".
 
+call MatCreate(PETSC_COMM_WORLD,ZM_hsh_tot,ierr)
+call MatSetSizes(ZM_hsh_tot,PETSC_DECIDE,PETSC_DECIDE,ncore,IS_riv_id_max,ierr)
+call MatSetFromOptions(ZM_hsh_tot,ierr)
+call MatSetUp(ZM_hsh_tot,ierr)
 
-!Vectors of size IS_riv_bas----------------------------------------------------
+call MatCreate(PETSC_COMM_WORLD,ZM_hsh_bas,ierr)
+call MatSetSizes(ZM_hsh_bas,PETSC_DECIDE,PETSC_DECIDE,ncore,IS_riv_id_max,ierr)
+call MatSetFromOptions(ZM_hsh_bas,ierr)
+call MatSetUp(ZM_hsh_bas,ierr)
+!These matrices are all mostly flat with size IS_riv_id_max*ncore and will store
+!the same row over all columns
+
+!Vectors of size IS_riv_bas-----------------------------------------------------
 !call VecCreateMPI(PETSC_COMM_WORLD,PETSC_DECIDE,IS_riv_bas,ZV_k,ierr)
 call VecCreate(PETSC_COMM_WORLD,ZV_k,ierr)
 call VecSetSizes(ZV_k,PETSC_DECIDE,IS_riv_bas,ierr)
