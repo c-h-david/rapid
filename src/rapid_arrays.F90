@@ -63,6 +63,7 @@ use rapid_var, only :                                                          &
                    IV_riv_tot_id,IV_down,IV_nbup,IM_up,IM_index_up,            &
                    riv_bas_id_file,                                            &
                    IS_riv_bas,JS_riv_bas,JS_riv_bas2,                          &
+                   ZM_hsh_tot,ZM_hsh_bas,                                      &
                    IV_riv_bas_id,IV_riv_index,IV_riv_loc1,                     &
                    BS_opt_hum,                                                 &
                    hum_tot_id_file,                                            &
@@ -99,8 +100,8 @@ use rapid_var, only :                                                          &
                    IV_obs_use_id,                                              &
                    IS_obs_use,JS_obs_use,                                      &
                    IS_obs_bas,JS_obs_bas,                                      &
-                   IV_obs_index,IV_obs_loc1,                     &
-                   BS_logical,temp_char,rank,ierr
+                   IV_obs_index,IV_obs_loc1,                                   &
+                   BS_logical,temp_char,rank,ierr,IS_one,ZS_val
 
 implicit none
 
@@ -149,6 +150,11 @@ read(11,*) IV_riv_bas_id
 close(11)
 
 !-------------------------------------------------------------------------------
+!Populate hashtable-like matrices 
+!-------------------------------------------------------------------------------
+call rapid_hsh_mat
+
+!-------------------------------------------------------------------------------
 !Calculate IS_riv_bas
 !-------------------------------------------------------------------------------
 !This is actually given in the namelist
@@ -165,15 +171,16 @@ IM_index_up=0
 !Populate IV_riv_index
 !-------------------------------------------------------------------------------
 do JS_riv_bas=1,IS_riv_bas
-     BS_logical=.false.
-     do JS_riv_tot=1,IS_riv_tot
-          if (IV_riv_bas_id(JS_riv_bas)==IV_riv_tot_id(JS_riv_tot)) then
-               IV_riv_index(JS_riv_bas)=JS_riv_tot
-               BS_logical=.true.
-               exit
-          end if
-     end do
-     if (.not. BS_logical) then
+     ZS_val=-999
+     call MatGetValues(ZM_hsh_tot,                                             &
+                       IS_one,rank,                                            &
+                       IS_one,IV_riv_bas_id(JS_riv_bas)-1,                     & 
+                       ZS_val,ierr)
+     CHKERRQ(ierr)
+     JS_riv_tot=ZS_val
+     if (JS_riv_tot>0) then
+          IV_riv_index(JS_riv_bas)=JS_riv_tot
+     else
           write(temp_char,'(i10)') IV_riv_bas_id(JS_riv_bas)
           call PetscPrintf(PETSC_COMM_WORLD,                                   &
                            'ERROR: reach ID' // temp_char //                   &
@@ -200,13 +207,14 @@ enddo
 !-------------------------------------------------------------------------------
 do JS_riv_bas2=1,IS_riv_bas
 do JS_up=1, IV_nbup(IV_riv_index(JS_riv_bas2))
-do JS_riv_bas=1,IS_riv_bas
-    if (IV_riv_bas_id(JS_riv_bas)==                                            &
-        IM_up(IV_riv_index(JS_riv_bas2),JS_up)) then
-          IM_index_up(JS_riv_bas2,JS_up)=JS_riv_bas
-          exit
-     end if 
-end do
+     ZS_val=-999
+     call MatGetValues(ZM_hsh_bas,                                             &
+                       IS_one,rank,                                            &
+                       IS_one,IM_up(IV_riv_index(JS_riv_bas2),JS_up)-1,        & 
+                       ZS_val,ierr)
+     CHKERRQ(ierr)
+     JS_riv_bas=ZS_val
+     if (JS_riv_bas>0) IM_index_up(JS_riv_bas2,JS_up)=JS_riv_bas
 end do
 end do
 !Used in traditional Muskingum method and to quicken matrix prealloc. & creation
