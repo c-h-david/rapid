@@ -57,6 +57,8 @@ implicit none
 !Intent (in/out), and local variables 
 !*******************************************************************************
 PetscInt, dimension(ncore)  :: IS_nz, IS_dnz, IS_onz
+PetscInt, dimension(IS_riv_tot) :: IV_tot_tmp1, IV_tot_tmp2
+PetscInt, dimension(IS_riv_bas) :: IV_bas_tmp1, IV_bas_tmp2
 
 
 !*******************************************************************************
@@ -171,10 +173,17 @@ call PetscPrintf(PETSC_COMM_WORLD,'Hashtable-like matrices preallocated'       &
 !ZM_hsh_tot
 !-------------------------------------------------------------------------------
 do JS_riv_tot=1,IS_riv_tot
+     IV_tot_tmp1(JS_riv_tot)=IV_riv_tot_id(JS_riv_tot)
+     IV_tot_tmp2(JS_riv_tot)=JS_riv_tot
+end do
+call PetscSortIntWithArray(IS_riv_tot,IV_tot_tmp1(:),IV_tot_tmp2(:),ierr)
+!Populating ZM_hsh_* below much faster w/ sorted arrays than w/ IV_riv_*_id
+
+do JS_riv_tot=1,IS_riv_tot
      call MatSetValues(ZM_hsh_tot,                                             &
                        IS_one,rank,                                            &
-                       IS_one,IV_riv_tot_id(JS_riv_tot)-1,                     &
-                       ZS_one*JS_riv_tot,INSERT_VALUES,ierr)
+                       IS_one,IV_tot_tmp1(JS_riv_tot)-1,                       &
+                       ZS_one*IV_tot_tmp2(JS_riv_tot),INSERT_VALUES,ierr)
      CHKERRQ(ierr)
 end do
 
@@ -182,10 +191,17 @@ end do
 !ZM_hsh_bas
 !-------------------------------------------------------------------------------
 do JS_riv_bas=1,IS_riv_bas
+     IV_bas_tmp1(JS_riv_bas)=IV_riv_bas_id(JS_riv_bas)
+     IV_bas_tmp2(JS_riv_bas)=JS_riv_bas
+end do
+call PetscSortIntWithArray(IS_riv_bas,IV_bas_tmp1(:),IV_bas_tmp2(:),ierr)
+!Populating ZM_hsh_* below much faster w/ sorted arrays than w/ IV_riv_*_id
+
+do JS_riv_bas=1,IS_riv_bas
      call MatSetValues(ZM_hsh_bas,                                             &
                        IS_one,rank,                                            &
-                       IS_one,IV_riv_bas_id(JS_riv_bas)-1,                     &
-                       ZS_one*JS_riv_bas,INSERT_VALUES,ierr)
+                       IS_one,IV_bas_tmp1(JS_riv_bas)-1,                       &
+                       ZS_one*IV_bas_tmp2(JS_riv_bas),INSERT_VALUES,ierr)
      CHKERRQ(ierr)
 end do
 
