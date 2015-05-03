@@ -2,7 +2,6 @@
 #.travis.yml
 #*******************************************************************************
 
-
 #Purpose:
 #Travis CI is a hosted continuous integration service, that is, it allows 
 #running code directly from a repository and checking that the code acts as 
@@ -105,7 +104,7 @@ install:
 #*******************************************************************************
 script:
 - cd $TRAVIS_BUILD_DIR
-#- cd ./rtk/
-#- gfortran -o rtk_run_comp rtk_run_comp.f90 -I $TACC_NETCDF_INC -L $TACC_NETCDF_LIB -lnetcdf
-#- ./rtk_pub_dwnl_David_etal_2011_JHM.sh
-#- ./rtk_pub_repr_David_etal_2011_JHM.sh
+- cd ./rtk/
+- gfortran -o rtk_run_comp rtk_run_comp.f90 -I $TACC_NETCDF_INC -L $TACC_NETCDF_LIB -lnetcdf
+- ./rtk_pub_dwnl_David_etal_2011_JHM.sh
+- ./rtk_pub_repr_David_etal_2011_JHM.sh
