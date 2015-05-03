@@ -1,0 +1,111 @@
+#*******************************************************************************
+#.travis.yml
+#*******************************************************************************
+
+
+#Purpose:
+#Travis CI is a hosted continuous integration service, that is, it allows 
+#running code directly from a repository and checking that the code acts as 
+#expected The purpose of the .travis.yml file is to give instructions to Travis 
+#CI on how to do the work.
+#Authors:
+#Initially written by Luke A. Winslow, with edits by Cedric H. David, 2015-2015
+
+
+#*******************************************************************************
+#Language specification for Travis CI
+#*******************************************************************************
+language: cpp
+
+
+#*******************************************************************************
+#Before installing RAPID
+#*******************************************************************************
+before_install:
+
+#-------------------------------------------------------------------------------
+#Installing Fortran compiler (C and C++ installed by specifying C++ above)
+#-------------------------------------------------------------------------------
+- sudo apt-get install gfortran
+
+#-------------------------------------------------------------------------------
+#Installing Command line calculator (useful for simple math from terminal)
+#-------------------------------------------------------------------------------
+- sudo apt-get install bc
+
+#-------------------------------------------------------------------------------
+#Creating directory for installation of libraries used by RAPID
+#-------------------------------------------------------------------------------
+- cd $TRAVIS_BUILD_DIR
+- mkdir ../installz
+- cd ../installz
+- export INSTALLZ_DIR=$PWD
+
+#-------------------------------------------------------------------------------
+#Installing netCDF 3.6.3
+#-------------------------------------------------------------------------------
+- cd $INSTALLZ_DIR
+- wget "ftp://ftp.unidata.ucar.edu/pub/netcdf/netcdf-3.6.3.tar.gz"
+- mkdir netcdf-3.6.3-install
+- tar -xf netcdf-3.6.3.tar.gz
+- cd netcdf-3.6.3
+- ./configure --prefix=$INSTALLZ_DIR/netcdf-3.6.3-install
+- make check
+- make install
+
+#-------------------------------------------------------------------------------
+#Installing PETSc 3.3-p7
+#-------------------------------------------------------------------------------
+- cd $INSTALLZ_DIR
+- wget "http://ftp.mcs.anl.gov/pub/petsc/release-snapshots/petsc-3.3-p7.tar.gz" 
+- tar -xf petsc-3.3-p7.tar.gz
+- cd petsc-3.3-p7
+- ./configure PETSC_DIR=$PWD PETSC_ARCH=linux-gcc-cxx --download-f-blas-lapack=1 --download-mpich=1 --with-cc=gcc --with-cxx=g++ --with-fc=gfortran --with-clanguage=cxx --with-debugging=0
+- make PETSC_DIR=$PWD PETSC_ARCH=linux-gcc-cxx all
+- make PETSC_DIR=$PWD PETSC_ARCH=linux-gcc-cxx test
+
+#-------------------------------------------------------------------------------
+#Installing TAO 2.1-p2
+#-------------------------------------------------------------------------------
+- cd $INSTALLZ_DIR
+- wget "http://www.mcs.anl.gov/research/projects/tao/download/tao-2.1-p2.tar.gz"
+- tar -xf tao-2.1-p2.tar.gz
+- cd tao-2.1-p2
+- make TAO_DIR=$PWD PETSC_DIR=$INSTALLZ_DIR/petsc-3.3-p7 PETSC_ARCH=linux-gcc-cxx all 
+- make TAO_DIR=$PWD PETSC_DIR=$INSTALLZ_DIR/petsc-3.3-p7 PETSC_ARCH=linux-gcc-cxx tao_testfortran 
+
+#-------------------------------------------------------------------------------
+#Exporting environment variables 
+#-------------------------------------------------------------------------------
+- cd $INSTALLZ_DIR
+- export TACC_NETCDF_LIB=$INSTALLZ_DIR/netcdf-3.6.3-install/lib
+- export TACC_NETCDF_INC=$INSTALLZ_DIR/netcdf-3.6.3-install/include
+- export PETSC_DIR=$INSTALLZ_DIR/petsc-3.3-p7
+- export PETSC_ARCH='linux-gcc-cxx'
+- export TAO_DIR=$INSTALLZ_DIR/tao-2.1-p2
+
+#-------------------------------------------------------------------------------
+#Exporting directories with library-related executables to $PATH
+#-------------------------------------------------------------------------------
+- export PATH=$PATH:/$PETSC_DIR/$PETSC_ARCH/bin
+- export PATH=$PATH:$INSTALLZ_DIR/netcdf-3.6.3-install/bin
+
+
+#*******************************************************************************
+#Installing RAPID
+#*******************************************************************************
+install:
+- cd $TRAVIS_BUILD_DIR
+- cd ./src/
+- make rapid
+
+
+#*******************************************************************************
+#Testing RAPID 
+#*******************************************************************************
+script:
+- cd $TRAVIS_BUILD_DIR
+#- cd ./rtk/
+#- gfortran -o rtk_run_comp rtk_run_comp.f90 -I $TACC_NETCDF_INC -L $TACC_NETCDF_LIB -lnetcdf
+#- ./rtk_pub_dwnl_David_etal_2011_JHM.sh
+#- ./rtk_pub_repr_David_etal_2011_JHM.sh
