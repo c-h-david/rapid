@@ -44,5 +44,6 @@ src/rapid
 #The files potentially added to the rtk directory 
 #-------------------------------------------------------------------------------
 rtk/rapid
+rtk/rapid_namelist
 rtk/rtk_run_comp
 rtk/tmp_*
