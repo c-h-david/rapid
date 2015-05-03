@@ -117,6 +117,7 @@ rapid:	rapid_main.o \
 	${TAO_FORTRAN_LIB} ${TAO_LIB} ${PETSC_LIB} ${NETCDF_LIB}
 	${RM} *.o *.mod 
 	ln -sf ../src/rapid ../run/rapid
+	ln -sf ../src/rapid ../rtk/rapid
 
 #-------------------------------------------------------------------------------
 #Compile RAPID
@@ -224,5 +225,5 @@ rapid_var.o rapid_var.mod:	rapid_var.F90
 #Clean
 #-------------------------------------------------------------------------------
 clean::
-	${RM} *.o *.mod rapid ../run/rapid
+	${RM} *.o *.mod rapid ../run/rapid ../rtk/rapid
 
