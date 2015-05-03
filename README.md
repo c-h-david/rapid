@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/c-h-david/rapid.svg?branch=master)](https://travis-ci.org/c-h-david/rapid)
+
 The Routing Application for Parallel computatIon of Discharge (RAPID) is a river
 network routing model. Given surface and groundwater inflow to rivers, this 
 model can compute flow and volume of water everywhere in river networks made out 
