@@ -146,7 +146,9 @@ enddo
 close(10)
 
 open(11,file=riv_bas_id_file,status='old')
-read(11,*) IV_riv_bas_id
+do JS_riv_bas=1,IS_riv_bas
+     read(11,*) IV_riv_bas_id(JS_riv_bas)
+end do
 close(11)
 
 !-------------------------------------------------------------------------------
