@@ -245,7 +245,7 @@ do JS_riv_tot=1,IS_riv_tot
                        IS_one,IV_riv_tot_id(JS_riv_tot)-1,                     & 
                        ZS_val,ierr)
      CHKERRQ(ierr)
-     JS_riv_bas2=ZS_val
+     JS_riv_bas2=int(ZS_val)
      if (JS_riv_bas2>0) then
           !print *, 'Reach ID', IV_riv_tot_id(JS_riv_tot), 'is in basin'
      else
@@ -260,7 +260,7 @@ call MatGetValues(ZM_hsh_bas,                                                  &
                   IS_one,IV_down(JS_riv_tot)-1,                                & 
                   ZS_val,ierr)
 CHKERRQ(ierr)
-JS_riv_bas=ZS_val
+JS_riv_bas=int(ZS_val)
 if(JS_riv_bas>0) then
      write(temp_char,'(i10)') IV_riv_tot_id(JS_riv_tot)
      call PetscPrintf(PETSC_COMM_WORLD,                                        &
@@ -283,7 +283,7 @@ call MatGetValues(ZM_hsh_bas,                                                  &
                   IS_one,IM_up(JS_riv_tot,JS_up)-1,                            & 
                   ZS_val,ierr)
 CHKERRQ(ierr)
-JS_riv_bas=ZS_val
+JS_riv_bas=int(ZS_val)
 if (JS_riv_bas>0) then
      write(temp_char,'(i10)') IV_riv_tot_id(JS_riv_tot)
      call PetscPrintf(PETSC_COMM_WORLD,                                        &

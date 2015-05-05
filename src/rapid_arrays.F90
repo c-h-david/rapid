@@ -177,7 +177,7 @@ do JS_riv_bas=1,IS_riv_bas
                        IS_one,IV_riv_bas_id(JS_riv_bas)-1,                     & 
                        ZS_val,ierr)
      CHKERRQ(ierr)
-     JS_riv_tot=ZS_val
+     JS_riv_tot=int(ZS_val)
      if (JS_riv_tot>0) then
           IV_riv_index(JS_riv_bas)=JS_riv_tot
      else
@@ -213,7 +213,7 @@ do JS_up=1, IV_nbup(IV_riv_index(JS_riv_bas2))
                        IS_one,IM_up(IV_riv_index(JS_riv_bas2),JS_up)-1,        & 
                        ZS_val,ierr)
      CHKERRQ(ierr)
-     JS_riv_bas=ZS_val
+     JS_riv_bas=int(ZS_val)
      if (JS_riv_bas>0) IM_index_up(JS_riv_bas2,JS_up)=JS_riv_bas
 end do
 end do
