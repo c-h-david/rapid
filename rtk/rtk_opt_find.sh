@@ -84,6 +84,9 @@ nn=`echo $((nn-1))`
 nn=`echo $((nn/8))`
 #nn is the number of simulations with different RAPID parameters
 
+jj=0
+#jj is the last simulation with valid RAPID parameters
+
 phio=1000000
 lko=0
 lxo=0
@@ -106,6 +109,7 @@ if [ "$bool" = "1" ]; then
 bool=`echo "$lxc <= 5" | bc -l`
 if [ "$bool" = "1" ]; then
 #Making sure Lambda k is smaller than 5
+jj=$ii
 if [ "$phic" != "**********" ]; then
 #Avoiding potential NaNs in cost function value
 bool=`echo "$phic < $phio" | bc -l`
@@ -171,12 +175,14 @@ if [ "$acceptableconvergence" = "1" ]; then
      echo $lkf
      echo $lxf
      echo $phif
-     echo "(Final results - RAPID optimization converged to acceptable values)"
+     echo "(Final results - RAPID optimization converged to acceptable values" \
+          "after $nn function evaluations)"
 else
      echo $lko
      echo $lxo
      echo $phio
-     echo "(Best results - RAPID optimization converged to meaningless values)"
+     echo "(Best results - RAPID optimization converged to meaningless values" \
+          "after $nn function evaluations, last valid set was evaluation $jj)"
 fi
 #Output acceptable values
 
