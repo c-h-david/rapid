@@ -29,10 +29,10 @@ implicit none
 !-------------------------------------------------------------------------------
 integer :: IS_arg
 
-character(len=100) :: in_char1
-character(len=100) :: in_char2
-character(len=100) :: in_char3
-character(len=100) :: in_char4
+character(len=120) :: in_char1
+character(len=120) :: in_char2
+character(len=10) :: in_char3
+character(len=10) :: in_char4
 
 !-------------------------------------------------------------------------------
 !netCDF-related variables 
@@ -54,8 +54,8 @@ integer :: IS_nc_id_var_Qout_1, IS_nc_id_var_comid_1,                          &
 !-------------------------------------------------------------------------------
 !Other variables
 !-------------------------------------------------------------------------------
-character(len=100) :: Qout_1_nc_file 
-character(len=100) :: Qout_2_nc_file 
+character(len=120) :: Qout_1_nc_file 
+character(len=120) :: Qout_2_nc_file 
 double precision :: ZS_rtol
 double precision :: ZS_atol
 
@@ -66,7 +66,7 @@ integer :: IS_R_1, IS_R_2
 double precision :: ZS_rdif,ZS_rdif_max
 double precision :: ZS_adif,ZS_adif_max
 
-character(len=100) :: temp_char
+character(len=120) :: temp_char
 
 double precision, allocatable, dimension(:) :: ZV_Qout_1
 double precision, allocatable, dimension(:) :: ZV_Qout_2
