@@ -201,6 +201,8 @@ call TaoInitialize(PETSC_NULL_CHARACTER,ierr)
 
 call TaoCreate(PETSC_COMM_WORLD,tao,ierr)
 call TaoSetType(tao,'tao_nm',ierr)
+call TaoSetMaximumFunctionEvaluations(tao,50*IS_one,ierr)
+call TaoSetFromOptions(tao,ierr)
 !Create TAO App 
 
 call VecDuplicate(ZV_p,ZV_1stIndex,ierr)
