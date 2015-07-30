@@ -2,13 +2,12 @@
 !Subroutine - rapid_routing
 !*******************************************************************************
 subroutine rapid_routing(ZV_C1,ZV_C2,ZV_C3,ZV_Qext,                            &
-                         ZV_QoutinitR,ZV_VinitR,                               &
-                         ZV_QoutR,ZV_QoutbarR,ZV_VR,ZV_VbarR)
+                         ZV_QoutinitR,                                         &
+                         ZV_QoutR,ZV_QoutbarR)
 
 !Purpose:
 !Performs flow calculation in each reach of a river network using the Muskingum
-!method (McCarthy 1938).  Also calculates the volume of each reach using a
-!simple first order approximation
+!method (McCarthy 1938).  
 !Author: 
 !Cedric H. David, 2008-2015. 
 
@@ -59,9 +58,8 @@ implicit none
 !Intent (in/out), and local variables 
 !*******************************************************************************
 Vec, intent(in)    :: ZV_C1,ZV_C2,ZV_C3,ZV_Qext,                               &
-                      ZV_QoutinitR,ZV_VinitR 
+                      ZV_QoutinitR 
 Vec, intent(out)   :: ZV_QoutR,ZV_QoutbarR
-Vec                :: ZV_VR,ZV_VbarR
 
 PetscInt :: IS_localsize,JS_localsize
 PetscScalar, pointer :: ZV_QoutR_p(:),ZV_QoutprevR_p(:),ZV_QoutinitR_p(:),     &
@@ -80,11 +78,9 @@ call VecGetLocalSize(ZV_QoutR,IS_localsize,ierr)
 !Set mean values to zero initialize QoutprevR with QoutinitR
 !*******************************************************************************
 call VecSet(ZV_QoutbarR,0*ZS_one,ierr)                     !Qoutbar=0 
-!call VecSet(ZV_VbarR,0*ZS_one,ierr)                        !Vbar=0 
 !set the means to zero at beginning of iterations over routing time step
 
 call VecCopy(ZV_QoutinitR,ZV_QoutprevR,ierr)               !QoutprevR=QoutinitR
-!call VecCopy(ZV_VinitR,ZV_VprevR,ierr)                     !VprevR=VinitR
 !set the previous value to the initial value given as input to subroutine
 
 
@@ -102,9 +98,6 @@ do JS_R=1,IS_R
 !-------------------------------------------------------------------------------
 call VecAXPY(ZV_QoutbarR,ZS_one/IS_R,ZV_QoutprevR,ierr) 
 !Qoutbar=Qoutbar+Qoutprev/IS_R
-
-!call VecAXPY(ZV_VbarR,ZS_one/IS_R,ZV_VprevR,ierr)       
-!Vbar=Vbar+Vprev/IS_R
 
 !-------------------------------------------------------------------------------
 !Calculation of the right hand size, b
@@ -210,29 +203,9 @@ call VecRestoreArrayF90(ZV_QoutRabsmax,ZV_QoutRabsmax_p,ierr)
 end if
 
 !-------------------------------------------------------------------------------
-!Calculation of V (this part can be commented to accelerate parameter 
-!estimation in calibration mode)
-!-------------------------------------------------------------------------------
-!call VecCopy(ZV_QoutR,ZV_VoutR,ierr)                      !Vout=Qout
-!call VecScale(ZV_VoutR,ZS_dtR,ierr)                       !Vout=Vout*dt
-!!result Vout=Qout*dt
-!
-!call VecCopy(ZV_Qext,ZV_Vext,ierr)                        !Vext=Qext
-!call VecScale(ZV_Vext,ZS_dtR,ierr)                        !Vext=Vext*dt
-!!result Vext=Qext*dt
-!
-!call MatMult(ZM_Net,ZV_VoutR,ZV_VR,ierr)                  !V=Net*Vout
-!call VecAXPY(ZV_VR,ZS_one,ZV_Vext,ierr)                   !V=V+Vext
-!call VecAXPY(ZV_VR,-ZS_one,ZV_VoutR,ierr)                 !V=V-Vout
-!call VecAXPY(ZV_VR,ZS_one,ZV_VprevR,ierr)                 !V=V+Vprev
-!!result V=Vprev+(Net*Vout+Vext)-Vout
-
-
-!-------------------------------------------------------------------------------
 !Reset previous
 !-------------------------------------------------------------------------------
 call VecCopy(ZV_QoutR,ZV_QoutprevR,ierr)              !Qoutprev=Qout
-!call VecCopy(ZV_VR,ZV_VprevR,ierr)                    !Vprev=V
 !reset previous 
 
 
