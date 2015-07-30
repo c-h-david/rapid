@@ -25,7 +25,7 @@ use rapid_var, only :                                                          &
                    ZV_1stIndex,ZV_2ndIndex,                                    &
                    ZV_C1,ZV_C2,ZV_C3,ZM_A,                                     &
                    ZV_QoutinitO,ZV_QoutinitR,                                  &
-                   ZV_QoutbarO,ZV_VinitR,ZV_VR,ZV_VbarR,                       &
+                   ZV_QoutbarO,                                                &
                    ZV_QoutR,ZV_QoutbarR,                                       &
                    ZV_Vlat,ZV_Qlat,ZV_Qfor,ZV_Qext,                            &
                    ZV_Qobsbarrec,                                              &
@@ -197,8 +197,8 @@ if (BS_opt_hum) call VecAXPY(ZV_Qext,ZS_one,ZV_Qhum,ierr)     !Qext=Qext+1*Qhum
 !Routing procedure
 !- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 call rapid_routing(ZV_C1,ZV_C2,ZV_C3,ZV_Qext,                                  &
-                   ZV_QoutinitR,ZV_VinitR,                                     &
-                   ZV_QoutR,ZV_QoutbarR,ZV_VR,ZV_VbarR)
+                   ZV_QoutinitR,                                               &
+                   ZV_QoutR,ZV_QoutbarR)
 
 !- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 !Update variables
