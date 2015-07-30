@@ -52,17 +52,21 @@ rapid:	rapid_main.o \
 	rapid_arrays.o \
 	rapid_create_obj.o \
 	rapid_create_Qout_file.o \
+	rapid_create_V_file.o \
 	rapid_open_Qout_file.o \
+	rapid_open_V_file.o \
 	rapid_open_Vlat_file.o \
 	rapid_open_Qobs_file.o \
 	rapid_open_Qfor_file.o \
 	rapid_open_Qhum_file.o \
 	rapid_write_Qout_file.o \
+	rapid_write_V_file.o \
 	rapid_read_Vlat_file.o \
 	rapid_read_Qobs_file.o \
 	rapid_read_Qfor_file.o \
 	rapid_read_Qhum_file.o \
 	rapid_close_Qout_file.o \
+	rapid_close_V_file.o \
 	rapid_close_Vlat_file.o \
 	rapid_close_Qobs_file.o \
 	rapid_close_Qfor_file.o \
@@ -73,6 +77,7 @@ rapid:	rapid_main.o \
 	rapid_net_mat.o \
 	rapid_net_mat_brk.o \
 	rapid_obs_mat.o \
+	rapid_QtoV.o \
 	rapid_routing.o \
 	rapid_routing_param.o \
 	rapid_phiroutine.o \
@@ -87,17 +92,21 @@ rapid:	rapid_main.o \
 	rapid_arrays.o \
 	rapid_create_obj.o \
 	rapid_create_Qout_file.o \
+	rapid_create_V_file.o \
 	rapid_open_Qout_file.o \
+	rapid_open_V_file.o \
 	rapid_open_Vlat_file.o \
 	rapid_open_Qobs_file.o \
 	rapid_open_Qfor_file.o \
 	rapid_open_Qhum_file.o \
 	rapid_write_Qout_file.o \
+	rapid_write_V_file.o \
 	rapid_read_Vlat_file.o \
 	rapid_read_Qobs_file.o \
 	rapid_read_Qfor_file.o \
 	rapid_read_Qhum_file.o \
 	rapid_close_Qout_file.o \
+	rapid_close_V_file.o \
 	rapid_close_Vlat_file.o \
 	rapid_close_Qobs_file.o \
 	rapid_close_Qfor_file.o \
@@ -107,6 +116,7 @@ rapid:	rapid_main.o \
 	rapid_hsh_mat.o \
 	rapid_net_mat.o \
 	rapid_net_mat_brk.o \
+	rapid_QtoV.o \
 	rapid_routing.o \
 	rapid_routing_param.o \
 	rapid_obs_mat.o \
@@ -133,6 +143,9 @@ rapid_destro_obj.o: 	rapid_destro_obj.F90 rapid_var.mod
 
 rapid_phiroutine.o: 	rapid_phiroutine.F90 rapid_var.mod
 	${FLINKER} ${FPPFLAGS} -c rapid_phiroutine.F90 ${PETSC_FC_INCLUDES} ${TAO_INCLUDE} 
+
+rapid_QtoV.o: 		rapid_QtoV.F90 rapid_var.mod
+	${FLINKER} ${FPPFLAGS} -c rapid_QtoV.F90 ${PETSC_FC_INCLUDES}
 
 rapid_routing.o: 	rapid_routing.F90 rapid_var.mod
 	${FLINKER} ${FPPFLAGS} -c rapid_routing.F90 ${PETSC_FC_INCLUDES} ${NETCDF_INCLUDE}
@@ -176,6 +189,9 @@ rapid_close_Vlat_file.o: 	rapid_close_Vlat_file.F90 rapid_var.mod
 rapid_close_Qout_file.o: 	rapid_close_Qout_file.F90 rapid_var.mod
 	${FLINKER} ${FPPFLAGS} -c rapid_close_Qout_file.F90 ${NETCDF_INCLUDE} 
 
+rapid_close_V_file.o: 		rapid_close_V_file.F90 rapid_var.mod
+	${FLINKER} ${FPPFLAGS} -c rapid_close_V_file.F90 ${NETCDF_INCLUDE} 
+
 rapid_read_Qfor_file.o: 	rapid_read_Qfor_file.F90 rapid_var.mod
 	${FLINKER} ${FPPFLAGS} -c rapid_read_Qfor_file.F90 ${PETSC_FC_INCLUDES}
 
@@ -190,6 +206,9 @@ rapid_read_Vlat_file.o: 	rapid_read_Vlat_file.F90 rapid_var.mod
 
 rapid_write_Qout_file.o: 	rapid_write_Qout_file.F90 rapid_var.mod
 	${FLINKER} ${FPPFLAGS} -c rapid_write_Qout_file.F90 ${PETSC_FC_INCLUDES} ${NETCDF_INCLUDE}
+
+rapid_write_V_file.o: 		rapid_write_V_file.F90 rapid_var.mod
+	${FLINKER} ${FPPFLAGS} -c rapid_write_V_file.F90 ${PETSC_FC_INCLUDES} ${NETCDF_INCLUDE}
 
 rapid_open_Qfor_file.o: 	rapid_open_Qfor_file.F90 rapid_var.mod
 	${FLINKER} ${FPPFLAGS} -c rapid_open_Qfor_file.F90 
@@ -206,8 +225,14 @@ rapid_open_Vlat_file.o: 	rapid_open_Vlat_file.F90 rapid_var.mod
 rapid_open_Qout_file.o: 	rapid_open_Qout_file.F90 rapid_var.mod
 	${FLINKER} ${FPPFLAGS} -c rapid_open_Qout_file.F90 ${NETCDF_INCLUDE}
 
+rapid_open_V_file.o: 		rapid_open_V_file.F90 rapid_var.mod
+	${FLINKER} ${FPPFLAGS} -c rapid_open_V_file.F90 ${NETCDF_INCLUDE}
+
 rapid_create_Qout_file.o: 	rapid_create_Qout_file.F90 rapid_var.mod
 	${FLINKER} ${FPPFLAGS} -c rapid_create_Qout_file.F90 ${NETCDF_INCLUDE}
+
+rapid_create_V_file.o: 		rapid_create_V_file.F90 rapid_var.mod
+	${FLINKER} ${FPPFLAGS} -c rapid_create_V_file.F90 ${NETCDF_INCLUDE}
 
 rapid_create_obj.o: 	rapid_create_obj.F90 rapid_var.mod
 	${FLINKER} ${FPPFLAGS} -c rapid_create_obj.F90 ${PETSC_FC_INCLUDES} ${TAO_INCLUDE}
