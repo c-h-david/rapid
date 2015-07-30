@@ -15,6 +15,7 @@
 #*******************************************************************************
 sed -i -e "s|BS_opt_Qinit       =.*|BS_opt_Qinit       =.false.|"              \
        -e "s|BS_opt_Qfinal      =.*|BS_opt_Qfinal      =.false.|"              \
+       -e "s|BS_opt_V           =.*|BS_opt_V           =.false.|"              \
        -e "s|BS_opt_for         =.*|BS_opt_for         =.false.|"              \
        -e "s|BS_opt_dam         =.*|BS_opt_dam         =.false.|"              \
        -e "s|BS_opt_influence   =.*|BS_opt_influence   =.false.|"              \
@@ -100,6 +101,7 @@ sed -i -e "s|babsmax_file       =.*|babsmax_file       =''|"                   \
 sed -i -e "s|k_file             =.*|k_file             ='../../rapid/input/San_Guad_JHM/k_San_Guad_2004_1.csv'|" \
        -e "s|x_file             =.*|x_file             ='../../rapid/input/San_Guad_JHM/x_San_Guad_2004_1.csv'|" \
        -e "s|Qout_file          =.*|Qout_file          ='../../rapid/output/San_Guad_JHM/Qout_San_Guad_1460days_p1_dtR900s_nx_method.nc'|" \
+       -e "s|V_file             =.*|V_file             =''|"                   \
           rapid_namelist_San_Guad_JHM  
 
 #*******************************************************************************

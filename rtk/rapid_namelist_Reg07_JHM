@@ -18,6 +18,9 @@ BS_opt_Qinit       =.false.
 BS_opt_Qfinal      =.false.
 !.false. --> no write final flow     .true. --> write final flow 
 
+BS_opt_V           =.false.
+!.false. --> no compute volume       .true. --> compute volume
+
 BS_opt_dam         =.false.
 !.false. --> no dam model used       .true. --> dam model used
 
@@ -120,6 +123,7 @@ QoutRabsmax_file   =''
 k_file             ='../../rapid/input/Reg07_JHM/kfac_Reg07_2.5ms.csv'
 x_file             ='../../rapid/input/Reg07_JHM/xfac_Reg07_0.3.csv'
 Qout_file          ='../../rapid/output/Reg07_JHM/Qout_Reg07_100days_pfac_dtR900s_nx_method.nc'
+V_file             =''
 
 !*******************************************************************************
 !Optimization
