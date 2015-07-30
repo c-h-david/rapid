@@ -38,7 +38,7 @@ use rapid_var, only :                                                          &
                    IV_riv_bas_id,IV_riv_index,IV_riv_loc1,IV_riv_tot_id,       &
                    IV_down,IV_nbup,IM_up,IM_index_up,IS_max_up,                &
                    IV_nz,IV_dnz,IV_onz,                                        &
-                   BS_opt_Qinit,BS_opt_Qfinal,BS_opt_influence,                & 
+                   BS_opt_Qinit,BS_opt_Qfinal,BS_opt_V,BS_opt_influence,       & 
                    BS_opt_dam,BS_opt_for,BS_opt_hum,                           &
                    IS_opt_run,IS_opt_routing,IS_opt_phi,                       &
                    ZV_read_riv_tot,ZV_read_obs_tot,ZV_read_hum_tot,            &
@@ -184,6 +184,10 @@ if (rank==0 .and. .not. BS_opt_Qfinal .and. IS_opt_run==1) print '(a70)',      &
        'Not writing final flows into a file                                    '
 if (rank==0 .and. BS_opt_Qfinal .and. IS_opt_run==1)       print '(a70)',      &
        'Writing final flows into a file                                        '
+if (rank==0 .and. .not. BS_opt_V .and. IS_opt_run==1)      print '(a70)',      &
+       'Not computing water volumes in river reaches                           '
+if (rank==0 .and. BS_opt_V .and. IS_opt_run==1)            print '(a70)',      &
+       'Computing water volumes in river reaches                               '
 if (rank==0 .and. .not. BS_opt_for)                        print '(a70)',      &
        'Not using forcing                                                      '
 if (rank==0 .and. BS_opt_for)                              print '(a70)',      &
