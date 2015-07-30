@@ -16,11 +16,11 @@ program rapid_main
 use rapid_var, only :                                                          &
                    namelist_file,                                              &
                    Vlat_file,Qfor_file,Qhum_file,                              &
-                   Qout_file,                                                  &
+                   Qout_file,V_file,                                           &
                    IS_M,JS_M,JS_RpM,IS_RpM,IS_RpF,IS_RpH,                      &
                    ZS_TauR,                                                    &
                    ZV_pnorm,                                                   &
-                   ZV_C1,ZV_C2,ZV_C3,                                          &
+                   ZV_k,ZV_x,ZV_C1,ZV_C2,ZV_C3,                                &
                    ZV_Qext,ZV_Qfor,ZV_Qlat,ZV_Qhum,ZV_Qdam,                    &
                    ZV_Vlat,                                                    &
                    ZV_QoutR,ZV_QoutinitR,ZV_QoutbarR,                          &
@@ -31,7 +31,7 @@ use rapid_var, only :                                                          &
                    IS_riv_tot,IS_riv_bas,IS_for_bas,IS_dam_bas,IS_hum_bas,     &
                    ZS_time1,ZS_time2,ZS_time3,                                 &
                    IV_nc_start,IV_nc_count,IV_nc_count2,                       &
-                   BS_opt_for,BS_opt_hum,BS_opt_dam,IS_opt_run
+                   BS_opt_V,BS_opt_for,BS_opt_hum,BS_opt_dam,IS_opt_run
 
 #ifndef NO_TAO
 use rapid_var, only :                                                          &
@@ -88,12 +88,18 @@ if (IS_opt_run==1) then
 call rapid_create_Qout_file(Qout_file)
 
 !-------------------------------------------------------------------------------
+!Create V_file
+!-------------------------------------------------------------------------------
+if (BS_opt_V) call rapid_create_V_file(V_file)
+
+!-------------------------------------------------------------------------------
 !Open files          
 !-------------------------------------------------------------------------------
 call rapid_open_Qout_file(Qout_file)
 call rapid_open_Vlat_file(Vlat_file)
 if (BS_opt_for) call rapid_open_Qfor_file(Qfor_file)
 if (BS_opt_hum) call rapid_open_Qhum_file(Qhum_file)
+if (BS_opt_V) call rapid_open_V_file(V_file)
 
 !-------------------------------------------------------------------------------
 !Make sure the vectors potentially used for inflow to dams are initially null
@@ -176,11 +182,14 @@ if (BS_opt_hum) call VecAXPY(ZV_Qext,ZS_one,ZV_Qhum,ierr)     !Qext=Qext+1*Qhum
 call PetscGetTime(ZS_time1,ierr)
 
 call rapid_routing(ZV_C1,ZV_C2,ZV_C3,ZV_Qext,                                  &
-                   ZV_QoutinitR,ZV_VinitR,                                     &
-                   ZV_QoutR,ZV_QoutbarR,ZV_VR,ZV_VbarR)
+                   ZV_QoutinitR,                                               &
+                   ZV_QoutR,ZV_QoutbarR)
+
+if (BS_opt_V) call rapid_QtoV(ZV_k,ZV_x,ZV_QoutbarR,ZV_Qext,ZV_VbarR)
 
 call PetscGetTime(ZS_time2,ierr)
 ZS_time3=ZS_time3+ZS_time2-ZS_time1
+
 
 !- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 !Update variables
@@ -192,6 +201,7 @@ call VecCopy(ZV_VR,ZV_VinitR,ierr)
 !write outputs         
 !- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 call rapid_write_Qout_file
+if (BS_opt_V) call rapid_write_V_file
 
 !- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 !Update netCDF location         
@@ -226,6 +236,7 @@ call rapid_close_Qout_file
 call rapid_close_Vlat_file
 if (BS_opt_for) call rapid_close_Qfor_file(Qfor_file)
 if (BS_opt_hum) call rapid_close_Qhum_file(Qhum_file)
+if (BS_opt_V) call rapid_close_V_file(V_file)
 
 
 !-------------------------------------------------------------------------------
