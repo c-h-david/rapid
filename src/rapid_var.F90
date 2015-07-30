@@ -44,6 +44,8 @@ logical :: BS_opt_Qinit
 !.false. --> no read initial flow    .true. --> read initial flow
 logical :: BS_opt_Qfinal
 !.false. --> no write final flow     .true. --> write final flow 
+logical :: BS_opt_V
+!.false. --> no compute volume       .true. --> compute volume
 logical :: BS_opt_hum
 !.false. --> no human-induced flows  .true. --> human-induced flows
 logical :: BS_opt_for
@@ -113,8 +115,6 @@ character(len=120) :: Qhum_file
 !unit 36 - file where human-induced flowrates are stored.  These flows are added 
 !upstream.
 
-character(len=120) :: V_file
-!unit 41 - file where model-calculated volumes are stored
 character(len=120) :: babsmax_file
 !unit 42 - file where the maximum of the absolute values of the right-hand-side
 !are stored
@@ -125,6 +125,9 @@ character(len=120) :: QoutRabsmax_file
 !unit 44 - file where the maximum of the absolute values of the instantaneous 
 !flows are stored 
 character(len=120) :: Qout_file
+!        - file where the flow of water at the outlet of each reach are stored
+character(len=120) :: V_file
+!        - file where the volume of water in each reach are stored
 
 
 !*******************************************************************************
@@ -493,8 +496,9 @@ Vec :: ZV_1stIndex, ZV_2ndIndex
 !Declaration of variables - netCDF variables
 !*******************************************************************************
 PetscInt :: IS_nc_status
-PetscInt :: IS_nc_id_fil_Vlat,IS_nc_id_fil_Qout
-PetscInt :: IS_nc_id_var_Vlat,IS_nc_id_var_Qout,IS_nc_id_var_comid
+PetscInt :: IS_nc_id_fil_Vlat,IS_nc_id_fil_Qout,IS_nc_id_fil_V
+PetscInt :: IS_nc_id_var_Vlat,IS_nc_id_var_Qout,IS_nc_id_var_comid,            &
+            IS_nc_id_var_V
 PetscInt :: IS_nc_id_dim_comid,IS_nc_id_dim_time
 PetscInt, parameter :: IS_nc_ndim=2
 PetscInt, dimension(IS_nc_ndim) :: IV_nc_id_dim, IV_nc_start, IV_nc_count,     &
@@ -505,7 +509,7 @@ PetscInt, dimension(IS_nc_ndim) :: IV_nc_id_dim, IV_nc_start, IV_nc_count,     &
 !Namelist
 !*******************************************************************************
 namelist /NL_namelist/                                                         &
-                       BS_opt_Qinit,BS_opt_Qfinal,                             &
+                       BS_opt_Qinit,BS_opt_Qfinal,BS_opt_V,                    &
                        BS_opt_hum,BS_opt_for,BS_opt_dam,BS_opt_influence,      &
                        IS_opt_routing,IS_opt_run,IS_opt_phi,                   &
                        IS_riv_tot,rapid_connect_file,Vlat_file,IS_max_up,      &
@@ -520,7 +524,7 @@ namelist /NL_namelist/                                                         &
                        IS_dam_tot,dam_tot_id_file,                             &
                        IS_dam_use,dam_use_id_file,                             &
                        babsmax_file,QoutRabsmin_file,QoutRabsmax_file,         &
-                       k_file,x_file,Qout_file,                                &
+                       k_file,x_file,Qout_file,V_file,                         &
                        kfac_file,xfac_file,ZS_knorm_init,ZS_xnorm_init,        &
                        IS_obs_tot,obs_tot_id_file,IS_obs_use,obs_use_id_file,  &
                        Qobs_file,Qobsbarrec_file,                              &
