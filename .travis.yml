@@ -5,32 +5,28 @@
 #Purpose:
 #Travis CI is a hosted continuous integration service, that is, it allows 
 #running code directly from a repository and checking that the code acts as 
-#expected The purpose of the .travis.yml file is to give instructions to Travis 
+#expected. The purpose of the .travis.yml file is to give instructions to Travis 
 #CI on how to do the work.
 #Authors:
 #Initially written by Luke A. Winslow, with edits by Cedric H. David, 2015-2015
 
 
 #*******************************************************************************
-#Language specification for Travis CI
+#System specifications for Travis CI
 #*******************************************************************************
-language: cpp
+sudo: false        #Activates the new Travis CI container-based infrastructure
+language: cpp      #Sets the language to C++
+addons:
+  apt:
+    packages:
+    - gfortran     #Add Fortran (C and C++ installed by specifying C++ above)
+    - bc           #Add Basic Calculator (simple math from command line)
 
 
 #*******************************************************************************
 #Before installing RAPID
 #*******************************************************************************
 before_install:
-
-#-------------------------------------------------------------------------------
-#Installing Fortran compiler (C and C++ installed by specifying C++ above)
-#-------------------------------------------------------------------------------
-- sudo apt-get install gfortran
-
-#-------------------------------------------------------------------------------
-#Installing Command line calculator (useful for simple math from terminal)
-#-------------------------------------------------------------------------------
-- sudo apt-get install bc
 
 #-------------------------------------------------------------------------------
 #Creating directory for installation of libraries used by RAPID
