@@ -24,6 +24,14 @@ addons:
 
 
 #*******************************************************************************
+#Environment variables for different tests on multiple Travis CI workers 
+#*******************************************************************************
+env:
+- RTK_PUB_DWNL='./rtk_pub_dwnl_David_etal_2011_JHM.sh' RTK_PUB_REPR='./rtk_pub_repr_David_etal_2011_JHM.sh 1 15'
+- RTK_PUB_DWNL='./rtk_pub_dwnl_David_etal_2011_JHM.sh' RTK_PUB_REPR='./rtk_pub_repr_David_etal_2011_JHM.sh 16 23'
+
+
+#*******************************************************************************
 #Before installing RAPID
 #*******************************************************************************
 before_install:
@@ -102,5 +110,5 @@ script:
 - cd $TRAVIS_BUILD_DIR
 - cd ./rtk/
 - gfortran -o rtk_run_comp rtk_run_comp.f90 -I $TACC_NETCDF_INC -L $TACC_NETCDF_LIB -lnetcdf
-- ./rtk_pub_dwnl_David_etal_2011_JHM.sh
-- ./rtk_pub_repr_David_etal_2011_JHM.sh
+- echo $RTK_PUB_DWNL && $RTK_PUB_DWNL
+- echo $RTK_PUB_REPR && $RTK_PUB_REPR
