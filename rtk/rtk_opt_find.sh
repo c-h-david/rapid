@@ -99,6 +99,15 @@ do
      lxc=`sed -n $((loc-2))p tmp_opt_find.txt`     
      phic=`sed -n $((loc-0))p tmp_opt_find.txt`
      #The current values of the cost function and parameters out of many trials
+
+     lkc=`echo $lkc | sed -e 's|e-|*10^-|g'`
+     lkc=`echo $lkc | sed -e 's|e+|*10^|g'`
+     lxc=`echo $lxc | sed -e 's|e-|*10^-|g'`
+     lxc=`echo $lxc | sed -e 's|e+|*10^|g'`
+     phic=`echo $phic | sed -e 's|e-|*10^-|g'`
+     phic=`echo $phic | sed -e 's|e+|*10^|g'`
+     #If variables include engineering notation which bc does not understand 
+
 #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 bool=`echo "$lkc > 0" | bc -l`
 if [ "$bool" = "1" ]; then
