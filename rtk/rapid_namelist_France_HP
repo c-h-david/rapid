@@ -1,0 +1,154 @@
+&NL_namelist
+!*******************************************************************************
+!rapid_namelist_France_HP 
+!*******************************************************************************
+
+!Purpose:
+!This ASCII file contains instructions for RAPID corresponding to France_HP.
+!Author:
+!Cedric H. David, 2015
+
+
+!*******************************************************************************
+!Runtime options 
+!*******************************************************************************
+BS_opt_Qinit       =.false.
+!.false. --> no read initial flow    .true. --> read initial flow
+
+BS_opt_Qfinal      =.false.
+!.false. --> no write final flow     .true. --> write final flow 
+
+BS_opt_V           =.false.
+!.false. --> no compute volume       .true. --> compute volume
+
+BS_opt_dam         =.false.
+!.false. --> no dam model used       .true. --> dam model used
+
+BS_opt_for         =.false.
+!.false. --> no forcing              .true. --> forcing
+
+BS_opt_influence   =.false.
+!.false. --> no output influence     .true. --> output influence
+
+IS_opt_routing     =1
+!1       --> matrix-based Muskingum  2      --> traditional Muskingum
+!3       --> Transbnd. matrix-based
+
+IS_opt_run         =1
+!1       --> regular run             2      --> parameter optimization
+
+IS_opt_phi         =1
+!1       --> phi1                    2      --> phi2
+
+!*******************************************************************************
+!Temporal information
+!*******************************************************************************
+ZS_TauM            =315619200
+!3600*24*3653=315619200
+ZS_dtM             =86400
+!3600*24=86400
+
+ZS_TauO            =13132800
+!3600*24*182=13132800
+ZS_dtO             =86400
+!3600*24=86400
+
+ZS_TauR            =10800
+!3600*3=10800
+ZS_dtR             =1800
+!60*30=1800
+
+ZS_dtF             =86400
+!3600*24=86400
+
+!*******************************************************************************
+!Domain in which input data is available
+!*******************************************************************************
+IS_riv_tot         =24264
+rapid_connect_file ='../../rapid/input/France_HP/rapid_connect_France.csv'
+IS_max_up          =4
+Vlat_file          ='../../rapid/input/France_HP/m3_riv_France_1995_2005_ksat_201101_c_zvol_ext.nc'
+
+!*******************************************************************************
+!Domain in which model runs
+!*******************************************************************************
+IS_riv_bas         =24264
+riv_bas_id_file    ='../../rapid/input/France_HP/rivsurf_France.csv'
+
+!*******************************************************************************
+!Initial instantaneous flow file
+!*******************************************************************************
+Qinit_file         ='../../rapid/input/France_HP/Qinit_93.csv'
+
+!*******************************************************************************
+!Final instantaneous flow file
+!*******************************************************************************
+Qfinal_file        =''
+
+!*******************************************************************************
+!Available dam data
+!*******************************************************************************
+IS_dam_tot         =0
+dam_tot_id_file    =''
+
+!*******************************************************************************
+!Dam data used
+!*******************************************************************************
+IS_dam_use         =0
+dam_use_id_file    =''
+
+!*******************************************************************************
+!Available forcing data
+!*******************************************************************************
+IS_for_tot         =493
+for_tot_id_file    ='../../rapid/input/France_HP/forcingtot_id_1995_1996_full.csv'
+Qfor_file          ='../../rapid/input/France_HP/Qfor_1995_1996_full.csv'
+
+!*******************************************************************************
+!Forcing data used as model runs
+!*******************************************************************************
+IS_for_use         =1
+for_use_id_file    ='../../rapid/input/France_HP/forcinguse_id_rhone_pougny.csv'
+
+!*******************************************************************************
+!File where max (min) of absolute values of b (QoutR) are stored
+!*******************************************************************************
+babsmax_file       =''
+QoutRabsmin_file   =''
+QoutRabsmax_file   =''
+
+!*******************************************************************************
+!Regular model run
+!*******************************************************************************
+k_file             ='../../rapid/input/France_HP/k_modcou_b.csv'
+x_file             ='../../rapid/input/France_HP/x_modcou_b.csv'
+Qout_file          ='../../rapid/output/France_HP/Qout_France_201101_c_zvol_ext_3653days_pb_dtR1800s_nx_method.nc'
+V_file             =''
+
+!*******************************************************************************
+!Optimization
+!*******************************************************************************
+ZS_phifac          =0.001
+!-------------------------------------------------------------------------------
+!Routing parameters
+!-------------------------------------------------------------------------------
+kfac_file          ='../../rapid/input/France_HP/kfac_modcou_1km_hour.csv'
+xfac_file          ='' 
+ZS_knorm_init      =2
+ZS_xnorm_init      =3
+!-------------------------------------------------------------------------------
+!Gage observations
+!-------------------------------------------------------------------------------
+IS_obs_tot         =291
+obs_tot_id_file    ='../../rapid/input/France_HP/gage_id_1995_1996_full_nash.csv'
+Qobs_file          ='../../rapid/input/France_HP/Qobs_1995_1996_full_nash_93.csv'
+Qobsbarrec_file    ='../../rapid/input/France_HP/Qobsbarrec_1995_1996_full_nash.csv'
+IS_obs_use         =291
+obs_use_id_file    ='../../rapid/input/France_HP/gage_id_1995_1996_full_nash.csv'
+IS_strt_opt        =737
+!92*8+1=737
+
+!*******************************************************************************
+!End name list
+!*******************************************************************************
+/
