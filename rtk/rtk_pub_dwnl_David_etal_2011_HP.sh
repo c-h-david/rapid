@@ -111,6 +111,29 @@ list="                                                           \
       rivsurf_garonne_reste.csv                                  \
       rivsurf_herault.csv                                        \
       rivsurf_loir.csv                                           \
+      rivsurf_loire_amont_nevers.csv                             \
+      rivsurf_loire_reste.csv                                    \
+      rivsurf_loire.csv                                          \
+      rivsurf_lot.csv                                            \
+      rivsurf_meuse.csv                                          \
+      rivsurf_oise.csv                                           \
+      rivsurf_rhone_reste.csv                                    \
+      rivsurf_rhone_suisse.csv                                   \
+      rivsurf_rhone.csv                                          \
+      rivsurf_saone.csv                                          \
+      rivsurf_seine_amont.csv                                    \
+      rivsurf_seine_reste.csv                                    \
+      rivsurf_seine.csv                                          \
+      rivsurf_tarn.csv                                           \
+      rivsurf_vienne.csv                                         \
+      x_modcou_0.csv                                             \
+      x_modcou_1.csv                                             \
+      x_modcou_2.csv                                             \
+      x_modcou_3.csv                                             \
+      x_modcou_4.csv                                             \
+      x_modcou_a.csv                                             \
+      x_modcou_b.csv                                             \
+      x_modcou_c.csv                                             \
      "
 
 mkdir -p $folder
