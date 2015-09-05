@@ -29,7 +29,7 @@ addons:
 env:
 - RTK_PUB_DWNL='./rtk_pub_dwnl_David_etal_2011_JHM.sh' RTK_PUB_REPR='./rtk_pub_repr_David_etal_2011_JHM.sh 1 15'
 - RTK_PUB_DWNL='./rtk_pub_dwnl_David_etal_2011_JHM.sh' RTK_PUB_REPR='./rtk_pub_repr_David_etal_2011_JHM.sh 16 23'
-- RTK_PUB_DWNL='./rtk_pub_dwnl_David_etal_2011_HP.sh' RTK_PUB_REPR='cd $TRAVIS_BUILD_DIR'
+- RTK_PUB_DWNL='./rtk_pub_dwnl_David_etal_2011_HP.sh opt' RTK_PUB_REPR='cd $TRAVIS_BUILD_DIR'
 
 
 #*******************************************************************************

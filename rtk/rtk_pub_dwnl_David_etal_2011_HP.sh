@@ -39,6 +39,29 @@ echo "********************"
 
 
 #*******************************************************************************
+#Command line option
+#*******************************************************************************
+if [ "$#" -gt "1" ]; then
+     echo "A maximum of one argument can be given" 1>&2
+     exit 22
+fi
+#Make sure a maximum of one command land line option was given
+
+if [ "$#" -eq "1" ]; then
+     if [ "$1" == "sim1" ] || [ "$1" == "sim2" ] || [ "$1" == "sim3" ] ||      \
+        [ "$1" == "sim4" ] || [ "$1" == "sim5" ] || [ "$1" == "sim6" ] ||      \
+        [ "$1" == "sim7" ] || [ "$1" == "sim8" ] || [ "$1" == "sim9" ] ||      \
+        [ "$1" == "sim10" ] || [ "$1" == "opt" ]; then 
+          dwnl=$1
+     else
+          echo "The option $1 does not exist" 1>&2
+          exit 22
+     fi
+fi
+#Make sure the command line option given exists
+
+
+#*******************************************************************************
 #Location of the dataset
 #*******************************************************************************
 URL="https://zenodo.org/record/30228/files"
@@ -102,18 +125,37 @@ done
 #Download all output files 
 #*******************************************************************************
 folder="../output/France_HP"
-list="                                           \
-     Qout_France_201101_c_zvol_ext_3653days_p1_dtR1800s.nc       \
-     Qout_France_201101_c_zvol_ext_3653days_p2_dtR1800s.nc       \
-     Qout_France_201101_c_zvol_ext_3653days_p3_dtR1800s.nc       \
-     Qout_France_201101_c_zvol_ext_3653days_p4_dtR1800s.nc       \
-     Qout_France_201101_c_zvol_ext_3653days_pa_dtR1800s.nc       \
-     Qout_France_201101_c_zvol_ext_3653days_pb_dtR1800s.nc       \
-     Qout_France_201101_c_zvol_ext_3653days_pc_dtR1800s.nc       \
-     Qout_France_201101_c_zvol_ext_366days_p0_dtR1800s.nc        \
-     Qout_France_201101_c_zvol_ext_366days_pb_dtR1800s.nc        \
-     Qout_France_201101_c_zvol_ext_366days_pb_dtR1800s_pougny.nc \
-     "
+list=""
+if [ "$dwnl" == "sim1" ] || [ "$dwnl" == "" ]; then
+     list=$list"Qout_France_201101_c_zvol_ext_3653days_p1_dtR1800s.nc "
+fi
+if [ "$dwnl" == "sim2" ] || [ "$dwnl" == "" ]; then
+     list=$list$list"Qout_France_201101_c_zvol_ext_3653days_p2_dtR1800s.nc "
+fi
+if [ "$dwnl" == "sim3" ] || [ "$dwnl" == "" ]; then
+     list=$list"Qout_France_201101_c_zvol_ext_3653days_p3_dtR1800s.nc "
+fi
+if [ "$dwnl" == "sim4" ] || [ "$dwnl" == "" ]; then
+     list=$list"Qout_France_201101_c_zvol_ext_3653days_p4_dtR1800s.nc "
+fi
+if [ "$dwnl" == "sim5" ] || [ "$dwnl" == "" ]; then
+     list=$list"Qout_France_201101_c_zvol_ext_3653days_pa_dtR1800s.nc "
+fi
+if [ "$dwnl" == "sim6" ] || [ "$dwnl" == "" ]; then
+     list=$list"Qout_France_201101_c_zvol_ext_3653days_pb_dtR1800s.nc "
+fi
+if [ "$dwnl" == "sim7" ] || [ "$dwnl" == "" ]; then
+     list=$list"Qout_France_201101_c_zvol_ext_3653days_pc_dtR1800s.nc "
+fi
+if [ "$dwnl" == "sim8" ] || [ "$dwnl" == "" ]; then
+     list=$list"Qout_France_201101_c_zvol_ext_366days_p0_dtR1800s.nc "
+fi
+if [ "$dwnl" == "sim9" ] || [ "$dwnl" == "" ]; then
+     list=$list"Qout_France_201101_c_zvol_ext_366days_pb_dtR1800s.nc "
+fi
+if [ "$dwnl" == "sim10" ] || [ "$dwnl" == "" ]; then
+     list=$list"Qout_France_201101_c_zvol_ext_366days_pb_dtR1800s_pougny.nc "
+fi
 
 mkdir -p $folder
 for file in $list
