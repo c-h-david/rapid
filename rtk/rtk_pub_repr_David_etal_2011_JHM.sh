@@ -311,12 +311,12 @@ opt=$((opt+1))
 unt=$((unt+1))
 if (("$unt" >= "$fst")) && (("$unt" <= "$lst")) ; then
 ./rtk_nml_tidy_San_Guad_JHM.sh
-echo "Running optim. ${opt}.1/2"
+echo "Running optim. ${opt}.0/2"
 ZS_knorm_init=2
 ZS_xnorm_init=3
 kfac_file='../../rapid/input/San_Guad_JHM/kfac_San_Guad_1km_hour.csv'
-rapd_file="tmp_opt_${opt}a.txt"
-find_file="tmp_opt_find_${opt}a.txt"
+rapd_file="tmp_opt_${opt}.0.txt"
+find_file="tmp_opt_find_${opt}.0.txt"
 sed -i -e "s|IS_opt_run         =.*|IS_opt_run         =2|"                    \
        -e "s|ZS_knorm_init      =.*|ZS_knorm_init      =$ZS_knorm_init|"       \
        -e "s|ZS_xnorm_init      =.*|ZS_xnorm_init      =$ZS_xnorm_init|"       \
@@ -337,12 +337,12 @@ fi
 unt=$((unt+1))
 if (("$unt" >= "$fst")) && (("$unt" <= "$lst")) ; then
 ./rtk_nml_tidy_San_Guad_JHM.sh
-echo "Running optim. ${opt}.2/2"
+echo "Running optim. ${opt}.1/2"
 ZS_knorm_init=4
 ZS_xnorm_init=1
 kfac_file='../../rapid/input/San_Guad_JHM/kfac_San_Guad_1km_hour.csv'
-rapd_file="tmp_opt_${opt}b.txt"
-find_file="tmp_opt_find_${opt}b.txt"
+rapd_file="tmp_opt_${opt}.1.txt"
+find_file="tmp_opt_find_${opt}.1.txt"
 sed -i -e "s|IS_opt_run         =.*|IS_opt_run         =2|"                    \
        -e "s|ZS_knorm_init      =.*|ZS_knorm_init      =$ZS_knorm_init|"       \
        -e "s|ZS_xnorm_init      =.*|ZS_xnorm_init      =$ZS_xnorm_init|"       \
@@ -363,12 +363,12 @@ fi
 unt=$((unt+1))
 if (("$unt" >= "$fst")) && (("$unt" <= "$lst")) ; then
 ./rtk_nml_tidy_San_Guad_JHM.sh
-echo "Running optim. ${opt}.3/2"
+echo "Running optim. ${opt}.2/2"
 ZS_knorm_init=1
 ZS_xnorm_init=1
 kfac_file='../../rapid/input/San_Guad_JHM/kfac_San_Guad_1km_hour.csv'
-rapd_file="tmp_opt_${opt}c.txt"
-find_file="tmp_opt_find_${opt}c.txt"
+rapd_file="tmp_opt_${opt}.2.txt"
+find_file="tmp_opt_find_${opt}.2.txt"
 sed -i -e "s|IS_opt_run         =.*|IS_opt_run         =2|"                    \
        -e "s|ZS_knorm_init      =.*|ZS_knorm_init      =$ZS_knorm_init|"       \
        -e "s|ZS_xnorm_init      =.*|ZS_xnorm_init      =$ZS_xnorm_init|"       \
@@ -407,12 +407,12 @@ opt=$((opt+1))
 unt=$((unt+1))
 if (("$unt" >= "$fst")) && (("$unt" <= "$lst")) ; then
 ./rtk_nml_tidy_San_Guad_JHM.sh
-echo "Running optim. ${opt}.1/2"
+echo "Running optim. ${opt}.0/2"
 ZS_knorm_init=2
 ZS_xnorm_init=3
 kfac_file='../../rapid/input/San_Guad_JHM/kfac_San_Guad_celerity.csv'
-rapd_file="tmp_opt_${opt}a.txt"
-find_file="tmp_opt_find_${opt}a.txt"
+rapd_file="tmp_opt_${opt}.0.txt"
+find_file="tmp_opt_find_${opt}.0.txt"
 sed -i -e "s|IS_opt_run         =.*|IS_opt_run         =2|"                    \
        -e "s|ZS_knorm_init      =.*|ZS_knorm_init      =$ZS_knorm_init|"       \
        -e "s|ZS_xnorm_init      =.*|ZS_xnorm_init      =$ZS_xnorm_init|"       \
@@ -433,12 +433,12 @@ fi
 unt=$((unt+1))
 if (("$unt" >= "$fst")) && (("$unt" <= "$lst")) ; then
 ./rtk_nml_tidy_San_Guad_JHM.sh
-echo "Running optim. ${opt}.2/2"
+echo "Running optim. ${opt}.1/2"
 ZS_knorm_init=4
 ZS_xnorm_init=1
 kfac_file='../../rapid/input/San_Guad_JHM/kfac_San_Guad_celerity.csv'
-rapd_file="tmp_opt_${opt}b.txt"
-find_file="tmp_opt_find_${opt}b.txt"
+rapd_file="tmp_opt_${opt}.1.txt"
+find_file="tmp_opt_find_${opt}.1.txt"
 sed -i -e "s|IS_opt_run         =.*|IS_opt_run         =2|"                    \
        -e "s|ZS_knorm_init      =.*|ZS_knorm_init      =$ZS_knorm_init|"       \
        -e "s|ZS_xnorm_init      =.*|ZS_xnorm_init      =$ZS_xnorm_init|"       \
@@ -458,12 +458,12 @@ fi
 unt=$((unt+1))
 if (("$unt" >= "$fst")) && (("$unt" <= "$lst")) ; then
 ./rtk_nml_tidy_San_Guad_JHM.sh
-echo "Running optim. ${opt}.3/2"
+echo "Running optim. ${opt}.2/2"
 ZS_knorm_init=1
 ZS_xnorm_init=1
 kfac_file='../../rapid/input/San_Guad_JHM/kfac_San_Guad_celerity.csv'
-rapd_file="tmp_opt_${opt}c.txt"
-find_file="tmp_opt_find_${opt}c.txt"
+rapd_file="tmp_opt_${opt}.2.txt"
+find_file="tmp_opt_find_${opt}.2.txt"
 sed -i -e "s|IS_opt_run         =.*|IS_opt_run         =2|"                    \
        -e "s|ZS_knorm_init      =.*|ZS_knorm_init      =$ZS_knorm_init|"       \
        -e "s|ZS_xnorm_init      =.*|ZS_xnorm_init      =$ZS_xnorm_init|"       \
