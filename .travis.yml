@@ -30,6 +30,15 @@ env:
 - RTK_PUB_DWNL='./rtk_pub_dwnl_David_etal_2011_JHM.sh' RTK_PUB_REPR='./rtk_pub_repr_David_etal_2011_JHM.sh 1 15'
 - RTK_PUB_DWNL='./rtk_pub_dwnl_David_etal_2011_JHM.sh' RTK_PUB_REPR='./rtk_pub_repr_David_etal_2011_JHM.sh 16 23'
 - RTK_PUB_DWNL='./rtk_pub_dwnl_David_etal_2011_HP.sh sim1' RTK_PUB_REPR='./rtk_pub_repr_David_etal_2011_HP.sh 1'
+- RTK_PUB_DWNL='./rtk_pub_dwnl_David_etal_2011_HP.sh sim2' RTK_PUB_REPR='./rtk_pub_repr_David_etal_2011_HP.sh 2'
+- RTK_PUB_DWNL='./rtk_pub_dwnl_David_etal_2011_HP.sh sim3' RTK_PUB_REPR='./rtk_pub_repr_David_etal_2011_HP.sh 3'
+- RTK_PUB_DWNL='./rtk_pub_dwnl_David_etal_2011_HP.sh sim4' RTK_PUB_REPR='./rtk_pub_repr_David_etal_2011_HP.sh 4'
+- RTK_PUB_DWNL='./rtk_pub_dwnl_David_etal_2011_HP.sh sim5' RTK_PUB_REPR='./rtk_pub_repr_David_etal_2011_HP.sh 5'
+- RTK_PUB_DWNL='./rtk_pub_dwnl_David_etal_2011_HP.sh sim6' RTK_PUB_REPR='./rtk_pub_repr_David_etal_2011_HP.sh 6'
+- RTK_PUB_DWNL='./rtk_pub_dwnl_David_etal_2011_HP.sh sim7' RTK_PUB_REPR='./rtk_pub_repr_David_etal_2011_HP.sh 7'
+- RTK_PUB_DWNL='./rtk_pub_dwnl_David_etal_2011_HP.sh sim8' RTK_PUB_REPR='./rtk_pub_repr_David_etal_2011_HP.sh 8'
+- RTK_PUB_DWNL='./rtk_pub_dwnl_David_etal_2011_HP.sh sim9' RTK_PUB_REPR='./rtk_pub_repr_David_etal_2011_HP.sh 9'
+- RTK_PUB_DWNL='./rtk_pub_dwnl_David_etal_2011_HP.sh sim10' RTK_PUB_REPR='./rtk_pub_repr_David_etal_2011_HP.sh 10'
 
 
 #*******************************************************************************
