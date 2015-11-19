@@ -19,6 +19,7 @@ use rapid_var, only :                                                          &
                    IS_nc_id_dim_time,IS_nc_id_dim_comid,IV_nc_id_dim,          &
                    IS_nc_id_var_Qout,IS_nc_id_var_comid,                       &
                    IV_riv_bas_id,IS_riv_bas
+
 implicit none
 
 
@@ -58,8 +59,6 @@ end if
 
 
 !*******************************************************************************
-!End 
+!End subroutine 
 !*******************************************************************************
-
 end subroutine rapid_create_Qout_file
-
