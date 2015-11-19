@@ -28,12 +28,8 @@ use rapid_var, only :                                                          &
                    ZV_QoutRabsmin,ZV_QoutRabsmax,ZV_QoutRhat,                  &
                    ZV_VR,ZV_VinitR,ZV_VprevR,ZV_VbarR,ZV_VoutR,                &
                    ZV_Qobsbarrec,                                              &
-                   ierr,ksp,vecscat,ZV_SeqZero,ZS_one,ZV_one,IS_one,ncore,rank
-
-#ifndef NO_TAO
-use rapid_var, only :                                                          &
-                   tao,reason,ZV_1stIndex,ZV_2ndIndex
-#endif
+                   ierr,ksp,vecscat,ZV_SeqZero,ZS_one,ZV_one,IS_one,ncore,rank,&
+                   tao,ZV_1stIndex,ZV_2ndIndex
 
 implicit none
 
@@ -41,24 +37,21 @@ implicit none
 !*******************************************************************************
 !Includes
 !*******************************************************************************
-#include "finclude/petscsys.h"       
+#include "petsc/finclude/petscsys.h"       
 !base PETSc routines
-#include "finclude/petscvec.h"  
-#include "finclude/petscvec.h90"
+#include "petsc/finclude/petscvec.h"  
+#include "petsc/finclude/petscvec.h90"
 !vectors, and vectors in Fortran90 
-#include "finclude/petscmat.h"    
+#include "petsc/finclude/petscmat.h"    
 !matrices
-#include "finclude/petscksp.h"    
+#include "petsc/finclude/petscksp.h"    
 !Krylov subspace methods
-#include "finclude/petscpc.h"     
+#include "petsc/finclude/petscpc.h"     
 !preconditioners
-#include "finclude/petscviewer.h"
+#include "petsc/finclude/petscviewer.h"
 !viewers (allows writing results in file for example)
-
-#ifndef NO_TAO
-#include "finclude/taosolver.h" 
+#include "petsc/finclude/petsctao.h" 
 !TAO solver
-#endif
 
 
 !*******************************************************************************
@@ -195,12 +188,8 @@ call VecScatterCreateToZero(ZV_k,vecscat,ZV_SeqZero,ierr)
 
 
 !TAO specific-------------------------------------------------------------------
-#ifndef NO_TAO
-call TaoInitialize(PETSC_NULL_CHARACTER,ierr)
-!Initialize TAO
-
 call TaoCreate(PETSC_COMM_WORLD,tao,ierr)
-call TaoSetType(tao,'tao_nm',ierr)
+call TaoSetType(tao,'nm',ierr)
 call TaoSetMaximumFunctionEvaluations(tao,50*IS_one,ierr)
 call TaoSetFromOptions(tao,ierr)
 !Create TAO App 
@@ -216,6 +205,8 @@ call VecSetValues(ZV_2ndIndex,IS_one,IS_one,ZS_one,INSERT_VALUES,ierr)
 call VecAssemblyBegin(ZV_2ndIndex,ierr)
 call VecAssemblyEnd(ZV_2ndIndex,ierr)
 !ZV_2ndindex=[0;1]
-#endif
 
+!*******************************************************************************
+!End subroutine
+!*******************************************************************************
 end subroutine rapid_create_obj

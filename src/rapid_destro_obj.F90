@@ -29,12 +29,8 @@ use rapid_var, only :                                                          &
                    ZV_QoutRabsmin,ZV_QoutRabsmax,ZV_QoutRhat,                  &
                    ZV_VR,ZV_VinitR,ZV_VprevR,ZV_VbarR,ZV_VoutR,                &
                    ZV_Qobsbarrec,                                              &
-                   ierr,ksp,vecscat,ZV_SeqZero,ZS_one,ZV_one,IS_one
-
-#ifndef NO_TAO
-use rapid_var, only :                                                          &
-                   tao,reason,ZV_1stIndex,ZV_2ndIndex
-#endif
+                   ierr,ksp,vecscat,ZV_SeqZero,ZS_one,ZV_one,IS_one,           &
+                   tao,ZV_1stIndex,ZV_2ndIndex
 
 implicit none
 
@@ -42,36 +38,30 @@ implicit none
 !*******************************************************************************
 !Includes
 !*******************************************************************************
-#include "finclude/petscsys.h"       
+#include "petsc/finclude/petscsys.h"       
 !base PETSc routines
-#include "finclude/petscvec.h"  
-#include "finclude/petscvec.h90"
+#include "petsc/finclude/petscvec.h"  
+#include "petsc/finclude/petscvec.h90"
 !vectors, and vectors in Fortran90 
-#include "finclude/petscmat.h"    
+#include "petsc/finclude/petscmat.h"    
 !matrices
-#include "finclude/petscksp.h"    
+#include "petsc/finclude/petscksp.h"    
 !Krylov subspace methods
-#include "finclude/petscpc.h"     
+#include "petsc/finclude/petscpc.h"     
 !preconditioners
-#include "finclude/petscviewer.h"
+#include "petsc/finclude/petscviewer.h"
 !viewers (allows writing results in file for example)
-
-#ifndef NO_TAO
-#include "finclude/taosolver.h" 
+#include "petsc/finclude/petsctao.h" 
 !TAO solver
-#endif
 
 
 !*******************************************************************************
 !Destruct all objects and finalize PETSc and TAO
 !*******************************************************************************
 !TAO specific-------------------------------------------------------------------
-#ifndef NO_TAO
 call VecDestroy(ZV_1stIndex,ierr)
 call VecDestroy(ZV_2ndIndex,ierr)
 call TaoDestroy(tao,ierr)
-call TaoFinalize(ierr)
-#endif
 
 call KSPDestroy(ksp,ierr)
 
@@ -144,4 +134,7 @@ call VecScatterDestroy(vecscat,ierr)
 call PetscFinalize(ierr)
 
 
+!*******************************************************************************
+!End subroutine
+!*******************************************************************************
 end subroutine rapid_destro_obj 
