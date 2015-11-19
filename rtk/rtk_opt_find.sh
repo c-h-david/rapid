@@ -74,9 +74,9 @@ phif=`grep -B4 "final normalized" $1 | sed -n '1p' | sed "s|Objective value=||"`
 #-------------------------------------------------------------------------------
 #Determine acceptable parameters leading to the smallest cost function
 #-------------------------------------------------------------------------------
-awk '/Observation matrix created/,/TaoSolver/' $1 \
+awk '/Observation matrix created/,/Tao Object/' $1 \
     | sed "/Observation matrix created/d" \
-    | sed "/TaoSolver/d" \
+    | sed "/Tao Object/d" \
     | sed "/Process/d" \
     >tmp_opt_find.txt
 nn=`wc -l < tmp_opt_find.txt`
