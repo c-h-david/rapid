@@ -31,12 +31,8 @@ use rapid_var, only :                                                          &
                    IS_riv_tot,IS_riv_bas,IS_for_bas,IS_dam_bas,IS_hum_bas,     &
                    ZS_time1,ZS_time2,ZS_time3,                                 &
                    IV_nc_start,IV_nc_count,IV_nc_count2,                       &
-                   BS_opt_V,BS_opt_for,BS_opt_hum,BS_opt_dam,IS_opt_run
-
-#ifndef NO_TAO
-use rapid_var, only :                                                          &
+                   BS_opt_V,BS_opt_for,BS_opt_hum,BS_opt_dam,IS_opt_run,       &
                    tao
-#endif
 
 implicit none
 
@@ -48,26 +44,23 @@ external rapid_phiroutine
 !*******************************************************************************
 !Includes
 !*******************************************************************************
-#include "finclude/petscsys.h"       
+#include "petsc/finclude/petscsys.h"       
 !base PETSc routines
-#include "finclude/petscvec.h"  
-#include "finclude/petscvec.h90"
+#include "petsc/finclude/petscvec.h"  
+#include "petsc/finclude/petscvec.h90"
 !vectors, and vectors in Fortran90 
-#include "finclude/petscmat.h"    
+#include "petsc/finclude/petscmat.h"    
 !matrices
-#include "finclude/petscksp.h"    
+#include "petsc/finclude/petscksp.h"    
 !Krylov subspace methods
-#include "finclude/petscpc.h"     
+#include "petsc/finclude/petscpc.h"     
 !preconditioners
-#include "finclude/petscviewer.h"
+#include "petsc/finclude/petscviewer.h"
 !viewers (allows writing results in file for example)
-#include "finclude/petsclog.h" 
+#include "petsc/finclude/petsclog.h" 
 !PETSc log
-
-#ifndef NO_TAO
-#include "finclude/taosolver.h" 
+#include "petsc/finclude/petsctao.h" 
 !TAO solver
-#endif
 
 
 !*******************************************************************************
@@ -179,7 +172,7 @@ if (BS_opt_hum) call VecAXPY(ZV_Qext,ZS_one,ZV_Qhum,ierr)     !Qext=Qext+1*Qhum
 !- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 !Routing procedure
 !- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-call PetscGetTime(ZS_time1,ierr)
+call PetscTime(ZS_time1,ierr)
 
 call rapid_routing(ZV_C1,ZV_C2,ZV_C3,ZV_Qext,                                  &
                    ZV_QoutinitR,                                               &
@@ -187,7 +180,7 @@ call rapid_routing(ZV_C1,ZV_C2,ZV_C3,ZV_Qext,                                  &
 
 if (BS_opt_V) call rapid_QtoV(ZV_k,ZV_x,ZV_QoutbarR,ZV_Qext,ZV_VbarR)
 
-call PetscGetTime(ZS_time2,ierr)
+call PetscTime(ZS_time2,ierr)
 ZS_time3=ZS_time3+ZS_time2-ZS_time1
 
 
@@ -223,7 +216,7 @@ write(temp_char2,'(f10.2)') ZS_time3
 call PetscSynchronizedPrintf(PETSC_COMM_WORLD,'Rank     :'//temp_char //', '// &
                                               'Time     :'//temp_char2//       &
                                                char(10),ierr)
-call PetscSynchronizedFlush(PETSC_COMM_WORLD,ierr)
+call PetscSynchronizedFlush(PETSC_COMM_WORLD,PETSC_NULL_INTEGER,ierr)
 
 call PetscLogStagePop(ierr)
 call PetscPrintf(PETSC_COMM_WORLD,'Output data created'//char(10),ierr)
@@ -249,7 +242,6 @@ end if
 !OPTION 2 - Optimization 
 !*******************************************************************************
 if (IS_opt_run==2) then
-#ifndef NO_TAO
 
 !-------------------------------------------------------------------------------
 !Only one computation of phi - For testing purposes only
@@ -280,10 +272,6 @@ call PetscLogStagePop(ierr)
 !-------------------------------------------------------------------------------
 !End of OPTION 2
 !-------------------------------------------------------------------------------
-#else
-if (rank==0)                                         print '(a70)',            &
-        'ERROR: The optimization mode requires RAPID to be compiled with TAO   '
-#endif
 end if
 
 
@@ -294,6 +282,6 @@ call rapid_final
 
 
 !*******************************************************************************
-!End
+!End program
 !*******************************************************************************
 end program rapid_main
