@@ -70,25 +70,15 @@ before_install:
 - make install
 
 #-------------------------------------------------------------------------------
-#Installing PETSc 3.3-p7
+#Installing PETSc 3.6.2
 #-------------------------------------------------------------------------------
 - cd $INSTALLZ_DIR
-- wget "http://ftp.mcs.anl.gov/pub/petsc/release-snapshots/petsc-3.3-p7.tar.gz" 
-- tar -xf petsc-3.3-p7.tar.gz
-- cd petsc-3.3-p7
-- ./configure PETSC_DIR=$PWD PETSC_ARCH=linux-gcc-cxx --download-f-blas-lapack=1 --download-mpich=1 --with-cc=gcc --with-cxx=g++ --with-fc=gfortran --with-clanguage=cxx --with-debugging=0
+- wget "http://ftp.mcs.anl.gov/pub/petsc/release-snapshots/petsc-3.6.2.tar.gz" 
+- tar -xf petsc-3.6.2.tar.gz
+- cd petsc-3.6.2
+- ./configure PETSC_DIR=$PWD PETSC_ARCH=linux-gcc-cxx --download-fblaslapack=1 --download-mpich=1 --with-cc=gcc --with-cxx=g++ --with-fc=gfortran --with-clanguage=cxx --with-debugging=0
 - make PETSC_DIR=$PWD PETSC_ARCH=linux-gcc-cxx all
 - make PETSC_DIR=$PWD PETSC_ARCH=linux-gcc-cxx test
-
-#-------------------------------------------------------------------------------
-#Installing TAO 2.1-p2
-#-------------------------------------------------------------------------------
-- cd $INSTALLZ_DIR
-- wget "http://www.mcs.anl.gov/research/projects/tao/download/tao-2.1-p2.tar.gz"
-- tar -xf tao-2.1-p2.tar.gz
-- cd tao-2.1-p2
-- make TAO_DIR=$PWD PETSC_DIR=$INSTALLZ_DIR/petsc-3.3-p7 PETSC_ARCH=linux-gcc-cxx all 
-- make TAO_DIR=$PWD PETSC_DIR=$INSTALLZ_DIR/petsc-3.3-p7 PETSC_ARCH=linux-gcc-cxx tao_testfortran 
 
 #-------------------------------------------------------------------------------
 #Exporting environment variables 
@@ -96,9 +86,8 @@ before_install:
 - cd $INSTALLZ_DIR
 - export TACC_NETCDF_LIB=$INSTALLZ_DIR/netcdf-3.6.3-install/lib
 - export TACC_NETCDF_INC=$INSTALLZ_DIR/netcdf-3.6.3-install/include
-- export PETSC_DIR=$INSTALLZ_DIR/petsc-3.3-p7
+- export PETSC_DIR=$INSTALLZ_DIR/petsc-3.6.2
 - export PETSC_ARCH='linux-gcc-cxx'
-- export TAO_DIR=$INSTALLZ_DIR/tao-2.1-p2
 
 #-------------------------------------------------------------------------------
 #Exporting directories with library-related executables to $PATH
