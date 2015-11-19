@@ -1,7 +1,6 @@
 !*******************************************************************************
 !Subroutine - rapid_phiroutine
 !*******************************************************************************
-#ifndef NO_TAO
 subroutine rapid_phiroutine(tao,ZV_pnorm,ZS_phi,IS_dummy,ierr)
 
 !Purpose:
@@ -42,20 +41,20 @@ implicit none
 !*******************************************************************************
 !Includes
 !*******************************************************************************
-#include "finclude/petscsys.h"       
+#include "petsc/finclude/petscsys.h"       
 !base PETSc routines
-#include "finclude/petscvec.h"  
-#include "finclude/petscvec.h90"
+#include "petsc/finclude/petscvec.h"  
+#include "petsc/finclude/petscvec.h90"
 !vectors, and vectors in Fortran90 
-#include "finclude/petscmat.h"    
+#include "petsc/finclude/petscmat.h"    
 !matrices
-#include "finclude/petscksp.h"    
+#include "petsc/finclude/petscksp.h"    
 !Krylov subspace methods
-#include "finclude/petscpc.h"     
+#include "petsc/finclude/petscpc.h"     
 !preconditioners
-#include "finclude/petscviewer.h"
+#include "petsc/finclude/petscviewer.h"
 !viewers (allows writing results in file for example)
-#include "finclude/taosolver.h" 
+#include "petsc/finclude/petsctao.h" 
 !TAO solver
 
 
@@ -63,7 +62,7 @@ implicit none
 !Intent (in/out), and local variables 
 !*******************************************************************************
 Vec, intent(in) :: ZV_pnorm
-TaoSolver, intent(inout)  :: tao
+Tao, intent(inout)  :: tao
 PetscErrorCode, intent(out) :: ierr
 PetscScalar, intent(out):: ZS_phi
 PetscInt, intent (in) :: IS_dummy
@@ -86,7 +85,7 @@ call VecScale(ZV_x,ZS_xnorm,ierr)
 call rapid_routing_param(ZV_k,ZV_x,ZV_C1,ZV_C2,ZV_C3,ZM_A)
 !calculate Muskingum parameters and matrix ZM_A
 
-call KSPSetOperators(ksp,ZM_A,ZM_A,DIFFERENT_NONZERO_PATTERN,ierr)
+call KSPSetOperators(ksp,ZM_A,ZM_A,ierr)
 call KSPSetType(ksp,KSPRICHARDSON,ierr)                    !default=richardson
 call KSPSetFromOptions(ksp,ierr)                           !if runtime options
 !Set KSP to use matrix ZM_A
@@ -273,5 +272,7 @@ call PetscPrintf(PETSC_COMM_WORLD,temp_char // char(10),ierr)
 call PetscPrintf(PETSC_COMM_WORLD,'--------------------------'//char(10),ierr)
 
 
+!*******************************************************************************
+!End subroutine 
+!*******************************************************************************
 end subroutine rapid_phiroutine
-#endif
