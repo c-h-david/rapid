@@ -40,20 +40,20 @@ implicit none
 !*******************************************************************************
 !Includes
 !*******************************************************************************
-#include "finclude/petscsys.h"       
+#include "petsc/finclude/petscsys.h"       
 !base PETSc routines
-#include "finclude/petscvec.h"  
-#include "finclude/petscvec.h90"
+#include "petsc/finclude/petscvec.h"  
+#include "petsc/finclude/petscvec.h90"
 !vectors, and vectors in Fortran90 
-#include "finclude/petscmat.h"    
+#include "petsc/finclude/petscmat.h"    
 !matrices
-#include "finclude/petscksp.h"    
+#include "petsc/finclude/petscksp.h"    
 !Krylov subspace methods
-#include "finclude/petscpc.h"     
+#include "petsc/finclude/petscpc.h"     
 !preconditioners
-#include "finclude/petscviewer.h"
+#include "petsc/finclude/petscviewer.h"
 !viewers (allows writing results in file for example)
-#include "finclude/petsclog.h" 
+#include "petsc/finclude/petsclog.h" 
 !PETSc log
 
 
@@ -165,19 +165,15 @@ else
      temp_char='No PC'
 end if
 call PetscPrintf(PETSC_COMM_WORLD,'type of PC    : '//temp_char//char(10),ierr)
-#ifdef NO_TAO
-call PetscPrintf(PETSC_COMM_WORLD,char(10),ierr)
-call PetscPrintf(PETSC_COMM_WORLD,'RAPID compiled and run without TAO',ierr)
-call PetscPrintf(PETSC_COMM_WORLD,char(10),ierr)
-#endif
 write(temp_char ,'(i10)') rank
 write(temp_char2,'(i10)') IS_ksp_iter_max
 call PetscSynchronizedPrintf(PETSC_COMM_WORLD,'Rank     :'//temp_char //', '// &
                                               'Max KSP  :'//temp_char2//       &
                                                char(10),ierr)
-call PetscSynchronizedFlush(PETSC_COMM_WORLD,ierr)
+call PetscSynchronizedFlush(PETSC_COMM_WORLD,PETSC_NULL_INTEGER,ierr)
 call PetscPrintf(PETSC_COMM_WORLD,'--------------------------'//char(10),ierr)
 call PetscPrintf(PETSC_COMM_WORLD,char(10)//char(10)//char(10)//char(10),ierr)
+
 
 !*******************************************************************************
 !Destroy all objects
@@ -187,6 +183,6 @@ call rapid_destro_obj
 
 
 !*******************************************************************************
-!End subroutine
+!End subroutine 
 !*******************************************************************************
 end subroutine rapid_final
