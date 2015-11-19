@@ -75,20 +75,20 @@ implicit none
 !*******************************************************************************
 !Includes
 !*******************************************************************************
-#include "finclude/petscsys.h"       
+#include "petsc/finclude/petscsys.h"       
 !base PETSc routines
-#include "finclude/petscvec.h"  
-#include "finclude/petscvec.h90"
+#include "petsc/finclude/petscvec.h"  
+#include "petsc/finclude/petscvec.h90"
 !vectors, and vectors in Fortran90 
-#include "finclude/petscmat.h"    
+#include "petsc/finclude/petscmat.h"    
 !matrices
-#include "finclude/petscksp.h"    
+#include "petsc/finclude/petscksp.h"    
 !Krylov subspace methods
-#include "finclude/petscpc.h"     
+#include "petsc/finclude/petscpc.h"     
 !preconditioners
-#include "finclude/petscviewer.h"
+#include "petsc/finclude/petscviewer.h"
 !viewers (allows writing results in file for example)
-#include "finclude/petsclog.h" 
+#include "petsc/finclude/petsclog.h" 
 !PETSc log
 
 
@@ -305,7 +305,7 @@ close(21)
 call rapid_routing_param(ZV_k,ZV_x,ZV_C1,ZV_C2,ZV_C3,ZM_A)
 !calculate Muskingum parameters and matrix ZM_A
 
-call KSPSetOperators(ksp,ZM_A,ZM_A,DIFFERENT_NONZERO_PATTERN,ierr)
+call KSPSetOperators(ksp,ZM_A,ZM_A,ierr)
 call KSPSetType(ksp,KSPRICHARDSON,ierr)                    !default=richardson
 !call KSPSetInitialGuessNonZero(ksp,PETSC_TRUE,ierr)
 !call KSPSetInitialGuessKnoll(ksp,PETSC_TRUE,ierr)
@@ -322,7 +322,6 @@ end if
 !Initialization procedure for OPTION 2
 !*******************************************************************************
 if (IS_opt_run==2) then
-#ifndef NO_TAO
 
 !-------------------------------------------------------------------------------
 !Create observation matrix
@@ -383,11 +382,10 @@ call VecAssemblyEnd(ZV_pnorm,ierr)
 !-------------------------------------------------------------------------------
 !End of OPTION 2
 !-------------------------------------------------------------------------------
-#endif
 end if
 
 
 !*******************************************************************************
-!End of subroutine
+!End subroutine
 !*******************************************************************************
 end subroutine rapid_init
