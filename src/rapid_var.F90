@@ -15,26 +15,23 @@ implicit none
 !*******************************************************************************
 !Includes
 !*******************************************************************************
-#include "finclude/petscsys.h"       
+#include "petsc/finclude/petscsys.h"       
 !base PETSc routines
-#include "finclude/petscvec.h"  
-#include "finclude/petscvec.h90"
+#include "petsc/finclude/petscvec.h"  
+#include "petsc/finclude/petscvec.h90"
 !vectors, and Fortran90-specific vectors 
-#include "finclude/petscmat.h"    
+#include "petsc/finclude/petscmat.h"    
 !matrices
-#include "finclude/petscksp.h"    
+#include "petsc/finclude/petscksp.h"    
 !Krylov subspace methods
-#include "finclude/petscpc.h"     
+#include "petsc/finclude/petscpc.h"     
 !preconditioners
-#include "finclude/petscviewer.h"
+#include "petsc/finclude/petscviewer.h"
 !viewers (allows writing results in file for example)
-!#include "finclude/petsclog.h" 
+!#include "petsc/finclude/petsclog.h" 
 !Profiling log
-
-#ifndef NO_TAO
-#include "finclude/taosolver.h" 
-!TAO solver
-#endif
+#include "petsc/finclude/petsctao.h" 
+!!TAO solver
 
 
 !*******************************************************************************
@@ -481,15 +478,11 @@ PetscInt :: IS_ownfirst, IS_ownlast
 !*******************************************************************************
 !Declaration of variables - TAO specific objects and variables
 !*******************************************************************************
-#ifndef NO_TAO
-TaoSolver :: tao
+Tao :: tao
 !TAO solver object
-TaoSolverTerminationReason :: reason
-!TAO terminate reason object
 Vec :: ZV_1stIndex, ZV_2ndIndex
 !ZV_1stIndex=[1;0], ZV_2ndIndex=[0,1].  Used with VecDot to extract first and 
 !second indexes of the vector of parameter
-#endif
 
 
 !*******************************************************************************
@@ -536,4 +529,7 @@ character(len=120) :: namelist_file
 !unit 88 - Namelist
 
 
+!*******************************************************************************
+!End module
+!*******************************************************************************
 end module rapid_var
