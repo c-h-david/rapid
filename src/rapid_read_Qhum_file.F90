@@ -6,7 +6,7 @@ subroutine rapid_read_Qhum_file
 !Purpose:
 !Read Qhum_file from Fortran.
 !Author: 
-!Cedric H. David, 2014-2015.
+!Cedric H. David, 2014-2016.
 
 
 !*******************************************************************************

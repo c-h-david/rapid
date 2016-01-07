@@ -6,7 +6,7 @@ subroutine rapid_write_V_file
 !Purpose:
 !Write into V_file from Fortran/netCDF.
 !Author: 
-!Cedric H. David, 2015.
+!Cedric H. David, 2015-2016.
 
 
 !*******************************************************************************

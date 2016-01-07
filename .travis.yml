@@ -8,7 +8,7 @@
 #expected. The purpose of the .travis.yml file is to give instructions to Travis 
 #CI on how to do the work.
 #Authors:
-#Initially written by Luke A. Winslow, with edits by Cedric H. David, 2015-2015
+#Cedric H. David, 2015-2016, based on initial .yml file by Luke A. Winslow
 
 
 #*******************************************************************************
