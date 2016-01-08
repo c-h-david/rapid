@@ -490,9 +490,9 @@ Vec :: ZV_1stIndex, ZV_2ndIndex
 !*******************************************************************************
 PetscInt :: IS_nc_status
 PetscInt :: IS_nc_id_fil_Vlat,IS_nc_id_fil_Qout,IS_nc_id_fil_V
-PetscInt :: IS_nc_id_var_Vlat,IS_nc_id_var_Qout,IS_nc_id_var_comid,            &
-            IS_nc_id_var_V
-PetscInt :: IS_nc_id_dim_comid,IS_nc_id_dim_time
+PetscInt :: IS_nc_id_var_Vlat,IS_nc_id_var_Qout,IS_nc_id_var_rivid,            &
+            IS_nc_id_var_V,IS_nc_id_var_time,IS_nc_id_var_lon,IS_nc_id_var_lat
+PetscInt :: IS_nc_id_dim_rivid,IS_nc_id_dim_time
 PetscInt, parameter :: IS_nc_ndim=2
 PetscInt, dimension(IS_nc_ndim) :: IV_nc_id_dim, IV_nc_start, IV_nc_count,     &
                                    IV_nc_count2
