@@ -44,11 +44,11 @@ integer, parameter :: IS_nc_ndim_rap=2
 !number of dimensions
 integer, dimension(IS_nc_ndim_rap) :: IV_nc_start_rap,IV_nc_count_rap
 !for reading and writing netCDF files
-integer :: IS_nc_id_dim_comid_1, IS_nc_id_dim_time_1,                          &
-           IS_nc_id_dim_comid_2, IS_nc_id_dim_time_2
+integer :: IS_nc_id_dim_rivid_1, IS_nc_id_dim_time_1,                          &
+           IS_nc_id_dim_rivid_2, IS_nc_id_dim_time_2
 !netCDF dimension ids
-integer :: IS_nc_id_var_Qout_1, IS_nc_id_var_comid_1,                          &
-           IS_nc_id_var_Qout_2, IS_nc_id_var_comid_2
+integer :: IS_nc_id_var_Qout_1, IS_nc_id_var_rivid_1,                          &
+           IS_nc_id_var_Qout_2, IS_nc_id_var_rivid_2
 !netCDF variable ids
 
 !-------------------------------------------------------------------------------
@@ -141,25 +141,59 @@ print '(a31)'      , '-------------------------------'
 !*******************************************************************************
 !Opening both netCDF files and get dimension and variable IDs
 !*******************************************************************************
+!This obtains the netCDF IDs for dimensions and variables: 
+! - River reach ID (rivid, formerly COMID).
+! - Simulation time (time, formerly Time).
+
+!-------------------------------------------------------------------------------
+!1st Qout file
+!-------------------------------------------------------------------------------
 IS_nc_status=NF90_OPEN(Qout_1_nc_file,NF90_NOWRITE,IS_nc_id_fil_Qout_1)
 call nc_check_status(IS_nc_status)
-IS_nc_status=NF90_INQ_DIMID(IS_nc_id_fil_Qout_1, 'COMID', IS_nc_id_dim_comid_1)
+if (NF90_INQ_DIMID(IS_nc_id_fil_Qout_1, 'COMID', IS_nc_id_dim_rivid_1)==0) then
+IS_nc_status=NF90_INQ_DIMID(IS_nc_id_fil_Qout_1, 'COMID', IS_nc_id_dim_rivid_1)
 call nc_check_status(IS_nc_status)
+IS_nc_status=NF90_INQ_VARID(IS_nc_id_fil_Qout_1, 'COMID', IS_nc_id_var_rivid_1)
+call nc_check_status(IS_nc_status)
+else
+IS_nc_status=NF90_INQ_DIMID(IS_nc_id_fil_Qout_1, 'rivid', IS_nc_id_dim_rivid_1)
+call nc_check_status(IS_nc_status)
+IS_nc_status=NF90_INQ_VARID(IS_nc_id_fil_Qout_1, 'rivid', IS_nc_id_var_rivid_1)
+call nc_check_status(IS_nc_status)
+end if
+if (NF90_INQ_DIMID(IS_nc_id_fil_Qout_1, 'Time', IS_nc_id_dim_time_1)==0) then
 IS_nc_status=NF90_INQ_DIMID(IS_nc_id_fil_Qout_1, 'Time', IS_nc_id_dim_time_1)
 call nc_check_status(IS_nc_status)
-IS_nc_status=NF90_INQ_VARID(IS_nc_id_fil_Qout_1, 'COMID', IS_nc_id_var_comid_1)
+else
+IS_nc_status=NF90_INQ_DIMID(IS_nc_id_fil_Qout_1, 'time', IS_nc_id_dim_time_1)
 call nc_check_status(IS_nc_status)
+end if
 IS_nc_status=NF90_INQ_VARID(IS_nc_id_fil_Qout_1, 'Qout', IS_nc_id_var_Qout_1)
 call nc_check_status(IS_nc_status)
 
+!-------------------------------------------------------------------------------
+!2nd Qout file
+!-------------------------------------------------------------------------------
 IS_nc_status=NF90_OPEN(Qout_2_nc_file,NF90_NOWRITE,IS_nc_id_fil_Qout_2)
 call nc_check_status(IS_nc_status)
-IS_nc_status=NF90_INQ_DIMID(IS_nc_id_fil_Qout_2, 'COMID', IS_nc_id_dim_comid_2)
+if (NF90_INQ_DIMID(IS_nc_id_fil_Qout_2, 'COMID', IS_nc_id_dim_rivid_2)==0) then
+IS_nc_status=NF90_INQ_DIMID(IS_nc_id_fil_Qout_2, 'COMID', IS_nc_id_dim_rivid_2)
 call nc_check_status(IS_nc_status)
+IS_nc_status=NF90_INQ_VARID(IS_nc_id_fil_Qout_2, 'COMID', IS_nc_id_var_rivid_2)
+call nc_check_status(IS_nc_status)
+else
+IS_nc_status=NF90_INQ_DIMID(IS_nc_id_fil_Qout_2, 'rivid', IS_nc_id_dim_rivid_2)
+call nc_check_status(IS_nc_status)
+IS_nc_status=NF90_INQ_VARID(IS_nc_id_fil_Qout_2, 'rivid', IS_nc_id_var_rivid_2)
+call nc_check_status(IS_nc_status)
+end if
+if (NF90_INQ_DIMID(IS_nc_id_fil_Qout_2, 'Time', IS_nc_id_dim_time_2)==0) then
 IS_nc_status=NF90_INQ_DIMID(IS_nc_id_fil_Qout_2, 'Time', IS_nc_id_dim_time_2)
 call nc_check_status(IS_nc_status)
-IS_nc_status=NF90_INQ_VARID(IS_nc_id_fil_Qout_2, 'COMID', IS_nc_id_var_comid_2)
+else
+IS_nc_status=NF90_INQ_DIMID(IS_nc_id_fil_Qout_2, 'time', IS_nc_id_dim_time_2)
 call nc_check_status(IS_nc_status)
+end if
 IS_nc_status=NF90_INQ_VARID(IS_nc_id_fil_Qout_2, 'Qout', IS_nc_id_var_Qout_2)
 call nc_check_status(IS_nc_status)
 
@@ -167,29 +201,33 @@ call nc_check_status(IS_nc_status)
 !*******************************************************************************
 !Getting sizes of dimensions and checking consistency
 !*******************************************************************************
-IS_nc_status=NF90_INQUIRE_DIMENSION(IS_nc_id_fil_Qout_1, IS_nc_id_dim_comid_1, temp_char, IS_riv_bas_1)
+IS_nc_status=NF90_INQUIRE_DIMENSION(IS_nc_id_fil_Qout_2, IS_nc_id_dim_rivid_1, & 
+                                    temp_char, IS_riv_bas_1)
 call nc_check_status(IS_nc_status)
-IS_nc_status=NF90_INQUIRE_DIMENSION(IS_nc_id_fil_Qout_1, IS_nc_id_dim_time_1, temp_char, IS_R_1)
+IS_nc_status=NF90_INQUIRE_DIMENSION(IS_nc_id_fil_Qout_1, IS_nc_id_dim_time_1,  &
+                                    temp_char, IS_R_1)
 call nc_check_status(IS_nc_status)
 
-IS_nc_status=NF90_INQUIRE_DIMENSION(IS_nc_id_fil_Qout_2, IS_nc_id_dim_comid_2, temp_char, IS_riv_bas_2)
+IS_nc_status=NF90_INQUIRE_DIMENSION(IS_nc_id_fil_Qout_2, IS_nc_id_dim_rivid_2, &
+                                    temp_char, IS_riv_bas_2)
 call nc_check_status(IS_nc_status)
-IS_nc_status=NF90_INQUIRE_DIMENSION(IS_nc_id_fil_Qout_2, IS_nc_id_dim_time_2, temp_char, IS_R_2)
+IS_nc_status=NF90_INQUIRE_DIMENSION(IS_nc_id_fil_Qout_2, IS_nc_id_dim_time_2,  &
+                                    temp_char, IS_R_2)
 call nc_check_status(IS_nc_status)
 
 if (IS_riv_bas_1==IS_riv_bas_2) then
      IS_riv_bas=IS_riv_bas_1
-     print '(a31,i9)' , 'Common size of COMID dimension:', IS_riv_bas
+     print '(a31,i9)' , 'Common size of rivid dimension:', IS_riv_bas
 else
-     print '(a31)'    , 'The sizes corresponding to the dimension COMID are different'
+     print '(a35)'    , 'Different sizes for rivid dimension'
      stop 99
 end if
 
 if (IS_R_1==IS_R_2) then
      IS_R=IS_R_1
-     print '(a31,i9)' , 'Common size of Time dimension :', IS_R
+     print '(a31,i9)' , 'Common size of time dimension :', IS_R
 else
-     print '(a31)'    , 'The sizes corresponding to the dimension Time are different'
+     print '(a34)'    , 'Different sizes for time dimension'
      stop 99
 end if
 print '(a31)'    , '-------------------------------'
@@ -206,22 +244,22 @@ allocate(IV_riv_bas_id_2(IS_riv_bas))
 
 
 !*******************************************************************************
-!Checking that COMIDs are the same 
+!Checking that rivids are the same 
 !*******************************************************************************
 IV_riv_bas_id_1=0
 IV_riv_bas_id_2=0
 
-IS_nc_status=NF90_GET_VAR(IS_nc_id_fil_Qout_1,IS_nc_id_var_comid_1,            &
+IS_nc_status=NF90_GET_VAR(IS_nc_id_fil_Qout_1,IS_nc_id_var_rivid_1,            &
                           IV_riv_bas_id_1) 
 call nc_check_status(IS_nc_status)
 
-IS_nc_status=NF90_GET_VAR(IS_nc_id_fil_Qout_2,IS_nc_id_var_comid_2,            &
+IS_nc_status=NF90_GET_VAR(IS_nc_id_fil_Qout_2,IS_nc_id_var_rivid_2,            &
                           IV_riv_bas_id_2) 
 call nc_check_status(IS_nc_status)
 
 do JS_riv_bas=1,IS_riv_bas
      if (IV_riv_bas_id_1(JS_riv_bas)/=IV_riv_bas_id_2(JS_riv_bas)) then 
-          print '(a31)'    , 'The lists of COMIDs differ'
+          print '(a31)'    , 'The lists of rivids differ'
           print '(a31)'    , '-------------------------------'
           stop 99
      end if
