@@ -19,7 +19,8 @@ use rapid_var, only :                                                          &
                    IS_nc_id_dim_time,IS_nc_id_dim_rivid,IV_nc_id_dim,          &
                    IS_nc_id_var_V,IS_nc_id_var_rivid,                          &
                    IS_nc_id_var_time,IS_nc_id_var_lon,IS_nc_id_var_lat,        &
-                   IV_riv_bas_id,IS_riv_bas
+                   IV_riv_bas_id,IS_riv_bas,                                   &
+                   YV_now,YV_version
 
 implicit none
 
@@ -119,9 +120,9 @@ if (rank==0) then
      IS_nc_status=NF90_PUT_ATT(IS_nc_id_fil_V,NF90_GLOBAL,                     &
                                'institution','get from namelist')
      IS_nc_status=NF90_PUT_ATT(IS_nc_id_fil_V,NF90_GLOBAL,                     &
-                               'source','get from namelist and shell')
+                               'source','RAPID: '//YV_version)
      IS_nc_status=NF90_PUT_ATT(IS_nc_id_fil_V,NF90_GLOBAL,                     &
-                               'history','get from shell')
+                               'history','date_created: '//YV_now)
      IS_nc_status=NF90_PUT_ATT(IS_nc_id_fil_V,NF90_GLOBAL,                     &
                                'references','get from namelist')
      IS_nc_status=NF90_PUT_ATT(IS_nc_id_fil_V,NF90_GLOBAL,                     &
