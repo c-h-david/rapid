@@ -66,6 +66,7 @@ use rapid_var, only :                                                          &
                    ZV_k,ZV_x,ZV_kfac,ZV_p,ZV_pnorm,ZV_pfac,                    &
                    ZS_knorm_init,ZS_xnorm_init,ZS_kfac,ZS_xfac,                &
                    ZV_C1,ZV_C2,ZV_C3,ZM_A,                                     &
+                   IV_now,YV_now,YV_version,                                   &
                    ierr,ksp,rank,ncore,IS_one,ZS_one
 
 
@@ -95,6 +96,33 @@ implicit none
 !*******************************************************************************
 !Initialization procedure common to all options
 !*******************************************************************************
+
+!-------------------------------------------------------------------------------
+!Get current date-time and format using ISO 8601 international standard 
+!-------------------------------------------------------------------------------
+call date_and_time(VALUES=IV_now)
+
+write(YV_now,'(i4,a1,i0.2,a1,i0.2,a1,i0.2,a1,i0.2,a1,i0.2,a1,i0.2,a1,i0.2)')   &
+              IV_now(1), '-', IV_now(2), '-', IV_now(3), 'T',                  &
+              IV_now(5), ':', IV_now(6), ':', IV_now(7),                       &
+              '*', abs(IV_now(4)/60), ':', mod(abs(IV_now(4)),60) 
+if (IV_now(4)>=0) then
+     YV_now=YV_now(1:19)//'+'//YV_now(21:25)
+else
+     YV_now=YV_now(1:19)//'-'//YV_now(21:25)
+end if
+!Using the ISO 8601 international standard: 2016-01-31T16:45:46+00:00
+
+!-------------------------------------------------------------------------------
+!Get the version of RAPID determined during build
+!-------------------------------------------------------------------------------
+#ifdef RAPID_VERSION
+     YV_version=RAPID_VERSION
+#else
+     YV_version='unknown'
+#endif
+!Compilation examples: -D RAPID_VERSION="'v1.4.0'"  
+!                      -D RAPID_VERSION="'20131114'" 
 
 !-------------------------------------------------------------------------------
 !Read name list, allocate Fortran arrays
@@ -176,6 +204,11 @@ call rapid_create_obj
 !-------------------------------------------------------------------------------
 !Prints information about current model run based on info from namelist
 !-------------------------------------------------------------------------------
+call PetscPrintf(PETSC_COMM_WORLD,'--------------------------'//char(10),ierr)
+if (rank==0)                                               print '(a70)',      &
+       'RAPID: ' // YV_version //       '                                      ' 
+if (rank==0)                                               print '(a70)',      &
+       'Current ISO 8601 time: ' // YV_now //          '                       ' 
 if (rank==0 .and. .not. BS_opt_Qinit)                      print '(a70)',      &
        'Not reading initial flows from a file                                  '
 if (rank==0 .and. BS_opt_Qinit)                            print '(a70)',      &
