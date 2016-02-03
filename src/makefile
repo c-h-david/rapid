@@ -23,6 +23,12 @@ NETCDF_INCLUDE=-I ${TACC_NETCDF_INC}
 
 
 #*******************************************************************************
+#Get version of RAPID 
+#*******************************************************************************
+RAPID_VERSION="'$(shell ./rapid_version.sh)'"
+
+
+#*******************************************************************************
 #makefile instructions 
 #*******************************************************************************
 
@@ -140,7 +146,7 @@ rapid_routing.o: 		rapid_routing.F90 rapid_var.mod
 	${FLINKER} -c rapid_routing.F90 ${PETSC_FC_INCLUDES} ${NETCDF_INCLUDE}
 
 rapid_init.o: 			rapid_read_namelist.o rapid_var.mod
-	${FLINKER} -c rapid_init.F90 ${PETSC_FC_INCLUDES}
+	${FLINKER} -c rapid_init.F90 ${PETSC_FC_INCLUDES} -D RAPID_VERSION=${RAPID_VERSION}
 
 rapid_routing_param.o: 		rapid_routing_param.F90 rapid_var.mod
 	${FLINKER} -c rapid_routing_param.F90 ${PETSC_FC_INCLUDES}
