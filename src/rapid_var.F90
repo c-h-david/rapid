@@ -499,6 +499,17 @@ PetscInt, dimension(IS_nc_ndim) :: IV_nc_id_dim, IV_nc_start, IV_nc_count,     &
 
 
 !*******************************************************************************
+!Declaration of variables - Metadata variables
+!*******************************************************************************
+PetscInt, dimension(8) :: IV_now
+!Integer array containing current time information
+character(len=25) :: YV_now
+!Character string containing current time information formatted using ISO 8601
+character(len=30) :: YV_version
+!Character string containing the version of RAPID 
+
+
+!*******************************************************************************
 !Namelist
 !*******************************************************************************
 namelist /NL_namelist/                                                         &
