@@ -14,7 +14,9 @@ subroutine rapid_open_Vlat_file(Vlat_file)
 !*******************************************************************************
 use netcdf
 use rapid_var, only :                                                          &
-                   rank,IS_nc_status,IS_nc_id_fil_Vlat,IS_nc_id_var_Vlat
+                   rank,IS_nc_status,IS_nc_id_fil_Vlat,IS_nc_id_var_Vlat,      &
+                   IS_nc_id_var_time,IS_nc_id_var_crs,                         &
+                   IS_nc_id_var_lon,IS_nc_id_var_lat     
 
 implicit none
 
@@ -38,6 +40,18 @@ if (rank==0) then
      close(99)
      IS_nc_status=NF90_OPEN(Vlat_file,NF90_NOWRITE,IS_nc_id_fil_Vlat)
      IS_nc_status=NF90_INQ_VARID(IS_nc_id_fil_Vlat,'m3_riv',IS_nc_id_var_Vlat)
+     if (IS_nc_status<0) IS_nc_id_var_Vlat=-9999
+     IS_nc_status=NF90_INQ_VARID(IS_nc_id_fil_Vlat,'time',IS_nc_id_var_time)
+     if (IS_nc_status<0) IS_nc_id_var_time=-9999
+     IS_nc_status=NF90_INQ_VARID(IS_nc_id_fil_Vlat,'lon',IS_nc_id_var_lon)
+     if (IS_nc_status<0) IS_nc_id_var_lon=-9999
+     IS_nc_status=NF90_INQ_VARID(IS_nc_id_fil_Vlat,'lat',IS_nc_id_var_lat)
+     if (IS_nc_status<0) IS_nc_id_var_lat=-9999
+     IS_nc_status=NF90_INQ_VARID(IS_nc_id_fil_Vlat,'crs',IS_nc_id_var_crs)
+     if (IS_nc_status<0) IS_nc_id_var_crs=-9999
+     !A negative value for IS_nc_id_var_* is used if the variable doesn't exist,
+     !this is because the default value of "1" might match another existing 
+     !variable.  
 end if
 
 
