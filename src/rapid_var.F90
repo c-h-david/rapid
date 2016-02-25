@@ -523,6 +523,9 @@ character(len=100) :: YV_crs_iflat
 !Character string containing the inverse flattening of the spheroid
 
 PetscScalar,dimension(:), allocatable :: ZV_riv_tot_lon, ZV_riv_tot_lat
+PetscInt,dimension(:), allocatable :: IV_time
+PetscInt,dimension(:,:), allocatable :: IM_time_bnds
+PetscInt :: IS_time, JS_time
 
 
 !*******************************************************************************
