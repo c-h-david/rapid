@@ -508,6 +508,21 @@ character(len=25) :: YV_now
 !Character string containing current time information formatted using ISO 8601
 character(len=30) :: YV_version
 !Character string containing the version of RAPID 
+character(len=100) :: YV_title
+!Character string containing the title of simulation
+character(len=100) :: YV_institution
+!Character string containing the institution
+character(len=100) :: YV_comment
+!Character string containing the comment
+
+character(len=100) :: YV_time_units
+!Character string containing the units of time 
+character(len=100) :: YV_crs_sma
+!Character string containing the semi major axis of the spheroid
+character(len=100) :: YV_crs_iflat
+!Character string containing the inverse flattening of the spheroid
+
+PetscScalar,dimension(:), allocatable :: ZV_riv_tot_lon, ZV_riv_tot_lat
 
 
 !*******************************************************************************
