@@ -76,23 +76,28 @@ call rapid_init
 if (IS_opt_run==1) then
 
 !-------------------------------------------------------------------------------
-!Create Qout file
+!Open Vlat file
+!-------------------------------------------------------------------------------
+call rapid_open_Vlat_file(Vlat_file)
+call rapid_meta_Vlat_file(Vlat_file)
+
+!-------------------------------------------------------------------------------
+!Create and open Qout file
 !-------------------------------------------------------------------------------
 call rapid_create_Qout_file(Qout_file)
+call rapid_open_Qout_file(Qout_file)
 
 !-------------------------------------------------------------------------------
-!Create V_file
+!Create and open V_file
 !-------------------------------------------------------------------------------
 if (BS_opt_V) call rapid_create_V_file(V_file)
+if (BS_opt_V) call rapid_open_V_file(V_file)
 
 !-------------------------------------------------------------------------------
-!Open files          
+!Open remaining files          
 !-------------------------------------------------------------------------------
-call rapid_open_Qout_file(Qout_file)
-call rapid_open_Vlat_file(Vlat_file)
 if (BS_opt_for) call rapid_open_Qfor_file(Qfor_file)
 if (BS_opt_hum) call rapid_open_Qhum_file(Qhum_file)
-if (BS_opt_V) call rapid_open_V_file(V_file)
 
 !-------------------------------------------------------------------------------
 !Make sure the vectors potentially used for inflow to dams are initially null
