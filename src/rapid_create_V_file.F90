@@ -22,7 +22,11 @@ use rapid_var, only :                                                          &
                    IS_nc_id_var_time,IS_nc_id_var_lon,IS_nc_id_var_lat,        &
                    IS_nc_id_var_time_bnds,IS_nc_id_var_crs,                    &
                    IV_riv_bas_id,IS_riv_bas,                                   &
-                   YV_now,YV_version
+                   YV_now,YV_version,                                          &
+                   Vlat_file,                                                  &
+                   YV_title,YV_institution,YV_comment,                         &
+                   YV_time_units,YV_crs_sma,YV_crs_iflat,                      &
+                   ZV_riv_tot_lon,ZV_riv_tot_lat,IV_riv_index
 
 implicit none
 
@@ -107,7 +111,7 @@ if (rank==0) then
      IS_nc_status=NF90_PUT_ATT(IS_nc_id_fil_V,IS_nc_id_var_time,               &
                                'long_name','time')
      IS_nc_status=NF90_PUT_ATT(IS_nc_id_fil_V,IS_nc_id_var_time,               &
-                               'units','get from Vlat_file')
+                               'units',YV_time_units)
      IS_nc_status=NF90_PUT_ATT(IS_nc_id_fil_V,IS_nc_id_var_time,               &
                                'calendar','gregorian')
      IS_nc_status=NF90_PUT_ATT(IS_nc_id_fil_V,IS_nc_id_var_time,               &
@@ -138,9 +142,9 @@ if (rank==0) then
      IS_nc_status=NF90_PUT_ATT(IS_nc_id_fil_V,IS_nc_id_var_crs,                &
                                'grid_mapping_name','latitude_longitude')
      IS_nc_status=NF90_PUT_ATT(IS_nc_id_fil_V,IS_nc_id_var_crs,                &
-                               'semi_major_axis','get from Vlat_file')
+                               'semi_major_axis',YV_crs_sma)
      IS_nc_status=NF90_PUT_ATT(IS_nc_id_fil_V,IS_nc_id_var_crs,                &
-                               'inverse_flattening','get from Vlat_file')
+                               'inverse_flattening',YV_crs_iflat)
 
 !-------------------------------------------------------------------------------
 !Define global attributes
@@ -148,19 +152,19 @@ if (rank==0) then
      IS_nc_status=NF90_PUT_ATT(IS_nc_id_fil_V,NF90_GLOBAL,                     &
                                'Conventions','CF-1.6')
      IS_nc_status=NF90_PUT_ATT(IS_nc_id_fil_V,NF90_GLOBAL,                     &
-                               'title','get from Vlat_file')
+                               'title',YV_title)
      IS_nc_status=NF90_PUT_ATT(IS_nc_id_fil_V,NF90_GLOBAL,                     &
-                               'institution','get from Vlat_file')
+                               'institution',YV_institution)
      IS_nc_status=NF90_PUT_ATT(IS_nc_id_fil_V,NF90_GLOBAL,                     &
-                               'source','RAPID: '//YV_version//', water ' //   &
-                               'inflow: get from namelist')
+                               'source','RAPID: '//TRIM(YV_version)//          &
+                               ', water inflow: '//Vlat_file)
      IS_nc_status=NF90_PUT_ATT(IS_nc_id_fil_V,NF90_GLOBAL,                     &
                                'history','date_created: '//YV_now)
      IS_nc_status=NF90_PUT_ATT(IS_nc_id_fil_V,NF90_GLOBAL,                     &
                                'references','https://github.com/c-h-david/ra'//&
                                 'pid/, http://dx.doi.org/10.1175/2011JHM1345.1')
      IS_nc_status=NF90_PUT_ATT(IS_nc_id_fil_V,NF90_GLOBAL,                     &
-                               'comment','get from Vlat_file')
+                               'comment',YV_comment)
      IS_nc_status=NF90_PUT_ATT(IS_nc_id_fil_V,NF90_GLOBAL,                     &
                                'featureType','timeSeries')
 
@@ -191,6 +195,16 @@ if (rank==0) then
 !-------------------------------------------------------------------------------
      IS_nc_status=NF90_PUT_VAR(IS_nc_id_fil_V,IS_nc_id_var_rivid,              &
                                IV_riv_bas_id)
+     if (ZV_riv_tot_lon(1)/=-9999) then 
+     !The default value for 'no data' in rapid_init.F90 is -9999 for longitude
+     IS_nc_status=NF90_PUT_VAR(IS_nc_id_fil_V,IS_nc_id_var_lon,                &
+                               ZV_riv_tot_lon(IV_riv_index))
+     end if
+     if (ZV_riv_tot_lat(1)/=-9999) then 
+     !The default value for 'no data' in rapid_init.F90 is -9999 for latitude
+     IS_nc_status=NF90_PUT_VAR(IS_nc_id_fil_V,IS_nc_id_var_lat,                &
+                               ZV_riv_tot_lat(IV_riv_index))
+     end if
 
 !-------------------------------------------------------------------------------
 !Close file
