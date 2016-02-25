@@ -15,7 +15,7 @@ subroutine rapid_open_Vlat_file(Vlat_file)
 use netcdf
 use rapid_var, only :                                                          &
                    rank,IS_nc_status,IS_nc_id_fil_Vlat,IS_nc_id_var_Vlat,      &
-                   IS_nc_id_var_time,IS_nc_id_var_crs,                         &
+                   IS_nc_id_var_time,IS_nc_id_var_time_bnds,IS_nc_id_var_crs,  &
                    IS_nc_id_var_lon,IS_nc_id_var_lat     
 
 implicit none
@@ -43,6 +43,9 @@ if (rank==0) then
      if (IS_nc_status<0) IS_nc_id_var_Vlat=-9999
      IS_nc_status=NF90_INQ_VARID(IS_nc_id_fil_Vlat,'time',IS_nc_id_var_time)
      if (IS_nc_status<0) IS_nc_id_var_time=-9999
+     IS_nc_status=NF90_INQ_VARID(IS_nc_id_fil_Vlat,'time_bnds',                \
+                                 IS_nc_id_var_time_bnds)
+     if (IS_nc_status<0) IS_nc_id_var_time_bnds=-9999
      IS_nc_status=NF90_INQ_VARID(IS_nc_id_fil_Vlat,'lon',IS_nc_id_var_lon)
      if (IS_nc_status<0) IS_nc_id_var_lon=-9999
      IS_nc_status=NF90_INQ_VARID(IS_nc_id_fil_Vlat,'lat',IS_nc_id_var_lat)
