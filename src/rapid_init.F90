@@ -67,6 +67,7 @@ use rapid_var, only :                                                          &
                    ZS_knorm_init,ZS_xnorm_init,ZS_kfac,ZS_xfac,                &
                    ZV_C1,ZV_C2,ZV_C3,ZM_A,                                     &
                    IV_now,YV_now,YV_version,                                   &
+                   ZV_riv_tot_lon,ZV_riv_tot_lat,                              &
                    ierr,ksp,rank,ncore,IS_one,ZS_one
 
 
@@ -145,6 +146,9 @@ allocate(IV_onz(IS_riv_bas))
 
 allocate(ZV_read_riv_tot(IS_riv_tot))
 
+allocate(ZV_riv_tot_lon(IS_riv_tot))
+allocate(ZV_riv_tot_lat(IS_riv_tot))
+
 if (IS_opt_run==2) then
      allocate(IV_obs_tot_id(IS_obs_tot))
      allocate(IV_obs_use_id(IS_obs_use))
@@ -178,6 +182,9 @@ end if
 !-------------------------------------------------------------------------------
 !Make sure some Fortran arrays are initialized to zero
 !-------------------------------------------------------------------------------
+ZV_riv_tot_lon=-9999
+ZV_riv_tot_lat=-9999
+
 if (BS_opt_dam) then
      ZV_Qin_dam0 =0
      ZV_Qout_dam0=0
