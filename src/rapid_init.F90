@@ -58,7 +58,7 @@ use rapid_var, only :                                                          &
                    ZV_QoutinitM,ZV_QoutinitO,ZV_QoutinitR,                     &
                    ZV_VinitM,ZV_VinitR,                                        &
                    ZV_babsmax,ZV_QoutRabsmin,ZV_QoutRabsmax,                   &
-                   IS_M,IS_O,IS_R,IS_RpO,IS_RpM,IS_RpF,IS_RpH,                 &
+                   IS_M,IS_O,IS_R,IS_RpO,IS_RpM,IS_RpF,IS_RpH,IS_time,         &
                    kfac_file,x_file,k_file,Vlat_file,Qinit_file,               &
                    Qobsbarrec_file,                                            &
                    ZS_Qout0,ZS_V0,                                             &
@@ -67,7 +67,7 @@ use rapid_var, only :                                                          &
                    ZS_knorm_init,ZS_xnorm_init,ZS_kfac,ZS_xfac,                &
                    ZV_C1,ZV_C2,ZV_C3,ZM_A,                                     &
                    IV_now,YV_now,YV_version,                                   &
-                   ZV_riv_tot_lon,ZV_riv_tot_lat,                              &
+                   ZV_riv_tot_lon,ZV_riv_tot_lat,IV_time,IM_time_bnds,         &
                    ierr,ksp,rank,ncore,IS_one,ZS_one
 
 
@@ -126,10 +126,25 @@ end if
 !                      -D RAPID_VERSION="'20131114'" 
 
 !-------------------------------------------------------------------------------
-!Read name list, allocate Fortran arrays
+!Read name list
 !-------------------------------------------------------------------------------
 call rapid_read_namelist
 
+!-------------------------------------------------------------------------------
+!Compute number of time steps
+!-------------------------------------------------------------------------------
+IS_M=int(ZS_TauM/ZS_dtM)
+IS_O=int(ZS_TauO/ZS_dtO)
+IS_R=int(ZS_TauR/ZS_dtR)
+IS_RpO=int(ZS_dtO/ZS_TauR)
+IS_RpM=int(ZS_dtM/ZS_TauR)
+IS_RpF=int(ZS_dtF/ZS_TauR)
+IS_RpH=int(ZS_dtH/ZS_TauR)
+IS_time=IS_M*IS_RpM
+
+!-------------------------------------------------------------------------------
+!Allocate Fortran arrays
+!-------------------------------------------------------------------------------
 allocate(IV_riv_bas_id(IS_riv_bas))
 allocate(IV_riv_index(IS_riv_bas))
 allocate(IV_riv_loc1(IS_riv_bas))
@@ -148,6 +163,9 @@ allocate(ZV_read_riv_tot(IS_riv_tot))
 
 allocate(ZV_riv_tot_lon(IS_riv_tot))
 allocate(ZV_riv_tot_lat(IS_riv_tot))
+
+allocate(IV_time(IS_time))
+allocate(IM_time_bnds(2,IS_time))
 
 if (IS_opt_run==2) then
      allocate(IV_obs_tot_id(IS_obs_tot))
@@ -184,23 +202,15 @@ end if
 !-------------------------------------------------------------------------------
 ZV_riv_tot_lon=-9999
 ZV_riv_tot_lat=-9999
+IV_time=-9999
+IM_time_bnds=-9999
+!The value of '-9999' is used here as 'No Data' in case not present in Vlat_file
 
 if (BS_opt_dam) then
      ZV_Qin_dam0 =0
      ZV_Qout_dam0=0
 end if
 !These are not populated anywhere before being used and hold meaningless values
-
-!-------------------------------------------------------------------------------
-!Compute number of time steps
-!-------------------------------------------------------------------------------
-IS_M=int(ZS_TauM/ZS_dtM)
-IS_O=int(ZS_TauO/ZS_dtO)
-IS_R=int(ZS_TauR/ZS_dtR)
-IS_RpO=int(ZS_dtO/ZS_TauR)
-IS_RpM=int(ZS_dtM/ZS_TauR)
-IS_RpF=int(ZS_dtF/ZS_TauR)
-IS_RpH=int(ZS_dtH/ZS_TauR)
 
 !-------------------------------------------------------------------------------
 !Initialize libraries and create objects common to all options
