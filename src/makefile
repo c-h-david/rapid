@@ -54,6 +54,7 @@ rapid:	rapid_main.o \
 	rapid_open_Qobs_file.o \
 	rapid_open_Qfor_file.o \
 	rapid_open_Qhum_file.o \
+	rapid_meta_Vlat_file.o \
 	rapid_write_Qout_file.o \
 	rapid_write_V_file.o \
 	rapid_read_Vlat_file.o \
@@ -94,6 +95,7 @@ rapid:	rapid_main.o \
 	rapid_open_Qobs_file.o \
 	rapid_open_Qfor_file.o \
 	rapid_open_Qhum_file.o \
+	rapid_meta_Vlat_file.o \
 	rapid_write_Qout_file.o \
 	rapid_write_V_file.o \
 	rapid_read_Vlat_file.o \
@@ -186,6 +188,9 @@ rapid_close_Qout_file.o: 	rapid_close_Qout_file.F90 rapid_var.mod
 
 rapid_close_V_file.o: 		rapid_close_V_file.F90 rapid_var.mod
 	${FLINKER} -c rapid_close_V_file.F90 ${NETCDF_INCLUDE} 
+
+rapid_meta_Vlat_file.o: 	rapid_meta_Vlat_file.F90 rapid_var.mod
+	${FLINKER} -c rapid_meta_Vlat_file.F90 ${PETSC_FC_INCLUDES} ${NETCDF_INCLUDE}
 
 rapid_read_Qfor_file.o: 	rapid_read_Qfor_file.F90 rapid_var.mod
 	${FLINKER} -c rapid_read_Qfor_file.F90 ${PETSC_FC_INCLUDES}
