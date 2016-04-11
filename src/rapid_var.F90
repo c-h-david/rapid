@@ -555,7 +555,7 @@ namelist /NL_namelist/                                                         &
                        ZS_dtF,ZS_dtH,                                          &
                        ZS_phifac,IS_strt_opt
  
-character(len=120) :: namelist_file
+character(len=200) :: namelist_file
 !unit 88 - Namelist
 
 
