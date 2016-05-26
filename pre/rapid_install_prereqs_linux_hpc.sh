@@ -97,5 +97,5 @@ export PETSC_ARCH='linux-hpc'
 #-------------------------------------------------------------------------------
 #Exporting directories with library-related executables to $PATH
 #-------------------------------------------------------------------------------
-export PATH=$PATH:/$PETSC_DIR/$PETSC_ARCH/bin
+export PATH=$PATH:$PETSC_DIR/$PETSC_ARCH/bin
 export PATH=$PATH:$INSTALLZ_DIR/netcdf-3.6.3-install/bin

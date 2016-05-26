@@ -46,6 +46,7 @@ mkdir -p $INSTALLZ_DIR
 cd $INSTALLZ_DIR
 wget -nc "http://www.unidata.ucar.edu/downloads/netcdf/ftp/netcdf-3.6.3.tar.gz"
 tar -xzf netcdf-3.6.3.tar.gz
+rm netcdf-3.6.3.tar.gz
 mkdir -p netcdf-3.6.3-install
 cd netcdf-3.6.3
 ./configure CC=gcc CXX=g++ FC=gfortran --prefix=$INSTALLZ_DIR/netcdf-3.6.3-install
@@ -58,6 +59,7 @@ make install > install.log
 cd $INSTALLZ_DIR
 wget "http://ftp.mcs.anl.gov/pub/petsc/release-snapshots/petsc-3.6.2.tar.gz"
 tar -xf petsc-3.6.2.tar.gz
+rm petsc-3.6.2.tar.gz
 cd petsc-3.6.2
 ./configure PETSC_DIR=$PWD PETSC_ARCH=linux-gcc-cxx --download-fblaslapack=1 --download-mpich=1 --with-cc=gcc --with-cxx=g++ --with-fc=gfortran --with-clanguage=cxx --with-debugging=0
 make PETSC_DIR=$PWD PETSC_ARCH=linux-gcc-cxx all
@@ -74,5 +76,5 @@ export PETSC_ARCH='linux-gcc-cxx'
 #-------------------------------------------------------------------------------
 #Exporting directories with library-related executables to $PATH
 #-------------------------------------------------------------------------------
-export PATH=$PATH:/$PETSC_DIR/$PETSC_ARCH/bin
+export PATH=$PATH:$PETSC_DIR/$PETSC_ARCH/bin
 export PATH=$PATH:$INSTALLZ_DIR/netcdf-3.6.3-install/bin
