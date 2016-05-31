@@ -99,7 +99,7 @@ sed -i -e "s|IS_opt_run         =.*|IS_opt_run         =1|"                    \
           rapid_namelist_France_HP  
 
 #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-#Simulation 1/8
+#Simulation 1/10
 #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 unt=$((unt+1))
 sim=$((sim+1))
@@ -455,7 +455,7 @@ sed -i -e "s|IS_opt_run         =.*|IS_opt_run         =2|"                    \
        -e "s|ZS_xnorm_init      =.*|ZS_xnorm_init      =${ZS_xnorm_inits[ii]}|"\
           rapid_namelist_France_HP  
 sleep 3
-mpiexec -n 1 ./rapid -ksp_type preonly > $rapd_file
+mpiexec -n 1 ./rapid -ksp_type preonly -tao_gatol 0.01 -tao_grtol 0.00092 > $rapd_file
 ./rtk_opt_find.sh $rapd_file | cat > $find_file
 ./rtk_opt_comp.sh $find_file ${ZS_knorm_finals[ii]} ${ZS_xnorm_finals[ii]} ${ZS_phi_finals[ii]} 
 if [ $? -gt 0 ] ; then  echo "Failed comparison: $find_file" >&2 ; exit $? ; fi
@@ -504,7 +504,7 @@ sed -i -e "s|IS_opt_run         =.*|IS_opt_run         =2|"                    \
        -e "s|ZS_xnorm_init      =.*|ZS_xnorm_init      =${ZS_xnorm_inits[ii]}|"\
           rapid_namelist_France_HP  
 sleep 3
-mpiexec -n 1 ./rapid -ksp_type preonly > $rapd_file
+mpiexec -n 1 ./rapid -ksp_type preonly -tao_gatol 0.01 -tao_grtol 0.000050 > $rapd_file
 ./rtk_opt_find.sh $rapd_file | cat > $find_file
 ./rtk_opt_comp.sh $find_file ${ZS_knorm_finals[ii]} ${ZS_xnorm_finals[ii]} ${ZS_phi_finals[ii]} 
 if [ $? -gt 0 ] ; then  echo "Failed comparison: $find_file" >&2 ; exit $? ; fi
@@ -553,7 +553,7 @@ sed -i -e "s|IS_opt_run         =.*|IS_opt_run         =2|"                    \
        -e "s|ZS_xnorm_init      =.*|ZS_xnorm_init      =${ZS_xnorm_inits[ii]}|"\
           rapid_namelist_France_HP  
 sleep 3
-mpiexec -n 1 ./rapid -ksp_type preonly > $rapd_file
+mpiexec -n 1 ./rapid -ksp_type preonly -tao_gatol 0.01 -tao_grtol 0.00091 > $rapd_file
 ./rtk_opt_find.sh $rapd_file | cat > $find_file
 ./rtk_opt_comp.sh $find_file ${ZS_knorm_finals[ii]} ${ZS_xnorm_finals[ii]} ${ZS_phi_finals[ii]} 
 if [ $? -gt 0 ] ; then  echo "Failed comparison: $find_file" >&2 ; exit $? ; fi
@@ -602,7 +602,7 @@ sed -i -e "s|IS_opt_run         =.*|IS_opt_run         =2|"                    \
        -e "s|ZS_xnorm_init      =.*|ZS_xnorm_init      =${ZS_xnorm_inits[ii]}|"\
           rapid_namelist_France_HP  
 sleep 3
-mpiexec -n 1 ./rapid -ksp_type preonly > $rapd_file
+mpiexec -n 1 ./rapid -ksp_type preonly -tao_gatol 0.01 -tao_grtol 0.000050 > $rapd_file
 ./rtk_opt_find.sh $rapd_file | cat > $find_file
 ./rtk_opt_comp.sh $find_file ${ZS_knorm_finals[ii]} ${ZS_xnorm_finals[ii]} ${ZS_phi_finals[ii]} 
 if [ $? -gt 0 ] ; then  echo "Failed comparison: $find_file" >&2 ; exit $? ; fi
@@ -651,7 +651,7 @@ sed -i -e "s|IS_opt_run         =.*|IS_opt_run         =2|"                    \
        -e "s|ZS_xnorm_init      =.*|ZS_xnorm_init      =${ZS_xnorm_inits[ii]}|"\
           rapid_namelist_France_HP  
 sleep 3
-mpiexec -n 1 ./rapid -ksp_type preonly > $rapd_file
+mpiexec -n 1 ./rapid -ksp_type preonly -tao_gatol 0.01 -tao_grtol 0.00026 > $rapd_file
 ./rtk_opt_find.sh $rapd_file | cat > $find_file
 ./rtk_opt_comp.sh $find_file ${ZS_knorm_finals[ii]} ${ZS_xnorm_finals[ii]} ${ZS_phi_finals[ii]} 
 if [ $? -gt 0 ] ; then  echo "Failed comparison: $find_file" >&2 ; exit $? ; fi
@@ -700,7 +700,7 @@ sed -i -e "s|IS_opt_run         =.*|IS_opt_run         =2|"                    \
        -e "s|ZS_xnorm_init      =.*|ZS_xnorm_init      =${ZS_xnorm_inits[ii]}|"\
           rapid_namelist_France_HP  
 sleep 3
-mpiexec -n 1 ./rapid -ksp_type preonly > $rapd_file
+mpiexec -n 1 ./rapid -ksp_type preonly -tao_gatol 0.01 -tao_grtol 0.00012 > $rapd_file
 ./rtk_opt_find.sh $rapd_file | cat > $find_file
 ./rtk_opt_comp.sh $find_file ${ZS_knorm_finals[ii]} ${ZS_xnorm_finals[ii]} ${ZS_phi_finals[ii]} 
 if [ $? -gt 0 ] ; then  echo "Failed comparison: $find_file" >&2 ; exit $? ; fi
@@ -749,7 +749,7 @@ sed -i -e "s|IS_opt_run         =.*|IS_opt_run         =2|"                    \
        -e "s|ZS_xnorm_init      =.*|ZS_xnorm_init      =${ZS_xnorm_inits[ii]}|"\
           rapid_namelist_France_HP  
 sleep 3
-mpiexec -n 1 ./rapid -ksp_type preonly > $rapd_file
+mpiexec -n 1 ./rapid -ksp_type preonly -tao_gatol 0.01 -tao_grtol 0.000094 > $rapd_file
 ./rtk_opt_find.sh $rapd_file | cat > $find_file
 ./rtk_opt_comp.sh $find_file ${ZS_knorm_finals[ii]} ${ZS_xnorm_finals[ii]} ${ZS_phi_finals[ii]} 
 if [ $? -gt 0 ] ; then  echo "Failed comparison: $find_file" >&2 ; exit $? ; fi
@@ -798,7 +798,7 @@ sed -i -e "s|IS_opt_run         =.*|IS_opt_run         =2|"                    \
        -e "s|ZS_xnorm_init      =.*|ZS_xnorm_init      =${ZS_xnorm_inits[ii]}|"\
           rapid_namelist_France_HP  
 sleep 3
-mpiexec -n 1 ./rapid -ksp_type preonly > $rapd_file
+mpiexec -n 1 ./rapid -ksp_type preonly -tao_gatol 0.01 -tao_grtol 0.00016 > $rapd_file
 ./rtk_opt_find.sh $rapd_file | cat > $find_file
 ./rtk_opt_comp.sh $find_file ${ZS_knorm_finals[ii]} ${ZS_xnorm_finals[ii]} ${ZS_phi_finals[ii]} 
 if [ $? -gt 0 ] ; then  echo "Failed comparison: $find_file" >&2 ; exit $? ; fi
@@ -847,7 +847,7 @@ sed -i -e "s|IS_opt_run         =.*|IS_opt_run         =2|"                    \
        -e "s|ZS_xnorm_init      =.*|ZS_xnorm_init      =${ZS_xnorm_inits[ii]}|"\
           rapid_namelist_France_HP  
 sleep 3
-mpiexec -n 1 ./rapid -ksp_type preonly > $rapd_file
+mpiexec -n 1 ./rapid -ksp_type preonly -tao_gatol 0.01 -tao_grtol 0.00012 > $rapd_file
 ./rtk_opt_find.sh $rapd_file | cat > $find_file
 ./rtk_opt_comp.sh $find_file ${ZS_knorm_finals[ii]} ${ZS_xnorm_finals[ii]} ${ZS_phi_finals[ii]} 
 if [ $? -gt 0 ] ; then  echo "Failed comparison: $find_file" >&2 ; exit $? ; fi
@@ -896,7 +896,7 @@ sed -i -e "s|IS_opt_run         =.*|IS_opt_run         =2|"                    \
        -e "s|ZS_xnorm_init      =.*|ZS_xnorm_init      =${ZS_xnorm_inits[ii]}|"\
           rapid_namelist_France_HP  
 sleep 3
-mpiexec -n 1 ./rapid -ksp_type preonly > $rapd_file
+mpiexec -n 1 ./rapid -ksp_type preonly -tao_gatol 0.01 -tao_grtol 0.00070 > $rapd_file
 ./rtk_opt_find.sh $rapd_file | cat > $find_file
 ./rtk_opt_comp.sh $find_file ${ZS_knorm_finals[ii]} ${ZS_xnorm_finals[ii]} ${ZS_phi_finals[ii]} 
 if [ $? -gt 0 ] ; then  echo "Failed comparison: $find_file" >&2 ; exit $? ; fi
@@ -945,7 +945,7 @@ sed -i -e "s|IS_opt_run         =.*|IS_opt_run         =2|"                    \
        -e "s|ZS_xnorm_init      =.*|ZS_xnorm_init      =${ZS_xnorm_inits[ii]}|"\
           rapid_namelist_France_HP  
 sleep 3
-mpiexec -n 1 ./rapid -ksp_type preonly > $rapd_file
+mpiexec -n 1 ./rapid -ksp_type preonly -tao_gatol 0.01 -tao_grtol 0.00044 > $rapd_file
 ./rtk_opt_find.sh $rapd_file | cat > $find_file
 ./rtk_opt_comp.sh $find_file ${ZS_knorm_finals[ii]} ${ZS_xnorm_finals[ii]} ${ZS_phi_finals[ii]} 
 if [ $? -gt 0 ] ; then  echo "Failed comparison: $find_file" >&2 ; exit $? ; fi
@@ -994,7 +994,7 @@ sed -i -e "s|IS_opt_run         =.*|IS_opt_run         =2|"                    \
        -e "s|ZS_xnorm_init      =.*|ZS_xnorm_init      =${ZS_xnorm_inits[ii]}|"\
           rapid_namelist_France_HP  
 sleep 3
-mpiexec -n 1 ./rapid -ksp_type preonly > $rapd_file
+mpiexec -n 1 ./rapid -ksp_type preonly -tao_gatol 0.01 -tao_grtol 0.00053 > $rapd_file
 ./rtk_opt_find.sh $rapd_file | cat > $find_file
 ./rtk_opt_comp.sh $find_file ${ZS_knorm_finals[ii]} ${ZS_xnorm_finals[ii]} ${ZS_phi_finals[ii]} 
 if [ $? -gt 0 ] ; then  echo "Failed comparison: $find_file" >&2 ; exit $? ; fi
@@ -1043,7 +1043,7 @@ sed -i -e "s|IS_opt_run         =.*|IS_opt_run         =2|"                    \
        -e "s|ZS_xnorm_init      =.*|ZS_xnorm_init      =${ZS_xnorm_inits[ii]}|"\
           rapid_namelist_France_HP  
 sleep 3
-mpiexec -n 1 ./rapid -ksp_type preonly > $rapd_file
+mpiexec -n 1 ./rapid -ksp_type preonly -tao_gatol 0.01 -tao_grtol 0.00035 > $rapd_file
 ./rtk_opt_find.sh $rapd_file | cat > $find_file
 ./rtk_opt_comp.sh $find_file ${ZS_knorm_finals[ii]} ${ZS_xnorm_finals[ii]} ${ZS_phi_finals[ii]} 
 if [ $? -gt 0 ] ; then  echo "Failed comparison: $find_file" >&2 ; exit $? ; fi
@@ -1092,7 +1092,7 @@ sed -i -e "s|IS_opt_run         =.*|IS_opt_run         =2|"                    \
        -e "s|ZS_xnorm_init      =.*|ZS_xnorm_init      =${ZS_xnorm_inits[ii]}|"\
           rapid_namelist_France_HP  
 sleep 3
-mpiexec -n 1 ./rapid -ksp_type preonly > $rapd_file
+mpiexec -n 1 ./rapid -ksp_type preonly -tao_gatol 0.01 -tao_grtol 0.00028 > $rapd_file
 ./rtk_opt_find.sh $rapd_file | cat > $find_file
 ./rtk_opt_comp.sh $find_file ${ZS_knorm_finals[ii]} ${ZS_xnorm_finals[ii]} ${ZS_phi_finals[ii]} 
 if [ $? -gt 0 ] ; then  echo "Failed comparison: $find_file" >&2 ; exit $? ; fi
@@ -1141,7 +1141,7 @@ sed -i -e "s|IS_opt_run         =.*|IS_opt_run         =2|"                    \
        -e "s|ZS_xnorm_init      =.*|ZS_xnorm_init      =${ZS_xnorm_inits[ii]}|"\
           rapid_namelist_France_HP  
 sleep 3
-mpiexec -n 1 ./rapid -ksp_type preonly > $rapd_file
+mpiexec -n 1 ./rapid -ksp_type preonly -tao_gatol 0.01 -tao_grtol 0.00027 > $rapd_file
 ./rtk_opt_find.sh $rapd_file | cat > $find_file
 ./rtk_opt_comp.sh $find_file ${ZS_knorm_finals[ii]} ${ZS_xnorm_finals[ii]} ${ZS_phi_finals[ii]} 
 if [ $? -gt 0 ] ; then  echo "Failed comparison: $find_file" >&2 ; exit $? ; fi
@@ -1190,7 +1190,7 @@ sed -i -e "s|IS_opt_run         =.*|IS_opt_run         =2|"                    \
        -e "s|ZS_xnorm_init      =.*|ZS_xnorm_init      =${ZS_xnorm_inits[ii]}|"\
           rapid_namelist_France_HP  
 sleep 3
-mpiexec -n 1 ./rapid -ksp_type preonly > $rapd_file
+mpiexec -n 1 ./rapid -ksp_type preonly -tao_gatol 0.01 -tao_grtol 0.00019 > $rapd_file
 ./rtk_opt_find.sh $rapd_file | cat > $find_file
 ./rtk_opt_comp.sh $find_file ${ZS_knorm_finals[ii]} ${ZS_xnorm_finals[ii]} ${ZS_phi_finals[ii]} 
 if [ $? -gt 0 ] ; then  echo "Failed comparison: $find_file" >&2 ; exit $? ; fi
@@ -1239,7 +1239,7 @@ sed -i -e "s|IS_opt_run         =.*|IS_opt_run         =2|"                    \
        -e "s|ZS_xnorm_init      =.*|ZS_xnorm_init      =${ZS_xnorm_inits[ii]}|"\
           rapid_namelist_France_HP  
 sleep 3
-mpiexec -n 1 ./rapid -ksp_type preonly > $rapd_file
+mpiexec -n 1 ./rapid -ksp_type preonly -tao_gatol 0.01 -tao_grtol 0.00028 > $rapd_file
 ./rtk_opt_find.sh $rapd_file | cat > $find_file
 ./rtk_opt_comp.sh $find_file ${ZS_knorm_finals[ii]} ${ZS_xnorm_finals[ii]} ${ZS_phi_finals[ii]} 
 if [ $? -gt 0 ] ; then  echo "Failed comparison: $find_file" >&2 ; exit $? ; fi
@@ -1288,7 +1288,7 @@ sed -i -e "s|IS_opt_run         =.*|IS_opt_run         =2|"                    \
        -e "s|ZS_xnorm_init      =.*|ZS_xnorm_init      =${ZS_xnorm_inits[ii]}|"\
           rapid_namelist_France_HP  
 sleep 3
-mpiexec -n 1 ./rapid -ksp_type preonly > $rapd_file
+mpiexec -n 1 ./rapid -ksp_type preonly -tao_gatol 0.01 -tao_grtol 0.00032 > $rapd_file
 ./rtk_opt_find.sh $rapd_file | cat > $find_file
 ./rtk_opt_comp.sh $find_file ${ZS_knorm_finals[ii]} ${ZS_xnorm_finals[ii]} ${ZS_phi_finals[ii]} 
 if [ $? -gt 0 ] ; then  echo "Failed comparison: $find_file" >&2 ; exit $? ; fi
@@ -1337,7 +1337,7 @@ sed -i -e "s|IS_opt_run         =.*|IS_opt_run         =2|"                    \
        -e "s|ZS_xnorm_init      =.*|ZS_xnorm_init      =${ZS_xnorm_inits[ii]}|"\
           rapid_namelist_France_HP  
 sleep 3
-mpiexec -n 1 ./rapid -ksp_type preonly > $rapd_file
+mpiexec -n 1 ./rapid -ksp_type preonly -tao_gatol 0.01 -tao_grtol 0.00019 > $rapd_file
 ./rtk_opt_find.sh $rapd_file | cat > $find_file
 ./rtk_opt_comp.sh $find_file ${ZS_knorm_finals[ii]} ${ZS_xnorm_finals[ii]} ${ZS_phi_finals[ii]} 
 if [ $? -gt 0 ] ; then  echo "Failed comparison: $find_file" >&2 ; exit $? ; fi
@@ -1386,7 +1386,7 @@ sed -i -e "s|IS_opt_run         =.*|IS_opt_run         =2|"                    \
        -e "s|ZS_xnorm_init      =.*|ZS_xnorm_init      =${ZS_xnorm_inits[ii]}|"\
           rapid_namelist_France_HP  
 sleep 3
-mpiexec -n 1 ./rapid -ksp_type preonly > $rapd_file
+mpiexec -n 1 ./rapid -ksp_type preonly -tao_gatol 0.01 -tao_grtol 0.00018 > $rapd_file
 ./rtk_opt_find.sh $rapd_file | cat > $find_file
 ./rtk_opt_comp.sh $find_file ${ZS_knorm_finals[ii]} ${ZS_xnorm_finals[ii]} ${ZS_phi_finals[ii]} 
 if [ $? -gt 0 ] ; then  echo "Failed comparison: $find_file" >&2 ; exit $? ; fi
@@ -1435,7 +1435,7 @@ sed -i -e "s|IS_opt_run         =.*|IS_opt_run         =2|"                    \
        -e "s|ZS_xnorm_init      =.*|ZS_xnorm_init      =${ZS_xnorm_inits[ii]}|"\
           rapid_namelist_France_HP  
 sleep 3
-mpiexec -n 1 ./rapid -ksp_type preonly > $rapd_file
+mpiexec -n 1 ./rapid -ksp_type preonly -tao_gatol 0.01 -tao_grtol 0.00031 > $rapd_file
 ./rtk_opt_find.sh $rapd_file | cat > $find_file
 ./rtk_opt_comp.sh $find_file ${ZS_knorm_finals[ii]} ${ZS_xnorm_finals[ii]} ${ZS_phi_finals[ii]} 
 if [ $? -gt 0 ] ; then  echo "Failed comparison: $find_file" >&2 ; exit $? ; fi
@@ -1484,7 +1484,7 @@ sed -i -e "s|IS_opt_run         =.*|IS_opt_run         =2|"                    \
        -e "s|ZS_xnorm_init      =.*|ZS_xnorm_init      =${ZS_xnorm_inits[ii]}|"\
           rapid_namelist_France_HP  
 sleep 3
-mpiexec -n 1 ./rapid -ksp_type preonly > $rapd_file
+mpiexec -n 1 ./rapid -ksp_type preonly -tao_gatol 0.01 -tao_grtol 0.00015 > $rapd_file
 ./rtk_opt_find.sh $rapd_file | cat > $find_file
 ./rtk_opt_comp.sh $find_file ${ZS_knorm_finals[ii]} ${ZS_xnorm_finals[ii]} ${ZS_phi_finals[ii]} 
 if [ $? -gt 0 ] ; then  echo "Failed comparison: $find_file" >&2 ; exit $? ; fi
@@ -1533,7 +1533,7 @@ sed -i -e "s|IS_opt_run         =.*|IS_opt_run         =2|"                    \
        -e "s|ZS_xnorm_init      =.*|ZS_xnorm_init      =${ZS_xnorm_inits[ii]}|"\
           rapid_namelist_France_HP  
 sleep 3
-mpiexec -n 1 ./rapid -ksp_type richardson > $rapd_file #########################
+mpiexec -n 1 ./rapid -ksp_type richardson -tao_gatol 0.01 -tao_grtol 0.00059 > $rapd_file ######
 ./rtk_opt_find.sh $rapd_file | cat > $find_file
 ./rtk_opt_comp.sh $find_file ${ZS_knorm_finals[ii]} ${ZS_xnorm_finals[ii]} ${ZS_phi_finals[ii]} 
 if [ $? -gt 0 ] ; then  echo "Failed comparison: $find_file" >&2 ; exit $? ; fi
@@ -1582,7 +1582,7 @@ sed -i -e "s|IS_opt_run         =.*|IS_opt_run         =2|"                    \
        -e "s|ZS_xnorm_init      =.*|ZS_xnorm_init      =${ZS_xnorm_inits[ii]}|"\
           rapid_namelist_France_HP  
 sleep 3
-mpiexec -n 1 ./rapid -ksp_type preonly > $rapd_file
+mpiexec -n 1 ./rapid -ksp_type preonly -tao_gatol 0.01 -tao_grtol 0.0042 > $rapd_file
 ./rtk_opt_find.sh $rapd_file | cat > $find_file
 ./rtk_opt_comp.sh $find_file ${ZS_knorm_finals[ii]} ${ZS_xnorm_finals[ii]} ${ZS_phi_finals[ii]} 
 if [ $? -gt 0 ] ; then  echo "Failed comparison: $find_file" >&2 ; exit $? ; fi
@@ -1631,7 +1631,7 @@ sed -i -e "s|IS_opt_run         =.*|IS_opt_run         =2|"                    \
        -e "s|ZS_xnorm_init      =.*|ZS_xnorm_init      =${ZS_xnorm_inits[ii]}|"\
           rapid_namelist_France_HP  
 sleep 3
-mpiexec -n 1 ./rapid -ksp_type preonly > $rapd_file
+mpiexec -n 1 ./rapid -ksp_type preonly -tao_gatol 0.01 -tao_grtol 0.00027 > $rapd_file
 ./rtk_opt_find.sh $rapd_file | cat > $find_file
 ./rtk_opt_comp.sh $find_file ${ZS_knorm_finals[ii]} ${ZS_xnorm_finals[ii]} ${ZS_phi_finals[ii]} 
 if [ $? -gt 0 ] ; then  echo "Failed comparison: $find_file" >&2 ; exit $? ; fi
@@ -1680,7 +1680,7 @@ sed -i -e "s|IS_opt_run         =.*|IS_opt_run         =2|"                    \
        -e "s|ZS_xnorm_init      =.*|ZS_xnorm_init      =${ZS_xnorm_inits[ii]}|"\
           rapid_namelist_France_HP  
 sleep 3
-mpiexec -n 1 ./rapid -ksp_type preonly > $rapd_file
+mpiexec -n 1 ./rapid -ksp_type preonly -tao_gatol 0.01 -tao_grtol 0.00012 > $rapd_file
 ./rtk_opt_find.sh $rapd_file | cat > $find_file
 ./rtk_opt_comp.sh $find_file ${ZS_knorm_finals[ii]} ${ZS_xnorm_finals[ii]} ${ZS_phi_finals[ii]} 
 if [ $? -gt 0 ] ; then  echo "Failed comparison: $find_file" >&2 ; exit $? ; fi
@@ -1729,7 +1729,7 @@ sed -i -e "s|IS_opt_run         =.*|IS_opt_run         =2|"                    \
        -e "s|ZS_xnorm_init      =.*|ZS_xnorm_init      =${ZS_xnorm_inits[ii]}|"\
           rapid_namelist_France_HP  
 sleep 3
-mpiexec -n 1 ./rapid -ksp_type preonly > $rapd_file
+mpiexec -n 1 ./rapid -ksp_type preonly -tao_gatol 0.01 -tao_grtol 0.000095 > $rapd_file
 ./rtk_opt_find.sh $rapd_file | cat > $find_file
 ./rtk_opt_comp.sh $find_file ${ZS_knorm_finals[ii]} ${ZS_xnorm_finals[ii]} ${ZS_phi_finals[ii]} 
 if [ $? -gt 0 ] ; then  echo "Failed comparison: $find_file" >&2 ; exit $? ; fi
@@ -1778,7 +1778,7 @@ sed -i -e "s|IS_opt_run         =.*|IS_opt_run         =2|"                    \
        -e "s|ZS_xnorm_init      =.*|ZS_xnorm_init      =${ZS_xnorm_inits[ii]}|"\
           rapid_namelist_France_HP  
 sleep 3
-mpiexec -n 1 ./rapid -ksp_type preonly > $rapd_file
+mpiexec -n 1 ./rapid -ksp_type preonly -tao_gatol 0.01 -tao_grtol 0.00016 > $rapd_file
 ./rtk_opt_find.sh $rapd_file | cat > $find_file
 ./rtk_opt_comp.sh $find_file ${ZS_knorm_finals[ii]} ${ZS_xnorm_finals[ii]} ${ZS_phi_finals[ii]} 
 if [ $? -gt 0 ] ; then  echo "Failed comparison: $find_file" >&2 ; exit $? ; fi
@@ -1827,7 +1827,7 @@ sed -i -e "s|IS_opt_run         =.*|IS_opt_run         =2|"                    \
        -e "s|ZS_xnorm_init      =.*|ZS_xnorm_init      =${ZS_xnorm_inits[ii]}|"\
           rapid_namelist_France_HP  
 sleep 3
-mpiexec -n 1 ./rapid -ksp_type preonly > $rapd_file
+mpiexec -n 1 ./rapid -ksp_type preonly -tao_gatol 0.01 -tao_grtol 0.00012 > $rapd_file
 ./rtk_opt_find.sh $rapd_file | cat > $find_file
 ./rtk_opt_comp.sh $find_file ${ZS_knorm_finals[ii]} ${ZS_xnorm_finals[ii]} ${ZS_phi_finals[ii]} 
 if [ $? -gt 0 ] ; then  echo "Failed comparison: $find_file" >&2 ; exit $? ; fi
@@ -1876,7 +1876,7 @@ sed -i -e "s|IS_opt_run         =.*|IS_opt_run         =2|"                    \
        -e "s|ZS_xnorm_init      =.*|ZS_xnorm_init      =${ZS_xnorm_inits[ii]}|"\
           rapid_namelist_France_HP  
 sleep 3
-mpiexec -n 1 ./rapid -ksp_type preonly > $rapd_file
+mpiexec -n 1 ./rapid -ksp_type preonly -tao_gatol 0.01 -tao_grtol 0.00068 > $rapd_file
 ./rtk_opt_find.sh $rapd_file | cat > $find_file
 ./rtk_opt_comp.sh $find_file ${ZS_knorm_finals[ii]} ${ZS_xnorm_finals[ii]} ${ZS_phi_finals[ii]} 
 if [ $? -gt 0 ] ; then  echo "Failed comparison: $find_file" >&2 ; exit $? ; fi
@@ -1925,7 +1925,7 @@ sed -i -e "s|IS_opt_run         =.*|IS_opt_run         =2|"                    \
        -e "s|ZS_xnorm_init      =.*|ZS_xnorm_init      =${ZS_xnorm_inits[ii]}|"\
           rapid_namelist_France_HP  
 sleep 3
-mpiexec -n 1 ./rapid -ksp_type preonly > $rapd_file
+mpiexec -n 1 ./rapid -ksp_type preonly -tao_gatol 0.01 -tao_grtol 0.00044 > $rapd_file
 ./rtk_opt_find.sh $rapd_file | cat > $find_file
 ./rtk_opt_comp.sh $find_file ${ZS_knorm_finals[ii]} ${ZS_xnorm_finals[ii]} ${ZS_phi_finals[ii]} 
 if [ $? -gt 0 ] ; then  echo "Failed comparison: $find_file" >&2 ; exit $? ; fi
@@ -1982,7 +1982,7 @@ sed -i -e "s|IS_opt_run         =.*|IS_opt_run         =2|"                    \
        -e "s|ZS_xnorm_init      =.*|ZS_xnorm_init      =${ZS_xnorm_inits[ii]}|"\
           rapid_namelist_France_HP  
 sleep 3
-mpiexec -n 1 ./rapid -ksp_type preonly -tao_max_funcs 100 > $rapd_file #########
+mpiexec -n 1 ./rapid -ksp_type preonly -tao_max_funcs 100 -tao_gatol 0.01 -tao_grtol 0.00019 > $rapd_file ######
 ./rtk_opt_find.sh $rapd_file | cat > $find_file
 ./rtk_opt_comp.sh $find_file ${ZS_knorm_finals[ii]} ${ZS_xnorm_finals[ii]} ${ZS_phi_finals[ii]} 
 if [ $? -gt 0 ] ; then  echo "Failed comparison: $find_file" >&2 ; exit $? ; fi
@@ -2039,7 +2039,7 @@ sed -i -e "s|IS_opt_run         =.*|IS_opt_run         =2|"                    \
        -e "s|ZS_xnorm_init      =.*|ZS_xnorm_init      =${ZS_xnorm_inits[ii]}|"\
           rapid_namelist_France_HP  
 sleep 3
-mpiexec -n 1 ./rapid -ksp_type preonly > $rapd_file
+mpiexec -n 1 ./rapid -ksp_type preonly -tao_gatol 0.01 -tao_grtol 0.00017 > $rapd_file
 ./rtk_opt_find.sh $rapd_file | cat > $find_file
 ./rtk_opt_comp.sh $find_file ${ZS_knorm_finals[ii]} ${ZS_xnorm_finals[ii]} ${ZS_phi_finals[ii]} 
 if [ $? -gt 0 ] ; then  echo "Failed comparison: $find_file" >&2 ; exit $? ; fi
@@ -2096,7 +2096,7 @@ sed -i -e "s|IS_opt_run         =.*|IS_opt_run         =2|"                    \
        -e "s|ZS_xnorm_init      =.*|ZS_xnorm_init      =${ZS_xnorm_inits[ii]}|"\
           rapid_namelist_France_HP  
 sleep 3
-mpiexec -n 1 ./rapid -ksp_type preonly > $rapd_file
+mpiexec -n 1 ./rapid -ksp_type preonly -tao_gatol 0.01 -tao_grtol 0.0031 > $rapd_file
 ./rtk_opt_find.sh $rapd_file | cat > $find_file
 ./rtk_opt_comp.sh $find_file ${ZS_knorm_finals[ii]} ${ZS_xnorm_finals[ii]} ${ZS_phi_finals[ii]} 
 if [ $? -gt 0 ] ; then  echo "Failed comparison: $find_file" >&2 ; exit $? ; fi
@@ -2153,7 +2153,7 @@ sed -i -e "s|IS_opt_run         =.*|IS_opt_run         =2|"                    \
        -e "s|ZS_xnorm_init      =.*|ZS_xnorm_init      =${ZS_xnorm_inits[ii]}|"\
           rapid_namelist_France_HP  
 sleep 3
-mpiexec -n 1 ./rapid -ksp_type preonly > $rapd_file
+mpiexec -n 1 ./rapid -ksp_type preonly -tao_gatol 0.01 -tao_grtol 0.00023 > $rapd_file
 ./rtk_opt_find.sh $rapd_file | cat > $find_file
 ./rtk_opt_comp.sh $find_file ${ZS_knorm_finals[ii]} ${ZS_xnorm_finals[ii]} ${ZS_phi_finals[ii]} 
 if [ $? -gt 0 ] ; then  echo "Failed comparison: $find_file" >&2 ; exit $? ; fi

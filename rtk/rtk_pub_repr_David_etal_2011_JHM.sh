@@ -324,7 +324,7 @@ sed -i -e "s|IS_opt_run         =.*|IS_opt_run         =2|"                    \
           rapid_namelist_San_Guad_JHM  
 
 sleep 3
-mpiexec -n 1 ./rapid -ksp_type preonly > $rapd_file
+mpiexec -n 1 ./rapid -ksp_type preonly -tao_gatol 0.01 -tao_grtol 0.0040 > $rapd_file
 ./rtk_opt_find.sh $rapd_file | cat > $find_file
 ./rtk_opt_comp.sh $find_file 0.1875 3.90625 6.33277 
 if [ $? -gt 0 ] ; then  echo "Failed comparison: $find_file" >&2 ; exit $? ; fi
@@ -350,7 +350,7 @@ sed -i -e "s|IS_opt_run         =.*|IS_opt_run         =2|"                    \
           rapid_namelist_San_Guad_JHM  
 
 sleep 3
-mpiexec -n 1 ./rapid -ksp_type preonly > $rapd_file
+mpiexec -n 1 ./rapid -ksp_type preonly -tao_gatol 0.01 -tao_grtol 0.0040 > $rapd_file
 ./rtk_opt_find.sh $rapd_file | cat > $find_file
 ./rtk_opt_comp.sh $find_file 0.131042 2.58128 6.32834
 if [ $? -gt 0 ] ; then  echo "Failed comparison: $find_file" >&2 ; exit $? ; fi
@@ -375,7 +375,7 @@ sed -i -e "s|IS_opt_run         =.*|IS_opt_run         =2|"                    \
        -e "s|kfac_file          =.*|kfac_file          ='$kfac_file'|"         \
           rapid_namelist_San_Guad_JHM  
 sleep 3
-mpiexec -n 1 ./rapid -ksp_type preonly > $rapd_file
+mpiexec -n 1 ./rapid -ksp_type preonly -tao_gatol 0.01 -tao_grtol 0.0040 > $rapd_file
 ./rtk_opt_find.sh $rapd_file | cat > $find_file
 ./rtk_opt_comp.sh $find_file 0.125 0.9375 6.3315
 if [ $? -gt 0 ] ; then  echo "Failed comparison: $find_file" >&2 ; exit $? ; fi
@@ -420,7 +420,7 @@ sed -i -e "s|IS_opt_run         =.*|IS_opt_run         =2|"                    \
           rapid_namelist_San_Guad_JHM  
 
 sleep 3
-mpiexec -n 1 ./rapid -ksp_type preonly > $rapd_file
+mpiexec -n 1 ./rapid -ksp_type preonly -tao_gatol 0.01 -tao_grtol 0.0040 > $rapd_file
 ./rtk_opt_find.sh $rapd_file | cat > $find_file
 ./rtk_opt_comp.sh $find_file 0.5 3.75 6.33895
 if [ $? -gt 0 ] ; then  echo "Failed comparison: $find_file" >&2 ; exit $? ; fi
@@ -445,7 +445,7 @@ sed -i -e "s|IS_opt_run         =.*|IS_opt_run         =2|"                    \
        -e "s|kfac_file          =.*|kfac_file          ='$kfac_file'|"         \
           rapid_namelist_San_Guad_JHM  
 sleep 3
-mpiexec -n 1 ./rapid -ksp_type preonly > $rapd_file
+mpiexec -n 1 ./rapid -ksp_type preonly -tao_gatol 0.01 -tao_grtol 0.0040 > $rapd_file
 ./rtk_opt_find.sh $rapd_file | cat > $find_file
 ./rtk_opt_comp.sh $find_file 0.617188 1.95898 6.32206
 if [ $? -gt 0 ] ; then  echo "Failed comparison: $find_file" >&2 ; exit $? ; fi
@@ -470,7 +470,7 @@ sed -i -e "s|IS_opt_run         =.*|IS_opt_run         =2|"                    \
        -e "s|kfac_file          =.*|kfac_file          ='$kfac_file'|"         \
           rapid_namelist_San_Guad_JHM  
 sleep 3
-mpiexec -n 1 ./rapid -ksp_type preonly > $rapd_file
+mpiexec -n 1 ./rapid -ksp_type preonly -tao_gatol 0.01 -tao_grtol 0.0040 > $rapd_file
 ./rtk_opt_find.sh $rapd_file | cat > $find_file
 ./rtk_opt_comp.sh $find_file 0.5 1.75 6.33788
 if [ $? -gt 0 ] ; then  echo "Failed comparison: $find_file" >&2 ; exit $? ; fi
