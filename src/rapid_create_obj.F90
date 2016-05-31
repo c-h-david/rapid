@@ -190,6 +190,8 @@ call VecScatterCreateToZero(ZV_k,vecscat,ZV_SeqZero,ierr)
 !TAO specific-------------------------------------------------------------------
 call TaoCreate(PETSC_COMM_WORLD,tao,ierr)
 call TaoSetType(tao,'nm',ierr)
+call TaoSetTolerances(tao,1.0d-4,1.0d-4,PETSC_NULL_OBJECT,PETSC_NULL_OBJECT,   &
+                      PETSC_NULL_OBJECT,ierr)
 call TaoSetMaximumFunctionEvaluations(tao,50*IS_one,ierr)
 call TaoSetFromOptions(tao,ierr)
 !Create TAO App 

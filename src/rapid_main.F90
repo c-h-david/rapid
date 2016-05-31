@@ -265,8 +265,6 @@ call PetscLogStageRegister('Optimization   ',stage,ierr)
 call PetscLogStagePush(stage,ierr)
 call TaoSetObjectiveRoutine(tao,rapid_phiroutine,PETSC_NULL_OBJECT,ierr)
 call TaoSetInitialVector(tao,ZV_pnorm,ierr)
-call TaoSetTolerances(tao,1.0d-4,1.0d-4,PETSC_NULL_OBJECT,PETSC_NULL_OBJECT,   &
-                      PETSC_NULL_OBJECT,ierr)
 call TaoSolve(tao,ierr)
 
 call TaoView(tao,PETSC_VIEWER_STDOUT_WORLD,ierr)
