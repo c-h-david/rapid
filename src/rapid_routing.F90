@@ -156,6 +156,8 @@ end if
 !-------------------------------------------------------------------------------
 if (IS_opt_routing==3) then
 
+call KSPSetType(ksp,KSPPREONLY,ierr)                         !preonly enforced
+
 call KSPSolve(ksp,ZV_b,ZV_QoutRhat,ierr)                     !solves A*Qouthat=b
 call KSPGetIterationNumber(ksp,IS_ksp_iter,ierr)
 if (IS_ksp_iter>IS_ksp_iter_max) IS_ksp_iter_max=IS_ksp_iter

@@ -69,6 +69,8 @@ call MPI_Comm_size(PETSC_COMM_WORLD,ncore,ierr)
 
 !Create PETSc object that manages all Krylov methods ---------------------------
 call KSPCreate(PETSC_COMM_WORLD,ksp,ierr)
+call KSPSetType(ksp,KSPRICHARDSON,ierr)                    !default=richardson
+call KSPSetFromOptions(ksp,ierr)                           !if runtime options
 
 !Matrices-----------------------------------------------------------------------
 call MatCreate(PETSC_COMM_WORLD,ZM_Net,ierr)

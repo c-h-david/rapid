@@ -356,11 +356,7 @@ call rapid_routing_param(ZV_k,ZV_x,ZV_C1,ZV_C2,ZV_C3,ZM_A)
 !calculate Muskingum parameters and matrix ZM_A
 
 call KSPSetOperators(ksp,ZM_A,ZM_A,ierr)
-call KSPSetType(ksp,KSPRICHARDSON,ierr)                    !default=richardson
-!call KSPSetInitialGuessNonZero(ksp,PETSC_TRUE,ierr)
-!call KSPSetInitialGuessKnoll(ksp,PETSC_TRUE,ierr)
-call KSPSetFromOptions(ksp,ierr)                           !if runtime options
-if (IS_opt_routing==3) call KSPSetType(ksp,KSPPREONLY,ierr)!default=preonly
+!Set KSP to use matrix ZM_A
 
 !-------------------------------------------------------------------------------
 !End of initialization procedure for OPTION 1
