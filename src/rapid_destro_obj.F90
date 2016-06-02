@@ -29,8 +29,9 @@ use rapid_var, only :                                                          &
                    ZV_QoutRabsmin,ZV_QoutRabsmax,ZV_QoutRhat,                  &
                    ZV_VR,ZV_VinitR,ZV_VprevR,ZV_VbarR,ZV_VoutR,                &
                    ZV_Qobsbarrec,                                              &
+                   ZV_dQlat,ZV_dQout,ZV_sQout,                                 &
                    ierr,ksp,vecscat,ZV_SeqZero,ZS_one,ZV_one,IS_one,           &
-                   tao,ZV_1stIndex,ZV_2ndIndex
+                   tao,ZV_1stIndex,ZV_2ndIndex,rnd
 
 implicit none
 
@@ -58,12 +59,13 @@ implicit none
 !*******************************************************************************
 !Destruct all objects and finalize PETSc and TAO
 !*******************************************************************************
-!TAO specific-------------------------------------------------------------------
 call VecDestroy(ZV_1stIndex,ierr)
 call VecDestroy(ZV_2ndIndex,ierr)
 call TaoDestroy(tao,ierr)
 
 call KSPDestroy(ksp,ierr)
+
+call PetscRandomDestroy(rnd,ierr)
 
 call MatDestroy(ZM_hsh_tot,ierr)
 call MatDestroy(ZM_hsh_bas,ierr)
@@ -126,6 +128,10 @@ call VecDestroy(ZV_one,ierr)
 call VecDestroy(ZV_p,ierr)
 call VecDestroy(ZV_pnorm,ierr)
 call VecDestroy(ZV_pfac,ierr)
+
+call VecDestroy(ZV_dQlat,ierr)
+call VecDestroy(ZV_dQout,ierr)
+call VecDestroy(ZV_sQout,ierr)
 
 call VecDestroy(ZV_SeqZero,ierr)
 call VecScatterDestroy(vecscat,ierr)

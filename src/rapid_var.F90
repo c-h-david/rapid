@@ -51,6 +51,8 @@ logical :: BS_opt_dam
 !.false. --> no dam model used       .true. --> dam model used
 logical :: BS_opt_influence
 !.false. --> no output influence     .true. --> output influence
+logical :: BS_opt_uq
+!.false. --> no uncertainty quantif. .true. --> uncertainty quantif.
 PetscInt :: IS_opt_routing
 !1       --> matrix-based Muskingum  2      --> traditional Muskingum
 !3       --> Transbnd. matrix-based
@@ -416,6 +418,25 @@ PetscScalar :: ZS_V0=10000,ZS_Qout0=0
 
 
 !*******************************************************************************
+!Declaration of variables - Uncertainty quantification
+!*******************************************************************************
+PetscRandom :: rnd
+!Object for managing random numbers in PETSc
+PetscScalar :: ZS_rnd_uni1, ZS_rnd_uni2, ZS_rnd_norm
+!Scalars storing random numbers (with uniform and normal distribution)
+PetscScalar :: ZS_pi=4*atan(1.0)
+!Pi (the mathematical constant)
+PetscInt :: IS_uq, JS_uq
+!Total number of ensemble members used for uncertainty quantification
+
+PetscScalar,dimension(:), allocatable :: ZV_riv_tot_sQlat, ZV_riv_tot_dQlat
+!Vectors of size IS_riv_tot storing standard deviation and perturbation of Qlat
+Vec :: ZV_dQlat, ZV_dQout, ZV_sQout
+!Vectors of size IS_riv_bas storing the perturbation of Qlat and Qout, and the 
+!standard deviation of Qout.
+
+
+!*******************************************************************************
 !Declaration of variables - PETSc specific objects and variables
 !*******************************************************************************
 PetscErrorCode :: ierr
@@ -534,7 +555,8 @@ PetscInt :: IS_time, JS_time
 namelist /NL_namelist/                                                         &
                        BS_opt_Qinit,BS_opt_Qfinal,BS_opt_V,                    &
                        BS_opt_hum,BS_opt_for,BS_opt_dam,BS_opt_influence,      &
-                       IS_opt_routing,IS_opt_run,IS_opt_phi,                   &
+                       BS_opt_uq,                                              &
+                       IS_opt_routing,IS_opt_run,IS_opt_phi,IS_uq,             &
                        IS_riv_tot,rapid_connect_file,Vlat_file,IS_max_up,      &
                        iS_riv_bas,riv_bas_id_file,                             &
                        Qinit_file,Qfinal_file,                                 &
