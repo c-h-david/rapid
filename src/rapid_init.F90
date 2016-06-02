@@ -39,7 +39,7 @@ use rapid_var, only :                                                          &
                    IV_down,IV_nbup,IM_up,IM_index_up,IS_max_up,                &
                    IV_nz,IV_dnz,IV_onz,                                        &
                    BS_opt_Qinit,BS_opt_Qfinal,BS_opt_V,BS_opt_influence,       & 
-                   BS_opt_dam,BS_opt_for,BS_opt_hum,                           &
+                   BS_opt_dam,BS_opt_for,BS_opt_hum,BS_opt_uq,                 &
                    IS_opt_run,IS_opt_routing,IS_opt_phi,                       &
                    ZV_read_riv_tot,ZV_read_obs_tot,ZV_read_hum_tot,            &
                    ZV_read_for_tot,ZV_read_dam_tot,                            &
@@ -55,6 +55,7 @@ use rapid_var, only :                                                          &
                    IV_dam_tot_id,IV_dam_use_id,                                &
                    ZV_Qin_dam,ZV_Qout_dam,ZV_Qin_dam_prev,ZV_Qout_dam_prev,    &
                    ZV_Qin_dam0,ZV_Qout_dam0,                                   &
+                   ZV_riv_tot_sQlat,ZV_riv_tot_dQlat,                          &
                    ZV_QoutinitM,ZV_QoutinitO,ZV_QoutinitR,                     &
                    ZV_VinitM,ZV_VinitR,                                        &
                    ZV_babsmax,ZV_QoutRabsmin,ZV_QoutRabsmax,                   &
@@ -197,6 +198,11 @@ if (BS_opt_dam) then
      allocate(ZV_Qout_dam0(IS_dam_tot))
 end if
 
+if (BS_opt_uq) then
+     allocate(ZV_riv_tot_sQlat(IS_riv_tot))
+     allocate(ZV_riv_tot_dQlat(IS_riv_tot))
+end if
+
 !-------------------------------------------------------------------------------
 !Make sure some Fortran arrays are initialized to zero
 !-------------------------------------------------------------------------------
@@ -246,6 +252,10 @@ if (rank==0 .and. .not. BS_opt_hum)                        print '(a70)',      &
        'Not using human-induced flows                                          '
 if (rank==0 .and. BS_opt_hum)                              print '(a70)',      &
        'Using human-induced flows                                              '
+if (rank==0 .and. .not. BS_opt_uq .and. IS_opt_run==1)     print '(a70)',      &
+       'Not quantifying uncertainty                                            '
+if (rank==0 .and. BS_opt_uq .and. IS_opt_run==1)           print '(a70)',      &
+       'Quantifying uncertainty                                                '
 if (rank==0 .and. IS_opt_routing==1)                       print '(a70)',      &
        'Routing with matrix-based Muskingum method                             '
 if (rank==0 .and. IS_opt_routing==2)                       print '(a70)',      &
@@ -348,6 +358,11 @@ call VecAssemblyBegin(ZV_x,ierr)
 call VecAssemblyEnd(ZV_x,ierr)
 close(21)
 !get values for x in a file and create the corresponding ZV_x vector
+
+!-------------------------------------------------------------------------------
+!Quantify uncertainty
+!-------------------------------------------------------------------------------
+if (BS_opt_uq) call rapid_uq
 
 !-------------------------------------------------------------------------------
 !Compute routing parameters and linear system matrix
