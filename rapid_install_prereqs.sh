@@ -182,7 +182,7 @@ if [ ! -d petsc-3.6.2 ]; then
         ./configure PETSC_DIR=$PWD PETSC_ARCH=linux-gcc-c --download-fblaslapack=1 --download-mpich=1 --with-cc=gcc --with-cxx=g++ --with-fc=gfortran --with-clanguage=cxx --with-debugging=0 --with-windows-graphics=0
     elif [ "$HPC_MODE" == "YES" ]; then
         #HPC
-        ./configure PETSC_DIR=$PWD PETSC_ARCH=llinux-gcc-c --download-fblaslapack=1 --with-cc=$SGI_MPICC --with-cxx=$SGI_MPICXX --with-clanguage=cxx  --with-mpi-f90=$SGI_MPIF90 --with-mpiexec=$SGI_MPIEXEC --with-debugging=0 CPPFLAGS=$CPPFLAGS LDFLAGS=$LDFLAGS
+        ./configure PETSC_DIR=$PWD PETSC_ARCH=linux-gcc-c --download-fblaslapack=1 --with-cc=$SGI_MPICC --with-cxx=$SGI_MPICXX --with-clanguage=cxx  --with-mpi-f90=$SGI_MPIF90 --with-mpiexec=$SGI_MPIEXEC --with-debugging=0 CPPFLAGS=$CPPFLAGS LDFLAGS=$LDFLAGS
     else
         #Linux/Mac
         ./configure PETSC_DIR=$PWD PETSC_ARCH=linux-gcc-c --download-fblaslapack=1 --download-mpich=1 --with-cc=gcc --with-cxx=g++ --with-fc=gfortran --with-clanguage=cxx --with-debugging=0
