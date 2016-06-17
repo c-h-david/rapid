@@ -58,27 +58,10 @@ before_install:
 - export INSTALLZ_DIR=$PWD
 
 #-------------------------------------------------------------------------------
-#Installing netCDF 3.6.3
+#Install libraries used by rapid
 #-------------------------------------------------------------------------------
-- cd $INSTALLZ_DIR
-- wget "ftp://ftp.unidata.ucar.edu/pub/netcdf/netcdf-3.6.3.tar.gz"
-- mkdir netcdf-3.6.3-install
-- tar -xf netcdf-3.6.3.tar.gz
-- cd netcdf-3.6.3
-- ./configure --prefix=$INSTALLZ_DIR/netcdf-3.6.3-install
-- make check
-- make install
-
-#-------------------------------------------------------------------------------
-#Installing PETSc 3.6.2
-#-------------------------------------------------------------------------------
-- cd $INSTALLZ_DIR
-- wget "http://ftp.mcs.anl.gov/pub/petsc/release-snapshots/petsc-3.6.2.tar.gz" 
-- tar -xf petsc-3.6.2.tar.gz
-- cd petsc-3.6.2
-- ./configure PETSC_DIR=$PWD PETSC_ARCH=linux-gcc-c --download-fblaslapack=1 --download-mpich=1 --with-cc=gcc --with-cxx=g++ --with-fc=gfortran --with-debugging=0
-- make PETSC_DIR=$PWD PETSC_ARCH=linux-gcc-c all
-- make PETSC_DIR=$PWD PETSC_ARCH=linux-gcc-c test
+- cd $TRAVIS_BUILD_DIR
+- ./rapid_install_prereqs.sh -i=$INSTALLZ_DIR
 
 #-------------------------------------------------------------------------------
 #Exporting environment variables 
@@ -94,7 +77,6 @@ before_install:
 #-------------------------------------------------------------------------------
 - export PATH=$PATH:/$PETSC_DIR/$PETSC_ARCH/bin
 - export PATH=$PATH:$INSTALLZ_DIR/netcdf-3.6.3-install/bin
-
 
 #*******************************************************************************
 #Installing RAPID
