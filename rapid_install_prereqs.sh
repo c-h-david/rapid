@@ -4,7 +4,7 @@
 #*******************************************************************************
 
 #Purpose:
-#This shell script installs all prerequisites for running RAPID on Linux, MAC, 
+#This shell script installs all prerequisites for running RAPID on Linux, Mac, 
 #or Cygwin.
 #Author:
 #Alan D. Snow and Cedric H. David, 2015-2016, based on tutorial by Cedric H. 
@@ -105,15 +105,22 @@ esac
 done
 
 #-------------------------------------------------------------------------------
-#Check installation directory has an absolute path
+#Check if $INSTALLZ_DIR is a directory and if its path is absolute
 #-------------------------------------------------------------------------------
-if [[ ! "$INSTALLZ_DIR" = /* ]]; then
-    echo "ERROR: Installation path must be absolute: $INSTALLZ_DIR is not."
+if [ ! -d "$INSTALLZ_DIR" ]; then
+    echo "ERROR: $INSTALLZ_DIR is not a directory" 1>&2
     exit 22
 fi
+#Check if $INSTALLZ_DIR is a directory
+
+if [[ ! "$INSTALLZ_DIR" = /* ]]; then
+    echo "ERROR: $INSTALLZ_DIR is not an absolute path" 1>&2
+    exit 22
+fi
+#Check if $INSTALLZ_DIR is an absolute path
 
 #-------------------------------------------------------------------------------
-#Check installation directory has an absolute path
+#Print options on standard output 
 #-------------------------------------------------------------------------------
 echo "Installing RAPID prereqs in: $INSTALLZ_DIR"
 
