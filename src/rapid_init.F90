@@ -56,6 +56,7 @@ use rapid_var, only :                                                          &
                    ZV_Qin_dam,ZV_Qout_dam,ZV_Qin_dam_prev,ZV_Qout_dam_prev,    &
                    ZV_Qin_dam0,ZV_Qout_dam0,                                   &
                    ZV_riv_tot_sQlat,ZV_riv_tot_dQlat,                          &
+                   ZV_riv_bas_sQout,ZV_riv_bas_dQout,                          &
                    ZV_QoutinitM,ZV_QoutinitO,ZV_QoutinitR,                     &
                    ZV_VinitM,ZV_VinitR,                                        &
                    ZV_babsmax,ZV_QoutRabsmin,ZV_QoutRabsmax,                   &
@@ -201,6 +202,8 @@ end if
 if (BS_opt_uq) then
      allocate(ZV_riv_tot_sQlat(IS_riv_tot))
      allocate(ZV_riv_tot_dQlat(IS_riv_tot))
+     allocate(ZV_riv_bas_sQout(IS_riv_bas))
+     allocate(ZV_riv_bas_dQout(IS_riv_bas))
 end if
 
 !-------------------------------------------------------------------------------
@@ -215,6 +218,14 @@ IM_time_bnds=-9999
 if (BS_opt_dam) then
      ZV_Qin_dam0 =0
      ZV_Qout_dam0=0
+end if
+!These are not populated anywhere before being used and hold meaningless values
+
+if (BS_opt_uq) then
+     ZV_riv_tot_sQlat=0
+     ZV_riv_tot_dQlat=0
+     ZV_riv_bas_sQout=0
+     ZV_riv_bas_dQout=0
 end if
 !These are not populated anywhere before being used and hold meaningless values
 
@@ -358,11 +369,6 @@ call VecAssemblyBegin(ZV_x,ierr)
 call VecAssemblyEnd(ZV_x,ierr)
 close(21)
 !get values for x in a file and create the corresponding ZV_x vector
-
-!-------------------------------------------------------------------------------
-!Quantify uncertainty
-!-------------------------------------------------------------------------------
-if (BS_opt_uq) call rapid_uq
 
 !-------------------------------------------------------------------------------
 !Compute routing parameters and linear system matrix
