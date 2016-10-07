@@ -32,6 +32,7 @@ use rapid_var, only :                                                          &
                    ZS_time1,ZS_time2,ZS_time3,                                 &
                    IV_nc_start,IV_nc_count,IV_nc_count2,                       &
                    BS_opt_V,BS_opt_for,BS_opt_hum,BS_opt_dam,IS_opt_run,       &
+                   BS_opt_uq,                                                  &
                    tao
 
 implicit none
@@ -80,6 +81,11 @@ if (IS_opt_run==1) then
 !-------------------------------------------------------------------------------
 call rapid_open_Vlat_file(Vlat_file)
 call rapid_meta_Vlat_file(Vlat_file)
+
+!-------------------------------------------------------------------------------
+!Quantify uncertainty
+!-------------------------------------------------------------------------------
+if (BS_opt_uq) call rapid_uq
 
 !-------------------------------------------------------------------------------
 !Create and open Qout file
