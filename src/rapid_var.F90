@@ -431,9 +431,11 @@ PetscInt :: IS_uq, JS_uq
 
 PetscScalar,dimension(:), allocatable :: ZV_riv_tot_sQlat, ZV_riv_tot_dQlat
 !Vectors of size IS_riv_tot storing standard deviation and perturbation of Qlat
-Vec :: ZV_dQlat, ZV_dQout, ZV_sQout
+Vec :: ZV_dQlat, ZV_sQlat, ZV_dQout, ZV_sQout
 !Vectors of size IS_riv_bas storing the perturbation of Qlat and Qout, and the 
-!standard deviation of Qout.
+!standard deviation of Qlat and Qout.
+PetscScalar,dimension(:), allocatable :: ZV_riv_bas_sQout, ZV_riv_bas_dQout
+!Vectors of size IS_riv_bas storing standard deviation and perturbation of Qout
 
 
 !*******************************************************************************
@@ -513,7 +515,8 @@ PetscInt :: IS_nc_status
 PetscInt :: IS_nc_id_fil_Vlat,IS_nc_id_fil_Qout,IS_nc_id_fil_V
 PetscInt :: IS_nc_id_var_Vlat,IS_nc_id_var_Qout,IS_nc_id_var_rivid,            &
             IS_nc_id_var_V,IS_nc_id_var_time,IS_nc_id_var_lon,IS_nc_id_var_lat,&
-            IS_nc_id_var_time_bnds,IS_nc_id_var_crs
+            IS_nc_id_var_time_bnds,IS_nc_id_var_crs,                           &
+            IS_nc_id_var_sVlat,IS_nc_id_var_sQout
 PetscInt :: IS_nc_id_dim_rivid,IS_nc_id_dim_time,IS_nc_id_dim_nv
 PetscInt, parameter :: IS_nc_ndim=2
 PetscInt, dimension(IS_nc_ndim) :: IV_nc_id_dim, IV_nc_start, IV_nc_count,     &

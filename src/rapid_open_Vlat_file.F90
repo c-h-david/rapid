@@ -16,7 +16,7 @@ use netcdf
 use rapid_var, only :                                                          &
                    rank,IS_nc_status,IS_nc_id_fil_Vlat,IS_nc_id_var_Vlat,      &
                    IS_nc_id_var_time,IS_nc_id_var_time_bnds,IS_nc_id_var_crs,  &
-                   IS_nc_id_var_lon,IS_nc_id_var_lat     
+                   IS_nc_id_var_lon,IS_nc_id_var_lat, IS_nc_id_var_sVlat  
 
 implicit none
 
@@ -52,6 +52,8 @@ if (rank==0) then
      if (IS_nc_status<0) IS_nc_id_var_lat=-9999
      IS_nc_status=NF90_INQ_VARID(IS_nc_id_fil_Vlat,'crs',IS_nc_id_var_crs)
      if (IS_nc_status<0) IS_nc_id_var_crs=-9999
+     IS_nc_status=NF90_INQ_VARID(IS_nc_id_fil_Vlat,'sm3_riv',IS_nc_id_var_sVlat)
+     if (IS_nc_status<0) IS_nc_id_var_sVlat=-9999
      !A negative value for IS_nc_id_var_* is used if the variable doesn't exist,
      !this is because the default value of "1" might match another existing 
      !variable.  
