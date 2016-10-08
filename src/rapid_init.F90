@@ -199,10 +199,12 @@ if (BS_opt_dam) then
      allocate(ZV_Qout_dam0(IS_dam_tot))
 end if
 
+allocate(ZV_riv_tot_sQlat(IS_riv_tot)) !Used in rapid_meta_Vlat_file
+                                       !regardless of BS_opt_uq
+allocate(ZV_riv_bas_sQout(IS_riv_bas)) !Used in rapid_create_Qout_file 
+                                       !regardless of BS_opt_uq
 if (BS_opt_uq) then
-     allocate(ZV_riv_tot_sQlat(IS_riv_tot))
      allocate(ZV_riv_tot_dQlat(IS_riv_tot))
-     allocate(ZV_riv_bas_sQout(IS_riv_bas))
      allocate(ZV_riv_bas_dQout(IS_riv_bas))
 end if
 
@@ -221,10 +223,10 @@ if (BS_opt_dam) then
 end if
 !These are not populated anywhere before being used and hold meaningless values
 
+ZV_riv_tot_sQlat=0      !Used in rapid_meta_Vlat_file regardless of BS_opt_uq
+ZV_riv_bas_sQout=0      !Used in rapid_create_Qout_file regardless of BS_opt_uq
 if (BS_opt_uq) then
-     ZV_riv_tot_sQlat=0
      ZV_riv_tot_dQlat=0
-     ZV_riv_bas_sQout=0
      ZV_riv_bas_dQout=0
 end if
 !These are not populated anywhere before being used and hold meaningless values
