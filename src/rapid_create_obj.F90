@@ -28,8 +28,9 @@ use rapid_var, only :                                                          &
                    ZV_QoutRabsmin,ZV_QoutRabsmax,ZV_QoutRhat,                  &
                    ZV_VR,ZV_VinitR,ZV_VprevR,ZV_VbarR,ZV_VoutR,                &
                    ZV_Qobsbarrec,                                              &
+                   ZV_dQlat,ZV_sQlat,ZV_dQout,ZV_sQout,                        &
                    ierr,ksp,vecscat,ZV_SeqZero,ZS_one,ZV_one,IS_one,ncore,rank,&
-                   tao,ZV_1stIndex,ZV_2ndIndex
+                   tao,ZV_1stIndex,ZV_2ndIndex,rnd
 
 implicit none
 
@@ -69,6 +70,13 @@ call MPI_Comm_size(PETSC_COMM_WORLD,ncore,ierr)
 
 !Create PETSc object that manages all Krylov methods ---------------------------
 call KSPCreate(PETSC_COMM_WORLD,ksp,ierr)
+call KSPSetType(ksp,KSPRICHARDSON,ierr)                    !default=richardson
+call KSPSetFromOptions(ksp,ierr)                           !if runtime options
+
+!Random number generator -------------------------------------------------------
+call PetscRandomCreate(PETSC_COMM_WORLD,rnd,ierr)
+!call PetscRandomSetType(rnd,PETSCRANDER48,ierr)                               !######    
+call PetscRandomSetFromOptions(rnd,ierr)
 
 !Matrices-----------------------------------------------------------------------
 call MatCreate(PETSC_COMM_WORLD,ZM_Net,ierr)
@@ -163,6 +171,11 @@ call VecDuplicate(ZV_k,ZV_temp2,ierr)
 call VecDuplicate(ZV_k,ZV_Qobs,ierr)
 call VecDuplicate(ZV_k,ZV_kfac,ierr)
 call VecDuplicate(ZV_k,ZV_Qobsbarrec,ierr)
+
+call VecDuplicate(ZV_k,ZV_dQlat,ierr)
+call VecDuplicate(ZV_k,ZV_sQlat,ierr)
+call VecDuplicate(ZV_k,ZV_dQout,ierr)
+call VecDuplicate(ZV_k,ZV_sQout,ierr)
 !all the other vector objects are duplicates of the first one
 
 
@@ -190,6 +203,9 @@ call VecScatterCreateToZero(ZV_k,vecscat,ZV_SeqZero,ierr)
 !TAO specific-------------------------------------------------------------------
 call TaoCreate(PETSC_COMM_WORLD,tao,ierr)
 call TaoSetType(tao,'nm',ierr)
+call TaoSetTolerances(tao,PETSC_NULL_OBJECT,PETSC_NULL_OBJECT,                 &
+                      PETSC_DEFAULT_REAL,PETSC_DEFAULT_REAL,PETSC_DEFAULT_REAL,&
+                      ierr)
 call TaoSetMaximumFunctionEvaluations(tao,50*IS_one,ierr)
 call TaoSetFromOptions(tao,ierr)
 !Create TAO App 
@@ -205,6 +221,7 @@ call VecSetValues(ZV_2ndIndex,IS_one,IS_one,ZS_one,INSERT_VALUES,ierr)
 call VecAssemblyBegin(ZV_2ndIndex,ierr)
 call VecAssemblyEnd(ZV_2ndIndex,ierr)
 !ZV_2ndindex=[0;1]
+
 
 !*******************************************************************************
 !End subroutine

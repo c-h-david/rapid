@@ -31,7 +31,7 @@ use rapid_var, only :                                                          &
                    ksp,                                                        &
                    ZS_one,temp_char,                                           &
                    IV_nc_start,IV_nc_count,                                    &
-                   IS_opt_phi,BS_opt_for,IS_strt_opt,IS_opt_routing,           &
+                   IS_opt_phi,BS_opt_for,IS_strt_opt,                          &
                    BS_opt_dam,IS_dam_bas,ZV_Qdam,BS_opt_hum,ZV_Qhum
 
 
@@ -86,10 +86,7 @@ call rapid_routing_param(ZV_k,ZV_x,ZV_C1,ZV_C2,ZV_C3,ZM_A)
 !calculate Muskingum parameters and matrix ZM_A
 
 call KSPSetOperators(ksp,ZM_A,ZM_A,ierr)
-call KSPSetType(ksp,KSPRICHARDSON,ierr)                    !default=richardson
-call KSPSetFromOptions(ksp,ierr)                           !if runtime options
 !Set KSP to use matrix ZM_A
-if (IS_opt_routing==3) call KSPSetType(ksp,KSPPREONLY,ierr)!default=preonly
 
 
 !*******************************************************************************

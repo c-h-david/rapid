@@ -19,6 +19,7 @@ sed -i -e "s|BS_opt_Qinit       =.*|BS_opt_Qinit       =.false.|"              \
        -e "s|BS_opt_dam         =.*|BS_opt_dam         =.false.|"              \
        -e "s|BS_opt_for         =.*|BS_opt_for         =.false.|"              \
        -e "s|BS_opt_influence   =.*|BS_opt_influence   =.false.|"              \
+       -e "s|BS_opt_uq          =.*|BS_opt_uq          =.false.|"              \
        -e "s|IS_opt_routing     =.*|IS_opt_routing     =1|"                    \
        -e "s|IS_opt_run         =.*|IS_opt_run         =1|"                    \
        -e "s|IS_opt_phi         =.*|IS_opt_phi         =1|"                    \

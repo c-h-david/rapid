@@ -4,9 +4,11 @@
 #*******************************************************************************
 
 #Purpose:
-#This shell script installs programs required for RAPID on Linux, MAC, or Cygwin.
+#This shell script installs all prerequisites for running RAPID on Linux, Mac, 
+#or Cygwin.
 #Author:
-#Alan D. Snow and Cedric H. David, 2015-2016, based on tutorial by Cedric H. David
+#Alan D. Snow and Cedric H. David, 2015-2016, based on tutorial by Cedric H. 
+#David
 
 
 #*******************************************************************************
@@ -16,46 +18,46 @@
 # $ chmod u+x rapid_install_prereqs.sh
 #
 #Compilers for C, C++ and FORTRAN are needed in order to install the libraries
-#used by RAPID. Here we use the GNU Compiler Collection. Make all necessary
-#compilers are installed by executing:
+#used by RAPID. Here we use the GNU Compiler Collection (GCC). One can make sure
+#that all necessary compilers are installed by executing:
 # $ which gcc
 # $ which g++
 # $ which gfortran
 #
 #If one or more of the compilers is missing, execute:
-# $ apt-get install g++ gfortran (Debian)
-# $ yum install g++ gfortran (Red Hat)
+# $ yum install gcc g++ gfortran (Red Hat)
+# $ apt-get install gcc g++ gfortran (Debian)
+# $ brew install gcc --enable-cxx (Mac)
 
 
 #*******************************************************************************
-#Get command line args
+#Get command line arguments
 #*******************************************************************************
-#Installation directory
+
+#-------------------------------------------------------------------------------
+#Default arguments
+#-------------------------------------------------------------------------------
 INSTALLZ_DIR=$HOME/installz
-#Update the location of the installation directory as you wish, but do not move
-#anything after running this script, or do so at your own risks!
-HPC_MODE=NO
-FORCE_INSTALL_NETCDF=NO
-FORCE_INSTALL_PETSC=NO
+#Default installation directory. This can be set from the command line using the
+#'-i' option. This location can be updated as wished, but do not move anything 
+#after running this script, or do so at your own risks!
+
+FORCE_INSTALL_NETCDF=false
+#Installation of netCDF is not forced by default.
+
+FORCE_INSTALL_PETSC=false
+#Installation of PETSc is not forced by default.
+
+#-------------------------------------------------------------------------------
+#Command line arguments
+#-------------------------------------------------------------------------------
 for i in "$@"
 do
 case $i in
--i=*|--installz=*)
-INSTALLZ_DIR="${i#*=}"
-shift
-;;
--hpc)
-HPC_MODE=YES
-shift
-;;
--nf|--netcdf_force)
-FORCE_INSTALL_NETCDF=YES
-shift
-;;
--pf|--petsc_force)
-FORCE_INSTALL_PETSC=YES
-shift
-;;
+
+#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+#Display help message
+#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 -h|--help)
 echo "To install with defaults, ./install_rapid_prereqs.sh"
 echo "-i=/path/to/installz | --installz=/path/to/installz | last argument /path/to/installz"
@@ -63,53 +65,80 @@ echo "To force installation of NetCDF: -nf | --netcdf_force"
 echo "To force installation of PETSc: -pf | --petsc_force"
 exit
 ;;
-*)
-# unknown option
+
+#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+#Installation directory
+#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+-i=*|--installz=*)
+INSTALLZ_DIR="${i#*=}"
+shift
 ;;
+
+#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+#Forcing installation of netCDF
+#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+-nf|--netcdf_force)
+FORCE_INSTALL_NETCDF=true
+shift
+;;
+
+#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+#Forcing installation of PETSc
+#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+-pf|--petsc_force)
+FORCE_INSTALL_PETSC=true
+shift
+;;
+
+#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+#Unknown option
+#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+*)
+echo "Unknown option"
+exit 22
+;;
+
+#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+#End command line options
+#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 esac
 done
 
-if [[ -n $1 ]]; then
-    INSTALLZ_DIR=$1
+#-------------------------------------------------------------------------------
+#Check if $INSTALLZ_DIR is a directory and if its path is absolute
+#-------------------------------------------------------------------------------
+if [ ! -d "$INSTALLZ_DIR" ]; then
+    echo "ERROR: $INSTALLZ_DIR is not a directory" 1>&2
+    exit 22
 fi
+#Check if $INSTALLZ_DIR is a directory
 
 if [[ ! "$INSTALLZ_DIR" = /* ]]; then
-    echo "ERROR: Relative install path given ($INSTALLZ_DIR). Install path must be absolute."
-    exit 1
+    echo "ERROR: $INSTALLZ_DIR is not an absolute path" 1>&2
+    exit 22
 fi
+#Check if $INSTALLZ_DIR is an absolute path
 
+#-------------------------------------------------------------------------------
+#Print options on standard output 
+#-------------------------------------------------------------------------------
 echo "Installing RAPID prereqs in: $INSTALLZ_DIR"
 
-if [ "$HPC_MODE" == "YES" ]; then
-    #Additionally, we will use the mpi/sgimpt module. You will need to load this module
-    # if it is missing. To check if it is missing, execute:
-    # $ module list
-    #To find available modules, execute:
-    # $ module avail
+if $FORCE_INSTALL_NETCDF ; then 
+     echo "Forcing reinstallation of netCDF even if its directory exists." 
+else 
+     echo "Not forcing reinstallation of netCDF if its directory exists." 
+fi 
 
-    #*******************************************************************************
-    #Load Required Modules
-    #*******************************************************************************
-    module load valgrind
-    module load mpi/sgimpt
+if $FORCE_INSTALL_PETSC ; then 
+     echo "Forcing reinstallation of PETSc even if its directory exists." 
+else 
+     echo "Not forcing reinstallation of PETSc if its directory exists." 
+fi 
 
-    #*******************************************************************************
-    #SGI MPI Paths
-    #*******************************************************************************
-    # to find the paths required for your instance, execute:
-    # $ module show mpi/sgimpt
-    # look for a line like:
-    # prepend-path	 PATH /p/home/apps/sgi/mpt-2.12-sgi712r26/bin
-    # then go to the directory and find the modules
-    SGI_MPIDIR=/p/home/apps/sgi/mpt-2.12-sgi712r26/bin
-    SGI_MPICC=$SGI_MPIDIR/mpicc
-    SGI_MPICXX=$SGI_MPIDIR/mpicxx
-    SGI_MPIF90=$SGI_MPIDIR/mpif90
-    SGI_MPIEXEC=$SGI_MPIDIR/mpiexec_mpt
-fi
 
 #*******************************************************************************
-#Main script
+#Installing prerequisites
 #*******************************************************************************
 mkdir -p $INSTALLZ_DIR
 
@@ -118,13 +147,12 @@ mkdir -p $INSTALLZ_DIR
 #-------------------------------------------------------------------------------
 cd $INSTALLZ_DIR
 
-#IF FORCE INSTALL, REMOVE OLD DIRECTORIES
-if [ "$FORCE_INSTALL_NETCDF" == "YES" ]; then
+if $FORCE_INSTALL_NETCDF ; then 
     rm -rf netcdf-3.6.3
     rm -rf netcdf-3.6.3-install
 fi
+#Remove old netCDF directories if FORCE_INSTALL_NETCDF
 
-#DOWNLOAD IF DOES NOT EXIST
 if [ ! -f netcdf-3.6.3.tar.gz ] && [ ! -d netcdf-3.6.3 ]; then
     if [ "$(uname)" == "Darwin" ]; then
         curl -o netcdf-3.6.3.tar.gz "http://www.unidata.ucar.edu/downloads/netcdf/ftp/netcdf-3.6.3.tar.gz"
@@ -132,11 +160,12 @@ if [ ! -f netcdf-3.6.3.tar.gz ] && [ ! -d netcdf-3.6.3 ]; then
         wget -nc "http://www.unidata.ucar.edu/downloads/netcdf/ftp/netcdf-3.6.3.tar.gz"
     fi
 fi
+#Download netCDF installation file if it does not exist
 
-#EXTRACT & INSTALL
 if [ ! -d netcdf-3.6.3 ]; then
     tar -xzf netcdf-3.6.3.tar.gz
 fi
+#Extract netCDF installation file if directory does not exist
 
 if [ ! -d netcdf-3.6.3-install ]; then
     mkdir -p netcdf-3.6.3-install
@@ -145,70 +174,57 @@ if [ ! -d netcdf-3.6.3-install ]; then
     make check > check.log
     make install > install.log
 else
-    echo "Skipping NetCDF installation because netcdf-3.6.3 and netcdf-3.6.3-install directories found. To force installation of NetCDF run with -nf | --netcdf_force option."
-    echo "For example: ./rapid_install_prereqs -nf $INSTALLZ_DIR"
+    echo "- Skipped netCDF installation: netcdf-3.6.3-install directory" 
+    echo "  already exists."
+    echo "  To force installation, run with -nf or --netcdf_force."
 fi
-
-#CLEANUP
-if [ -f netcdf-3.6.3.tar.gz ]; then
-    rm netcdf-3.6.3.tar.gz
-fi
+#Install netCDF if directory does not exist
 
 #-------------------------------------------------------------------------------
 #Installing PETSc 3.6.2
 #-------------------------------------------------------------------------------
 cd $INSTALLZ_DIR
 
-#IF FORCE INSTALL, REMOVE OLD DIRECTORY
-if [ "$FORCE_INSTALL_PETSC" == "YES" ]; then
+if $FORCE_INSTALL_PETSC ; then 
     rm -rf petsc-3.6.2
 fi
+#Remove old PETSc directories if FORCE_INSTALL_PETSC
 
-#DOWNLOAD IF DOES NOT EXIST
 if [ ! -d petsc-3.6.2.tar.gz ] && [ ! -d petsc-3.6.2 ]; then
     if [ "$(uname)" == "Darwin" ]; then
         curl -o petsc-3.6.2.tar.gz "http://ftp.mcs.anl.gov/pub/petsc/release-snapshots/petsc-3.6.2.tar.gz"
+        #Mac
     else
         wget "http://ftp.mcs.anl.gov/pub/petsc/release-snapshots/petsc-3.6.2.tar.gz"
+        #Linux/Cygwin
     fi
 fi
+#Download PETSc installation file if it does not exist
 
-#EXTRACT & INSTALL
 if [ ! -d petsc-3.6.2 ]; then
-    tar -xf petsc-3.6.2.tar.gz
+    tar -xzf petsc-3.6.2.tar.gz
+fi
+#Extract PETSc installation file if directory does not exist
+
+if [ ! -d petsc-3.6.2/linux-gcc-c ]; then
     cd petsc-3.6.2
     if [ "$(expr substr $(uname -s) 1 9)" == "CYGWIN_NT" ]; then
-        #CYGWIN
-	python2 './configure' 'PETSC_DIR='$PWD 'PETSC_ARCH=linux-gcc-c' '--download-fblaslapack=1' '--download-mpich=1' '--with-cc=gcc' '--with-cxx=g++' '--with-fc=gfortran' '--with-clanguage=cxx' '--with-debugging=0' '--with-windows-graphics=0'
-    elif [ "$HPC_MODE" == "YES" ]; then
-        #HPC
-	python2 './configure' 'PETSC_DIR='$PWD 'PETSC_ARCH=linux-gcc-c' '--download-fblaslapack=1' '--download-mpich=1' '--with-cc=${SGI_MPI_CC}' '--with-cxx=${SGI_MPICXX}' '--with-mpi-f90=${SGI_MPIF90}' '--with-clanguage=cxx' '--with-mpiexec=${SGI_MPIEXEC}' '--with-debugging=0' 'CPPFLAGS=${CPPFLAGS}' 'LDFLAGS=${LDFLAGS}'
+        ./configure PETSC_DIR=$PWD PETSC_ARCH=linux-gcc-c --download-fblaslapack=1 --download-mpich=1 --with-cc=gcc --with-cxx=g++ --with-fc=gfortran --with-clanguage=cxx --with-debugging=0 --with-windows-graphics=0
+        #Cygwin
     else
+        ./configure PETSC_DIR=$PWD PETSC_ARCH=linux-gcc-c --download-fblaslapack=1 --download-mpich=1 --with-cc=gcc --with-cxx=g++ --with-fc=gfortran --with-clanguage=cxx --with-debugging=0
         #Linux/Mac
-	python2 './configure' 'PETSC_DIR='$PWD 'PETSC_ARCH=linux-gcc-c' '--download-fblaslapack=1' '--download-mpich=1' '--with-cc=gcc' '--with-cxx=g++' '--with-fc=gfortran' '--with-clanguage=cxx' '--with-debugging=0'
     fi
     make PETSC_DIR=$PWD PETSC_ARCH=linux-gcc-c all
     make PETSC_DIR=$PWD PETSC_ARCH=linux-gcc-c test
 else
-    echo "Skipping PETSc installation because petsc-3.6.2 directory found. To force installation of PETSc run with -pf | --petsc_force option."
-    echo "For example: ./rapid_install_prereqs -pf $INSTALLZ_DIR"
+    echo "- Skipped PETSc installation: petsc-3.6.2/linux-gcc-c directory" 
+    echo "  already exists."
+    echo "  To force installation, run with -pf or --petsc_force."
 fi
+#Install PETSc if directory does not exist
 
-#CLEANUP
-if [ -f petsc-3.6.2.tar.gz ]; then
-    rm petsc-3.6.2.tar.gz
-fi
 
-#-------------------------------------------------------------------------------
-#Exporting environment variables
-#-------------------------------------------------------------------------------
-export TACC_NETCDF_LIB=$INSTALLZ_DIR/netcdf-3.6.3-install/lib
-export TACC_NETCDF_INC=$INSTALLZ_DIR/netcdf-3.6.3-install/include
-export PETSC_DIR=$INSTALLZ_DIR/petsc-3.6.2
-export PETSC_ARCH='linux-gcc-c'
-
-#-------------------------------------------------------------------------------
-#Exporting directories with library-related executables to $PATH
-#-------------------------------------------------------------------------------
-export PATH=$PATH:$PETSC_DIR/$PETSC_ARCH/bin
-export PATH=$PATH:$INSTALLZ_DIR/netcdf-3.6.3-install/bin
+#*******************************************************************************
+#End
+#*******************************************************************************

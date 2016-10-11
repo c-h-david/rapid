@@ -39,7 +39,7 @@ use rapid_var, only :                                                          &
                    IV_down,IV_nbup,IM_up,IM_index_up,IS_max_up,                &
                    IV_nz,IV_dnz,IV_onz,                                        &
                    BS_opt_Qinit,BS_opt_Qfinal,BS_opt_V,BS_opt_influence,       & 
-                   BS_opt_dam,BS_opt_for,BS_opt_hum,                           &
+                   BS_opt_dam,BS_opt_for,BS_opt_hum,BS_opt_uq,                 &
                    IS_opt_run,IS_opt_routing,IS_opt_phi,                       &
                    ZV_read_riv_tot,ZV_read_obs_tot,ZV_read_hum_tot,            &
                    ZV_read_for_tot,ZV_read_dam_tot,                            &
@@ -55,6 +55,8 @@ use rapid_var, only :                                                          &
                    IV_dam_tot_id,IV_dam_use_id,                                &
                    ZV_Qin_dam,ZV_Qout_dam,ZV_Qin_dam_prev,ZV_Qout_dam_prev,    &
                    ZV_Qin_dam0,ZV_Qout_dam0,                                   &
+                   ZV_riv_tot_sQlat,ZV_riv_tot_dQlat,                          &
+                   ZV_riv_bas_sQout,ZV_riv_bas_dQout,                          &
                    ZV_QoutinitM,ZV_QoutinitO,ZV_QoutinitR,                     &
                    ZV_VinitM,ZV_VinitR,                                        &
                    ZV_babsmax,ZV_QoutRabsmin,ZV_QoutRabsmax,                   &
@@ -197,6 +199,15 @@ if (BS_opt_dam) then
      allocate(ZV_Qout_dam0(IS_dam_tot))
 end if
 
+allocate(ZV_riv_tot_sQlat(IS_riv_tot)) !Used in rapid_meta_Vlat_file
+                                       !regardless of BS_opt_uq
+allocate(ZV_riv_bas_sQout(IS_riv_bas)) !Used in rapid_create_Qout_file 
+                                       !regardless of BS_opt_uq
+if (BS_opt_uq) then
+     allocate(ZV_riv_tot_dQlat(IS_riv_tot))
+     allocate(ZV_riv_bas_dQout(IS_riv_bas))
+end if
+
 !-------------------------------------------------------------------------------
 !Make sure some Fortran arrays are initialized to zero
 !-------------------------------------------------------------------------------
@@ -209,6 +220,14 @@ IM_time_bnds=-9999
 if (BS_opt_dam) then
      ZV_Qin_dam0 =0
      ZV_Qout_dam0=0
+end if
+!These are not populated anywhere before being used and hold meaningless values
+
+ZV_riv_tot_sQlat=0      !Used in rapid_meta_Vlat_file regardless of BS_opt_uq
+ZV_riv_bas_sQout=0      !Used in rapid_create_Qout_file regardless of BS_opt_uq
+if (BS_opt_uq) then
+     ZV_riv_tot_dQlat=0
+     ZV_riv_bas_dQout=0
 end if
 !These are not populated anywhere before being used and hold meaningless values
 
@@ -246,6 +265,10 @@ if (rank==0 .and. .not. BS_opt_hum)                        print '(a70)',      &
        'Not using human-induced flows                                          '
 if (rank==0 .and. BS_opt_hum)                              print '(a70)',      &
        'Using human-induced flows                                              '
+if (rank==0 .and. .not. BS_opt_uq .and. IS_opt_run==1)     print '(a70)',      &
+       'Not quantifying uncertainty                                            '
+if (rank==0 .and. BS_opt_uq .and. IS_opt_run==1)           print '(a70)',      &
+       'Quantifying uncertainty                                                '
 if (rank==0 .and. IS_opt_routing==1)                       print '(a70)',      &
        'Routing with matrix-based Muskingum method                             '
 if (rank==0 .and. IS_opt_routing==2)                       print '(a70)',      &
@@ -356,11 +379,7 @@ call rapid_routing_param(ZV_k,ZV_x,ZV_C1,ZV_C2,ZV_C3,ZM_A)
 !calculate Muskingum parameters and matrix ZM_A
 
 call KSPSetOperators(ksp,ZM_A,ZM_A,ierr)
-call KSPSetType(ksp,KSPRICHARDSON,ierr)                    !default=richardson
-!call KSPSetInitialGuessNonZero(ksp,PETSC_TRUE,ierr)
-!call KSPSetInitialGuessKnoll(ksp,PETSC_TRUE,ierr)
-call KSPSetFromOptions(ksp,ierr)                           !if runtime options
-if (IS_opt_routing==3) call KSPSetType(ksp,KSPPREONLY,ierr)!default=preonly
+!Set KSP to use matrix ZM_A
 
 !-------------------------------------------------------------------------------
 !End of initialization procedure for OPTION 1

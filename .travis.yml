@@ -8,7 +8,8 @@
 #expected. The purpose of the .travis.yml file is to give instructions to Travis 
 #CI on how to do the work.
 #Authors:
-#Cedric H. David, 2015-2016, based on initial .yml file by Luke A. Winslow
+#Cedric H. David and Alan D. Snow, 2015-2016, based on initial .yml file by Luke
+#A. Winslow
 
 
 #*******************************************************************************
@@ -58,25 +59,17 @@ before_install:
 - export INSTALLZ_DIR=$PWD
 
 #-------------------------------------------------------------------------------
-#Install libraries used by rapid
+#Install prerequisites for RAPID
 #-------------------------------------------------------------------------------
 - cd $TRAVIS_BUILD_DIR
 - ./rapid_install_prereqs.sh -i=$INSTALLZ_DIR
 
 #-------------------------------------------------------------------------------
-#Exporting environment variables 
+#Exporting environment variables and adding library-related executables to $PATH
 #-------------------------------------------------------------------------------
-- cd $INSTALLZ_DIR
-- export TACC_NETCDF_LIB=$INSTALLZ_DIR/netcdf-3.6.3-install/lib
-- export TACC_NETCDF_INC=$INSTALLZ_DIR/netcdf-3.6.3-install/include
-- export PETSC_DIR=$INSTALLZ_DIR/petsc-3.6.2
-- export PETSC_ARCH='linux-gcc-c'
+- cd $TRAVIS_BUILD_DIR
+- source ./rapid_specify_varpath.sh $INSTALLZ_DIR
 
-#-------------------------------------------------------------------------------
-#Exporting directories with library-related executables to $PATH
-#-------------------------------------------------------------------------------
-- export PATH=$PATH:/$PETSC_DIR/$PETSC_ARCH/bin
-- export PATH=$PATH:$INSTALLZ_DIR/netcdf-3.6.3-install/bin
 
 #*******************************************************************************
 #Installing RAPID

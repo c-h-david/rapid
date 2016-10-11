@@ -79,6 +79,7 @@ rapid:	rapid_main.o \
 	rapid_phiroutine.o \
 	rapid_destro_obj.o \
 	rapid_final.o \
+	rapid_uq.o \
 	rapid_var.o
 	${FLINKER} -o \
 	rapid \
@@ -120,6 +121,7 @@ rapid:	rapid_main.o \
 	rapid_phiroutine.o \
 	rapid_destro_obj.o \
 	rapid_final.o \
+	rapid_uq.o \
 	rapid_var.o \
 	${PETSC_LIB} ${NETCDF_LIB}
 	${RM} *.o *.mod 
@@ -191,6 +193,9 @@ rapid_close_V_file.o: 		rapid_close_V_file.F90 rapid_var.mod
 
 rapid_meta_Vlat_file.o: 	rapid_meta_Vlat_file.F90 rapid_var.mod
 	${FLINKER} -c rapid_meta_Vlat_file.F90 ${PETSC_FC_INCLUDES} ${NETCDF_INCLUDE}
+
+rapid_uq.o: 	rapid_uq.F90 rapid_var.mod
+	${FLINKER} -c rapid_uq.F90 ${PETSC_FC_INCLUDES}
 
 rapid_read_Qfor_file.o: 	rapid_read_Qfor_file.F90 rapid_var.mod
 	${FLINKER} -c rapid_read_Qfor_file.F90 ${PETSC_FC_INCLUDES}

@@ -30,6 +30,9 @@ BS_opt_for         =.false.
 BS_opt_influence   =.false.
 !.false. --> no output influence     .true. --> output influence
 
+BS_opt_uq          =.false.
+!.false. --> no uncertainty quantif. .true. --> uncertainty quantif.
+
 IS_opt_routing     =1
 !1       --> matrix-based Muskingum  2      --> traditional Muskingum
 !3       --> Transbnd. matrix-based
