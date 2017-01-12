@@ -8,7 +8,7 @@
 #stderr in a text file of which the name is automatically created here based on 
 #the current date.  
 #Author:
-#Cedric H. David, 2010-2016
+#Cedric H. David, 2010-2017.
 
 
 #*******************************************************************************

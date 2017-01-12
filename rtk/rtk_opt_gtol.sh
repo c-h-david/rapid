@@ -21,7 +21,7 @@
 # - 0  if the script found the desired answer
 # - 22 if arguments are faulty 
 #Author:
-#Cedric H. David, 2016-2016
+#Cedric H. David, 2016-2017.
 
 
 #*******************************************************************************

@@ -6,7 +6,7 @@ subroutine rapid_read_Qfor_file
 !Purpose:
 !Read Qfor_file from Fortran.
 !Author: 
-!Cedric H. David, 2013-2016.
+!Cedric H. David, 2013-2017.
 
 
 !*******************************************************************************

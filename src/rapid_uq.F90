@@ -7,7 +7,7 @@ subroutine rapid_uq
 !This subroutine generates river flow uncertainty based on the standard 
 !deviation of the combined surface/subsurface flow into the river network.  
 !Author: 
-!Cedric H. David, 2016-2016.
+!Cedric H. David, 2016-2017.
 
 
 !*******************************************************************************

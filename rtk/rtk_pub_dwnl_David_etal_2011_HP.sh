@@ -18,7 +18,7 @@
 # - 0  if all downloads are successful 
 # - 44 if one download is not successful
 #Author:
-#Cedric H. David, 2015-2016
+#Cedric H. David, 2015-2017.
 
 
 #*******************************************************************************

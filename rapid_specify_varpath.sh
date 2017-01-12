@@ -13,7 +13,7 @@
 # or 
 # - source ./rapid_specify_varpath.sh (uses the default above)
 #Author:
-#Cedric H. David, 2016-2016
+#Cedric H. David, 2016-2017.
 
 
 #*******************************************************************************

@@ -6,7 +6,7 @@ subroutine rapid_open_Qfor_file(Qfor_file)
 !Purpose:
 !Open Qfor_file from Fortran.
 !Author: 
-!Cedric H. David, 2013-2016.
+!Cedric H. David, 2013-2017.
 
 
 !*******************************************************************************

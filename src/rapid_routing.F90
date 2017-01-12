@@ -9,7 +9,7 @@ subroutine rapid_routing(ZV_C1,ZV_C2,ZV_C3,ZV_Qext,                            &
 !Performs flow calculation in each reach of a river network using the Muskingum
 !method (McCarthy 1938).  
 !Author: 
-!Cedric H. David, 2008-2016. 
+!Cedric H. David, 2008-2017.
 
 
 !*******************************************************************************
