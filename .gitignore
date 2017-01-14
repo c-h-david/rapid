@@ -46,4 +46,5 @@ src/rapid
 rtk/rapid
 rtk/rapid_namelist
 rtk/rtk_run_comp
+rtk/rtk_run_conv_Qinit
 rtk/tmp_*
