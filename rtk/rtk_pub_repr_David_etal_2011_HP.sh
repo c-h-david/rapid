@@ -120,7 +120,7 @@ sleep 3
 mpiexec -n 1 ./rapid -ksp_type preonly > $rapd_file
 echo "Comparing files"
 ./rtk_run_comp $Qout_gold $Qout_file 1e-40 1e-37 > $comp_file 
-if [ $? -gt 0 ] ; then  echo "Failed comparison: $comp_file" >&2 ; exit $? ; fi
+x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $comp_file" >&2 ; exit $x ; fi
 rm $Qout_file
 rm $rapd_file
 rm $comp_file
@@ -151,7 +151,7 @@ sleep 3
 mpiexec -n 1 ./rapid -ksp_type preonly > $rapd_file
 echo "Comparing files"
 ./rtk_run_comp $Qout_gold $Qout_file 1e-40 1e-37 > $comp_file 
-if [ $? -gt 0 ] ; then  echo "Failed comparison: $comp_file" >&2 ; exit $? ; fi
+x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $comp_file" >&2 ; exit $x ; fi
 rm $Qout_file
 rm $rapd_file
 rm $comp_file
@@ -182,7 +182,7 @@ sleep 3
 mpiexec -n 1 ./rapid -ksp_type preonly > $rapd_file
 echo "Comparing files"
 ./rtk_run_comp $Qout_gold $Qout_file 1e-40 1e-37 > $comp_file 
-if [ $? -gt 0 ] ; then  echo "Failed comparison: $comp_file" >&2 ; exit $? ; fi
+x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $comp_file" >&2 ; exit $x ; fi
 rm $Qout_file
 rm $rapd_file
 rm $comp_file
@@ -213,7 +213,7 @@ sleep 3
 mpiexec -n 1 ./rapid -ksp_type preonly > $rapd_file
 echo "Comparing files"
 ./rtk_run_comp $Qout_gold $Qout_file 1e-40 1e-37 > $comp_file 
-if [ $? -gt 0 ] ; then  echo "Failed comparison: $comp_file" >&2 ; exit $? ; fi
+x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $comp_file" >&2 ; exit $x ; fi
 rm $Qout_file
 rm $rapd_file
 rm $comp_file
@@ -244,7 +244,7 @@ sleep 3
 mpiexec -n 1 ./rapid -ksp_type preonly > $rapd_file
 echo "Comparing files"
 ./rtk_run_comp $Qout_gold $Qout_file 1e-40 1e-37 > $comp_file 
-if [ $? -gt 0 ] ; then  echo "Failed comparison: $comp_file" >&2 ; exit $? ; fi
+x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $comp_file" >&2 ; exit $x ; fi
 rm $Qout_file
 rm $rapd_file
 rm $comp_file
@@ -275,7 +275,7 @@ sleep 3
 mpiexec -n 1 ./rapid -ksp_type preonly > $rapd_file
 echo "Comparing files"
 ./rtk_run_comp $Qout_gold $Qout_file 1e-40 1e-37 > $comp_file 
-if [ $? -gt 0 ] ; then  echo "Failed comparison: $comp_file" >&2 ; exit $? ; fi
+x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $comp_file" >&2 ; exit $x ; fi
 rm $Qout_file
 rm $rapd_file
 rm $comp_file
@@ -306,7 +306,7 @@ sleep 3
 mpiexec -n 1 ./rapid -ksp_type preonly > $rapd_file
 echo "Comparing files"
 ./rtk_run_comp $Qout_gold $Qout_file 1e-40 1e-37 > $comp_file 
-if [ $? -gt 0 ] ; then  echo "Failed comparison: $comp_file" >&2 ; exit $? ; fi
+x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $comp_file" >&2 ; exit $x ; fi
 rm $Qout_file
 rm $rapd_file
 rm $comp_file
@@ -343,7 +343,7 @@ sleep 3
 mpiexec -n 1 ./rapid -ksp_type preonly > $rapd_file
 echo "Comparing files"
 ./rtk_run_comp $Qout_gold $Qout_file 1e-40 1e-37 > $comp_file 
-if [ $? -gt 0 ] ; then  echo "Failed comparison: $comp_file" >&2 ; exit $? ; fi
+x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $comp_file" >&2 ; exit $x ; fi
 rm $Qout_file
 rm $rapd_file
 rm $comp_file
@@ -376,7 +376,7 @@ sleep 3
 mpiexec -n 1 ./rapid -ksp_type preonly > $rapd_file
 echo "Comparing files"
 ./rtk_run_comp $Qout_gold $Qout_file 1e-40 1e-37 > $comp_file 
-if [ $? -gt 0 ] ; then  echo "Failed comparison: $comp_file" >&2 ; exit $? ; fi
+x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $comp_file" >&2 ; exit $x ; fi
 rm $Qout_file
 rm $rapd_file
 rm $comp_file
@@ -411,7 +411,7 @@ sleep 3
 mpiexec -n 1 ./rapid -ksp_type preonly > $rapd_file
 echo "Comparing files"
 ./rtk_run_comp $Qout_gold $Qout_file 1e-40 1e-37 > $comp_file 
-if [ $? -gt 0 ] ; then  echo "Failed comparison: $comp_file" >&2 ; exit $? ; fi
+x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $comp_file" >&2 ; exit $x ; fi
 rm $Qout_file
 rm $rapd_file
 rm $comp_file
@@ -458,7 +458,7 @@ sleep 3
 mpiexec -n 1 ./rapid -ksp_type preonly -tao_gatol 0.01 -tao_grtol 0.00092 > $rapd_file
 ./rtk_opt_find.sh $rapd_file | cat > $find_file
 ./rtk_opt_comp.sh $find_file ${ZS_knorm_finals[ii]} ${ZS_xnorm_finals[ii]} ${ZS_phi_finals[ii]} 
-if [ $? -gt 0 ] ; then  echo "Failed comparison: $find_file" >&2 ; exit $? ; fi
+x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $find_file" >&2 ; exit $x ; fi
 ./rtk_nml_tidy_France_HP.sh
 fi
 done
@@ -467,7 +467,7 @@ echo "Comparing best values"
 pick_file="tmp_opt_pick_$opt.txt"
 ./rtk_opt_pick.sh tmp_opt_find_$opt*.txt | cat > $pick_file
 ./rtk_opt_comp.sh $pick_file 0.188477 0.0307617 117.426
-if [ $? -gt 0 ] ; then  echo "Failed comparison: $pick_file" >&2 ; exit $? ; fi
+x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $pick_file" >&2 ; exit $x ; fi
 echo "Success"
 echo "********************"
 fi
@@ -507,7 +507,7 @@ sleep 3
 mpiexec -n 1 ./rapid -ksp_type preonly -tao_gatol 0.01 -tao_grtol 0.000050 > $rapd_file
 ./rtk_opt_find.sh $rapd_file | cat > $find_file
 ./rtk_opt_comp.sh $find_file ${ZS_knorm_finals[ii]} ${ZS_xnorm_finals[ii]} ${ZS_phi_finals[ii]} 
-if [ $? -gt 0 ] ; then  echo "Failed comparison: $find_file" >&2 ; exit $? ; fi
+x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $find_file" >&2 ; exit $x ; fi
 ./rtk_nml_tidy_France_HP.sh
 fi
 done
@@ -516,7 +516,7 @@ echo "Comparing best values"
 pick_file="tmp_opt_pick_$opt.txt"
 ./rtk_opt_pick.sh tmp_opt_find_$opt*.txt | cat > $pick_file
 ./rtk_opt_comp.sh $pick_file 0.365616 0.237343 40761.756
-if [ $? -gt 0 ] ; then  echo "Failed comparison: $pick_file" >&2 ; exit $? ; fi
+x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $pick_file" >&2 ; exit $x ; fi
 echo "Success"
 echo "********************"
 fi
@@ -556,7 +556,7 @@ sleep 3
 mpiexec -n 1 ./rapid -ksp_type preonly -tao_gatol 0.01 -tao_grtol 0.00091 > $rapd_file
 ./rtk_opt_find.sh $rapd_file | cat > $find_file
 ./rtk_opt_comp.sh $find_file ${ZS_knorm_finals[ii]} ${ZS_xnorm_finals[ii]} ${ZS_phi_finals[ii]} 
-if [ $? -gt 0 ] ; then  echo "Failed comparison: $find_file" >&2 ; exit $? ; fi
+x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $find_file" >&2 ; exit $x ; fi
 ./rtk_nml_tidy_France_HP.sh
 fi
 done
@@ -565,7 +565,7 @@ echo "Comparing best values"
 pick_file="tmp_opt_pick_$opt.txt"
 ./rtk_opt_pick.sh tmp_opt_find_$opt*.txt | cat > $pick_file
 ./rtk_opt_comp.sh $pick_file 1.25 0.375 119.829 
-if [ $? -gt 0 ] ; then  echo "Failed comparison: $pick_file" >&2 ; exit $? ; fi
+x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $pick_file" >&2 ; exit $x ; fi
 echo "Success"
 echo "********************"
 fi
@@ -605,7 +605,7 @@ sleep 3
 mpiexec -n 1 ./rapid -ksp_type preonly -tao_gatol 0.01 -tao_grtol 0.000050 > $rapd_file
 ./rtk_opt_find.sh $rapd_file | cat > $find_file
 ./rtk_opt_comp.sh $find_file ${ZS_knorm_finals[ii]} ${ZS_xnorm_finals[ii]} ${ZS_phi_finals[ii]} 
-if [ $? -gt 0 ] ; then  echo "Failed comparison: $find_file" >&2 ; exit $? ; fi
+x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $find_file" >&2 ; exit $x ; fi
 ./rtk_nml_tidy_France_HP.sh
 fi
 done
@@ -614,7 +614,7 @@ echo "Comparing best values"
 pick_file="tmp_opt_pick_$opt.txt"
 ./rtk_opt_pick.sh tmp_opt_find_$opt*.txt | cat > $pick_file
 ./rtk_opt_comp.sh $pick_file 2 0 40257.926 
-if [ $? -gt 0 ] ; then  echo "Failed comparison: $pick_file" >&2 ; exit $? ; fi
+x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $pick_file" >&2 ; exit $x ; fi
 echo "Success"
 echo "********************"
 fi
@@ -654,7 +654,7 @@ sleep 3
 mpiexec -n 1 ./rapid -ksp_type preonly -tao_gatol 0.01 -tao_grtol 0.00026 > $rapd_file
 ./rtk_opt_find.sh $rapd_file | cat > $find_file
 ./rtk_opt_comp.sh $find_file ${ZS_knorm_finals[ii]} ${ZS_xnorm_finals[ii]} ${ZS_phi_finals[ii]} 
-if [ $? -gt 0 ] ; then  echo "Failed comparison: $find_file" >&2 ; exit $? ; fi
+x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $find_file" >&2 ; exit $x ; fi
 ./rtk_nml_tidy_France_HP.sh
 fi
 done
@@ -663,7 +663,7 @@ echo "Comparing best values"
 pick_file="tmp_opt_pick_$opt.txt"
 ./rtk_opt_pick.sh tmp_opt_find_$opt*.txt | cat > $pick_file
 ./rtk_opt_comp.sh $pick_file 0.375 0.3125 1452.146 
-if [ $? -gt 0 ] ; then  echo "Failed comparison: $pick_file" >&2 ; exit $? ; fi
+x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $pick_file" >&2 ; exit $x ; fi
 echo "Success"
 echo "********************"
 fi
@@ -703,7 +703,7 @@ sleep 3
 mpiexec -n 1 ./rapid -ksp_type preonly -tao_gatol 0.01 -tao_grtol 0.00012 > $rapd_file
 ./rtk_opt_find.sh $rapd_file | cat > $find_file
 ./rtk_opt_comp.sh $find_file ${ZS_knorm_finals[ii]} ${ZS_xnorm_finals[ii]} ${ZS_phi_finals[ii]} 
-if [ $? -gt 0 ] ; then  echo "Failed comparison: $find_file" >&2 ; exit $? ; fi
+x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $find_file" >&2 ; exit $x ; fi
 ./rtk_nml_tidy_France_HP.sh
 fi
 done
@@ -712,7 +712,7 @@ echo "Comparing best values"
 pick_file="tmp_opt_pick_$opt.txt"
 ./rtk_opt_pick.sh tmp_opt_find_$opt*.txt | cat > $pick_file
 ./rtk_opt_comp.sh $pick_file 0.294052 0.00948334 6802.511
-if [ $? -gt 0 ] ; then  echo "Failed comparison: $pick_file" >&2 ; exit $? ; fi
+x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $pick_file" >&2 ; exit $x ; fi
 echo "Success"
 echo "********************"
 fi
@@ -752,7 +752,7 @@ sleep 3
 mpiexec -n 1 ./rapid -ksp_type preonly -tao_gatol 0.01 -tao_grtol 0.000094 > $rapd_file
 ./rtk_opt_find.sh $rapd_file | cat > $find_file
 ./rtk_opt_comp.sh $find_file ${ZS_knorm_finals[ii]} ${ZS_xnorm_finals[ii]} ${ZS_phi_finals[ii]} 
-if [ $? -gt 0 ] ; then  echo "Failed comparison: $find_file" >&2 ; exit $? ; fi
+x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $find_file" >&2 ; exit $x ; fi
 ./rtk_nml_tidy_France_HP.sh
 fi
 done
@@ -761,7 +761,7 @@ echo "Comparing best values"
 pick_file="tmp_opt_pick_$opt.txt"
 ./rtk_opt_pick.sh tmp_opt_find_$opt*.txt | cat > $pick_file
 ./rtk_opt_comp.sh $pick_file 0.414429 0.196747 11355.138
-if [ $? -gt 0 ] ; then  echo "Failed comparison: $pick_file" >&2 ; exit $? ; fi
+x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $pick_file" >&2 ; exit $x ; fi
 echo "Success"
 echo "********************"
 fi
@@ -801,7 +801,7 @@ sleep 3
 mpiexec -n 1 ./rapid -ksp_type preonly -tao_gatol 0.01 -tao_grtol 0.00016 > $rapd_file
 ./rtk_opt_find.sh $rapd_file | cat > $find_file
 ./rtk_opt_comp.sh $find_file ${ZS_knorm_finals[ii]} ${ZS_xnorm_finals[ii]} ${ZS_phi_finals[ii]} 
-if [ $? -gt 0 ] ; then  echo "Failed comparison: $find_file" >&2 ; exit $? ; fi
+x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $find_file" >&2 ; exit $x ; fi
 ./rtk_nml_tidy_France_HP.sh
 fi
 done
@@ -810,7 +810,7 @@ echo "Comparing best values"
 pick_file="tmp_opt_pick_$opt.txt"
 ./rtk_opt_pick.sh tmp_opt_find_$opt*.txt | cat > $pick_file
 ./rtk_opt_comp.sh $pick_file 0.53125 0.234375 4062.069
-if [ $? -gt 0 ] ; then  echo "Failed comparison: $pick_file" >&2 ; exit $? ; fi
+x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $pick_file" >&2 ; exit $x ; fi
 echo "Success"
 echo "********************"
 fi
@@ -850,7 +850,7 @@ sleep 3
 mpiexec -n 1 ./rapid -ksp_type preonly -tao_gatol 0.01 -tao_grtol 0.00012 > $rapd_file
 ./rtk_opt_find.sh $rapd_file | cat > $find_file
 ./rtk_opt_comp.sh $find_file ${ZS_knorm_finals[ii]} ${ZS_xnorm_finals[ii]} ${ZS_phi_finals[ii]} 
-if [ $? -gt 0 ] ; then  echo "Failed comparison: $find_file" >&2 ; exit $? ; fi
+x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $find_file" >&2 ; exit $x ; fi
 ./rtk_nml_tidy_France_HP.sh
 fi
 done
@@ -859,7 +859,7 @@ echo "Comparing best values"
 pick_file="tmp_opt_pick_$opt.txt"
 ./rtk_opt_pick.sh tmp_opt_find_$opt*.txt | cat > $pick_file
 ./rtk_opt_comp.sh $pick_file 0.256366 0.117874 6792.728
-if [ $? -gt 0 ] ; then  echo "Failed comparison: $pick_file" >&2 ; exit $? ; fi
+x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $pick_file" >&2 ; exit $x ; fi
 echo "Success"
 echo "********************"
 fi
@@ -899,7 +899,7 @@ sleep 3
 mpiexec -n 1 ./rapid -ksp_type preonly -tao_gatol 0.01 -tao_grtol 0.00070 > $rapd_file
 ./rtk_opt_find.sh $rapd_file | cat > $find_file
 ./rtk_opt_comp.sh $find_file ${ZS_knorm_finals[ii]} ${ZS_xnorm_finals[ii]} ${ZS_phi_finals[ii]} 
-if [ $? -gt 0 ] ; then  echo "Failed comparison: $find_file" >&2 ; exit $? ; fi
+x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $find_file" >&2 ; exit $x ; fi
 ./rtk_nml_tidy_France_HP.sh
 fi
 done
@@ -908,7 +908,7 @@ echo "Comparing best values"
 pick_file="tmp_opt_pick_$opt.txt"
 ./rtk_opt_pick.sh tmp_opt_find_$opt*.txt | cat > $pick_file
 ./rtk_opt_comp.sh $pick_file 0.382812 0.0585938 204.141
-if [ $? -gt 0 ] ; then  echo "Failed comparison: $pick_file" >&2 ; exit $? ; fi
+x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $pick_file" >&2 ; exit $x ; fi
 echo "Success"
 echo "********************"
 fi
@@ -948,7 +948,7 @@ sleep 3
 mpiexec -n 1 ./rapid -ksp_type preonly -tao_gatol 0.01 -tao_grtol 0.00044 > $rapd_file
 ./rtk_opt_find.sh $rapd_file | cat > $find_file
 ./rtk_opt_comp.sh $find_file ${ZS_knorm_finals[ii]} ${ZS_xnorm_finals[ii]} ${ZS_phi_finals[ii]} 
-if [ $? -gt 0 ] ; then  echo "Failed comparison: $find_file" >&2 ; exit $? ; fi
+x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $find_file" >&2 ; exit $x ; fi
 ./rtk_nml_tidy_France_HP.sh
 fi
 done
@@ -957,7 +957,7 @@ echo "Comparing best values"
 pick_file="tmp_opt_pick_$opt.txt"
 ./rtk_opt_pick.sh tmp_opt_find_$opt*.txt | cat > $pick_file
 ./rtk_opt_comp.sh $pick_file 0.375 4.8125 513.702
-if [ $? -gt 0 ] ; then  echo "Failed comparison: $pick_file" >&2 ; exit $? ; fi
+x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $pick_file" >&2 ; exit $x ; fi
 echo "Success"
 echo "********************"
 fi
@@ -997,7 +997,7 @@ sleep 3
 mpiexec -n 1 ./rapid -ksp_type preonly -tao_gatol 0.01 -tao_grtol 0.00053 > $rapd_file
 ./rtk_opt_find.sh $rapd_file | cat > $find_file
 ./rtk_opt_comp.sh $find_file ${ZS_knorm_finals[ii]} ${ZS_xnorm_finals[ii]} ${ZS_phi_finals[ii]} 
-if [ $? -gt 0 ] ; then  echo "Failed comparison: $find_file" >&2 ; exit $? ; fi
+x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $find_file" >&2 ; exit $x ; fi
 ./rtk_nml_tidy_France_HP.sh
 fi
 done
@@ -1006,7 +1006,7 @@ echo "Comparing best values"
 pick_file="tmp_opt_pick_$opt.txt"
 ./rtk_opt_pick.sh tmp_opt_find_$opt*.txt | cat > $pick_file
 ./rtk_opt_comp.sh $pick_file 0.160156 0.419922 314.061
-if [ $? -gt 0 ] ; then  echo "Failed comparison: $pick_file" >&2 ; exit $? ; fi
+x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $pick_file" >&2 ; exit $x ; fi
 echo "Success"
 echo "********************"
 fi
@@ -1046,7 +1046,7 @@ sleep 3
 mpiexec -n 1 ./rapid -ksp_type preonly -tao_gatol 0.01 -tao_grtol 0.00035 > $rapd_file
 ./rtk_opt_find.sh $rapd_file | cat > $find_file
 ./rtk_opt_comp.sh $find_file ${ZS_knorm_finals[ii]} ${ZS_xnorm_finals[ii]} ${ZS_phi_finals[ii]} 
-if [ $? -gt 0 ] ; then  echo "Failed comparison: $find_file" >&2 ; exit $? ; fi
+x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $find_file" >&2 ; exit $x ; fi
 ./rtk_nml_tidy_France_HP.sh
 fi
 done
@@ -1055,7 +1055,7 @@ echo "Comparing best values"
 pick_file="tmp_opt_pick_$opt.txt"
 ./rtk_opt_pick.sh tmp_opt_find_$opt*.txt | cat > $pick_file
 ./rtk_opt_comp.sh $pick_file 0.152344 0.673828 816.461
-if [ $? -gt 0 ] ; then  echo "Failed comparison: $pick_file" >&2 ; exit $? ; fi
+x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $pick_file" >&2 ; exit $x ; fi
 echo "Success"
 echo "********************"
 fi
@@ -1095,7 +1095,7 @@ sleep 3
 mpiexec -n 1 ./rapid -ksp_type preonly -tao_gatol 0.01 -tao_grtol 0.00028 > $rapd_file
 ./rtk_opt_find.sh $rapd_file | cat > $find_file
 ./rtk_opt_comp.sh $find_file ${ZS_knorm_finals[ii]} ${ZS_xnorm_finals[ii]} ${ZS_phi_finals[ii]} 
-if [ $? -gt 0 ] ; then  echo "Failed comparison: $find_file" >&2 ; exit $? ; fi
+x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $find_file" >&2 ; exit $x ; fi
 ./rtk_nml_tidy_France_HP.sh
 fi
 done
@@ -1104,7 +1104,7 @@ echo "Comparing best values"
 pick_file="tmp_opt_pick_$opt.txt"
 ./rtk_opt_pick.sh tmp_opt_find_$opt*.txt | cat > $pick_file
 ./rtk_opt_comp.sh $pick_file 0.394089 0.112606 1300.646
-if [ $? -gt 0 ] ; then  echo "Failed comparison: $pick_file" >&2 ; exit $? ; fi
+x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $pick_file" >&2 ; exit $x ; fi
 echo "Success"
 echo "********************"
 fi
@@ -1144,7 +1144,7 @@ sleep 3
 mpiexec -n 1 ./rapid -ksp_type preonly -tao_gatol 0.01 -tao_grtol 0.00027 > $rapd_file
 ./rtk_opt_find.sh $rapd_file | cat > $find_file
 ./rtk_opt_comp.sh $find_file ${ZS_knorm_finals[ii]} ${ZS_xnorm_finals[ii]} ${ZS_phi_finals[ii]} 
-if [ $? -gt 0 ] ; then  echo "Failed comparison: $find_file" >&2 ; exit $? ; fi
+x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $find_file" >&2 ; exit $x ; fi
 ./rtk_nml_tidy_France_HP.sh
 fi
 done
@@ -1153,7 +1153,7 @@ echo "Comparing best values"
 pick_file="tmp_opt_pick_$opt.txt"
 ./rtk_opt_pick.sh tmp_opt_find_$opt*.txt | cat > $pick_file
 ./rtk_opt_comp.sh $pick_file 0.355804 0.0558929 1329.170
-if [ $? -gt 0 ] ; then  echo "Failed comparison: $pick_file" >&2 ; exit $? ; fi
+x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $pick_file" >&2 ; exit $x ; fi
 echo "Success"
 echo "********************"
 fi
@@ -1193,7 +1193,7 @@ sleep 3
 mpiexec -n 1 ./rapid -ksp_type preonly -tao_gatol 0.01 -tao_grtol 0.00019 > $rapd_file
 ./rtk_opt_find.sh $rapd_file | cat > $find_file
 ./rtk_opt_comp.sh $find_file ${ZS_knorm_finals[ii]} ${ZS_xnorm_finals[ii]} ${ZS_phi_finals[ii]} 
-if [ $? -gt 0 ] ; then  echo "Failed comparison: $find_file" >&2 ; exit $? ; fi
+x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $find_file" >&2 ; exit $x ; fi
 ./rtk_nml_tidy_France_HP.sh
 fi
 done
@@ -1202,7 +1202,7 @@ echo "Comparing best values"
 pick_file="tmp_opt_pick_$opt.txt"
 ./rtk_opt_pick.sh tmp_opt_find_$opt*.txt | cat > $pick_file
 ./rtk_opt_comp.sh $pick_file 0.385983 0.145435 2785.886
-if [ $? -gt 0 ] ; then  echo "Failed comparison: $pick_file" >&2 ; exit $? ; fi
+x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $pick_file" >&2 ; exit $x ; fi
 echo "Success"
 echo "********************"
 fi
@@ -1242,7 +1242,7 @@ sleep 3
 mpiexec -n 1 ./rapid -ksp_type preonly -tao_gatol 0.01 -tao_grtol 0.00028 > $rapd_file
 ./rtk_opt_find.sh $rapd_file | cat > $find_file
 ./rtk_opt_comp.sh $find_file ${ZS_knorm_finals[ii]} ${ZS_xnorm_finals[ii]} ${ZS_phi_finals[ii]} 
-if [ $? -gt 0 ] ; then  echo "Failed comparison: $find_file" >&2 ; exit $? ; fi
+x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $find_file" >&2 ; exit $x ; fi
 ./rtk_nml_tidy_France_HP.sh
 fi
 done
@@ -1251,7 +1251,7 @@ echo "Comparing best values"
 pick_file="tmp_opt_pick_$opt.txt"
 ./rtk_opt_pick.sh tmp_opt_find_$opt*.txt | cat > $pick_file
 ./rtk_opt_comp.sh $pick_file 0.307755 2.67046 1306.25
-if [ $? -gt 0 ] ; then  echo "Failed comparison: $pick_file" >&2 ; exit $? ; fi
+x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $pick_file" >&2 ; exit $x ; fi
 echo "Success"
 echo "********************"
 fi
@@ -1291,7 +1291,7 @@ sleep 3
 mpiexec -n 1 ./rapid -ksp_type preonly -tao_gatol 0.01 -tao_grtol 0.00032 > $rapd_file
 ./rtk_opt_find.sh $rapd_file | cat > $find_file
 ./rtk_opt_comp.sh $find_file ${ZS_knorm_finals[ii]} ${ZS_xnorm_finals[ii]} ${ZS_phi_finals[ii]} 
-if [ $? -gt 0 ] ; then  echo "Failed comparison: $find_file" >&2 ; exit $? ; fi
+x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $find_file" >&2 ; exit $x ; fi
 ./rtk_nml_tidy_France_HP.sh
 fi
 done
@@ -1300,7 +1300,7 @@ echo "Comparing best values"
 pick_file="tmp_opt_pick_$opt.txt"
 ./rtk_opt_pick.sh tmp_opt_find_$opt*.txt | cat > $pick_file
 ./rtk_opt_comp.sh $pick_file 0.390625 0.304688 996.783
-if [ $? -gt 0 ] ; then  echo "Failed comparison: $pick_file" >&2 ; exit $? ; fi
+x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $pick_file" >&2 ; exit $x ; fi
 echo "Success"
 echo "********************"
 fi
@@ -1340,7 +1340,7 @@ sleep 3
 mpiexec -n 1 ./rapid -ksp_type preonly -tao_gatol 0.01 -tao_grtol 0.00019 > $rapd_file
 ./rtk_opt_find.sh $rapd_file | cat > $find_file
 ./rtk_opt_comp.sh $find_file ${ZS_knorm_finals[ii]} ${ZS_xnorm_finals[ii]} ${ZS_phi_finals[ii]} 
-if [ $? -gt 0 ] ; then  echo "Failed comparison: $find_file" >&2 ; exit $? ; fi
+x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $find_file" >&2 ; exit $x ; fi
 ./rtk_nml_tidy_France_HP.sh
 fi
 done
@@ -1349,7 +1349,7 @@ echo "Comparing best values"
 pick_file="tmp_opt_pick_$opt.txt"
 ./rtk_opt_pick.sh tmp_opt_find_$opt*.txt | cat > $pick_file
 ./rtk_opt_comp.sh $pick_file 0.453125 0.273438 2677.687
-if [ $? -gt 0 ] ; then  echo "Failed comparison: $pick_file" >&2 ; exit $? ; fi
+x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $pick_file" >&2 ; exit $x ; fi
 echo "Success"
 echo "********************"
 fi
@@ -1389,7 +1389,7 @@ sleep 3
 mpiexec -n 1 ./rapid -ksp_type preonly -tao_gatol 0.01 -tao_grtol 0.00018 > $rapd_file
 ./rtk_opt_find.sh $rapd_file | cat > $find_file
 ./rtk_opt_comp.sh $find_file ${ZS_knorm_finals[ii]} ${ZS_xnorm_finals[ii]} ${ZS_phi_finals[ii]} 
-if [ $? -gt 0 ] ; then  echo "Failed comparison: $find_file" >&2 ; exit $? ; fi
+x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $find_file" >&2 ; exit $x ; fi
 ./rtk_nml_tidy_France_HP.sh
 fi
 done
@@ -1398,7 +1398,7 @@ echo "Comparing best values"
 pick_file="tmp_opt_pick_$opt.txt"
 ./rtk_opt_pick.sh tmp_opt_find_$opt*.txt | cat > $pick_file
 ./rtk_opt_comp.sh $pick_file 0.578796 0.144882 2973.548
-if [ $? -gt 0 ] ; then  echo "Failed comparison: $pick_file" >&2 ; exit $? ; fi
+x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $pick_file" >&2 ; exit $x ; fi
 echo "Success"
 echo "********************"
 fi
@@ -1438,7 +1438,7 @@ sleep 3
 mpiexec -n 1 ./rapid -ksp_type preonly -tao_gatol 0.01 -tao_grtol 0.00031 > $rapd_file
 ./rtk_opt_find.sh $rapd_file | cat > $find_file
 ./rtk_opt_comp.sh $find_file ${ZS_knorm_finals[ii]} ${ZS_xnorm_finals[ii]} ${ZS_phi_finals[ii]} 
-if [ $? -gt 0 ] ; then  echo "Failed comparison: $find_file" >&2 ; exit $? ; fi
+x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $find_file" >&2 ; exit $x ; fi
 ./rtk_nml_tidy_France_HP.sh
 fi
 done
@@ -1447,7 +1447,7 @@ echo "Comparing best values"
 pick_file="tmp_opt_pick_$opt.txt"
 ./rtk_opt_pick.sh tmp_opt_find_$opt*.txt | cat > $pick_file
 ./rtk_opt_comp.sh $pick_file 0.46875 3.76562 1046.73
-if [ $? -gt 0 ] ; then  echo "Failed comparison: $pick_file" >&2 ; exit $? ; fi
+x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $pick_file" >&2 ; exit $x ; fi
 echo "Success"
 echo "********************"
 fi
@@ -1487,7 +1487,7 @@ sleep 3
 mpiexec -n 1 ./rapid -ksp_type preonly -tao_gatol 0.01 -tao_grtol 0.00015 > $rapd_file
 ./rtk_opt_find.sh $rapd_file | cat > $find_file
 ./rtk_opt_comp.sh $find_file ${ZS_knorm_finals[ii]} ${ZS_xnorm_finals[ii]} ${ZS_phi_finals[ii]} 
-if [ $? -gt 0 ] ; then  echo "Failed comparison: $find_file" >&2 ; exit $? ; fi
+x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $find_file" >&2 ; exit $x ; fi
 ./rtk_nml_tidy_France_HP.sh
 fi
 done
@@ -1496,7 +1496,7 @@ echo "Comparing best values"
 pick_file="tmp_opt_pick_$opt.txt"
 ./rtk_opt_pick.sh tmp_opt_find_$opt*.txt | cat > $pick_file
 ./rtk_opt_comp.sh $pick_file 0.236328 0.00683594 4581.497
-if [ $? -gt 0 ] ; then  echo "Failed comparison: $pick_file" >&2 ; exit $? ; fi
+x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $pick_file" >&2 ; exit $x ; fi
 echo "Success"
 echo "********************"
 fi
@@ -1536,7 +1536,7 @@ sleep 3
 mpiexec -n 1 ./rapid -ksp_type richardson -tao_gatol 0.01 -tao_grtol 0.00059 > $rapd_file ######
 ./rtk_opt_find.sh $rapd_file | cat > $find_file
 ./rtk_opt_comp.sh $find_file ${ZS_knorm_finals[ii]} ${ZS_xnorm_finals[ii]} ${ZS_phi_finals[ii]} 
-if [ $? -gt 0 ] ; then  echo "Failed comparison: $find_file" >&2 ; exit $? ; fi
+x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $find_file" >&2 ; exit $x ; fi
 ./rtk_nml_tidy_France_HP.sh
 fi
 done
@@ -1545,7 +1545,7 @@ echo "Comparing best values"
 pick_file="tmp_opt_pick_$opt.txt"
 ./rtk_opt_pick.sh tmp_opt_find_$opt*.txt | cat > $pick_file
 ./rtk_opt_comp.sh $pick_file 0.00012207 0.156189 285.789
-if [ $? -gt 0 ] ; then  echo "Failed comparison: $pick_file" >&2 ; exit $? ; fi
+x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $pick_file" >&2 ; exit $x ; fi
 echo "Success"
 echo "********************"
 fi
@@ -1585,7 +1585,7 @@ sleep 3
 mpiexec -n 1 ./rapid -ksp_type preonly -tao_gatol 0.01 -tao_grtol 0.0042 > $rapd_file
 ./rtk_opt_find.sh $rapd_file | cat > $find_file
 ./rtk_opt_comp.sh $find_file ${ZS_knorm_finals[ii]} ${ZS_xnorm_finals[ii]} ${ZS_phi_finals[ii]} 
-if [ $? -gt 0 ] ; then  echo "Failed comparison: $find_file" >&2 ; exit $? ; fi
+x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $find_file" >&2 ; exit $x ; fi
 ./rtk_nml_tidy_France_HP.sh
 fi
 done
@@ -1594,7 +1594,7 @@ echo "Comparing best values"
 pick_file="tmp_opt_pick_$opt.txt"
 ./rtk_opt_pick.sh tmp_opt_find_$opt*.txt | cat > $pick_file
 ./rtk_opt_comp.sh $pick_file 0.5 4.75 5.59231
-if [ $? -gt 0 ] ; then  echo "Failed comparison: $pick_file" >&2 ; exit $? ; fi
+x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $pick_file" >&2 ; exit $x ; fi
 echo "Success"
 echo "********************"
 fi
@@ -1634,7 +1634,7 @@ sleep 3
 mpiexec -n 1 ./rapid -ksp_type preonly -tao_gatol 0.01 -tao_grtol 0.00027 > $rapd_file
 ./rtk_opt_find.sh $rapd_file | cat > $find_file
 ./rtk_opt_comp.sh $find_file ${ZS_knorm_finals[ii]} ${ZS_xnorm_finals[ii]} ${ZS_phi_finals[ii]} 
-if [ $? -gt 0 ] ; then  echo "Failed comparison: $find_file" >&2 ; exit $? ; fi
+x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $find_file" >&2 ; exit $x ; fi
 ./rtk_nml_tidy_France_HP.sh
 fi
 done
@@ -1643,7 +1643,7 @@ echo "Comparing best values"
 pick_file="tmp_opt_pick_$opt.txt"
 ./rtk_opt_pick.sh tmp_opt_find_$opt*.txt | cat > $pick_file
 ./rtk_opt_comp.sh $pick_file 1.4375 0.28125 1417.761
-if [ $? -gt 0 ] ; then  echo "Failed comparison: $pick_file" >&2 ; exit $? ; fi
+x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $pick_file" >&2 ; exit $x ; fi
 echo "Success"
 echo "********************"
 fi
@@ -1683,7 +1683,7 @@ sleep 3
 mpiexec -n 1 ./rapid -ksp_type preonly -tao_gatol 0.01 -tao_grtol 0.00012 > $rapd_file
 ./rtk_opt_find.sh $rapd_file | cat > $find_file
 ./rtk_opt_comp.sh $find_file ${ZS_knorm_finals[ii]} ${ZS_xnorm_finals[ii]} ${ZS_phi_finals[ii]} 
-if [ $? -gt 0 ] ; then  echo "Failed comparison: $find_file" >&2 ; exit $? ; fi
+x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $find_file" >&2 ; exit $x ; fi
 ./rtk_nml_tidy_France_HP.sh
 fi
 done
@@ -1692,7 +1692,7 @@ echo "Comparing best values"
 pick_file="tmp_opt_pick_$opt.txt"
 ./rtk_opt_pick.sh tmp_opt_find_$opt*.txt | cat > $pick_file
 ./rtk_opt_comp.sh $pick_file 1.75 0.625 6684.343
-if [ $? -gt 0 ] ; then  echo "Failed comparison: $pick_file" >&2 ; exit $? ; fi
+x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $pick_file" >&2 ; exit $x ; fi
 echo "Success"
 echo "********************"
 fi
@@ -1732,7 +1732,7 @@ sleep 3
 mpiexec -n 1 ./rapid -ksp_type preonly -tao_gatol 0.01 -tao_grtol 0.000095 > $rapd_file
 ./rtk_opt_find.sh $rapd_file | cat > $find_file
 ./rtk_opt_comp.sh $find_file ${ZS_knorm_finals[ii]} ${ZS_xnorm_finals[ii]} ${ZS_phi_finals[ii]} 
-if [ $? -gt 0 ] ; then  echo "Failed comparison: $find_file" >&2 ; exit $? ; fi
+x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $find_file" >&2 ; exit $x ; fi
 ./rtk_nml_tidy_France_HP.sh
 fi
 done
@@ -1741,7 +1741,7 @@ echo "Comparing best values"
 pick_file="tmp_opt_pick_$opt.txt"
 ./rtk_opt_pick.sh tmp_opt_find_$opt*.txt | cat > $pick_file
 ./rtk_opt_comp.sh $pick_file 2.79688 0.640625 11131.267
-if [ $? -gt 0 ] ; then  echo "Failed comparison: $pick_file" >&2 ; exit $? ; fi
+x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $pick_file" >&2 ; exit $x ; fi
 echo "Success"
 echo "********************"
 fi
@@ -1781,7 +1781,7 @@ sleep 3
 mpiexec -n 1 ./rapid -ksp_type preonly -tao_gatol 0.01 -tao_grtol 0.00016 > $rapd_file
 ./rtk_opt_find.sh $rapd_file | cat > $find_file
 ./rtk_opt_comp.sh $find_file ${ZS_knorm_finals[ii]} ${ZS_xnorm_finals[ii]} ${ZS_phi_finals[ii]} 
-if [ $? -gt 0 ] ; then  echo "Failed comparison: $find_file" >&2 ; exit $? ; fi
+x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $find_file" >&2 ; exit $x ; fi
 ./rtk_nml_tidy_France_HP.sh
 fi
 done
@@ -1790,7 +1790,7 @@ echo "Comparing best values"
 pick_file="tmp_opt_pick_$opt.txt"
 ./rtk_opt_pick.sh tmp_opt_find_$opt*.txt | cat > $pick_file
 ./rtk_opt_comp.sh $pick_file 1.1875 0.40625 4068.502
-if [ $? -gt 0 ] ; then  echo "Failed comparison: $pick_file" >&2 ; exit $? ; fi
+x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $pick_file" >&2 ; exit $x ; fi
 echo "Success"
 echo "********************"
 fi
@@ -1830,7 +1830,7 @@ sleep 3
 mpiexec -n 1 ./rapid -ksp_type preonly -tao_gatol 0.01 -tao_grtol 0.00012 > $rapd_file
 ./rtk_opt_find.sh $rapd_file | cat > $find_file
 ./rtk_opt_comp.sh $find_file ${ZS_knorm_finals[ii]} ${ZS_xnorm_finals[ii]} ${ZS_phi_finals[ii]} 
-if [ $? -gt 0 ] ; then  echo "Failed comparison: $find_file" >&2 ; exit $? ; fi
+x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $find_file" >&2 ; exit $x ; fi
 ./rtk_nml_tidy_France_HP.sh
 fi
 done
@@ -1839,7 +1839,7 @@ echo "Comparing best values"
 pick_file="tmp_opt_pick_$opt.txt"
 ./rtk_opt_pick.sh tmp_opt_find_$opt*.txt | cat > $pick_file
 ./rtk_opt_comp.sh $pick_file 2.26562 0.1875 6622.473
-if [ $? -gt 0 ] ; then  echo "Failed comparison: $pick_file" >&2 ; exit $? ; fi
+x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $pick_file" >&2 ; exit $x ; fi
 echo "Success"
 echo "********************"
 fi
@@ -1879,7 +1879,7 @@ sleep 3
 mpiexec -n 1 ./rapid -ksp_type preonly -tao_gatol 0.01 -tao_grtol 0.00068 > $rapd_file
 ./rtk_opt_find.sh $rapd_file | cat > $find_file
 ./rtk_opt_comp.sh $find_file ${ZS_knorm_finals[ii]} ${ZS_xnorm_finals[ii]} ${ZS_phi_finals[ii]} 
-if [ $? -gt 0 ] ; then  echo "Failed comparison: $find_file" >&2 ; exit $? ; fi
+x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $find_file" >&2 ; exit $x ; fi
 ./rtk_nml_tidy_France_HP.sh
 fi
 done
@@ -1888,7 +1888,7 @@ echo "Comparing best values"
 pick_file="tmp_opt_pick_$opt.txt"
 ./rtk_opt_pick.sh tmp_opt_find_$opt*.txt | cat > $pick_file
 ./rtk_opt_comp.sh $pick_file 1.9375 0.03125 216.681
-if [ $? -gt 0 ] ; then  echo "Failed comparison: $pick_file" >&2 ; exit $? ; fi
+x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $pick_file" >&2 ; exit $x ; fi
 echo "Success"
 echo "********************"
 fi
@@ -1928,7 +1928,7 @@ sleep 3
 mpiexec -n 1 ./rapid -ksp_type preonly -tao_gatol 0.01 -tao_grtol 0.00044 > $rapd_file
 ./rtk_opt_find.sh $rapd_file | cat > $find_file
 ./rtk_opt_comp.sh $find_file ${ZS_knorm_finals[ii]} ${ZS_xnorm_finals[ii]} ${ZS_phi_finals[ii]} 
-if [ $? -gt 0 ] ; then  echo "Failed comparison: $find_file" >&2 ; exit $? ; fi
+x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $find_file" >&2 ; exit $x ; fi
 ./rtk_nml_tidy_France_HP.sh
 fi
 done
@@ -1937,7 +1937,7 @@ echo "Comparing best values"
 pick_file="tmp_opt_pick_$opt.txt"
 ./rtk_opt_pick.sh tmp_opt_find_$opt*.txt | cat > $pick_file
 ./rtk_opt_comp.sh $pick_file 1.875 0.0625 509.309
-if [ $? -gt 0 ] ; then  echo "Failed comparison: $pick_file" >&2 ; exit $? ; fi
+x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $pick_file" >&2 ; exit $x ; fi
 echo "Success"
 echo "********************"
 fi
@@ -1985,7 +1985,7 @@ sleep 3
 mpiexec -n 1 ./rapid -ksp_type preonly -tao_max_funcs 100 -tao_gatol 0.01 -tao_grtol 0.00019 > $rapd_file ######
 ./rtk_opt_find.sh $rapd_file | cat > $find_file
 ./rtk_opt_comp.sh $find_file ${ZS_knorm_finals[ii]} ${ZS_xnorm_finals[ii]} ${ZS_phi_finals[ii]} 
-if [ $? -gt 0 ] ; then  echo "Failed comparison: $find_file" >&2 ; exit $? ; fi
+x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $find_file" >&2 ; exit $x ; fi
 ./rtk_nml_tidy_France_HP.sh
 fi
 done
@@ -1994,7 +1994,7 @@ echo "Comparing best values"
 pick_file="tmp_opt_pick_$opt.txt"
 ./rtk_opt_pick.sh tmp_opt_find_$opt*.txt | cat > $pick_file
 ./rtk_opt_comp.sh $pick_file 0.386933 0.109875 2720.664
-if [ $? -gt 0 ] ; then  echo "Failed comparison: $pick_file" >&2 ; exit $? ; fi
+x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $pick_file" >&2 ; exit $x ; fi
 echo "Success"
 echo "********************"
 fi
@@ -2042,7 +2042,7 @@ sleep 3
 mpiexec -n 1 ./rapid -ksp_type preonly -tao_gatol 0.01 -tao_grtol 0.00017 > $rapd_file
 ./rtk_opt_find.sh $rapd_file | cat > $find_file
 ./rtk_opt_comp.sh $find_file ${ZS_knorm_finals[ii]} ${ZS_xnorm_finals[ii]} ${ZS_phi_finals[ii]} 
-if [ $? -gt 0 ] ; then  echo "Failed comparison: $find_file" >&2 ; exit $? ; fi
+x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $find_file" >&2 ; exit $x ; fi
 ./rtk_nml_tidy_France_HP.sh
 fi
 done
@@ -2051,7 +2051,7 @@ echo "Comparing best values"
 pick_file="tmp_opt_pick_$opt.txt"
 ./rtk_opt_pick.sh tmp_opt_find_$opt*.txt | cat > $pick_file
 ./rtk_opt_comp.sh $pick_file 0.435547 0.0913086 3448.233
-if [ $? -gt 0 ] ; then  echo "Failed comparison: $pick_file" >&2 ; exit $? ; fi
+x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $pick_file" >&2 ; exit $x ; fi
 echo "Success"
 echo "********************"
 fi
@@ -2099,7 +2099,7 @@ sleep 3
 mpiexec -n 1 ./rapid -ksp_type preonly -tao_gatol 0.01 -tao_grtol 0.0031 > $rapd_file
 ./rtk_opt_find.sh $rapd_file | cat > $find_file
 ./rtk_opt_comp.sh $find_file ${ZS_knorm_finals[ii]} ${ZS_xnorm_finals[ii]} ${ZS_phi_finals[ii]} 
-if [ $? -gt 0 ] ; then  echo "Failed comparison: $find_file" >&2 ; exit $? ; fi
+x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $find_file" >&2 ; exit $x ; fi
 ./rtk_nml_tidy_France_HP.sh
 fi
 done
@@ -2108,7 +2108,7 @@ echo "Comparing best values"
 pick_file="tmp_opt_pick_$opt.txt"
 ./rtk_opt_pick.sh tmp_opt_find_$opt*.txt | cat > $pick_file
 ./rtk_opt_comp.sh $pick_file 0.03125 4.98438 1.01198 
-if [ $? -gt 0 ] ; then  echo "Failed comparison: $pick_file" >&2 ; exit $? ; fi
+x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $pick_file" >&2 ; exit $x ; fi
 echo "Success"
 echo "********************"
 fi
@@ -2156,7 +2156,7 @@ sleep 3
 mpiexec -n 1 ./rapid -ksp_type preonly -tao_gatol 0.01 -tao_grtol 0.00023 > $rapd_file
 ./rtk_opt_find.sh $rapd_file | cat > $find_file
 ./rtk_opt_comp.sh $find_file ${ZS_knorm_finals[ii]} ${ZS_xnorm_finals[ii]} ${ZS_phi_finals[ii]} 
-if [ $? -gt 0 ] ; then  echo "Failed comparison: $find_file" >&2 ; exit $? ; fi
+x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $find_file" >&2 ; exit $x ; fi
 ./rtk_nml_tidy_France_HP.sh
 fi
 done
@@ -2165,7 +2165,7 @@ echo "Comparing best values"
 pick_file="tmp_opt_pick_$opt.txt"
 ./rtk_opt_pick.sh tmp_opt_find_$opt*.txt | cat > $pick_file
 ./rtk_opt_comp.sh $pick_file 0.390686 0.184753 1854.941 
-if [ $? -gt 0 ] ; then  echo "Failed comparison: $pick_file" >&2 ; exit $? ; fi
+x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $pick_file" >&2 ; exit $x ; fi
 echo "Success"
 echo "********************"
 fi

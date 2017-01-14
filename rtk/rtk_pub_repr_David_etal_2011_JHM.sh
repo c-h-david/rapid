@@ -118,7 +118,7 @@ sleep 3
 mpiexec -n 1 ./rapid -ksp_type preonly > $rapd_file
 echo "Comparing files"
 ./rtk_run_comp $Qout_gold $Qout_file > $comp_file 
-if [ $? -gt 0 ] ; then  echo "Failed comparison: $comp_file" >&2 ; exit $? ; fi
+x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $comp_file" >&2 ; exit $x ; fi
 rm $Qout_file
 rm $rapd_file
 rm $comp_file
@@ -149,7 +149,7 @@ sleep 3
 mpiexec -n 1 ./rapid -ksp_type preonly > $rapd_file
 echo "Comparing files"
 ./rtk_run_comp $Qout_gold $Qout_file > $comp_file 
-if [ $? -gt 0 ] ; then  echo "Failed comparison: $comp_file" >&2 ; exit $? ; fi
+x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $comp_file" >&2 ; exit $x ; fi
 rm $Qout_file
 rm $rapd_file
 rm $comp_file
@@ -180,7 +180,7 @@ sleep 3
 mpiexec -n 1 ./rapid -ksp_type preonly > $rapd_file
 echo "Comparing files"
 ./rtk_run_comp $Qout_gold $Qout_file > $comp_file 
-if [ $? -gt 0 ] ; then  echo "Failed comparison: $comp_file" >&2 ; exit $? ; fi
+x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $comp_file" >&2 ; exit $x ; fi
 rm $Qout_file
 rm $rapd_file
 rm $comp_file
@@ -212,7 +212,7 @@ sleep 3
 mpiexec -n 1 ./rapid -ksp_type preonly > $rapd_file
 echo "Comparing files"
 ./rtk_run_comp $Qout_gold $Qout_file > $comp_file 
-if [ $? -gt 0 ] ; then  echo "Failed comparison: $comp_file" >&2 ; exit $? ; fi
+x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $comp_file" >&2 ; exit $x ; fi
 rm $Qout_file
 rm $rapd_file
 rm $comp_file
@@ -248,7 +248,7 @@ sleep 3
 mpiexec -n 1 ./rapid > $rapd_file
 echo "Comparing files"
 ./rtk_run_comp $Qout_gold $Qout_file > $comp_file 
-if [ $? -gt 0 ] ; then  echo "Failed comparison: $comp_file" >&2 ; exit $? ; fi
+x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $comp_file" >&2 ; exit $x ; fi
 rm $Qout_file
 rm $rapd_file
 rm $comp_file
@@ -285,7 +285,7 @@ sleep 3
 mpiexec -n $proc ./rapid -ksp_type richardson > $rapd_file
 echo "Comparing files"
 ./rtk_run_comp $Qout_gold $Qout_file > $comp_file 
-if [ $? -gt 0 ] ; then  echo "Failed comparison: $comp_file" >&2 ; exit $? ; fi
+x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $comp_file" >&2 ; exit $x ; fi
 rm $Qout_file
 rm $rapd_file
 rm $comp_file
@@ -327,7 +327,7 @@ sleep 3
 mpiexec -n 1 ./rapid -ksp_type preonly -tao_gatol 0.01 -tao_grtol 0.0040 > $rapd_file
 ./rtk_opt_find.sh $rapd_file | cat > $find_file
 ./rtk_opt_comp.sh $find_file 0.1875 3.90625 6.33277 
-if [ $? -gt 0 ] ; then  echo "Failed comparison: $find_file" >&2 ; exit $? ; fi
+x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $find_file" >&2 ; exit $x ; fi
 ./rtk_nml_tidy_San_Guad_JHM.sh
 fi
 
@@ -353,7 +353,7 @@ sleep 3
 mpiexec -n 1 ./rapid -ksp_type preonly -tao_gatol 0.01 -tao_grtol 0.0040 > $rapd_file
 ./rtk_opt_find.sh $rapd_file | cat > $find_file
 ./rtk_opt_comp.sh $find_file 0.131042 2.58128 6.32834
-if [ $? -gt 0 ] ; then  echo "Failed comparison: $find_file" >&2 ; exit $? ; fi
+x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $find_file" >&2 ; exit $x ; fi
 ./rtk_nml_tidy_San_Guad_JHM.sh
 fi
 
@@ -378,7 +378,7 @@ sleep 3
 mpiexec -n 1 ./rapid -ksp_type preonly -tao_gatol 0.01 -tao_grtol 0.0040 > $rapd_file
 ./rtk_opt_find.sh $rapd_file | cat > $find_file
 ./rtk_opt_comp.sh $find_file 0.125 0.9375 6.3315
-if [ $? -gt 0 ] ; then  echo "Failed comparison: $find_file" >&2 ; exit $? ; fi
+x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $find_file" >&2 ; exit $x ; fi
 ./rtk_nml_tidy_San_Guad_JHM.sh
 fi
 
@@ -390,7 +390,7 @@ echo "Comparing best values"
 pick_file='tmp_opt_pick_1.txt'
 ./rtk_opt_pick.sh tmp_opt_find_1*.txt | cat > $pick_file
 ./rtk_opt_comp.sh $pick_file 0.131042 2.58128 6.32834  
-if [ $? -gt 0 ] ; then  echo "Failed comparison: $pick_file" >&2 ; exit $? ; fi
+x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $pick_file" >&2 ; exit $x ; fi
 echo "Success"
 echo "********************"
 fi
@@ -423,7 +423,7 @@ sleep 3
 mpiexec -n 1 ./rapid -ksp_type preonly -tao_gatol 0.01 -tao_grtol 0.0040 > $rapd_file
 ./rtk_opt_find.sh $rapd_file | cat > $find_file
 ./rtk_opt_comp.sh $find_file 0.5 3.75 6.33895
-if [ $? -gt 0 ] ; then  echo "Failed comparison: $find_file" >&2 ; exit $? ; fi
+x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $find_file" >&2 ; exit $x ; fi
 ./rtk_nml_tidy_San_Guad_JHM.sh
 fi
 
@@ -448,7 +448,7 @@ sleep 3
 mpiexec -n 1 ./rapid -ksp_type preonly -tao_gatol 0.01 -tao_grtol 0.0040 > $rapd_file
 ./rtk_opt_find.sh $rapd_file | cat > $find_file
 ./rtk_opt_comp.sh $find_file 0.617188 1.95898 6.32206
-if [ $? -gt 0 ] ; then  echo "Failed comparison: $find_file" >&2 ; exit $? ; fi
+x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $find_file" >&2 ; exit $x ; fi
 ./rtk_nml_tidy_San_Guad_JHM.sh
 fi
 
@@ -473,7 +473,7 @@ sleep 3
 mpiexec -n 1 ./rapid -ksp_type preonly -tao_gatol 0.01 -tao_grtol 0.0040 > $rapd_file
 ./rtk_opt_find.sh $rapd_file | cat > $find_file
 ./rtk_opt_comp.sh $find_file 0.5 1.75 6.33788
-if [ $? -gt 0 ] ; then  echo "Failed comparison: $find_file" >&2 ; exit $? ; fi
+x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $find_file" >&2 ; exit $x ; fi
 ./rtk_nml_tidy_San_Guad_JHM.sh
 fi
 
@@ -485,7 +485,7 @@ echo "Comparing best values"
 pick_file='tmp_opt_pick_2.txt'
 ./rtk_opt_pick.sh tmp_opt_find_2*.txt | cat > $pick_file
 ./rtk_opt_comp.sh $pick_file 0.617188 1.95898 6.32206
-if [ $? -gt 0 ] ; then  echo "Failed comparison: $pick_file" >&2 ; exit $? ; fi
+x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $pick_file" >&2 ; exit $x ; fi
 echo "Success"
 echo "********************"
 fi
@@ -530,7 +530,7 @@ sleep 3
 mpiexec -n 1 ./rapid > $rapd_file
 echo "Comparing files"
 ./rtk_run_comp $Qout_gold $Qout_file > $comp_file 
-if [ $? -gt 0 ] ; then  echo "Failed comparison: $comp_file" >&2 ; exit $? ; fi
+x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $comp_file" >&2 ; exit $x ; fi
 rm $Qout_file
 rm $rapd_file
 rm $comp_file
@@ -558,7 +558,7 @@ sleep 3
 mpiexec -n 1 ./rapid -ksp_type preonly > $rapd_file
 echo "Comparing files"
 ./rtk_run_comp $Qout_gold $Qout_file > $comp_file 
-if [ $? -gt 0 ] ; then  echo "Failed comparison: $comp_file" >&2 ; exit $? ; fi
+x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $comp_file" >&2 ; exit $x ; fi
 rm $Qout_file
 rm $rapd_file
 rm $comp_file
@@ -588,7 +588,7 @@ sleep 3
 mpiexec -n $proc ./rapid -ksp_type richardson > $rapd_file
 echo "Comparing files"
 ./rtk_run_comp $Qout_gold $Qout_file > $comp_file 
-if [ $? -gt 0 ] ; then  echo "Failed comparison: $comp_file" >&2 ; exit $? ; fi
+x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $comp_file" >&2 ; exit $x ; fi
 rm $Qout_file
 rm $rapd_file
 rm $comp_file
