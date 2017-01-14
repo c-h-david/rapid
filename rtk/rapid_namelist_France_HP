@@ -81,7 +81,7 @@ riv_bas_id_file    ='../../rapid/input/France_HP/rivsurf_France.csv'
 !*******************************************************************************
 !Initial instantaneous flow file
 !*******************************************************************************
-Qinit_file         ='../../rapid/input/France_HP/Qinit_93.csv'
+Qinit_file         ='../../rapid/input/France_HP/Qinit_93.nc'
 
 !*******************************************************************************
 !Final instantaneous flow file

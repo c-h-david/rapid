@@ -56,7 +56,7 @@ sed -i -e "s|IS_riv_bas         =.*|IS_riv_bas         =24264|"                \
 #*******************************************************************************
 #Initialization
 #*******************************************************************************
-sed -i -e "s|Qinit_file         =.*|Qinit_file         ='../../rapid/input/France_HP/Qinit_93.csv'|" \
+sed -i -e "s|Qinit_file         =.*|Qinit_file         ='../../rapid/input/France_HP/Qinit_93.nc'|" \
           rapid_namelist_France_HP  
 
 #*******************************************************************************
