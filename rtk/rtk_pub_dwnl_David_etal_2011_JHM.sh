@@ -16,6 +16,7 @@
 #DOI: 10.5281/zenodo.16565
 #The script returns the following exit codes
 # - 0  if all downloads are successful 
+# - 22 if there was a conversion problem
 # - 44 if one download is not successful
 #Author:
 #Cedric H. David, 2015-2017.

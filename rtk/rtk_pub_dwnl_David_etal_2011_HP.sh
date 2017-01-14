@@ -16,6 +16,7 @@
 #DOI: 10.5281/zenodo.30228
 #The script returns the following exit codes
 # - 0  if all downloads are successful 
+# - 22 if there was a conversion problem
 # - 44 if one download is not successful
 #Author:
 #Cedric H. David, 2015-2017.
@@ -191,7 +192,12 @@ done
 #*******************************************************************************
 #Convert legacy files
 #*******************************************************************************
-./rtk_run_conv_Qinit ../input/France_HP/Qinit_93.csv ../input/France_HP/Qinit_93.nc
+./rtk_run_conv_Qinit                                                           \
+     ../input/France_HP/Qinit_93.csv                                           \
+     ../input/France_HP/Qinit_93.nc                                            \
+     > ./tmp_dwnl
+if [ $? -gt 0 ] ; then echo "Problem converting" >&2 ; exit 22 ; fi
+rm tmp_dwnl
 
 
 #*******************************************************************************
