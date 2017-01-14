@@ -21,6 +21,7 @@ addons:
     packages:
     - gfortran     #Add Fortran (C and C++ installed by specifying C++ above)
     - bc           #Add Basic Calculator (simple math from command line)
+    - nco          #netCDF Operators
 
 
 #*******************************************************************************
@@ -42,6 +43,7 @@ env:
 - RTK_PUB_DWNL='./rtk_pub_dwnl_David_etal_2011_HP.sh opt' RTK_PUB_REPR='./rtk_pub_repr_David_etal_2011_HP.sh 11 22'
 - RTK_PUB_DWNL='./rtk_pub_dwnl_David_etal_2011_HP.sh opt' RTK_PUB_REPR='./rtk_pub_repr_David_etal_2011_HP.sh 23 82'
 - RTK_PUB_DWNL='./rtk_pub_dwnl_David_etal_2011_HP.sh opt' RTK_PUB_REPR='./rtk_pub_repr_David_etal_2011_HP.sh 83 115'
+- RTK_PUB_DWNL='./rtk_pub_dwnl_David_etal_2011_JHM.sh' RTK_PUB_REPR='./rtk_pub_xtra_David_etal_2011_JHM.sh'
 
 
 #*******************************************************************************
