@@ -66,19 +66,10 @@ if (IS_opt_run==1) then
 !Output final instantaneous Q (ZV_QoutR)
 !-------------------------------------------------------------------------------
 if (BS_opt_Qfinal) then
-call VecScatterBegin(vecscat,ZV_QoutR,ZV_SeqZero,                              &
-                     INSERT_VALUES,SCATTER_FORWARD,ierr)
-call VecScatterEnd(vecscat,ZV_QoutR,ZV_SeqZero,                                &
-                        INSERT_VALUES,SCATTER_FORWARD,ierr)
-call VecGetArrayF90(ZV_SeqZero,ZV_pointer,ierr)
-if (rank==0) then 
-     open(31,file=Qfinal_file)
-     do JS_riv_bas=1,IS_riv_bas
-          write(31,*) ZV_pointer(JS_riv_bas)
-     end do
-     close(31)
-end if
-call VecRestoreArrayF90(ZV_SeqZero,ZV_pointer,ierr)
+call rapid_create_Qfinal_file(Qfinal_file)
+call rapid_open_Qfinal_file(Qfinal_file)
+call rapid_write_Qfinal_file
+call rapid_close_Qfinal_file
 end if
 
 !-------------------------------------------------------------------------------

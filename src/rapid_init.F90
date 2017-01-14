@@ -314,17 +314,9 @@ call VecSet(ZV_QoutinitM,ZS_Qout0,ierr)
 end if
 
 if (BS_opt_Qinit) then
-open(30,file=Qinit_file,status='old')
-read(30,*) ZV_read_riv_tot
-close(30)
-call VecSetValues(ZV_QoutinitM,IS_riv_bas,IV_riv_loc1,                          &
-                  ZV_read_riv_tot(IV_riv_index),INSERT_VALUES,ierr)
-                  !here we use the output of a simulation as the intitial 
-                  !flow rates.  The simulation has to be made on the entire
-                  !domain, the initial value is taken only for the considered
-                  !basin thanks to the vector IV_riv_index
-call VecAssemblyBegin(ZV_QoutinitM,ierr)
-call VecAssemblyEnd(ZV_QoutinitM,ierr)  
+call rapid_open_Qinit_file(Qinit_file)
+call rapid_read_Qinit_file
+call rapid_close_Qinit_file
 end if
 
 call VecSet(ZV_VinitM,ZS_V0,ierr)

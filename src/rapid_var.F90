@@ -511,11 +511,13 @@ Vec :: ZV_1stIndex, ZV_2ndIndex
 !Declaration of variables - netCDF variables
 !*******************************************************************************
 PetscInt :: IS_nc_status
-PetscInt :: IS_nc_id_fil_Vlat,IS_nc_id_fil_Qout,IS_nc_id_fil_V
+PetscInt :: IS_nc_id_fil_Vlat,IS_nc_id_fil_Qout,IS_nc_id_fil_V,                &
+            IS_nc_id_fil_Qinit,IS_nc_id_fil_Qfinal
 PetscInt :: IS_nc_id_var_Vlat,IS_nc_id_var_Qout,IS_nc_id_var_rivid,            &
             IS_nc_id_var_V,IS_nc_id_var_time,IS_nc_id_var_lon,IS_nc_id_var_lat,&
             IS_nc_id_var_time_bnds,IS_nc_id_var_crs,                           &
-            IS_nc_id_var_sVlat,IS_nc_id_var_sQout
+            IS_nc_id_var_sVlat,IS_nc_id_var_sQout,                             &
+            IS_nc_id_var_Qinit,IS_nc_id_var_Qfinal
 PetscInt :: IS_nc_id_dim_rivid,IS_nc_id_dim_time,IS_nc_id_dim_nv
 PetscInt, parameter :: IS_nc_ndim=2
 PetscInt, dimension(IS_nc_ndim) :: IV_nc_id_dim, IV_nc_start, IV_nc_count,     &
