@@ -19,6 +19,7 @@ use rapid_var, only :                                                          &
                    ZS_TauR,                                                    &
                    ZS_rnd_uni1,ZS_rnd_uni2,ZS_rnd_norm,ZS_pi,                  &
                    ZV_dQlat,ZV_sQlat,ZV_dQout,ZV_sQout,ZM_Net,ZM_A,            &
+                   ZV_C1,ZV_one,                                               &
                    ZV_riv_tot_dQlat,ZV_riv_tot_sQlat,ZV_riv_bas_sQout,         &
                    ZV_SeqZero,ZV_pointer,ZS_one,temp_char,                     &
                    ierr,rank,vecscat,rnd,ksp 
@@ -61,17 +62,13 @@ call VecSet(ZV_dQout,0*ZS_one,ierr)
 
 
 !*******************************************************************************
-!Computing the linear system matrix
+!Modifying the linear system matrix for UQ and setting it in the solver
 !*******************************************************************************
 call MatCopy(ZM_Net,ZM_A,DIFFERENT_NONZERO_PATTERN,ierr)   !A=Net
 call MatScale(ZM_A,-ZS_one,ierr)                           !A=-A
 call MatShift(ZM_A,ZS_one,ierr)                            !A=A+1*I
 !Result:A=I-Net
 
-
-!*******************************************************************************
-!Setting the matrix in the linear system solver
-!*******************************************************************************
 call KSPSetOperators(ksp,ZM_A,ZM_A,ierr)
 !Set KSP to use matrix ZM_A
 
@@ -203,6 +200,20 @@ if (rank==0) call VecGetArrayF90(ZV_SeqZero,ZV_pointer,ierr)
 
 if  (rank==0) ZV_riv_bas_sQout=ZV_pointer
 !Copy values into the variable that will be written in netCDF file
+
+
+!*******************************************************************************
+!Recomputing the linear system matrix for RAPID and setting it in the solver
+!*******************************************************************************
+call MatCopy(ZM_Net,ZM_A,DIFFERENT_NONZERO_PATTERN,ierr)   !A=Net
+call MatDiagonalScale(ZM_A,ZV_C1,ZV_one,ierr)              !A=diag(C1)*A
+call MatScale(ZM_A,-ZS_one,ierr)                           !A=-A
+call MatShift(ZM_A,ZS_one,ierr)                            !A=A+1*I
+!Result:A=I-diag(C1)*Net
+
+call KSPSetOperators(ksp,ZM_A,ZM_A,ierr)
+!Set KSP to use matrix ZM_A. This is because this UQ subroutine had modified the
+!matrix that was computed in rapid_init and that is later needed for routing. 
 
 
 !*******************************************************************************
