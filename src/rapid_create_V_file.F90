@@ -21,12 +21,14 @@ use rapid_var, only :                                                          &
                    IS_nc_id_var_V,IS_nc_id_var_rivid,                          &
                    IS_nc_id_var_time,IS_nc_id_var_lon,IS_nc_id_var_lat,        &
                    IS_nc_id_var_time_bnds,IS_nc_id_var_crs,                    &
+                   IS_nc_id_var_sV,                                            &
                    IV_riv_bas_id,IS_riv_bas,                                   &
                    YV_now,YV_version,                                          &
                    Vlat_file,                                                  &
                    YV_title,YV_institution,YV_comment,                         &
                    YV_time_units,YV_crs_sma,YV_crs_iflat,                      &
-                   ZV_riv_tot_lon,ZV_riv_tot_lat,IV_riv_index
+                   ZV_riv_tot_lon,ZV_riv_tot_lat,IV_riv_index,                 &
+                   ZV_riv_bas_sV
 
 implicit none
 
@@ -69,6 +71,8 @@ if (rank==0) then
 !-------------------------------------------------------------------------------
      IS_nc_status=NF90_DEF_VAR(IS_nc_id_fil_V,'V',NF90_REAL,                   &
                                IV_nc_id_dim,IS_nc_id_var_V)
+     IS_nc_status=NF90_DEF_VAR(IS_nc_id_fil_V,'sV',NF90_REAL,                  &
+                               IS_nc_id_dim_rivid,IS_nc_id_var_sV)
      IS_nc_status=NF90_DEF_VAR(IS_nc_id_fil_V,'rivid',NF90_INT,                &
                                IS_nc_id_dim_rivid,IS_nc_id_var_rivid)
      IS_nc_status=NF90_DEF_VAR(IS_nc_id_fil_V,'time',NF90_INT,                 &
@@ -96,6 +100,18 @@ if (rank==0) then
      IS_nc_status=NF90_PUT_ATT(IS_nc_id_fil_V,IS_nc_id_var_V,                  &
                                'grid_mapping','crs')
      IS_nc_status=NF90_PUT_ATT(IS_nc_id_fil_V,IS_nc_id_var_V,                  &
+                               'cell_methods','time: mean')
+
+     IS_nc_status=NF90_PUT_ATT(IS_nc_id_fil_V,IS_nc_id_var_sV,                 &
+                               'long_name','average river water volume '       &
+                               // 'uncertainty inside of each river reach')
+     IS_nc_status=NF90_PUT_ATT(IS_nc_id_fil_V,IS_nc_id_var_sV,                 &
+                               'units','m3')
+     IS_nc_status=NF90_PUT_ATT(IS_nc_id_fil_V,IS_nc_id_var_sV,                 &
+                               'coordinates','lon lat')
+     IS_nc_status=NF90_PUT_ATT(IS_nc_id_fil_V,IS_nc_id_var_sV,                 &
+                               'grid_mapping','crs')
+     IS_nc_status=NF90_PUT_ATT(IS_nc_id_fil_V,IS_nc_id_var_sV,                 &
                                'cell_methods','time: mean')
 
      IS_nc_status=NF90_PUT_ATT(IS_nc_id_fil_V,IS_nc_id_var_rivid,              &
@@ -204,6 +220,11 @@ if (rank==0) then
      !The default value for 'no data' in rapid_init.F90 is -9999 for latitude
      IS_nc_status=NF90_PUT_VAR(IS_nc_id_fil_V,IS_nc_id_var_lat,                &
                                ZV_riv_tot_lat(IV_riv_index))
+     end if
+     if (maxval(ZV_riv_bas_sV)/=0) then 
+     !The default value for 'no data' in rapid_init.F90 is 0 for stdev of V
+     IS_nc_status=NF90_PUT_VAR(IS_nc_id_fil_V,IS_nc_id_var_sV,                 &
+                               ZV_riv_bas_sV)
      end if
 
 !-------------------------------------------------------------------------------
