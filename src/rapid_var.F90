@@ -435,6 +435,8 @@ Vec :: ZV_dQlat, ZV_sQlat, ZV_dQout, ZV_sQout
 !standard deviation of Qlat and Qout.
 PetscScalar,dimension(:), allocatable :: ZV_riv_bas_sQout, ZV_riv_bas_dQout
 !Vectors of size IS_riv_bas storing standard deviation and perturbation of Qout
+PetscScalar,dimension(:), allocatable :: ZV_riv_bas_sV, ZV_riv_bas_dV
+!Vectors of size IS_riv_bas storing standard deviation and perturbation of V
 
 
 !*******************************************************************************
@@ -516,7 +518,7 @@ PetscInt :: IS_nc_id_fil_Vlat,IS_nc_id_fil_Qout,IS_nc_id_fil_V,                &
 PetscInt :: IS_nc_id_var_Vlat,IS_nc_id_var_Qout,IS_nc_id_var_rivid,            &
             IS_nc_id_var_V,IS_nc_id_var_time,IS_nc_id_var_lon,IS_nc_id_var_lat,&
             IS_nc_id_var_time_bnds,IS_nc_id_var_crs,                           &
-            IS_nc_id_var_sVlat,IS_nc_id_var_sQout,                             &
+            IS_nc_id_var_sVlat,IS_nc_id_var_sQout,IS_nc_id_var_sV,             &
             IS_nc_id_var_Qinit,IS_nc_id_var_Qfinal
 PetscInt :: IS_nc_id_dim_rivid,IS_nc_id_dim_time,IS_nc_id_dim_nv
 PetscInt, parameter :: IS_nc_ndim=2
