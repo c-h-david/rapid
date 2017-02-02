@@ -57,6 +57,7 @@ use rapid_var, only :                                                          &
                    ZV_Qin_dam0,ZV_Qout_dam0,                                   &
                    ZV_riv_tot_sQlat,ZV_riv_tot_dQlat,                          &
                    ZV_riv_bas_sQout,ZV_riv_bas_dQout,                          &
+                   ZV_riv_bas_sV,ZV_riv_bas_dV,                                &
                    ZV_QoutinitM,ZV_QoutinitO,ZV_QoutinitR,                     &
                    ZV_VinitM,ZV_VinitR,                                        &
                    ZV_babsmax,ZV_QoutRabsmin,ZV_QoutRabsmax,                   &
@@ -203,9 +204,12 @@ allocate(ZV_riv_tot_sQlat(IS_riv_tot)) !Used in rapid_meta_Vlat_file
                                        !regardless of BS_opt_uq
 allocate(ZV_riv_bas_sQout(IS_riv_bas)) !Used in rapid_create_Qout_file 
                                        !regardless of BS_opt_uq
+allocate(ZV_riv_bas_sV(IS_riv_bas))    !Used in rapid_create_V_file 
+                                       !regardless of BS_opt_uq
 if (BS_opt_uq) then
      allocate(ZV_riv_tot_dQlat(IS_riv_tot))
      allocate(ZV_riv_bas_dQout(IS_riv_bas))
+     allocate(ZV_riv_bas_dV(IS_riv_bas))
 end if
 
 !-------------------------------------------------------------------------------
@@ -225,9 +229,11 @@ end if
 
 ZV_riv_tot_sQlat=0      !Used in rapid_meta_Vlat_file regardless of BS_opt_uq
 ZV_riv_bas_sQout=0      !Used in rapid_create_Qout_file regardless of BS_opt_uq
+ZV_riv_bas_sV=0         !Used in rapid_create_V_file regardless of BS_opt_uq
 if (BS_opt_uq) then
      ZV_riv_tot_dQlat=0
      ZV_riv_bas_dQout=0
+     ZV_riv_bas_dV=0
 end if
 !These are not populated anywhere before being used and hold meaningless values
 
