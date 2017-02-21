@@ -1,0 +1,156 @@
+&NL_namelist
+!*******************************************************************************
+!rapid_namelist_WSWM_XYZ
+!*******************************************************************************
+
+!Purpose:
+!This ASCII file contains instructions for RAPID corresponding to WSWM_XYZ.
+!Author:
+!Cedric H. David, 2015-2017.
+
+
+!*******************************************************************************
+!Runtime options 
+!*******************************************************************************
+BS_opt_Qinit       =.false.
+!.false. --> no read initial flow    .true. --> read initial flow
+
+BS_opt_Qfinal      =.false.
+!.false. --> no write final flow     .true. --> write final flow 
+
+BS_opt_V           =.false.
+!.false. --> no compute volume       .true. --> compute volume
+
+BS_opt_dam         =.false.
+!.false. --> no dam model used       .true. --> dam model used
+
+BS_opt_for         =.false.
+!.false. --> no forcing              .true. --> forcing
+
+BS_opt_influence   =.false.
+!.false. --> no output influence     .true. --> output influence
+
+BS_opt_uq          =.false.
+!.false. --> no uncertainty quantif. .true. --> uncertainty quantif.
+
+IS_opt_routing     =1
+!1       --> matrix-based Muskingum  2      --> traditional Muskingum
+!3       --> Transbnd. matrix-based
+
+IS_opt_run         =1
+!1       --> regular run             2      --> parameter optimization
+
+IS_opt_phi         =1
+!1       --> phi1                    2      --> phi2
+
+!*******************************************************************************
+!Temporal information
+!*******************************************************************************
+ZS_TauM            =62985600
+!3600*24*729=62985600
+ZS_dtM             =86400
+!3600*24=86400
+
+ZS_TauO            =15638400
+!3600*24*181=15638400
+ZS_dtO             =86400
+!3600*24=86400
+
+ZS_TauR            =10800
+!3600*3=10800
+ZS_dtR             =900
+!60*15=900
+
+ZS_dtF             =86400
+!3600*24=86400
+
+!*******************************************************************************
+!Domain in which input data is available
+!*******************************************************************************
+IS_riv_tot         =658702
+rapid_connect_file ='../../rapid/input/WSWM_XYZ/rapid_connect_WSWM.csv'
+IS_max_up          =12
+Vlat_file          ='../../rapid/input/WSWM_XYZ/m3_riv_WSWM_19970101_19981231_VIC0125_cst_10p.nc'
+
+!*******************************************************************************
+!Domain in which model runs
+!*******************************************************************************
+IS_riv_bas         =658702
+riv_bas_id_file    ='../../rapid/input/WSWM_XYZ/riv_bas_id_WSWM_hydroseq.csv'
+
+!*******************************************************************************
+!Initial instantaneous flow file
+!*******************************************************************************
+Qinit_file         =''
+
+!*******************************************************************************
+!Final instantaneous flow file
+!*******************************************************************************
+Qfinal_file        =''
+
+!*******************************************************************************
+!Available dam data
+!*******************************************************************************
+IS_dam_tot         =0
+dam_tot_id_file    =''
+
+!*******************************************************************************
+!Dam data used
+!*******************************************************************************
+IS_dam_use         =0
+dam_use_id_file    =''
+
+!*******************************************************************************
+!Available forcing data
+!*******************************************************************************
+IS_for_tot         =0
+for_tot_id_file    =''
+Qfor_file          =''
+
+!*******************************************************************************
+!Forcing data used
+!*******************************************************************************
+IS_for_use         =0
+for_use_id_file    =''
+
+!*******************************************************************************
+!File where max (min) of absolute values of b (QoutR) are stored
+!*******************************************************************************
+babsmax_file       =''
+QoutRabsmin_file   =''
+QoutRabsmax_file   =''
+
+!*******************************************************************************
+!Regular model run
+!*******************************************************************************
+k_file             ='../../rapid/input/WSWM_XYZ/k_WSWM_ag.csv'
+x_file             ='../../rapid/input/WSWM_XYZ/x_WSWM_ag.csv'
+Qout_file          ='../../rapid/output/WSWM_XYZ/Qout_WSWM_729days_p0_dtR900s_nx_method.nc'
+V_file             ='../../rapid/output/WSWM_XYZ/V_WSWM_729days_p0_dtR900s_nx_method.nc'
+
+!*******************************************************************************
+!Optimization
+!*******************************************************************************
+ZS_phifac          =0.001
+!-------------------------------------------------------------------------------
+!Routing parameters
+!-------------------------------------------------------------------------------
+kfac_file          ='../../rapid/input/WSWM_XYZ/kfac_WSWM_1km_hour.csv'
+ZS_knorm_init      =2
+ZS_xnorm_init      =3
+!-------------------------------------------------------------------------------
+!Gage observations
+!-------------------------------------------------------------------------------
+IS_obs_tot         =1562
+obs_tot_id_file    ='../../rapid/input/WSWM_XYZ/gage_id_WSWM_1997_1998_full.csv'
+Qobs_file          ='../../rapid/input/WSWM_XYZ/Qobs_WSWM_1997_1998_full.csv'
+Qobsbarrec_file    =''
+IS_obs_use         =1562
+obs_use_id_file    ='../../rapid/input/WSWM_XYZ/gage_id_WSWM_1997_1998_full.csv'
+IS_strt_opt        =1
+!0*8+1=1
+
+!*******************************************************************************
+!End name list
+!*******************************************************************************
+/
