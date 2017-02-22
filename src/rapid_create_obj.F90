@@ -28,7 +28,7 @@ use rapid_var, only :                                                          &
                    ZV_QoutRabsmin,ZV_QoutRabsmax,ZV_QoutRhat,                  &
                    ZV_VR,ZV_VinitR,ZV_VprevR,ZV_VbarR,ZV_VoutR,                &
                    ZV_Qobsbarrec,                                              &
-                   ZV_dQlat,ZV_sQlat,ZV_dQout,ZV_sQout,                        &
+                   ZV_vQlat,ZV_sQlat,ZV_vQout,ZV_sQout,                        &
                    ierr,ksp,vecscat,ZV_SeqZero,ZS_one,ZV_one,IS_one,ncore,rank,&
                    tao,ZV_1stIndex,ZV_2ndIndex,rnd
 
@@ -172,10 +172,10 @@ call VecDuplicate(ZV_k,ZV_Qobs,ierr)
 call VecDuplicate(ZV_k,ZV_kfac,ierr)
 call VecDuplicate(ZV_k,ZV_Qobsbarrec,ierr)
 
-call VecDuplicate(ZV_k,ZV_dQlat,ierr)
 call VecDuplicate(ZV_k,ZV_sQlat,ierr)
-call VecDuplicate(ZV_k,ZV_dQout,ierr)
+call VecDuplicate(ZV_k,ZV_vQlat,ierr)
 call VecDuplicate(ZV_k,ZV_sQout,ierr)
+call VecDuplicate(ZV_k,ZV_vQout,ierr)
 !all the other vector objects are duplicates of the first one
 
 

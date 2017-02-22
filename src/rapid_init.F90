@@ -55,9 +55,9 @@ use rapid_var, only :                                                          &
                    IV_dam_tot_id,IV_dam_use_id,                                &
                    ZV_Qin_dam,ZV_Qout_dam,ZV_Qin_dam_prev,ZV_Qout_dam_prev,    &
                    ZV_Qin_dam0,ZV_Qout_dam0,                                   &
-                   ZV_riv_tot_sQlat,ZV_riv_tot_dQlat,                          &
-                   ZV_riv_bas_sQout,ZV_riv_bas_dQout,                          &
-                   ZV_riv_bas_sV,ZV_riv_bas_dV,                                &
+                   ZV_riv_tot_sQlat,ZV_riv_tot_vQlat,                          &
+                   ZV_riv_bas_sQout,ZV_riv_bas_vQout,                          &
+                   ZV_riv_bas_sV,ZV_riv_bas_vV,                                &
                    ZV_QoutinitM,ZV_QoutinitO,ZV_QoutinitR,                     &
                    ZV_VinitM,ZV_VinitR,                                        &
                    ZV_babsmax,ZV_QoutRabsmin,ZV_QoutRabsmax,                   &
@@ -207,9 +207,9 @@ allocate(ZV_riv_bas_sQout(IS_riv_bas)) !Used in rapid_create_Qout_file
 allocate(ZV_riv_bas_sV(IS_riv_bas))    !Used in rapid_create_V_file 
                                        !regardless of BS_opt_uq
 if (BS_opt_uq) then
-     allocate(ZV_riv_tot_dQlat(IS_riv_tot))
-     allocate(ZV_riv_bas_dQout(IS_riv_bas))
-     allocate(ZV_riv_bas_dV(IS_riv_bas))
+     allocate(ZV_riv_tot_vQlat(IS_riv_tot))
+     allocate(ZV_riv_bas_vQout(IS_riv_bas))
+     allocate(ZV_riv_bas_vV(IS_riv_bas))
 end if
 
 !-------------------------------------------------------------------------------
@@ -231,9 +231,9 @@ ZV_riv_tot_sQlat=0      !Used in rapid_meta_Vlat_file regardless of BS_opt_uq
 ZV_riv_bas_sQout=0      !Used in rapid_create_Qout_file regardless of BS_opt_uq
 ZV_riv_bas_sV=0         !Used in rapid_create_V_file regardless of BS_opt_uq
 if (BS_opt_uq) then
-     ZV_riv_tot_dQlat=0
-     ZV_riv_bas_dQout=0
-     ZV_riv_bas_dV=0
+     ZV_riv_tot_vQlat=0
+     ZV_riv_bas_vQout=0
+     ZV_riv_bas_vV=0
 end if
 !These are not populated anywhere before being used and hold meaningless values
 

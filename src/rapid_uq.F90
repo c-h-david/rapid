@@ -18,9 +18,9 @@ use rapid_var, only :                                                          &
                    IV_riv_index,IV_riv_loc1,                                   &
                    ZS_TauR,                                                    &
                    ZS_rnd_uni1,ZS_rnd_uni2,ZS_rnd_norm,ZS_pi,                  &
-                   ZV_dQlat,ZV_sQlat,ZV_dQout,ZV_sQout,ZM_Net,ZM_A,            &
+                   ZV_vQlat,ZV_sQlat,ZV_vQout,ZV_sQout,ZM_Net,ZM_A,            &
                    ZV_C1,ZV_one,                                               &
-                   ZV_riv_tot_dQlat,ZV_riv_tot_sQlat,ZV_riv_bas_sQout,         &
+                   ZV_riv_tot_vQlat,ZV_riv_tot_sQlat,ZV_riv_bas_sQout,         &
                    ZV_SeqZero,ZV_pointer,ZS_one,temp_char,                     &
                    ierr,rank,vecscat,rnd,ksp 
 
@@ -51,13 +51,13 @@ implicit none
 call VecSet(ZV_sQlat,0*ZS_one,ierr)
 !Make sure the standard deviation of lateral inflow is initialized to zero.
 
-call VecSet(ZV_dQlat,0*ZS_one,ierr)
+call VecSet(ZV_vQlat,0*ZS_one,ierr)
 !Make sure the perturbation of lateral inflow is initialized to zero.
 
 call VecSet(ZV_sQout,0*ZS_one,ierr)
 !Make sure the standard deviation of outflow is initialized to zero.
 
-call VecSet(ZV_dQout,0*ZS_one,ierr)
+call VecSet(ZV_vQout,0*ZS_one,ierr)
 !Make sure the perturbation of outflow is initialized to zero.
 
 
@@ -94,9 +94,9 @@ call KSPSetOperators(ksp,ZM_A,ZM_A,ierr)
 !!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 !!Initialize vectors of each ensemble to zero
 !!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-!ZV_riv_tot_dQlat=0
-!call VecSet(ZV_dQlat,0*ZS_one,ierr)
-!call VecSet(ZV_dQout,0*ZS_one,ierr)
+!ZV_riv_tot_vQlat=0
+!call VecSet(ZV_vQlat,0*ZS_one,ierr)
+!call VecSet(ZV_vQout,0*ZS_one,ierr)
 !
 !!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 !!Compute a random perturbation from the standard deviation of lateral inflow
@@ -109,7 +109,7 @@ call KSPSetOperators(ksp,ZM_A,ZM_A,ierr)
 !     ZS_rnd_uni1=ZS_rnd_uni2
 !     !A normally distributed pseudo-random number is computed from two uniformly 
 !     !distributed pseudo-random numbers using the Box-Muller transform
-!     ZV_riv_tot_dQlat(JS_riv_tot)=ZS_rnd_norm*ZV_riv_tot_sQlat(JS_riv_tot)
+!     ZV_riv_tot_vQlat(JS_riv_tot)=ZS_rnd_norm*ZV_riv_tot_sQlat(JS_riv_tot)
 !     !Each value of standard deviation in Qlat is multiplied by the random
 !     !number to produce a random perturbation
 !end do
@@ -119,23 +119,23 @@ call KSPSetOperators(ksp,ZM_A,ZM_A,ierr)
 !!Apply this perturbation to the sub-basin of interest 
 !!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 !if (rank==0) then
-!     call VecSetValues(ZV_dQlat,IS_riv_bas,IV_riv_loc1,                        &
-!                       ZV_riv_tot_dQlat(IV_riv_index),INSERT_VALUES,ierr)
+!     call VecSetValues(ZV_vQlat,IS_riv_bas,IV_riv_loc1,                        &
+!                       ZV_riv_tot_vQlat(IV_riv_index),INSERT_VALUES,ierr)
 !end if
-!call VecAssemblyBegin(ZV_dQlat,ierr)
-!call VecAssemblyEnd(ZV_dQlat,ierr)  
+!call VecAssemblyBegin(ZV_vQlat,ierr)
+!call VecAssemblyEnd(ZV_vQlat,ierr)  
 !
 !!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 !!Compute the perturbation in outflow from the perturbation in lateral inflow
 !!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-!call KSPSolve(ksp,ZV_dQlat,ZV_dQout,ierr)
-!!solves A*dQout=dQlat
+!call KSPSolve(ksp,ZV_vQlat,ZV_vQout,ierr)
+!!solves A*vQout=vQlat
 !
 !!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 !!Update the square of the standard deviation in outflow
 !!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-!call VecPointwiseMult(ZV_dQout,ZV_dQout,ZV_dQout,ierr)
-!call VecAXPY(ZV_sQout,ZS_one,ZV_dQout)
+!call VecPointwiseMult(ZV_vQout,ZV_vQout,ZV_vQout,ierr)
+!call VecAXPY(ZV_sQout,ZS_one,ZV_vQout)
 !
 !!-------------------------------------------------------------------------------
 !!End ensemble loop

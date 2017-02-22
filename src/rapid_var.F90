@@ -428,15 +428,15 @@ PetscScalar :: ZS_pi=4*atan(1.0)
 PetscInt :: IS_uq, JS_uq
 !Total number of ensemble members used for uncertainty quantification
 
-PetscScalar,dimension(:), allocatable :: ZV_riv_tot_sQlat, ZV_riv_tot_dQlat
-!Vectors of size IS_riv_tot storing standard deviation and perturbation of Qlat
-Vec :: ZV_dQlat, ZV_sQlat, ZV_dQout, ZV_sQout
-!Vectors of size IS_riv_bas storing the perturbation of Qlat and Qout, and the 
-!standard deviation of Qlat and Qout.
-PetscScalar,dimension(:), allocatable :: ZV_riv_bas_sQout, ZV_riv_bas_dQout
-!Vectors of size IS_riv_bas storing standard deviation and perturbation of Qout
-PetscScalar,dimension(:), allocatable :: ZV_riv_bas_sV, ZV_riv_bas_dV
-!Vectors of size IS_riv_bas storing standard deviation and perturbation of V
+Vec :: ZV_sQlat, ZV_vQlat, ZV_sQout, ZV_vQout
+!Vectors of size IS_riv_bas storing the standard error and the variance of Qlat 
+!and Qout 
+PetscScalar,dimension(:), allocatable :: ZV_riv_tot_sQlat, ZV_riv_tot_vQlat
+!Vectors of size IS_riv_tot storing standard error and variance of Qlat
+PetscScalar,dimension(:), allocatable :: ZV_riv_bas_sQout, ZV_riv_bas_vQout
+!Vectors of size IS_riv_bas storing standard error and variance of Qout
+PetscScalar,dimension(:), allocatable :: ZV_riv_bas_sV, ZV_riv_bas_vV
+!Vectors of size IS_riv_bas storing standard error and variance of V
 
 
 !*******************************************************************************
