@@ -428,6 +428,11 @@ PetscScalar :: ZS_pi=4*atan(1.0)
 PetscInt :: IS_uq, JS_uq
 !Total number of ensemble members used for uncertainty quantification
 
+PetscScalar :: ZS_alpha_uq
+!Proportion (belongs to [0, 1]) of the variance in outflow that is attributed to 
+!bias in runoff. The remainder of the variance is attributed to random errors at
+!the reach level
+
 Vec :: ZV_sQlat, ZV_vQlat, ZV_sQout, ZV_vQout
 !Vectors of size IS_riv_bas storing the standard error and the variance of Qlat 
 !and Qout 
@@ -575,6 +580,7 @@ namelist /NL_namelist/                                                         &
                        IS_dam_tot,dam_tot_id_file,                             &
                        IS_dam_use,dam_use_id_file,                             &
                        babsmax_file,QoutRabsmin_file,QoutRabsmax_file,         &
+                       ZS_alpha_uq,                                            &
                        k_file,x_file,Qout_file,V_file,                         &
                        kfac_file,xfac_file,ZS_knorm_init,ZS_xnorm_init,        &
                        IS_obs_tot,obs_tot_id_file,IS_obs_use,obs_use_id_file,  &
