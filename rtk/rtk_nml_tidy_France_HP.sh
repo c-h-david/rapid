@@ -97,6 +97,12 @@ sed -i -e "s|babsmax_file       =.*|babsmax_file       =''|"                   \
           rapid_namelist_France_HP  
 
 #*******************************************************************************
+#Uncertainty quantification
+#*******************************************************************************
+sed -i -e "s|ZS_alpha_uq        =.*|ZS_alpha_uq        =0.5|"                  \
+          rapid_namelist_France_HP  
+
+#*******************************************************************************
 #Regular model run
 #*******************************************************************************
 sed -i -e "s|k_file             =.*|k_file             ='../../rapid/input/France_HP/k_modcou_b.csv'|" \
