@@ -18,8 +18,8 @@ use rapid_var, only :                                                          &
                    IV_riv_index,IV_riv_loc1,                                   &
                    ZS_TauR,                                                    &
                    ZS_rnd_uni1,ZS_rnd_uni2,ZS_rnd_norm,ZS_pi,                  &
-                   ZV_vQlat,ZV_sQlat,ZV_vQout,ZV_sQout,ZM_Net,ZM_A,            &
-                   ZV_C1,ZV_one,                                               &
+                   ZV_vQlat,ZV_sQlat,ZV_vQout,ZV_sQout,ZS_alpha_uq,            & 
+                   ZM_Net,ZM_A,ZV_C1,ZV_one,                                   &
                    ZV_riv_tot_vQlat,ZV_riv_tot_sQlat,ZV_riv_bas_sQout,         &
                    ZV_SeqZero,ZV_pointer,ZS_one,temp_char,                     &
                    ierr,rank,vecscat,rnd,ksp 
@@ -88,19 +88,36 @@ call VecAssemblyBegin(ZV_sQlat,ierr)
 call VecAssemblyEnd(ZV_sQlat,ierr)  
 
 !- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-!Compute the variance in lateral inflow from its standard deviation
+!Compute the variance in lateral inflow from its standard error
 !- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-call VecPointwiseMult(ZV_sQlat,ZV_sQlat,ZV_sQlat,ierr)
+call VecPointwiseMult(ZV_vQlat,ZV_sQlat,ZV_sQlat,ierr)
 
 !- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-!Compute the variance in outflow from the variance in lateral inflow
+!Compute the variance in outflow if only bias in lateral inflow 
 !- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 call KSPSolve(ksp,ZV_sQlat,ZV_sQout,ierr)
 !solves A*sQout=sQlat
 
+call VecPointwiseMult(ZV_sQout,ZV_sQout,ZV_sQout,ierr)
+!Pointwise square of each element to go from standard error to variance
+
 !- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-!Compute the standard deviation in outflow from its variance
+!Compute the variance in outflow if only random errors in lateral inflow 
 !- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+call KSPSolve(ksp,ZV_vQlat,ZV_vQout,ierr)
+!solves A*vQout=vQlat
+
+!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+!Compute the standard error in outflow from its variance
+!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+if (ZS_alpha_uq < 0 .and. ZS_alpha_uq > 1) then
+     print '(a32)','ZS_alpha_uq must belong to [0,1]'
+     stop 99
+end if
+
+call VecScale(ZV_sQout,ZS_alpha_uq,ierr)
+call VecScale(ZV_vQout,ZS_one-ZS_alpha_uq,ierr)
+call VecAXPY(ZV_sQout,ZS_one,ZV_vQout,ierr)
 call VecSqrtAbs(ZV_sQout,ierr)
 
 
