@@ -74,6 +74,15 @@ call KSPSetOperators(ksp,ZM_A,ZM_A,ierr)
 
 
 !*******************************************************************************
+!Check that standard error provided is always positive
+!*******************************************************************************
+if (minval(ZV_riv_tot_sQlat) < 0) then
+     print *, 'ERROR - The standard error provided includes negative values'
+     stop 99
+end if
+
+
+!*******************************************************************************
 !Compute uncertainty using formula 
 !*******************************************************************************
 
