@@ -60,31 +60,74 @@ $ sudo apt-get install -y $(grep -v -E '(^#|^$)' requirements.apt)
 > $ sudo apt-get install -y gfortran
 >```
 
-### Install NCL
-The NCAR Command Language (NCL) can be downloaded using:
+### Install netCDF
+The Network Common Data Form (NetCDF) can be installed using:
 
 ```
 $ mkdir $HOME/installz
 $ cd $HOME/installz
-$ wget "https://www.earthsystemgrid.org/download/fileDownload.html?logicalFileId=8201fa1a-cd9b-11e4-bb80-00c0f03d5b7c" -O ncl_ncarg-6.3.0.Linux_Debian6.0_x86_64_nodap_gcc445.tar.gz
-$ mkdir ncl_ncarg-6.3.0-install
-$ tar -xf ncl_ncarg-6.3.0.Linux_Debian6.0_x86_64_nodap_gcc445.tar.gz --directory=ncl_ncarg-6.3.0-install
+$ wget "http://www.unidata.ucar.edu/downloads/netcdf/ftp/netcdf-3.6.3.tar.gz"
+$ mkdir netcdf-3.6.3-install
+$ tar -xzf netcdf-3.6.3.tar.gz 
+$ cd netcdf-3.6.3
+$ ./configure CC=gcc CXX=g++ FC=gfortran --prefix=$HOME/installz/netcdf-3.6.3-install
+$ make check > check.log
+$ make install > install.log
 ```
 
 Then, the environment should be updated using:
 
 ```
-$ export NCARG_ROOT=$HOME/installz/ncl_ncarg-6.3.0-install
-$ export PATH=$PATH:$NCARG_ROOT/bin
+$ export TACC_NETCDF_DIR=$HOME/installz/netcdf-3.6.3-install$ export TACC_NETCDF_LIB=$TACC_NETCDF_DIR/lib$ export TACC_NETCDF_INC=$TACC_NETCDF_DIR/include
+$ export PATH=$PATH:$TACC_NETCDF_DIR/bin
 ```
 
-> Note that these two lines can also be added in `~/.bash_aliases` so that the 
+> Note that these four lines can also be added in `~/.bash_aliases` so that the 
 > environment variables persist.
+
+### Install PETSc
+The Portable, Extensible Toolkit for Scientific Computation (PETSc)
+can be installed using:
+
+```
+$ cd $HOME/installz
+$ wget "http://ftp.mcs.anl.gov/pub/petsc/release-snapshots/petsc-3.6.2.tar.gz"
+$ tar -xzf petsc-3.6.2.tar.gz
+$ cd petsc-3.6.2
+$ ./configure PETSC_DIR=$PWD PETSC_ARCH=linux-gcc-c --download-fblaslapack=1 --download-mpich=1 --with-cc=gcc --with-cxx=g++ --with-fc=gfortran --with-clanguage=c --with-debugging=0
+$ make all > all.log
+$ make test > test.log
+```
+
+Then, the environment should be updated using:
+
+```
+$ export PETSC_DIR=$HOME/installz/petsc-3.6.2$ export PETSC_ARCH=linux-gcc-c
+$ export PATH=$PATH:$PETSC_DIR/$PETSC_ARCH/bin
+```
+
+> Note that these three lines can also be added in `~/.bash_aliases` so that the 
+> environment variables persist.
+> 
+
+### Build RAPID
+
+```
+$ cd rapid/
+$ cd src/
+$ make rapid
+```
 
 ## Testing on Ubuntu
 Testing scripts are currently under development.
 
+```
+$ cd rapid/
+$ cd rtk/
+$ gfortran -o rtk_run_comp rtk_run_comp.f90 -I $TACC_NETCDF_INC -L $TACC_NETCDF_LIB -lnetcdf
+$ gfortran -o rtk_run_conv_Qinit rtk_run_conv_Qinit.f90 -I $TACC_NETCDF_INC -L $TACC_NETCDF_LIB -lnetcdf
+```
+
 Note that the experienced users may find more up-to-date testing instructions 
 in
 [.travis.yml](https://github.com/c-h-david/rapid/blob/master/.travis.yml).
-
