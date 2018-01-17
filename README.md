@@ -1,3 +1,4 @@
+# RAPID
 [![DOI](https://zenodo.org/badge/11296/c-h-david/rapid.svg)](https://zenodo.org/badge/latestdoi/11296/c-h-david/rapid)
 
 [![License (3-Clause BSD)](https://img.shields.io/badge/license-BSD%203--Clause-yellow.svg)](https://github.com/c-h-david/rapid/blob/master/LICENSE)
@@ -12,4 +13,4 @@ of many thousands of reaches.
 For further information on RAPID including peer-reviewed publications, tutorials, 
 sample input/output data, sample processing scripts and animations of model 
 results, please go to: 
-http://rapid-hub.org/
+[http://rapid-hub.org/](http://rapid-hub.org/).
