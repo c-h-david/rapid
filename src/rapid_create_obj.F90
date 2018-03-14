@@ -16,7 +16,7 @@ subroutine rapid_create_obj
 use rapid_var, only :                                                          &
                    IS_riv_bas,                                                 &
                    ZM_hsh_tot,ZM_hsh_bas,IS_riv_id_max,                        &
-                   ZM_Net,ZM_A,ZM_T,ZM_TC1,                                    &
+                   ZM_Net,ZM_A,ZM_T,ZM_TC1,ZM_M,                               &
                    ZM_Obs,ZV_Qobs,ZV_temp1,ZV_temp2,ZV_kfac,                   &
                    ZV_k,ZV_x,ZV_p,ZV_pnorm,ZV_pfac,                            &
                    ZV_C1,ZV_C2,ZV_C3,ZV_Cdenom,                                &
@@ -98,6 +98,11 @@ call MatCreate(PETSC_COMM_WORLD,ZM_TC1,ierr)
 call MatSetSizes(ZM_TC1,PETSC_DECIDE,PETSC_DECIDE,IS_riv_bas,IS_riv_bas,ierr)
 call MatSetFromOptions(ZM_TC1,ierr)
 call MatSetUp(ZM_TC1,ierr)
+
+call MatCreate(PETSC_COMM_WORLD,ZM_M,ierr)
+call MatSetSizes(ZM_M,PETSC_DECIDE,PETSC_DECIDE,IS_riv_bas,IS_riv_bas,ierr)
+call MatSetFromOptions(ZM_M,ierr)
+call MatSetUp(ZM_M,ierr)
 
 call MatCreate(PETSC_COMM_WORLD,ZM_Obs,ierr)
 call MatSetSizes(ZM_Obs,PETSC_DECIDE,PETSC_DECIDE,IS_riv_bas,IS_riv_bas,ierr)

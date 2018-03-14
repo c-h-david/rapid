@@ -340,6 +340,8 @@ Mat :: ZM_TC1
 !Matrix used as a trick to solve linear system faster
 Logical :: BS_logical
 !Boolean used during network matrix creation to give warnings if connectivity pb
+Mat :: ZM_M
+!Muskingum operator: (I-C1*N)^(-1)
 
 Vec :: ZV_k,ZV_x
 !Muskingum expression constants vectors, k in seconds, x has no dimension
