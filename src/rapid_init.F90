@@ -281,6 +281,8 @@ if (rank==0 .and. IS_opt_routing==2)                       print '(a70)',      &
        'Routing with traditional Muskingum method                              '
 if (rank==0 .and. IS_opt_routing==3)                       print '(a70)',      &
        'Routing with matrix-based Muskingum method using transboundary matrix  '
+if (rank==0 .and. IS_opt_routing==4)                       print '(a70)',      &
+       'Routing with matrix-based Muskingum method using Muskingum operator    '
 if (rank==0 .and. IS_opt_run==1)                           print '(a70)',      &
        'RAPID mode: computing flowrates                                        '
 if (rank==0 .and. IS_opt_run==2 .and. IS_opt_phi==1)       print '(a70)',      &
@@ -311,6 +313,11 @@ call rapid_net_mat
 !Breaks connections in Network matrix
 !-------------------------------------------------------------------------------
 if (BS_opt_for .or. BS_opt_dam) call rapid_net_mat_brk
+
+!-------------------------------------------------------------------------------
+!Calculate Muskingum matrix
+!-------------------------------------------------------------------------------
+if (IS_opt_routing==4) call rapid_mus_mat
 
 !-------------------------------------------------------------------------------
 !calculates or set initial flows and volumes
