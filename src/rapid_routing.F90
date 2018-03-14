@@ -18,7 +18,7 @@ subroutine rapid_routing(ZV_C1,ZV_C2,ZV_C3,ZV_Qext,                            &
 use netcdf
 use rapid_var, only :                                                          &
                    ZS_dtR,IS_R,JS_R,                                           &
-                   ZM_Net,ZM_TC1,                                              &
+                   ZM_Net,ZM_TC1,ZM_M,                                         &
                    ZV_b,ZV_babsmax,ZV_bhat,                                    &
                    ZV_QoutprevR,ZV_VprevR,ZV_QoutRabsmin,ZV_QoutRabsmax,       &
                    ZV_QoutRhat,                                                &
@@ -171,6 +171,14 @@ if (IS_ksp_iter>IS_ksp_iter_max) IS_ksp_iter_max=IS_ksp_iter
 
 end if
 
+!-------------------------------------------------------------------------------
+!Routing with PETSc using a matrix method with Muskingum operator
+!-------------------------------------------------------------------------------
+if (IS_opt_routing==4) then
+
+call MatMult(ZM_M,ZV_b,ZV_QoutR,ierr)
+
+end if
 
 !-------------------------------------------------------------------------------
 !Calculation of babsmax, QoutRabsmin and QoutRabsmax
