@@ -27,9 +27,26 @@ use rapid_var, only :                                                          &
                 IS_ownfirst,IS_ownlast,                                        &
                 ZV_C1,                                                         &
                 ZS_val,IS_one,ZS_one,                                          &
-                ierr
+                ierr,rank
 
 implicit none
+
+!*******************************************************************************
+!Includes
+!*******************************************************************************
+#include "petsc/finclude/petscsys.h"
+!base PETSc routines
+#include "petsc/finclude/petscvec.h"
+#include "petsc/finclude/petscvec.h90"
+!vectors, and vectors in Fortran90
+#include "petsc/finclude/petscmat.h"
+!matrices
+#include "petsc/finclude/petscksp.h"
+!Krylov subspace methods
+#include "petsc/finclude/petscpc.h"
+!preconditioners
+#include "petsc/finclude/petscviewer.h"
+!viewers (allows writing results in file for example)
 
 !*******************************************************************************
 !Declaration of new variables
@@ -50,22 +67,6 @@ PetscScalar, dimension(:), allocatable :: ZV_cols
 Mat :: ZM_MC
 Mat :: ZM_M
 
-!*******************************************************************************
-!Includes
-!*******************************************************************************
-#include "petsc/finclude/petscsys.h"       
-!base PETSc routines
-#include "petsc/finclude/petscvec.h"  
-#include "petsc/finclude/petscvec.h90"
-!vectors, and vectors in Fortran90 
-#include "petsc/finclude/petscmat.h"    
-!matrices
-#include "petsc/finclude/petscksp.h"    
-!Krylov subspace methods
-#include "petsc/finclude/petscpc.h"     
-!preconditioners
-#include "petsc/finclude/petscviewer.h"
-!viewers (allows writing results in file for example)
 
 !*******************************************************************************
 !Routine
@@ -359,7 +360,7 @@ deallocate(IV_ind)
 deallocate(IV_rows)
 deallocate(IV_nbrows)
 
-call Mat_Destroy(ZM_MC,ierr)
+call MatDestroy(ZM_MC,ierr)
 
 !*******************************************************************************
 !End subroutine
