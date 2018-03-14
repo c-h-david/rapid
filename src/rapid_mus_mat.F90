@@ -4,22 +4,15 @@
 subroutine rapid_mus_mat
 
 !Purpose:
-!Compute RAPID Muskingum operator M
+!Compute RAPID Muskingum operator M, using the equation:
 !M=(I-C1*N)^(-1)
-!Author: 
-!Charlotte M. Emery, Feb 2018.
-!Modifs :: 
-!---March 7th, 2018---!
-!-Update fill of ZM_MC (corrected)
-!-Update count nz element in ZM_M
-!---March 8th, 2018---!
-!-Threshold for highest values: ZM_MC is filled with IV_nbrows which counts
-!-how many rows respect the threshold. ZM_M is filled according to IV_nbrows
+!Authors: 
+!Charlotte M. Emery, and Cedric H. David, 2018-2018.
+
 
 !*******************************************************************************
 !Declaration of variables
 !*******************************************************************************
-
 use rapid_var, only :                                                          &
                 IS_riv_bas,                                                    &
                 JS_riv_bas,JS_riv_bas2,JS_up,                                  & 
@@ -29,7 +22,9 @@ use rapid_var, only :                                                          &
                 ZS_val,IS_one,ZS_one,                                          &
                 ierr,rank
 
+
 implicit none
+
 
 !*******************************************************************************
 !Includes
@@ -48,10 +43,10 @@ implicit none
 #include "petsc/finclude/petscviewer.h"
 !viewers (allows writing results in file for example)
 
-!*******************************************************************************
-!Declaration of new variables
-!*******************************************************************************
 
+!*******************************************************************************
+!Intent (in/out), and local variables 
+!*******************************************************************************
 PetscInt :: JS_i
 PetscInt :: IS_Knilpotent
 PetscScalar :: ZS_threshold=0.001
@@ -72,9 +67,9 @@ Mat :: ZM_M
 !Routine
 !*******************************************************************************
 
-!-0.Create new matrix/vector PetsC object---------------------------------------
 !-------------------------------------------------------------------------------
-
+!Create new matrix/vector PetsC object
+!-------------------------------------------------------------------------------
 call MatCreate(PETSC_COMM_WORLD,ZM_MC,ierr)
 call MatSetSizes(ZM_MC,PETSC_DECIDE,PETSC_DECIDE,IS_riv_bas,IS_riv_bas,ierr)
 call MatSetFromOptions(ZM_MC,ierr)
@@ -85,10 +80,9 @@ call MatSetSizes(ZM_M,PETSC_DECIDE,PETSC_DECIDE,IS_riv_bas,IS_riv_bas,ierr)
 call MatSetFromOptions(ZM_M,ierr)
 call MatSetUp(ZM_M,ierr)
 
-!-1.Count nz elements in MZ_MC -------------------------------------------------
 !-------------------------------------------------------------------------------
-
-
+!Count nz elements in MZ_MC
+!-------------------------------------------------------------------------------
 allocate(IV_cols(IS_riv_bas))
 allocate(IV_cols_duplicate(IS_riv_bas))
 IV_cols(:)=0
@@ -105,7 +99,6 @@ do JS_riv_bas2=1,IS_riv_bas
         end if
     end do
 end do
-
 
 allocate(IV_nzC(IS_riv_bas))
 allocate(IV_dnzC(IS_riv_bas))
@@ -157,9 +150,9 @@ do JS_riv_bas=1,IS_riv_bas
     IV_ind(JS_riv_bas) = JS_riv_bas
 end do
 
-!-2.Preallocate ZM_MC ----------------------------------------------------------
 !-------------------------------------------------------------------------------
-
+!Preallocate ZM_MC
+!-------------------------------------------------------------------------------
 call MatSeqAIJSetPreallocation(ZM_MC,PETSC_NULL_INTEGER,IV_nzC,ierr)
 call MatMPIAIJSetPreallocation(ZM_MC,                                          &
                                PETSC_NULL_INTEGER,                             &
@@ -167,9 +160,9 @@ call MatMPIAIJSetPreallocation(ZM_MC,                                          &
                                PETSC_NULL_INTEGER,                             &
                                IV_onzC(IS_ownfirst+1:IS_ownlast),ierr)
 
-!-3.Fill ZM_MC -----------------------------------------------------------------
 !-------------------------------------------------------------------------------
-
+!Fill ZM_MC
+!-------------------------------------------------------------------------------
 if (rank==0) then
 
 allocate(ZV_cols(IS_riv_bas))
@@ -252,9 +245,9 @@ end if
 call MatAssemblyBegin(ZM_MC,MAT_FINAL_ASSEMBLY,ierr)
 call MatAssemblyEnd(ZM_MC,MAT_FINAL_ASSEMBLY,ierr)
 
-!-4.Count nz elements in ZM_M --------------------------------------------------
 !-------------------------------------------------------------------------------
-
+!Count nz elements in ZM_M
+!-------------------------------------------------------------------------------
 allocate(IV_nzM(IS_riv_bas))
 allocate(IV_dnzM(IS_riv_bas))
 allocate(IV_onzM(IS_riv_bas))
@@ -292,9 +285,9 @@ do JS_riv_bas=1,IS_riv_bas   !loop over column
     end do
 end do
 
-!-5.Preallocate ZM_M -----------------------------------------------------------
 !-------------------------------------------------------------------------------
-
+!Preallocate ZM_M
+!-------------------------------------------------------------------------------
 call MatSeqAIJSetPreallocation(ZM_M,PETSC_NULL_INTEGER,IV_nzM,ierr)
 call MatMPIAIJSetPreallocation(ZM_M,                                         &
                                PETSC_NULL_INTEGER,                           &
@@ -308,9 +301,9 @@ do JS_riv_bas=1,IS_riv_bas
     IV_ind(JS_riv_bas) = JS_riv_bas
 end do
 
-!-6.Fill ZM_M ------------------------------------------------------------------
 !-------------------------------------------------------------------------------
-
+!Fill ZM_M
+!-------------------------------------------------------------------------------
 allocate(IV_rows(IS_Knilpotent+1))
 deallocate(ZV_cols)
 
@@ -348,9 +341,9 @@ call MatAssemblyBegin(ZM_M,MAT_FINAL_ASSEMBLY,ierr)
 call MatAssemblyEnd(ZM_M,MAT_FINAL_ASSEMBLY,ierr)
 
 
-!-7.Finalize--------------------------------------------------------------------
-!-------------------------------------------------------------------------------
-
+!*******************************************************************************
+!Finalize
+!*******************************************************************************
 deallocate(IV_cols)
 deallocate(IV_cols_duplicate)
 deallocate(IV_nzC)
@@ -361,6 +354,7 @@ deallocate(IV_rows)
 deallocate(IV_nbrows)
 
 call MatDestroy(ZM_MC,ierr)
+
 
 !*******************************************************************************
 !End subroutine
