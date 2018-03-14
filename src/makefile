@@ -77,6 +77,7 @@ rapid:	rapid_main.o \
 	rapid_get_Qdam.o \
 	rapid_set_Qext0.o \
 	rapid_hsh_mat.o \
+	rapid_mus_mat.o \
 	rapid_net_mat.o \
 	rapid_net_mat_brk.o \
 	rapid_obs_mat.o \
@@ -126,6 +127,7 @@ rapid:	rapid_main.o \
 	rapid_get_Qdam.o \
 	rapid_set_Qext0.o \
 	rapid_hsh_mat.o \
+	rapid_mus_mat.o \
 	rapid_net_mat.o \
 	rapid_net_mat_brk.o \
 	rapid_QtoV.o \
@@ -177,6 +179,9 @@ rapid_net_mat_brk.o: 		rapid_net_mat_brk.F90 rapid_var.mod
 
 rapid_net_mat.o: 		rapid_net_mat.F90 rapid_var.mod
 	${FLINKER} -c rapid_net_mat.F90 ${PETSC_FC_INCLUDES}
+
+rapid_mus_mat.o: 		rapid_mus_mat.F90 rapid_var.mod
+	${FLINKER} -c rapid_mus_mat.F90 ${PETSC_FC_INCLUDES}
 
 rapid_hsh_mat.o: 		rapid_hsh_mat.F90 rapid_var.mod
 	${FLINKER} -c rapid_hsh_mat.F90 ${PETSC_FC_INCLUDES}
