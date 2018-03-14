@@ -18,7 +18,7 @@ use rapid_var, only :                                                          &
                 JS_riv_bas,JS_riv_bas2,JS_up,                                  & 
                 IV_nbup,IV_riv_index,IM_index_up,                              &
                 IS_ownfirst,IS_ownlast,                                        &
-                ZV_C1,                                                         &
+                ZM_M,ZV_C1,                                                    &
                 ZS_val,IS_one,ZS_one,                                          &
                 ierr,rank,temp_char
 
@@ -60,7 +60,6 @@ PetscInt, dimension(:), allocatable :: IV_nbrows
 PetscScalar, dimension(:), allocatable :: ZV_cols
 
 Mat :: ZM_MC
-Mat :: ZM_M
 
 
 !*******************************************************************************
@@ -74,11 +73,6 @@ call MatCreate(PETSC_COMM_WORLD,ZM_MC,ierr)
 call MatSetSizes(ZM_MC,PETSC_DECIDE,PETSC_DECIDE,IS_riv_bas,IS_riv_bas,ierr)
 call MatSetFromOptions(ZM_MC,ierr)
 call MatSetUp(ZM_MC,ierr)
-
-call MatCreate(PETSC_COMM_WORLD,ZM_M,ierr)
-call MatSetSizes(ZM_M,PETSC_DECIDE,PETSC_DECIDE,IS_riv_bas,IS_riv_bas,ierr)
-call MatSetFromOptions(ZM_M,ierr)
-call MatSetUp(ZM_M,ierr)
 
 !-------------------------------------------------------------------------------
 !Count nz elements in MZ_MC
