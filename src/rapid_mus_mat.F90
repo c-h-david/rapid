@@ -168,8 +168,10 @@ do JS_i=0,IS_Knilpotent
 
     call MatSetValues(ZM_MC,   &
                       IS_one,JS_i,  &
-                      IV_nzC(JS_i+1),IV_ind(1:IS_riv_bas)-1, &
-                      ZV_cols(1:IS_riv_bas),INSERT_VALUES,ierr)
+                      IV_nzC(JS_i+1),  &
+                      PACK(IV_ind(1:IS_riv_bas),MASK=IV_ind(1:IS_riv_bas).gt.0)-1, &
+                      ZV_cols( PACK( IV_ind(1:IS_riv_bas),MASK=IV_ind(1:IS_riv_bas).gt.0 ) ),  &
+                      INSERT_VALUES,ierr)
 
     if (JS_i.eq.0) then
 
@@ -322,7 +324,7 @@ do JS_riv_bas=0,IS_riv_bas-1
                        IV_ind(1:IV_nbrows(JS_riv_bas+1))-1,   &
                        IS_one,JS_riv_bas,   &
                        ZV_cols,ierr )
- 
+
     call MatSetValues( ZM_M,    &
                        IV_nbrows(JS_riv_bas+1),  &
                        IV_rows(1:IV_nbrows(JS_riv_bas+1))-1,   & 
