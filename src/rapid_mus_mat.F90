@@ -18,7 +18,7 @@ use rapid_var, only :                                                          &
                 JS_riv_bas,JS_riv_bas2,JS_up,                                  & 
                 IV_nbup,IV_riv_index,IM_index_up,                              &
                 IS_ownfirst,IS_ownlast,                                        &
-                ZM_M,ZV_C1,                                                    &
+                ZM_M,ZV_C1,ZS_threshold,                                       &
                 ZS_val,IS_one,ZS_one,                                          &
                 ierr,rank,temp_char
 
@@ -49,7 +49,6 @@ implicit none
 !*******************************************************************************
 PetscInt :: JS_i
 PetscInt :: IS_Knilpotent
-PetscScalar :: ZS_threshold=0.001
 
 PetscInt, dimension(:), allocatable :: IV_nzC, IV_dnzC, IV_onzC
 PetscInt, dimension(:), allocatable :: IV_nzM, IV_dnzM, IV_onzM
