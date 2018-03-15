@@ -54,7 +54,7 @@ logical :: BS_opt_uq
 !.false. --> no uncertainty quantif. .true. --> uncertainty quantif.
 PetscInt :: IS_opt_routing
 !1       --> matrix-based Muskingum  2      --> traditional Muskingum
-!3       --> Transbnd. matrix-based
+!3       --> Transbnd. matrix-based  4      --> Muskingum operator
 PetscInt :: IS_opt_run
 !1       --> regular run             2      --> parameter optimization
 PetscInt :: IS_opt_phi
@@ -342,6 +342,8 @@ Logical :: BS_logical
 !Boolean used during network matrix creation to give warnings if connectivity pb
 Mat :: ZM_M
 !Muskingum operator: (I-C1*N)^(-1)
+PetscScalar :: ZS_threshold
+!Used to limit the storage of the Muskingum operator by removing small elements
 
 Vec :: ZV_k,ZV_x
 !Muskingum expression constants vectors, k in seconds, x has no dimension
@@ -583,6 +585,7 @@ namelist /NL_namelist/                                                         &
                        IS_dam_use,dam_use_id_file,                             &
                        babsmax_file,QoutRabsmin_file,QoutRabsmax_file,         &
                        ZS_alpha_uq,                                            &
+                       ZS_threshold,                                           &
                        k_file,x_file,Qout_file,V_file,                         &
                        kfac_file,xfac_file,ZS_knorm_init,ZS_xnorm_init,        &
                        IS_obs_tot,obs_tot_id_file,IS_obs_use,obs_use_id_file,  &
