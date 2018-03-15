@@ -315,11 +315,6 @@ call rapid_net_mat
 if (BS_opt_for .or. BS_opt_dam) call rapid_net_mat_brk
 
 !-------------------------------------------------------------------------------
-!Calculate Muskingum matrix
-!-------------------------------------------------------------------------------
-if (IS_opt_routing==4) call rapid_mus_mat
-
-!-------------------------------------------------------------------------------
 !calculates or set initial flows and volumes
 !-------------------------------------------------------------------------------
 if (.not. BS_opt_Qinit) then
@@ -385,6 +380,11 @@ call rapid_routing_param(ZV_k,ZV_x,ZV_C1,ZV_C2,ZV_C3,ZM_A)
 
 call KSPSetOperators(ksp,ZM_A,ZM_A,ierr)
 !Set KSP to use matrix ZM_A
+
+!-------------------------------------------------------------------------------
+!Calculate Muskingum matrix
+!-------------------------------------------------------------------------------
+if (IS_opt_routing==4) call rapid_mus_mat
 
 !-------------------------------------------------------------------------------
 !End of initialization procedure for OPTION 1
