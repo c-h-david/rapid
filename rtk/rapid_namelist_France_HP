@@ -35,7 +35,7 @@ BS_opt_uq          =.false.
 
 IS_opt_routing     =1
 !1       --> matrix-based Muskingum  2      --> traditional Muskingum
-!3       --> Transbnd. matrix-based
+!3       --> Transbnd. matrix-based  4      --> Muskingum operator
 
 IS_opt_run         =1
 !1       --> regular run             2      --> parameter optimization
