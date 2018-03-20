@@ -103,7 +103,7 @@ call MatGetOwnershipRange(ZM_MC,IS_ownfirst,IS_ownlast,ierr)
 
 IV_nzC(1)=IS_riv_bas
 if ( (1.ge.IS_ownfirst+1).and.(1.lt.IS_ownlast+1) ) then
-    IV_dnzC(1)=IS_ownlast+1-IS_ownfirst+1
+    IV_dnzC(1)=IS_ownlast-IS_ownfirst
     IV_onzC(1)=IV_nzC(1)-IV_dnzC(1)
 end if
 
@@ -115,8 +115,8 @@ do while ( COUNT( (IV_cols(1:IS_riv_bas).eq.0) ).ne.IS_riv_bas )
     if ( (JS_i.ge.IS_ownfirst+1).and.(JS_i.lt.IS_ownlast+1) ) then
         do JS_riv_bas=1,IS_riv_bas
             if ( IV_cols(JS_riv_bas).ne.0 ) then
-                if ( (IV_cols(JS_riv_bas).ge.IS_ownfirst+1).and. &
-                     (IV_cols(JS_riv_bas).lt.IS_ownlast+1) ) then
+                if ( (JS_riv_bas.ge.IS_ownfirst+1).and. &
+                     (JS_riv_bas.lt.IS_ownlast+1) ) then
                     IV_dnzC(JS_i)=IV_dnzC(JS_i)+1
                 end if
                 IV_cols(JS_riv_bas)=IV_cols_duplicate(IV_cols(JS_riv_bas))
