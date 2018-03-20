@@ -103,6 +103,12 @@ sed -i -e "s|ZS_alpha_uq        =.*|ZS_alpha_uq        =0.5|"                  \
           rapid_namelist_Reg07_JHM  
 
 #*******************************************************************************
+#Muskingum operator and data assimilation
+#*******************************************************************************
+sed -i -e "s|ZS_threshold       =.*|ZS_threshold       =0.0|"                  \
+          rapid_namelist_Reg07_JHM  
+
+#*******************************************************************************
 #Regular model run
 #*******************************************************************************
 sed -i -e "s|k_file             =.*|k_file             ='../../rapid/input/Reg07_JHM/kfac_Reg07_2.5ms.csv'|" \
