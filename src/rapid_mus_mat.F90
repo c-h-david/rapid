@@ -312,9 +312,10 @@ end do
 !Fill ZM_M
 !-------------------------------------------------------------------------------
 allocate(IV_rows(IS_Knilpotent+1))
-deallocate(ZV_cols)
+
 
 if (rank==0) then
+deallocate(ZV_cols)
 
 IV_rows(:)=0
 do JS_riv_bas=0,IS_riv_bas-1
@@ -360,7 +361,9 @@ deallocate(IV_dnzC)
 deallocate(IV_onzC)
 deallocate(IV_ind)
 deallocate(IV_rows)
-deallocate(IV_nbrows)
+if (rank==0) then
+    deallocate(IV_nbrows)
+end if
 
 call MatDestroy(ZM_MC,ierr)
 
