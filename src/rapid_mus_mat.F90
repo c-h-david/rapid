@@ -20,7 +20,8 @@ use rapid_var, only :                                                          &
                 IS_ownfirst,IS_ownlast,                                        &
                 ZM_M,ZV_C1,ZS_threshold,                                       &
                 ZS_val,IS_one,ZS_one,                                          &
-                ierr,rank,temp_char
+                ierr,rank,temp_char,                                           &
+                vecscat,ZV_SeqZero
 
 
 implicit none
@@ -103,7 +104,7 @@ call MatGetOwnershipRange(ZM_MC,IS_ownfirst,IS_ownlast,ierr)
 
 IV_nzC(1)=IS_riv_bas
 if ( (1.ge.IS_ownfirst+1).and.(1.lt.IS_ownlast+1) ) then
-    IV_dnzC(1)=IS_ownlast+1-IS_ownfirst+1
+    IV_dnzC(1)=IS_ownlast-IS_ownfirst
     IV_onzC(1)=IV_nzC(1)-IV_dnzC(1)
 end if
 
@@ -115,8 +116,8 @@ do while ( COUNT( (IV_cols(1:IS_riv_bas).eq.0) ).ne.IS_riv_bas )
     if ( (JS_i.ge.IS_ownfirst+1).and.(JS_i.lt.IS_ownlast+1) ) then
         do JS_riv_bas=1,IS_riv_bas
             if ( IV_cols(JS_riv_bas).ne.0 ) then
-                if ( (IV_cols(JS_riv_bas).ge.IS_ownfirst+1).and. &
-                     (IV_cols(JS_riv_bas).lt.IS_ownlast+1) ) then
+                if ( (JS_riv_bas.ge.IS_ownfirst+1).and. &
+                     (JS_riv_bas.lt.IS_ownlast+1) ) then
                     IV_dnzC(JS_i)=IV_dnzC(JS_i)+1
                 end if
                 IV_cols(JS_riv_bas)=IV_cols_duplicate(IV_cols(JS_riv_bas))
@@ -157,6 +158,12 @@ call MatMPIAIJSetPreallocation(ZM_MC,                                          &
 !-------------------------------------------------------------------------------
 !Fill ZM_MC
 !-------------------------------------------------------------------------------
+
+call VecScatterBegin(vecscat,ZV_C1,ZV_SeqZero,                                 &
+                     INSERT_VALUES,SCATTER_FORWARD,ierr)
+call VecSCatterEnd(vecscat,ZV_C1,ZV_SeqZero,                                   &
+                   INSERT_VALUES,SCATTER_FORWARD,ierr)
+
 if (rank==0) then
 
 allocate(ZV_cols(IS_riv_bas))
@@ -177,7 +184,7 @@ do JS_i=0,IS_Knilpotent
         do JS_riv_bas2=1,IS_riv_bas
             if (IV_cols(JS_riv_bas2).ne.0) then
 
-                call VecGetValues(ZV_C1,         &
+                call VecGetValues(ZV_SeqZero,         &
                       IS_one,                    &
                       IV_cols(JS_riv_bas2)-1,     &
                       ZS_val,ierr)
@@ -203,7 +210,7 @@ do JS_i=0,IS_Knilpotent
         do JS_riv_bas2=1,IS_riv_bas
             if (IV_cols_duplicate(IV_cols(JS_riv_bas2)).ne.0) then
 
-                call VecGetValues(ZV_C1,                            &
+                call VecGetValues(ZV_SeqZero,                            &
                                   IS_one,                           &
                                   IV_cols_duplicate(IV_cols(JS_riv_bas2))-1, &
                                   ZS_val,ierr)
@@ -305,9 +312,10 @@ end do
 !Fill ZM_M
 !-------------------------------------------------------------------------------
 allocate(IV_rows(IS_Knilpotent+1))
-deallocate(ZV_cols)
+
 
 if (rank==0) then
+deallocate(ZV_cols)
 
 IV_rows(:)=0
 do JS_riv_bas=0,IS_riv_bas-1
@@ -353,7 +361,9 @@ deallocate(IV_dnzC)
 deallocate(IV_onzC)
 deallocate(IV_ind)
 deallocate(IV_rows)
-deallocate(IV_nbrows)
+if (rank==0) then
+    deallocate(IV_nbrows)
+end if
 
 call MatDestroy(ZM_MC,ierr)
 
