@@ -212,6 +212,181 @@ fi
 
 
 #*******************************************************************************
+#Test Muskingum operator, regular simulation, threshold=0.0, 1 core
+#*******************************************************************************
+unt=$((unt+1))
+if (("$unt" >= "$fst")) && (("$unt" <= "$lst")) ; then
+./rtk_nml_tidy_San_Guad_JHM.sh
+echo "Running test $unt/99"
+k_file='../../rapid/input/San_Guad_JHM/k_San_Guad_2004_1.csv'
+x_file='../../rapid/input/San_Guad_JHM/x_San_Guad_2004_1.csv'
+Qout_file='../../rapid/output/San_Guad_JHM/Qout_San_Guad_1460days_p1_dtR900s_n1_operator_rtk.nc'
+Qout_gold='../../rapid/output/San_Guad_JHM/Qout_San_Guad_1460days_p1_dtR900s.nc'
+IS_opt_routing=4
+ZS_threshold=0.0
+test_file="tmp_unt_$unt.txt"
+comp_file="tmp_unt_comp_$unt.txt"
+sed -i -e "s|k_file             =.*|k_file             ='$k_file'   |"         \
+       -e "s|x_file             =.*|x_file             ='$x_file'   |"         \
+       -e "s|IS_opt_routing     =.*|IS_opt_routing     =$IS_opt_routing|"      \
+       -e "s|ZS_threshold       =.*|ZS_threshold       =$ZS_threshold|"        \
+       -e "s|Qout_file          =.*|Qout_file          ='$Qout_file'|"         \
+          rapid_namelist_San_Guad_JHM  
+sleep 3
+mpiexec -n 1 ./rapid > $test_file
+echo "Comparing files"
+./rtk_run_comp $Qout_gold $Qout_file > $comp_file 
+x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $comp_file" >&2 ; exit $x ; fi
+rm $Qout_file
+rm $test_file
+rm $comp_file
+./rtk_nml_tidy_San_Guad_JHM.sh
+echo "Success"
+echo "********************"
+fi
+
+
+#*******************************************************************************
+#Test Muskingum operator, regular simulation, threshold=1e-12, 1 core
+#*******************************************************************************
+unt=$((unt+1))
+if (("$unt" >= "$fst")) && (("$unt" <= "$lst")) ; then
+./rtk_nml_tidy_San_Guad_JHM.sh
+echo "Running test $unt/99"
+k_file='../../rapid/input/San_Guad_JHM/k_San_Guad_2004_1.csv'
+x_file='../../rapid/input/San_Guad_JHM/x_San_Guad_2004_1.csv'
+Qout_file='../../rapid/output/San_Guad_JHM/Qout_San_Guad_1460days_p1_dtR900s_n1_operator_rtk.nc'
+Qout_gold='../../rapid/output/San_Guad_JHM/Qout_San_Guad_1460days_p1_dtR900s.nc'
+IS_opt_routing=4
+ZS_threshold=1e-12
+test_file="tmp_unt_$unt.txt"
+comp_file="tmp_unt_comp_$unt.txt"
+sed -i -e "s|k_file             =.*|k_file             ='$k_file'   |"         \
+       -e "s|x_file             =.*|x_file             ='$x_file'   |"         \
+       -e "s|IS_opt_routing     =.*|IS_opt_routing     =$IS_opt_routing|"      \
+       -e "s|ZS_threshold       =.*|ZS_threshold       =$ZS_threshold|"        \
+       -e "s|Qout_file          =.*|Qout_file          ='$Qout_file'|"         \
+          rapid_namelist_San_Guad_JHM  
+sleep 3
+mpiexec -n 1 ./rapid > $test_file
+echo "Comparing files"
+./rtk_run_comp $Qout_gold $Qout_file 1e-1 1 > $comp_file 
+x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $comp_file" >&2 ; exit $x ; fi
+rm $Qout_file
+rm $test_file
+rm $comp_file
+./rtk_nml_tidy_San_Guad_JHM.sh
+echo "Success"
+echo "********************"
+fi
+
+
+#*******************************************************************************
+#Test Muskingum operator, regular simulation, threshold=0.0, 2 cores
+#*******************************************************************************
+unt=$((unt+1))
+if (("$unt" >= "$fst")) && (("$unt" <= "$lst")) ; then
+./rtk_nml_tidy_San_Guad_JHM.sh
+echo "Running test $unt/99"
+k_file='../../rapid/input/San_Guad_JHM/k_San_Guad_2004_1.csv'
+x_file='../../rapid/input/San_Guad_JHM/x_San_Guad_2004_1.csv'
+Qout_file='../../rapid/output/San_Guad_JHM/Qout_San_Guad_1460days_p1_dtR900s_n2_operator_rtk.nc'
+Qout_gold='../../rapid/output/San_Guad_JHM/Qout_San_Guad_1460days_p1_dtR900s.nc'
+IS_opt_routing=4
+ZS_threshold=0.0
+test_file="tmp_unt_$unt.txt"
+comp_file="tmp_unt_comp_$unt.txt"
+sed -i -e "s|k_file             =.*|k_file             ='$k_file'   |"         \
+       -e "s|x_file             =.*|x_file             ='$x_file'   |"         \
+       -e "s|IS_opt_routing     =.*|IS_opt_routing     =$IS_opt_routing|"      \
+       -e "s|ZS_threshold       =.*|ZS_threshold       =$ZS_threshold|"        \
+       -e "s|Qout_file          =.*|Qout_file          ='$Qout_file'|"         \
+          rapid_namelist_San_Guad_JHM  
+sleep 3
+mpiexec -n 2 ./rapid > $test_file
+echo "Comparing files"
+./rtk_run_comp $Qout_gold $Qout_file > $comp_file 
+x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $comp_file" >&2 ; exit $x ; fi
+rm $Qout_file
+rm $test_file
+rm $comp_file
+./rtk_nml_tidy_San_Guad_JHM.sh
+echo "Success"
+echo "********************"
+fi
+
+
+#*******************************************************************************
+#Test Muskingum operator, optimization, threshold=0.0, 1 core
+#*******************************************************************************
+unt=$((unt+1))
+if (("$unt" >= "$fst")) && (("$unt" <= "$lst")) ; then
+./rtk_nml_tidy_San_Guad_JHM.sh
+echo "Running test $unt/99"
+ZS_knorm_init=2
+ZS_xnorm_init=3
+IS_opt_routing=4
+ZS_threshold=0.0
+kfac_file='../../rapid/input/San_Guad_JHM/kfac_San_Guad_1km_hour.csv'
+test_file="tmp_unt_$unt.txt"
+find_file="tmp_unt_find_$unt.txt"
+sed -i -e "s|IS_opt_run         =.*|IS_opt_run         =2|"                    \
+       -e "s|IS_opt_routing     =.*|IS_opt_routing     =$IS_opt_routing|"      \
+       -e "s|ZS_threshold       =.*|ZS_threshold       =$ZS_threshold|"        \
+       -e "s|ZS_knorm_init      =.*|ZS_knorm_init      =$ZS_knorm_init|"       \
+       -e "s|ZS_xnorm_init      =.*|ZS_xnorm_init      =$ZS_xnorm_init|"       \
+       -e "s|kfac_file          =.*|kfac_file          ='$kfac_file'|"         \
+          rapid_namelist_San_Guad_JHM  
+
+sleep 3
+mpiexec -n 1 ./rapid -tao_gatol 0.01 -tao_grtol 0.0040 > $test_file
+./rtk_opt_find.sh $test_file | cat > $find_file
+./rtk_opt_comp.sh $find_file 0.1875 3.90625 6.33277 
+x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $find_file" >&2 ; exit $x ; fi
+rm $test_file
+rm $find_file
+./rtk_nml_tidy_San_Guad_JHM.sh
+echo "Success"
+echo "********************"
+fi
+
+
+#*******************************************************************************
+#Test Muskingum operator, optimization, threshold=0.0, 2 cores
+#*******************************************************************************
+unt=$((unt+1))
+if (("$unt" >= "$fst")) && (("$unt" <= "$lst")) ; then
+./rtk_nml_tidy_San_Guad_JHM.sh
+echo "Running test $unt/99"
+ZS_knorm_init=2
+ZS_xnorm_init=3
+IS_opt_routing=4
+ZS_threshold=0.0
+kfac_file='../../rapid/input/San_Guad_JHM/kfac_San_Guad_1km_hour.csv'
+test_file="tmp_unt_$unt.txt"
+find_file="tmp_unt_find_$unt.txt"
+sed -i -e "s|IS_opt_run         =.*|IS_opt_run         =2|"                    \
+       -e "s|IS_opt_routing     =.*|IS_opt_routing     =$IS_opt_routing|"      \
+       -e "s|ZS_threshold       =.*|ZS_threshold       =$ZS_threshold|"        \
+       -e "s|ZS_knorm_init      =.*|ZS_knorm_init      =$ZS_knorm_init|"       \
+       -e "s|ZS_xnorm_init      =.*|ZS_xnorm_init      =$ZS_xnorm_init|"       \
+       -e "s|kfac_file          =.*|kfac_file          ='$kfac_file'|"         \
+          rapid_namelist_San_Guad_JHM  
+
+sleep 3
+mpiexec -n 2 ./rapid -tao_gatol 0.01 -tao_grtol 0.0040 > $test_file
+./rtk_opt_find.sh $test_file | cat > $find_file
+./rtk_opt_comp.sh $find_file 0.1875 3.90625 6.33277 
+x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $find_file" >&2 ; exit $x ; fi
+rm $test_file
+rm $find_file
+./rtk_nml_tidy_San_Guad_JHM.sh
+echo "Success"
+echo "********************"
+fi
+
+
+#*******************************************************************************
 #Remove symbolic list to default namelist and clean namelist
 #*******************************************************************************
 rm -f rapid_namelist
