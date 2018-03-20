@@ -20,6 +20,7 @@ use rapid_var, only :                                                          &
                 IS_ownfirst,IS_ownlast,                                        &
                 ZM_M,ZV_C1,ZS_threshold,                                       &
                 ZS_val,IS_one,ZS_one,                                          &
+                IS_opt_run,                                                    &
                 ierr,rank,temp_char,                                           &
                 vecscat,ZV_SeqZero
 
@@ -137,7 +138,8 @@ do while ( COUNT( (IV_cols(1:IS_riv_bas).eq.0) ).ne.IS_riv_bas )
 end do
 IS_Knilpotent=JS_i-1
 write(temp_char,'(i10)') IS_Knilpotent
-call PetscPrintf(PETSC_COMM_WORLD,'Knilpotent='// temp_char//char(10),ierr)
+if (IS_opt_run/=2) call PetscPrintf(PETSC_COMM_WORLD,'Knilpotent='// temp_char &
+                                                   //char(10),ierr)
 
 allocate(IV_ind(IS_riv_bas))
 do JS_riv_bas=1,IS_riv_bas
@@ -238,8 +240,8 @@ do JS_i=0,IS_Knilpotent
      !when using threshold higher than 0, less iterations needed to fill ZM_MC
      if ( COUNT( (IV_ind(1:IS_riv_bas).eq.0) ).eq.IS_riv_bas ) then
           write(temp_char,'(i10)') JS_i+1
-          call PetscPrintf(PETSC_COMM_WORLD,'Exit at row='// temp_char         &
-                                            //char(10),ierr)
+          if (IS_opt_run/=2) call PetscPrintf(PETSC_COMM_WORLD,'Exit at row='  &
+                                                     //temp_char//char(10),ierr)
           EXIT
      endif
  
@@ -299,9 +301,8 @@ call MatMPIAIJSetPreallocation(ZM_M,                                         &
                                IV_dnzM(IS_ownfirst+1:IS_ownlast),            &
                                PETSC_NULL_INTEGER,                           &
                                IV_onzM(IS_ownfirst+1:IS_ownlast),ierr)
-call PetscPrintf(PETSC_COMM_WORLD,'Muskingum matrix preallocated'//char(10),   &
-                 ierr)
-
+if (IS_opt_run/=2) call PetscPrintf(PETSC_COMM_WORLD,'Muskingum matrix '       &
+                                                //'preallocated'//char(10),ierr)
 
 do JS_riv_bas=1,IS_riv_bas
     IV_cols(JS_riv_bas) = IV_cols_duplicate(JS_riv_bas) 
@@ -348,7 +349,8 @@ end if
 call MatAssemblyBegin(ZM_M,MAT_FINAL_ASSEMBLY,ierr)
 call MatAssemblyEnd(ZM_M,MAT_FINAL_ASSEMBLY,ierr)
 !sparse matrices need be assembled once their elements have been filled
-call PetscPrintf(PETSC_COMM_WORLD,'Muskingum matrix created'//char(10),ierr)
+if (IS_opt_run/=2) call PetscPrintf(PETSC_COMM_WORLD,'Muskingum matrix created'&
+                                                      //char(10),ierr)
 
 
 !*******************************************************************************
@@ -371,6 +373,7 @@ call MatDestroy(ZM_MC,ierr)
 !*******************************************************************************
 !End subroutine
 !*******************************************************************************
-call PetscPrintf(PETSC_COMM_WORLD,'--------------------------'//char(10),ierr)
+if (IS_opt_run/=2)  call PetscPrintf(PETSC_COMM_WORLD,                         &
+                                    '--------------------------'//char(10),ierr)
 
 end subroutine rapid_mus_mat
