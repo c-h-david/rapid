@@ -20,7 +20,8 @@ use rapid_var, only :                                                          &
                 IS_ownfirst,IS_ownlast,                                        &
                 ZM_M,ZV_C1,ZS_threshold,                                       &
                 ZS_val,IS_one,ZS_one,                                          &
-                ierr,rank,temp_char
+                ierr,rank,temp_char,                                           &
+                vecscat,ZV_SeqZero
 
 
 implicit none
@@ -157,6 +158,12 @@ call MatMPIAIJSetPreallocation(ZM_MC,                                          &
 !-------------------------------------------------------------------------------
 !Fill ZM_MC
 !-------------------------------------------------------------------------------
+
+call VecScatterBegin(vecscat,ZV_C1,ZV_SeqZero,                                 &
+                     INSERT_VALUES,SCATTER_FORWARD,ierr)
+call VecSCatterEnd(vecscat,ZV_C1,ZV_SeqZero,                                   &
+                   INSERT_VALUES,SCATTER_FORWARD,ierr)
+
 if (rank==0) then
 
 allocate(ZV_cols(IS_riv_bas))
@@ -177,7 +184,7 @@ do JS_i=0,IS_Knilpotent
         do JS_riv_bas2=1,IS_riv_bas
             if (IV_cols(JS_riv_bas2).ne.0) then
 
-                call VecGetValues(ZV_C1,         &
+                call VecGetValues(ZV_SeqZero,         &
                       IS_one,                    &
                       IV_cols(JS_riv_bas2)-1,     &
                       ZS_val,ierr)
@@ -203,7 +210,7 @@ do JS_i=0,IS_Knilpotent
         do JS_riv_bas2=1,IS_riv_bas
             if (IV_cols_duplicate(IV_cols(JS_riv_bas2)).ne.0) then
 
-                call VecGetValues(ZV_C1,                            &
+                call VecGetValues(ZV_SeqZero,                            &
                                   IS_one,                           &
                                   IV_cols_duplicate(IV_cols(JS_riv_bas2))-1, &
                                   ZS_val,ierr)
