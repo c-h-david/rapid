@@ -165,8 +165,9 @@ end do
 !Print information on the nilpotence index of M
 !-------------------------------------------------------------------------------
 write(temp_char,'(i10)') IS_Knilpotent
-if (IS_opt_run/=2) call PetscPrintf(PETSC_COMM_WORLD,'Knilpotent='// temp_char &
-                                                   //char(10),ierr)
+if (IS_opt_run/=2) then
+     call PetscPrintf(PETSC_COMM_WORLD,'Knilpotent='//temp_char//char(10),ierr)
+end if
 
 
 !*******************************************************************************
@@ -202,6 +203,9 @@ call VecScatterBegin(vecscat,ZV_C1,ZV_SeqZero,                                 &
 call VecSCatterEnd(vecscat,ZV_C1,ZV_SeqZero,                                   &
                    INSERT_VALUES,SCATTER_FORWARD,ierr)
 
+!-------------------------------------------------------------------------------
+!Fill matrix (ZM_MC)
+!-------------------------------------------------------------------------------
 if (rank==0) then
 
 allocate(ZV_cols(IS_riv_bas))
@@ -292,6 +296,10 @@ call MatAssemblyEnd(ZM_MC,MAT_FINAL_ASSEMBLY,ierr)
 !*******************************************************************************
 !Prepare for matrix preallocation (ZM_M)
 !*******************************************************************************
+
+!-------------------------------------------------------------------------------
+!Allocate and initialize temporary variables
+!-------------------------------------------------------------------------------
 allocate(IV_nzM(IS_riv_bas))
 allocate(IV_dnzM(IS_riv_bas))
 allocate(IV_onzM(IS_riv_bas))
@@ -301,6 +309,9 @@ do JS_riv_bas=1,IS_riv_bas
      IV_onzM(JS_riv_bas)=0
 end do
 
+!-------------------------------------------------------------------------------
+!Count the number of non-zero elements (ZM_MC)
+!-------------------------------------------------------------------------------
 do JS_riv_bas2=1,IS_riv_bas
      IV_nzM(JS_riv_bas2)=1
      if (IV_nbup(IV_riv_index(JS_riv_bas2)).gt.0) then
@@ -345,6 +356,15 @@ if (IS_opt_run/=2) call PetscPrintf(PETSC_COMM_WORLD,'Muskingum matrix '       &
 !*******************************************************************************
 !Populate matrix (ZM_M)
 !*******************************************************************************
+
+!-------------------------------------------------------------------------------
+!Allocate and initialize temporary variables
+!-------------------------------------------------------------------------------
+allocate(IV_rows(IS_Knilpotent+1))
+
+!-------------------------------------------------------------------------------
+!Populate temporary variables
+!-------------------------------------------------------------------------------
 do JS_riv_bas=1,IS_riv_bas
     IV_cols(JS_riv_bas) = IV_cols_duplicate(JS_riv_bas) 
     IV_ind(JS_riv_bas) = JS_riv_bas
@@ -353,9 +373,6 @@ end do
 !-------------------------------------------------------------------------------
 !Fill ZM_M
 !-------------------------------------------------------------------------------
-allocate(IV_rows(IS_Knilpotent+1))
-
-
 if (rank==0) then
 deallocate(ZV_cols)
 
@@ -390,8 +407,10 @@ end if
 call MatAssemblyBegin(ZM_M,MAT_FINAL_ASSEMBLY,ierr)
 call MatAssemblyEnd(ZM_M,MAT_FINAL_ASSEMBLY,ierr)
 !sparse matrices need be assembled once their elements have been filled
-if (IS_opt_run/=2) call PetscPrintf(PETSC_COMM_WORLD,'Muskingum matrix created'&
-                                                      //char(10),ierr)
+if (IS_opt_run/=2) then
+     call PetscPrintf(PETSC_COMM_WORLD,'Muskingum matrix created'              &
+                                       //char(10),ierr)
+end if
 
 
 !*******************************************************************************
@@ -414,7 +433,9 @@ call MatDestroy(ZM_MC,ierr)
 !*******************************************************************************
 !End subroutine
 !*******************************************************************************
-if (IS_opt_run/=2)  call PetscPrintf(PETSC_COMM_WORLD,                         &
-                                    '--------------------------'//char(10),ierr)
+if (IS_opt_run/=2) then
+     call PetscPrintf(PETSC_COMM_WORLD,'--------------------------'            &
+                                       //char(10),ierr)
+end if
 
 end subroutine rapid_mus_mat
