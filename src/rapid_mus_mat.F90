@@ -83,12 +83,26 @@ call MatSetUp(ZM_MC,ierr)
 !*******************************************************************************
 
 !-------------------------------------------------------------------------------
-!Count nz elements in ZM_MC
+!Allocate and initialize temporary variables
 !-------------------------------------------------------------------------------
 allocate(IV_cols(IS_riv_bas))
 allocate(IV_cols_duplicate(IS_riv_bas))
 IV_cols(:)=0
 IV_cols_duplicate(:)=0
+!Used to store the index where each element of MC will be placed in M, IV_cols
+!is updated for every power of N.
+
+allocate(IV_nzC(IS_riv_bas))
+allocate(IV_dnzC(IS_riv_bas))
+allocate(IV_onzC(IS_riv_bas))
+IV_nzC(:)=0
+IV_dnzC(:)=0
+IV_onzC(:)=0
+!The number of non-zero elements per row.
+
+!-------------------------------------------------------------------------------
+!Populate temporary variables
+!-------------------------------------------------------------------------------
 do JS_riv_bas2=1,IS_riv_bas 
     do JS_up=1,IV_nbup(IV_riv_index(JS_riv_bas2))
         if (IM_index_up(JS_riv_bas2,JS_up)/=0) then
@@ -102,19 +116,15 @@ do JS_riv_bas2=1,IS_riv_bas
     end do
 end do
 
-allocate(IV_nzC(IS_riv_bas))
-allocate(IV_dnzC(IS_riv_bas))
-allocate(IV_onzC(IS_riv_bas))
-IV_nzC(:)=0
-IV_dnzC(:)=0
-IV_onzC(:)=0
-call MatGetOwnershipRange(ZM_MC,IS_ownfirst,IS_ownlast,ierr)
-
+!-------------------------------------------------------------------------------
+!Count the number of non-zero elements (ZM_MC)
+!-------------------------------------------------------------------------------
 IV_nzC(1)=IS_riv_bas
 if ( (1.ge.IS_ownfirst+1).and.(1.lt.IS_ownlast+1) ) then
     IV_dnzC(1)=IS_ownlast-IS_ownfirst
     IV_onzC(1)=IV_nzC(1)-IV_dnzC(1)
 end if
+!The first row
 
 JS_i=2
 do while ( COUNT( (IV_cols(1:IS_riv_bas).eq.0) ).ne.IS_riv_bas )
@@ -144,15 +154,19 @@ do while ( COUNT( (IV_cols(1:IS_riv_bas).eq.0) ).ne.IS_riv_bas )
     JS_i=JS_i+1
 end do
 IS_Knilpotent=JS_i-1
+!The other rows
+
+do JS_riv_bas=1,IS_riv_bas
+    IV_cols(JS_riv_bas)=IV_cols_duplicate(JS_riv_bas)
+end do
+!Reset the value of IV_cols
+
+!-------------------------------------------------------------------------------
+!Print information on the nilpotence index of M
+!-------------------------------------------------------------------------------
 write(temp_char,'(i10)') IS_Knilpotent
 if (IS_opt_run/=2) call PetscPrintf(PETSC_COMM_WORLD,'Knilpotent='// temp_char &
                                                    //char(10),ierr)
-
-allocate(IV_ind(IS_riv_bas))
-do JS_riv_bas=1,IS_riv_bas
-    IV_cols(JS_riv_bas)=IV_cols_duplicate(JS_riv_bas)
-    IV_ind(JS_riv_bas) = JS_riv_bas
-end do
 
 
 !*******************************************************************************
@@ -169,6 +183,20 @@ call MatMPIAIJSetPreallocation(ZM_MC,                                          &
 !*******************************************************************************
 !Populate matrix (ZM_MC)
 !*******************************************************************************
+
+!-------------------------------------------------------------------------------
+!Allocate and initialize temporary variables
+!-------------------------------------------------------------------------------
+allocate(IV_ind(IS_riv_bas))
+!
+
+!-------------------------------------------------------------------------------
+!Populate temporary variables
+!-------------------------------------------------------------------------------
+do JS_riv_bas=1,IS_riv_bas
+    IV_ind(JS_riv_bas) = JS_riv_bas
+end do
+
 call VecScatterBegin(vecscat,ZV_C1,ZV_SeqZero,                                 &
                      INSERT_VALUES,SCATTER_FORWARD,ierr)
 call VecSCatterEnd(vecscat,ZV_C1,ZV_SeqZero,                                   &
@@ -272,7 +300,6 @@ do JS_riv_bas=1,IS_riv_bas
      IV_dnzM(JS_riv_bas)=1
      IV_onzM(JS_riv_bas)=0
 end do
-call MatGetOwnershipRange(ZM_M,IS_ownfirst,IS_ownlast,ierr)
 
 do JS_riv_bas2=1,IS_riv_bas
      IV_nzM(JS_riv_bas2)=1
