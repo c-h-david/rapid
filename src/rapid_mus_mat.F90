@@ -17,6 +17,7 @@ use rapid_var, only :                                                          &
                 IS_riv_bas,                                                    &
                 JS_riv_bas,JS_riv_bas2,JS_up,                                  & 
                 IV_nbup,IV_riv_index,IM_index_up,                              &
+                IV_nz,IV_dnz,IV_onz,                                           &
                 IS_ownfirst,IS_ownlast,                                        &
                 ZM_M,ZV_C1,ZS_threshold,                                       &
                 ZS_val,IS_one,ZS_one,                                          &
@@ -52,8 +53,6 @@ implicit none
 PetscInt :: JS_i
 PetscInt :: IS_Knilpotent
 
-PetscInt, dimension(:), allocatable :: IV_nzC, IV_dnzC, IV_onzC
-PetscInt, dimension(:), allocatable :: IV_nzM, IV_dnzM, IV_onzM
 PetscInt, dimension(:), allocatable :: IV_cols, IV_cols_duplicate
 PetscInt, dimension(:), allocatable :: IV_ind, IV_rows
 PetscInt, dimension(:), allocatable :: IV_nbrows
@@ -92,12 +91,9 @@ IV_cols_duplicate(:)=0
 !Used to store the index where each element of MC will be placed in M, IV_cols
 !is updated for every power of N.
 
-allocate(IV_nzC(IS_riv_bas))
-allocate(IV_dnzC(IS_riv_bas))
-allocate(IV_onzC(IS_riv_bas))
-IV_nzC(:)=0
-IV_dnzC(:)=0
-IV_onzC(:)=0
+IV_nz(:)=0
+IV_dnz(:)=0
+IV_onz(:)=0
 !The number of non-zero elements per row.
 
 !-------------------------------------------------------------------------------
@@ -119,29 +115,29 @@ end do
 !-------------------------------------------------------------------------------
 !Count the number of non-zero elements (ZM_MC)
 !-------------------------------------------------------------------------------
-IV_nzC(1)=IS_riv_bas
+IV_nz(1)=IS_riv_bas
 if ( (1.ge.IS_ownfirst+1).and.(1.lt.IS_ownlast+1) ) then
-    IV_dnzC(1)=IS_ownlast-IS_ownfirst
-    IV_onzC(1)=IV_nzC(1)-IV_dnzC(1)
+    IV_dnz(1)=IS_ownlast-IS_ownfirst
+    IV_onz(1)=IV_nz(1)-IV_dnz(1)
 end if
 !The first row
 
 JS_i=2
 do while ( COUNT( (IV_cols(1:IS_riv_bas).eq.0) ).ne.IS_riv_bas )
 
-    IV_nzC(JS_i)=COUNT( (IV_cols(1:IS_riv_bas).ne.0) ) 
+    IV_nz(JS_i)=COUNT( (IV_cols(1:IS_riv_bas).ne.0) ) 
 
     if ( (JS_i.ge.IS_ownfirst+1).and.(JS_i.lt.IS_ownlast+1) ) then
         do JS_riv_bas=1,IS_riv_bas
             if ( IV_cols(JS_riv_bas).ne.0 ) then
                 if ( (JS_riv_bas.ge.IS_ownfirst+1).and. &
                      (JS_riv_bas.lt.IS_ownlast+1) ) then
-                    IV_dnzC(JS_i)=IV_dnzC(JS_i)+1
+                    IV_dnz(JS_i)=IV_dnz(JS_i)+1
                 end if
                 IV_cols(JS_riv_bas)=IV_cols_duplicate(IV_cols(JS_riv_bas))
             end if
         end do
-        IV_onzC(JS_i)=IV_nzC(JS_i)-IV_dnzC(JS_i)
+        IV_onz(JS_i)=IV_nz(JS_i)-IV_dnz(JS_i)
 
     else
         do JS_riv_bas=1,IS_riv_bas
@@ -173,12 +169,12 @@ end if
 !*******************************************************************************
 !Matrix preallocation (ZM_MC)
 !*******************************************************************************
-call MatSeqAIJSetPreallocation(ZM_MC,PETSC_NULL_INTEGER,IV_nzC,ierr)
+call MatSeqAIJSetPreallocation(ZM_MC,PETSC_NULL_INTEGER,IV_nz,ierr)
 call MatMPIAIJSetPreallocation(ZM_MC,                                          &
                                PETSC_NULL_INTEGER,                             &
-                               IV_dnzC(IS_ownfirst+1:IS_ownlast),              &
+                               IV_dnz(IS_ownfirst+1:IS_ownlast),              &
                                PETSC_NULL_INTEGER,                             &
-                               IV_onzC(IS_ownfirst+1:IS_ownlast),ierr)
+                               IV_onz(IS_ownfirst+1:IS_ownlast),ierr)
 
 
 !*******************************************************************************
@@ -216,7 +212,7 @@ do JS_i=0,IS_Knilpotent
 
     call MatSetValues(ZM_MC,   &
                       IS_one,JS_i,  &
-                      IV_nzC(JS_i+1),  &
+                      IV_nz(JS_i+1),  &
                       PACK(IV_ind(1:IS_riv_bas),MASK=IV_ind(1:IS_riv_bas).gt.0)-1, &
                       ZV_cols( PACK( IV_ind(1:IS_riv_bas),MASK=IV_ind(1:IS_riv_bas).gt.0 ) ),  &
                       INSERT_VALUES,ierr)
@@ -300,25 +296,22 @@ call MatAssemblyEnd(ZM_MC,MAT_FINAL_ASSEMBLY,ierr)
 !-------------------------------------------------------------------------------
 !Allocate and initialize temporary variables
 !-------------------------------------------------------------------------------
-allocate(IV_nzM(IS_riv_bas))
-allocate(IV_dnzM(IS_riv_bas))
-allocate(IV_onzM(IS_riv_bas))
 do JS_riv_bas=1,IS_riv_bas
-     IV_nzM(JS_riv_bas)=0
-     IV_dnzM(JS_riv_bas)=1
-     IV_onzM(JS_riv_bas)=0
+     IV_nz(JS_riv_bas)=0
+     IV_dnz(JS_riv_bas)=1
+     IV_onz(JS_riv_bas)=0
 end do
 
 !-------------------------------------------------------------------------------
 !Count the number of non-zero elements (ZM_MC)
 !-------------------------------------------------------------------------------
 do JS_riv_bas2=1,IS_riv_bas
-     IV_nzM(JS_riv_bas2)=1
+     IV_nz(JS_riv_bas2)=1
      if (IV_nbup(IV_riv_index(JS_riv_bas2)).gt.0) then
           do JS_up=1,IV_nbup(IV_riv_index(JS_riv_bas2))
 
               JS_riv_bas=IM_index_up(JS_riv_bas2,JS_up)
-              IV_nzM(JS_riv_bas2)=IV_nzM(JS_riv_bas2)+IV_nzM(JS_riv_bas)
+              IV_nz(JS_riv_bas2)=IV_nz(JS_riv_bas2)+IV_nz(JS_riv_bas)
 
           end do
      end if
@@ -329,11 +322,11 @@ do JS_riv_bas=1,IS_riv_bas   !loop over column
     do while (JS_riv_bas2.ne.0)    !loop over row
         if ( ((JS_riv_bas2.ge.IS_ownfirst+1).and.(JS_riv_bas2.lt.IS_ownlast+1)).and.   &
              ((JS_riv_bas.ge.IS_ownfirst+1).and.(JS_riv_bas.lt.IS_ownlast+1)) ) then
-            IV_dnzM(JS_riv_bas2) = IV_dnzM(JS_riv_bas2)+1
+            IV_dnz(JS_riv_bas2) = IV_dnz(JS_riv_bas2)+1
         end if
         if ( ((JS_riv_bas2.ge.IS_ownfirst+1).and.(JS_riv_bas2.lt.IS_ownlast+1)).and.   &
              ((JS_riv_bas.lt.IS_ownfirst+1).or.(JS_riv_bas.ge.IS_ownlast+1)) ) then
-            IV_onzM(JS_riv_bas2) = IV_onzM(JS_riv_bas2)+1
+            IV_onz(JS_riv_bas2) = IV_onz(JS_riv_bas2)+1
         end if
         JS_riv_bas2=IV_cols_duplicate(JS_riv_bas2)
     end do
@@ -343,12 +336,12 @@ end do
 !*******************************************************************************
 !Matrix preallocation (ZM_M)
 !*******************************************************************************
-call MatSeqAIJSetPreallocation(ZM_M,PETSC_NULL_INTEGER,IV_nzM,ierr)
+call MatSeqAIJSetPreallocation(ZM_M,PETSC_NULL_INTEGER,IV_nz,ierr)
 call MatMPIAIJSetPreallocation(ZM_M,                                         &
                                PETSC_NULL_INTEGER,                           &
-                               IV_dnzM(IS_ownfirst+1:IS_ownlast),            &
+                               IV_dnz(IS_ownfirst+1:IS_ownlast),            &
                                PETSC_NULL_INTEGER,                           &
-                               IV_onzM(IS_ownfirst+1:IS_ownlast),ierr)
+                               IV_onz(IS_ownfirst+1:IS_ownlast),ierr)
 if (IS_opt_run/=2) call PetscPrintf(PETSC_COMM_WORLD,'Muskingum matrix '       &
                                                 //'preallocated'//char(10),ierr)
 
@@ -418,9 +411,6 @@ end if
 !*******************************************************************************
 deallocate(IV_cols)
 deallocate(IV_cols_duplicate)
-deallocate(IV_nzC)
-deallocate(IV_dnzC)
-deallocate(IV_onzC)
 deallocate(IV_ind)
 deallocate(IV_rows)
 if (rank==0) then
