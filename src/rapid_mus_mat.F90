@@ -64,19 +64,26 @@ Mat :: ZM_MC
 
 
 !*******************************************************************************
-!Routine
+!Create a temporary matrix ZM_MC which is a compressed version of (I-C1*N)^(-1)
 !*******************************************************************************
-
-!-------------------------------------------------------------------------------
-!Create new matrix/vector PetsC object
-!-------------------------------------------------------------------------------
 call MatCreate(PETSC_COMM_WORLD,ZM_MC,ierr)
 call MatSetSizes(ZM_MC,PETSC_DECIDE,PETSC_DECIDE,IS_riv_bas,IS_riv_bas,ierr)
 call MatSetFromOptions(ZM_MC,ierr)
 call MatSetUp(ZM_MC,ierr)
+!The matrix M=(I-C1*N)^(-1) can be computed as the sum of (C1*N)^(j-1). Each one 
+!of these matrices (C1*N)^(j-1) has a maximum of one element per column, and all
+!these elements can therefore be stored in a one-dimensional array. Each array
+!will be stored in a row of the compressed matrix MC. Note that the eventual 
+!respective location of these elements in M can be obtained from N^(j-1). Such
+!methodology allows for a fast computation of M.
+
+
+!*******************************************************************************
+!Prepare for matrix preallocation (ZM_MC)
+!*******************************************************************************
 
 !-------------------------------------------------------------------------------
-!Count nz elements in MZ_MC
+!Count nz elements in ZM_MC
 !-------------------------------------------------------------------------------
 allocate(IV_cols(IS_riv_bas))
 allocate(IV_cols_duplicate(IS_riv_bas))
@@ -147,9 +154,10 @@ do JS_riv_bas=1,IS_riv_bas
     IV_ind(JS_riv_bas) = JS_riv_bas
 end do
 
-!-------------------------------------------------------------------------------
-!Preallocate ZM_MC
-!-------------------------------------------------------------------------------
+
+!*******************************************************************************
+!Matrix preallocation (ZM_MC)
+!*******************************************************************************
 call MatSeqAIJSetPreallocation(ZM_MC,PETSC_NULL_INTEGER,IV_nzC,ierr)
 call MatMPIAIJSetPreallocation(ZM_MC,                                          &
                                PETSC_NULL_INTEGER,                             &
@@ -157,10 +165,10 @@ call MatMPIAIJSetPreallocation(ZM_MC,                                          &
                                PETSC_NULL_INTEGER,                             &
                                IV_onzC(IS_ownfirst+1:IS_ownlast),ierr)
 
-!-------------------------------------------------------------------------------
-!Fill ZM_MC
-!-------------------------------------------------------------------------------
 
+!*******************************************************************************
+!Populate matrix (ZM_MC)
+!*******************************************************************************
 call VecScatterBegin(vecscat,ZV_C1,ZV_SeqZero,                                 &
                      INSERT_VALUES,SCATTER_FORWARD,ierr)
 call VecSCatterEnd(vecscat,ZV_C1,ZV_SeqZero,                                   &
@@ -252,9 +260,10 @@ end if
 call MatAssemblyBegin(ZM_MC,MAT_FINAL_ASSEMBLY,ierr)
 call MatAssemblyEnd(ZM_MC,MAT_FINAL_ASSEMBLY,ierr)
 
-!-------------------------------------------------------------------------------
-!Count nz elements in ZM_M
-!-------------------------------------------------------------------------------
+
+!*******************************************************************************
+!Prepare for matrix preallocation (ZM_M)
+!*******************************************************************************
 allocate(IV_nzM(IS_riv_bas))
 allocate(IV_dnzM(IS_riv_bas))
 allocate(IV_onzM(IS_riv_bas))
@@ -292,9 +301,10 @@ do JS_riv_bas=1,IS_riv_bas   !loop over column
     end do
 end do
 
-!-------------------------------------------------------------------------------
-!Preallocate ZM_M
-!-------------------------------------------------------------------------------
+
+!*******************************************************************************
+!Matrix preallocation (ZM_M)
+!*******************************************************************************
 call MatSeqAIJSetPreallocation(ZM_M,PETSC_NULL_INTEGER,IV_nzM,ierr)
 call MatMPIAIJSetPreallocation(ZM_M,                                         &
                                PETSC_NULL_INTEGER,                           &
@@ -304,6 +314,10 @@ call MatMPIAIJSetPreallocation(ZM_M,                                         &
 if (IS_opt_run/=2) call PetscPrintf(PETSC_COMM_WORLD,'Muskingum matrix '       &
                                                 //'preallocated'//char(10),ierr)
 
+
+!*******************************************************************************
+!Populate matrix (ZM_M)
+!*******************************************************************************
 do JS_riv_bas=1,IS_riv_bas
     IV_cols(JS_riv_bas) = IV_cols_duplicate(JS_riv_bas) 
     IV_ind(JS_riv_bas) = JS_riv_bas
@@ -354,7 +368,7 @@ if (IS_opt_run/=2) call PetscPrintf(PETSC_COMM_WORLD,'Muskingum matrix created'&
 
 
 !*******************************************************************************
-!Finalize
+!Free up memory used by local (temporary) variables
 !*******************************************************************************
 deallocate(IV_cols)
 deallocate(IV_cols_duplicate)
