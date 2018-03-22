@@ -152,11 +152,6 @@ end do
 IS_Knilpotent=JS_i-1
 !The other rows
 
-do JS_riv_bas=1,IS_riv_bas
-    IV_cols(JS_riv_bas)=IV_cols_duplicate(JS_riv_bas)
-end do
-!Reset the value of IV_cols
-
 !-------------------------------------------------------------------------------
 !Print information on the nilpotence index of M
 !-------------------------------------------------------------------------------
@@ -190,6 +185,11 @@ allocate(IV_ind(IS_riv_bas))
 !-------------------------------------------------------------------------------
 !Populate temporary variables
 !-------------------------------------------------------------------------------
+do JS_riv_bas=1,IS_riv_bas
+    IV_cols(JS_riv_bas)=IV_cols_duplicate(JS_riv_bas)
+end do
+!Reset the value of IV_cols
+
 do JS_riv_bas=1,IS_riv_bas
     IV_ind(JS_riv_bas) = JS_riv_bas
 end do
