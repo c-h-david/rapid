@@ -141,28 +141,43 @@ end if
 JS_i=2
 do while ( COUNT( (IV_cols(1:IS_riv_bas).eq.0) ).ne.IS_riv_bas )
 
-    IV_nz(JS_i)=COUNT( (IV_cols(1:IS_riv_bas).ne.0) ) 
+    do JS_riv_bas=1,IS_riv_bas
+        if ( IV_cols(JS_riv_bas).ne.0 ) then
 
-    if ( (JS_i.ge.IS_ownfirst+1).and.(JS_i.lt.IS_ownlast+1) ) then
-        do JS_riv_bas=1,IS_riv_bas
-            if ( IV_cols(JS_riv_bas).ne.0 ) then
-                if ( (JS_riv_bas.ge.IS_ownfirst+1).and. &
-                     (JS_riv_bas.lt.IS_ownlast+1) ) then
-                    IV_dnz(JS_i)=IV_dnz(JS_i)+1
-                end if
-                IV_cols(JS_riv_bas)=IV_cols_duplicate(IV_cols(JS_riv_bas))
-            end if
-        end do
-        IV_onz(JS_i)=IV_nz(JS_i)-IV_dnz(JS_i)
+            call VecGetValues(ZV_all,              &
+                              IS_one,                  &
+                              IV_cols(JS_riv_bas)-1,   &
+                              ZS_val,ierr)
 
-    else
-        do JS_riv_bas=1,IS_riv_bas
-            if ( IV_cols(JS_riv_bas).ne.0 ) then
-                IV_cols(JS_riv_bas)=IV_cols_duplicate(IV_cols(JS_riv_bas))
-            end if
-        end do
+            if ( ABS(ZV_cols(JS_riv_bas)*ZS_val).ge.ZS_threshold ) then
 
-    end if
+                IV_nz(JS_i) = IV_nz(JS_i)+1
+                
+                if (((JS_i.ge.IS_ownfirst+1).and.      &
+                     (JS_i.lt.IS_ownlast+1)).and.      &
+                    ((JS_riv_bas.ge.IS_ownfirst+1).and.&
+                     (JS_riv_bas.lt.IS_ownlast+1))) then 
+                    IV_dnz(JS_i) = IV_dnz(JS_i)+1
+                endif
+
+                if (((JS_i.ge.IS_ownfirst+1).and.      &
+                     (JS_i.lt.IS_ownlast+1)).and.      &
+                    ((JS_riv_bas.lt.IS_ownfirst+1).or.&
+                     (JS_riv_bas.ge.IS_ownlast+1))) then 
+                    IV_onz(JS_i) = IV_onz(JS_i)+1
+                endif
+
+                IV_nbrows(JS_riv_bas) = IV_nbrows(JS_riv_bas)+1
+                ZV_cols(JS_riv_bas) = ZV_cols(JS_riv_bas)*ZS_val
+                IV_cols(JS_riv_bas) = IV_cols_duplicate(IV_cols(JS_riv_bas))
+            else
+
+                IV_cols(JS_riv_bas) = 0        
+            endif
+
+        endif
+    enddo       
+
     JS_i=JS_i+1
 end do
 IS_Knilpotent=JS_i-1
