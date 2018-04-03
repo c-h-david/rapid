@@ -22,8 +22,7 @@ use rapid_var, only :                                                          &
                 ZM_M,ZV_C1,ZS_threshold,                                       &
                 ZS_val,IS_one,ZS_one,                                          &
                 IS_opt_run,                                                    &
-                ierr,rank,temp_char,                                           &
-                vecscat,ZV_SeqZero
+                ierr,rank,temp_char
 
 
 implicit none
@@ -60,6 +59,8 @@ PetscInt, dimension(:), allocatable :: IV_nbrows
 PetscScalar, dimension(:), allocatable :: ZV_cols
 
 Mat :: ZM_MC
+VecScatter :: vecscat_all
+Vec :: ZV_all
 
 
 !*******************************************************************************
@@ -76,6 +77,8 @@ call MatSetUp(ZM_MC,ierr)
 !respective location of these elements in M can be obtained from N^(j-1). Such
 !methodology allows for a fast computation of M.
 
+call VecScatterCreateToAll(ZV_C1,vecscat_all,ZV_all,ierr)
+!The vector ZV_all contains all elements of ZV_C1 and is copied on each processor. This way, each processor can access all values of ZV_C1 (needed to count non-zero elements in ZM_MC)
 
 !*******************************************************************************
 !Prepare for matrix preallocation (ZM_MC)
@@ -111,6 +114,11 @@ do JS_riv_bas2=1,IS_riv_bas
         end if
     end do
 end do
+
+call VecScatterBegin(vecscat_all,ZV_C1,ZV_all,                                 &
+                     INSERT_VALUES,SCATTER_FORWARD,ierr)
+call VecSCatterEnd(vecscat_all,ZV_C1,ZV_all,                                   &
+                   INSERT_VALUES,SCATTER_FORWARD,ierr)
 
 !-------------------------------------------------------------------------------
 !Count the number of non-zero elements (ZM_MC)
@@ -194,10 +202,6 @@ do JS_riv_bas=1,IS_riv_bas
     IV_ind(JS_riv_bas) = JS_riv_bas
 end do
 
-call VecScatterBegin(vecscat,ZV_C1,ZV_SeqZero,                                 &
-                     INSERT_VALUES,SCATTER_FORWARD,ierr)
-call VecSCatterEnd(vecscat,ZV_C1,ZV_SeqZero,                                   &
-                   INSERT_VALUES,SCATTER_FORWARD,ierr)
 
 !-------------------------------------------------------------------------------
 !Fill matrix (ZM_MC)
@@ -222,7 +226,7 @@ do JS_i=0,IS_Knilpotent
         do JS_riv_bas2=1,IS_riv_bas
             if (IV_cols(JS_riv_bas2).ne.0) then
 
-                call VecGetValues(ZV_SeqZero,         &
+                call VecGetValues(ZV_all,         &
                       IS_one,                    &
                       IV_cols(JS_riv_bas2)-1,     &
                       ZS_val,ierr)
@@ -248,7 +252,7 @@ do JS_i=0,IS_Knilpotent
         do JS_riv_bas2=1,IS_riv_bas
             if (IV_cols_duplicate(IV_cols(JS_riv_bas2)).ne.0) then
 
-                call VecGetValues(ZV_SeqZero,                            &
+                call VecGetValues(ZV_all,                            &
                                   IS_one,                           &
                                   IV_cols_duplicate(IV_cols(JS_riv_bas2))-1, &
                                   ZS_val,ierr)
@@ -418,6 +422,8 @@ if (rank==0) then
 end if
 
 call MatDestroy(ZM_MC,ierr)
+call VecScatterDestroy(vecscat_all,ierr)
+call VecDestroy(ZV_all,ierr)
 
 
 !*******************************************************************************
