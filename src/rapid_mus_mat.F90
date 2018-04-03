@@ -300,33 +300,33 @@ IV_onz(:)=0
 !-------------------------------------------------------------------------------
 !Count the number of non-zero elements (ZM_MC)
 !-------------------------------------------------------------------------------
-do JS_riv_bas2=1,IS_riv_bas
-     IV_nz(JS_riv_bas2)=1
-     if (IV_nbup(IV_riv_index(JS_riv_bas2)).gt.0) then
-          do JS_up=1,IV_nbup(IV_riv_index(JS_riv_bas2))
+do JS_riv_bas=1,IS_riv_bas   !Loop over column
+    do JS_i=1,IV_nbrows(JS_riv_bas)
+   
+        if (JS_i.eq.1) then
+            JS_riv_bas2 = JS_riv_bas  !row index
+        else
+            JS_riv_bas2 = IV_cols_duplicate(JS_riv_bas2)
+        endif
 
-              JS_riv_bas=IM_index_up(JS_riv_bas2,JS_up)
-              IV_nz(JS_riv_bas2)=IV_nz(JS_riv_bas2)+IV_nz(JS_riv_bas)
+        IV_nz(JS_riv_bas2) = IV_nz(JS_riv_bas2)+1
 
-          end do
-     end if
-end do
-
-do JS_riv_bas=1,IS_riv_bas   !loop over column
-    JS_riv_bas2=IV_cols_duplicate(JS_riv_bas)
-    do while (JS_riv_bas2.ne.0)    !loop over row
-        if ( ((JS_riv_bas2.ge.IS_ownfirst+1).and.(JS_riv_bas2.lt.IS_ownlast+1)).and.   &
-             ((JS_riv_bas.ge.IS_ownfirst+1).and.(JS_riv_bas.lt.IS_ownlast+1)) ) then
+        if (((JS_riv_bas2.ge.IS_ownfirst+1).and.   &
+             (JS_riv_bas2.lt.IS_ownlast+1)).and.  &
+            ((JS_riv_bas.ge.IS_ownfirst+1).and.   &
+             (JS_riv_bas.lt.IS_ownlast+1))) then
             IV_dnz(JS_riv_bas2) = IV_dnz(JS_riv_bas2)+1
-        end if
-        if ( ((JS_riv_bas2.ge.IS_ownfirst+1).and.(JS_riv_bas2.lt.IS_ownlast+1)).and.   &
-             ((JS_riv_bas.lt.IS_ownfirst+1).or.(JS_riv_bas.ge.IS_ownlast+1)) ) then
-            IV_onz(JS_riv_bas2) = IV_onz(JS_riv_bas2)+1
-        end if
-        JS_riv_bas2=IV_cols_duplicate(JS_riv_bas2)
-    end do
-end do
+        endif
 
+        if (((JS_riv_bas2.ge.IS_ownfirst+1).and.   &
+             (JS_riv_bas2.lt.IS_ownlast+1)).and.  &
+            ((JS_riv_bas.lt.IS_ownfirst+1).or.    &
+             (JS_riv_bas.ge.IS_ownlast+1))) then
+            IV_onz(JS_riv_bas2) = IV_onz(JS_riv_bas2)+1
+        endif
+
+    enddo
+enddo
 
 !*******************************************************************************
 !Matrix preallocation (ZM_M)
