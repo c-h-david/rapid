@@ -235,81 +235,50 @@ end do
 !-------------------------------------------------------------------------------
 if (rank==0) then
 
+call MatSetValues(ZM_MC,                             &
+                  IS_one,0,                          &
+                  IS_riv_bas,IV_ind(1:IS_riv_bas)-1,   &
+                  ZV_cols(1:IS_riv_bas),             &
+                  INSERT_VALUES,ierr)
+!The first row
 
-do JS_i=0,IS_Knilpotent
+JS_i=1
+do while ( COUNT( (IV_cols(1:IS_riv_bas).eq.0) ).ne.IS_riv_bas )
 
-    call MatSetValues(ZM_MC,   &
-                      IS_one,JS_i,  &
-                      IV_nz(JS_i+1),  &
-                      PACK(IV_ind(1:IS_riv_bas),MASK=IV_ind(1:IS_riv_bas).gt.0)-1, &
-                      ZV_cols( PACK( IV_ind(1:IS_riv_bas),MASK=IV_ind(1:IS_riv_bas).gt.0 ) ),  &
+    do JS_riv_bas=1,IS_riv_bas
+        if (IV_cols(JS_riv_bas).ne.0) then
+            call VecGetValues(ZV_all,              &
+                              IS_one,                  &
+                              IV_cols(JS_riv_bas)-1,   &
+                              ZS_val,ierr)
+
+            if ( ABS(ZV_cols(JS_riv_bas)*ZS_val).ge.ZS_threshold ) then
+                ZV_cols(JS_riv_bas) = ZV_cols(JS_riv_bas)*ZS_val
+                IV_cols(JS_riv_bas) = IV_cols_duplicate(IV_cols(JS_riv_bas))
+            else
+                IV_cols(JS_riv_bas) = 0   
+                IV_ind(JS_riv_bas) = 0     
+            endif
+        else
+            IV_ind(JS_riv_bas) = 0   
+        endif
+    enddo
+
+    call MatSetValues(ZM_MC,                                                                  &
+                      IS_one,JS_i,                                                            &
+                      IV_nz(JS_i+1),                                                          &
+                      PACK(IV_ind(1:IS_riv_bas),MASK=IV_ind(1:IS_riv_bas).gt.0)-1,            &
+                      ZV_cols( PACK( IV_ind(1:IS_riv_bas),MASK=IV_ind(1:IS_riv_bas).gt.0 ) ), &
                       INSERT_VALUES,ierr)
 
-    if (JS_i.eq.0) then
+    JS_i = JS_i+1
+    
+enddo 
+!The other rows
 
-        do JS_riv_bas2=1,IS_riv_bas
-            if (IV_cols(JS_riv_bas2).ne.0) then
-
-                call VecGetValues(ZV_all,         &
-                      IS_one,                    &
-                      IV_cols(JS_riv_bas2)-1,     &
-                      ZS_val,ierr)
-
-                !ZV_cols(JS_riv_bas2)=ZV_cols(JS_riv_bas2)*ZS_val
-                if ( ABS(ZV_cols(JS_riv_bas2)*ZS_val).lt.ZS_threshold ) then
-                    IV_ind(JS_riv_bas2)=0
-                    IV_cols(JS_riv_bas2)=0
-                    !ZV_cols(JS_riv_bas2)=-999
-                else
-                    ZV_cols(JS_riv_bas2)=ZV_cols(JS_riv_bas2)*ZS_val
-                    IV_nbrows(JS_riv_bas2)=IV_nbrows(JS_riv_bas2)+1
-                end if
-
-            else 
-               IV_ind(JS_riv_bas2)=0
-               !ZV_cols(JS_riv_bas2)=-999
-            end if
-        end do
-
-    else
-
-        do JS_riv_bas2=1,IS_riv_bas
-            if (IV_cols_duplicate(IV_cols(JS_riv_bas2)).ne.0) then
-
-                call VecGetValues(ZV_all,                            &
-                                  IS_one,                           &
-                                  IV_cols_duplicate(IV_cols(JS_riv_bas2))-1, &
-                                  ZS_val,ierr)
-
-                !ZV_cols(JS_riv_bas2)=ZV_cols(JS_riv_bas2)*ZS_val 
-                !IV_cols(JS_riv_bas2)=IV_cols_duplicate(IV_cols(JS_riv_bas2))
-                if ( ABS(ZV_cols(JS_riv_bas2)*ZS_val).lt.ZS_threshold ) then
-                    IV_ind(JS_riv_bas2)=0
-                    IV_cols(JS_riv_bas2)=0
-                    !ZV_cols(JS_riv_bas2)=-999
-                else
-                    ZV_cols(JS_riv_bas2)=ZV_cols(JS_riv_bas2)*ZS_val 
-                    IV_cols(JS_riv_bas2)=IV_cols_duplicate(IV_cols(JS_riv_bas2))
-                    IV_nbrows(JS_riv_bas2)=IV_nbrows(JS_riv_bas2)+1
-                end if
-
-            else
-                IV_ind(JS_riv_bas2)=0
-                !ZV_cols(JS_riv_bas2)=-999
-            end if
-        end do
-
-     end if
-
-     !when using threshold higher than 0, less iterations needed to fill ZM_MC
-     if ( COUNT( (IV_ind(1:IS_riv_bas).eq.0) ).eq.IS_riv_bas ) then
-          write(temp_char,'(i10)') JS_i+1
-          if (IS_opt_run/=2) call PetscPrintf(PETSC_COMM_WORLD,'Exit at row='  &
+write(temp_char,'(i10)') JS_i    
+if (IS_opt_run/=2) call PetscPrintf(PETSC_COMM_WORLD,'Exit at row='  &
                                                      //temp_char//char(10),ierr)
-          EXIT
-     endif
- 
-end do
 
 end if
 
