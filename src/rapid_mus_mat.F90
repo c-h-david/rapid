@@ -211,7 +211,7 @@ call MatMPIAIJSetPreallocation(ZM_MC,                                          &
 !Allocate and initialize temporary variables
 !-------------------------------------------------------------------------------
 allocate(IV_ind(IS_riv_bas))
-!
+
 
 !-------------------------------------------------------------------------------
 !Populate temporary variables
@@ -221,9 +221,13 @@ do JS_riv_bas=1,IS_riv_bas
 end do
 !Reset the value of IV_cols
 
+ZV_cols(:)=1
+!Reset the values of ZV_cols
+
 do JS_riv_bas=1,IS_riv_bas
     IV_ind(JS_riv_bas) = JS_riv_bas
 end do
+!Initialize IV_ind
 
 
 !-------------------------------------------------------------------------------
