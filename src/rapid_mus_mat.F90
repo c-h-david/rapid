@@ -94,6 +94,14 @@ IV_cols_duplicate(:)=0
 !Used to store the index where each element of MC will be placed in M, IV_cols
 !is updated for every power of N.
 
+allocate(IV_nbrows(IS_riv_bas))
+IV_nbrows(:)=1
+!Used to store, for each column of ZM_MC, how many non-zeros rows
+
+allocate(ZV_cols(IS_riv_bas))
+ZV_cols(:)=1
+!Used to store, for a given row of ZM_MC, the element values for each column
+
 IV_nz(:)=0
 IV_dnz(:)=0
 IV_onz(:)=0
@@ -208,10 +216,7 @@ end do
 !-------------------------------------------------------------------------------
 if (rank==0) then
 
-allocate(ZV_cols(IS_riv_bas))
-allocate(IV_nbrows(IS_riv_bas))
-ZV_cols(:)=1
-IV_nbrows(:)=1
+
 do JS_i=0,IS_Knilpotent
 
     call MatSetValues(ZM_MC,   &
