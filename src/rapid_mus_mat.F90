@@ -293,11 +293,9 @@ call MatAssemblyEnd(ZM_MC,MAT_FINAL_ASSEMBLY,ierr)
 !-------------------------------------------------------------------------------
 !Allocate and initialize temporary variables
 !-------------------------------------------------------------------------------
-do JS_riv_bas=1,IS_riv_bas
-     IV_nz(JS_riv_bas)=0
-     IV_dnz(JS_riv_bas)=1
-     IV_onz(JS_riv_bas)=0
-end do
+IV_nz(:)=0
+IV_dnz(:)=0
+IV_onz(:)=0
 
 !-------------------------------------------------------------------------------
 !Count the number of non-zero elements (ZM_MC)
