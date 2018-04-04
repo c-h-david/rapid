@@ -349,6 +349,7 @@ if (IS_opt_run/=2) call PetscPrintf(PETSC_COMM_WORLD,'Muskingum matrix '       &
 !Allocate and initialize temporary variables
 !-------------------------------------------------------------------------------
 allocate(IV_rows(IS_Knilpotent+1))
+IV_rows(:)=0
 
 !-------------------------------------------------------------------------------
 !Populate temporary variables
@@ -364,7 +365,7 @@ end do
 if (rank==0) then
 deallocate(ZV_cols)
 
-IV_rows(:)=0
+
 do JS_riv_bas=0,IS_riv_bas-1
 
     IV_rows(1)=JS_riv_bas+1
