@@ -366,30 +366,34 @@ if (rank==0) then
 deallocate(ZV_cols)
 
 
-do JS_riv_bas=0,IS_riv_bas-1
+do JS_riv_bas=1,IS_riv_bas
 
-    IV_rows(1)=JS_riv_bas+1
-    do JS_i=2,IV_nbrows(JS_riv_bas+1)
-        IV_rows(JS_i)=IV_cols(IV_rows(JS_i-1))
+    do JS_i=1,IV_nbrows(JS_riv_bas)  
+        if (JS_i.eq.1) then
+            IV_rows(JS_i) = JS_riv_bas  !row index
+        else
+            IV_rows(JS_i)=IV_cols_duplicate(IV_rows(JS_i-1)) 
+        endif
     end do
-    allocate(ZV_cols(IV_nbrows(JS_riv_bas+1)))
+    allocate(ZV_cols(IV_nbrows(JS_riv_bas)))
     
     call MatGetValues( ZM_MC,    &
-                       IV_nbrows(JS_riv_bas+1),  &
-                       IV_ind(1:IV_nbrows(JS_riv_bas+1))-1,   &
-                       IS_one,JS_riv_bas,   &
+                       IV_nbrows(JS_riv_bas),  &
+                       IV_ind(1:IV_nbrows(JS_riv_bas))-1,   &
+                       IS_one,JS_riv_bas-1,   &
                        ZV_cols,ierr )
 
     call MatSetValues( ZM_M,    &
-                       IV_nbrows(JS_riv_bas+1),  &
-                       IV_rows(1:IV_nbrows(JS_riv_bas+1))-1,   & 
-                       IS_one, JS_riv_bas,   &
-                       ZV_cols(1:IV_nbrows(JS_riv_bas+1)),  &
+                       IV_nbrows(JS_riv_bas),  &
+                       IV_rows(1:IV_nbrows(JS_riv_bas))-1,   & 
+                       IS_one, JS_riv_bas-1,   &
+                       ZV_cols(1:IV_nbrows(JS_riv_bas)),  &
                        INSERT_VALUES,ierr )
 
     deallocate(ZV_cols)
 
 end do
+
 
 end if
 
