@@ -146,7 +146,6 @@ ZS_phifac          =0.001
 !Routing parameters
 !-------------------------------------------------------------------------------
 kfac_file          ='../../rapid/input/France_HP/kfac_modcou_1km_hour.csv'
-xfac_file          ='' 
 ZS_knorm_init      =2
 ZS_xnorm_init      =3
 !-------------------------------------------------------------------------------

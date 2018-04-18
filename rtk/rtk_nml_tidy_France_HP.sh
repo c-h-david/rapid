@@ -126,7 +126,6 @@ sed -i -e "s|ZS_phifac          =.*|ZS_phifac          =0.001|"                \
 #Routing parameters
 #-------------------------------------------------------------------------------
 sed -i -e "s|kfac_file          =.*|kfac_file          ='../../rapid/input/France_HP/kfac_modcou_1km_hour.csv'|" \
-       -e "s|xfac_file          =.*|xfac_file          ='' |"                  \
        -e "s|ZS_knorm_init      =.*|ZS_knorm_init      =2|"                    \
        -e "s|ZS_xnorm_init      =.*|ZS_xnorm_init      =3|"                    \
           rapid_namelist_France_HP  
