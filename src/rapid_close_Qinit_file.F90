@@ -6,7 +6,7 @@ subroutine rapid_close_Qinit_file
 !Purpose:
 !Close Qinit_file from Fortran/netCDF.
 !Author: 
-!Cedric H. David, 2017-2017.
+!Cedric H. David, 2017-2018.
 
 
 !*******************************************************************************

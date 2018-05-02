@@ -6,7 +6,7 @@ subroutine rapid_open_Qinit_file(Qinit_file)
 !Purpose:
 !Open Qinit_file from Fortran/netCDF.
 !Author: 
-!Cedric H. David, 2017-2017.
+!Cedric H. David, 2017-2018.
 
 
 !*******************************************************************************

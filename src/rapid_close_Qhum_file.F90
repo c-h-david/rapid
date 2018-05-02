@@ -6,7 +6,7 @@ subroutine rapid_close_Qhum_file
 !Purpose:
 !Close Qhum_file from Fortran.
 !Author: 
-!Cedric H. David, 2014-2017.
+!Cedric H. David, 2014-2018.
 
 
 !*******************************************************************************

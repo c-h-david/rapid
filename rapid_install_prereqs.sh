@@ -7,7 +7,7 @@
 #This shell script installs all prerequisites for running RAPID on Linux, Mac, 
 #or Cygwin.
 #Author:
-#Alan D. Snow and Cedric H. David, 2015-2017.
+#Alan D. Snow and Cedric H. David, 2015-2018.
 
 
 #*******************************************************************************

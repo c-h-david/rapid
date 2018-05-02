@@ -11,7 +11,7 @@ subroutine rapid_net_mat
 !are all null and the elements in the off-diagonal blocks are equal to those of 
 !the network matrix. 
 !Author: 
-!Cedric H. David, 2008-2017.
+!Cedric H. David, 2008-2018.
 
 
 !*******************************************************************************

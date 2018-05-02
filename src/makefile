@@ -5,7 +5,7 @@
 #Purpose:
 #This file, along with the make utility allows compiling/linking RAPID
 #Author:
-#Cedric H. David, 2008-2017.
+#Cedric H. David, 2008-2018.
 
 
 #*******************************************************************************
