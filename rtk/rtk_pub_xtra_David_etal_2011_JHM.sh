@@ -403,10 +403,10 @@ sed -i -e "s|ZS_TauM            =.*|ZS_TauM            =0|"                    \
           rapid_namelist_San_Guad_JHM
 sleep 1
 mpiexec -n 1 ./rapid -info > $test_file
-./rtk_mem_chck.sh $test_file | cat > $memo_file
+./rtk_mem_chck.sh $test_file > $memo_file
 x=$? && if [ $x -gt 0 ] ; then echo "Failed memory: $memo_file" >&2 ; exit $x ; fi
 mpiexec -n 2 ./rapid -info > $test_file
-./rtk_mem_chck.sh $test_file | cat > $memo_file
+./rtk_mem_chck.sh $test_file > $memo_file
 x=$? && if [ $x -gt 0 ] ; then echo "Failed memory: $memo_file" >&2 ; exit $x ; fi
 
 echo "Traditional Muskingum"
@@ -415,10 +415,10 @@ sed -i -e "s|ZS_TauM            =.*|ZS_TauM            =0|"                    \
           rapid_namelist_San_Guad_JHM
 sleep 1
 mpiexec -n 1 ./rapid -info > $test_file
-./rtk_mem_chck.sh $test_file | cat > $memo_file
+./rtk_mem_chck.sh $test_file > $memo_file
 x=$? && if [ $x -gt 0 ] ; then echo "Failed memory: $memo_file" >&2 ; exit $x ; fi
 mpiexec -n 2 ./rapid -info > $test_file
-./rtk_mem_chck.sh $test_file | cat > $memo_file
+./rtk_mem_chck.sh $test_file > $memo_file
 x=$? && if [ $x -gt 0 ] ; then echo "Failed memory: $memo_file" >&2 ; exit $x ; fi
 
 echo "Transbnd. matrix-based"
@@ -427,10 +427,10 @@ sed -i -e "s|ZS_TauM            =.*|ZS_TauM            =0|"                    \
           rapid_namelist_San_Guad_JHM
 sleep 1
 mpiexec -n 1 ./rapid -info > $test_file
-./rtk_mem_chck.sh $test_file | cat > $memo_file
+./rtk_mem_chck.sh $test_file > $memo_file
 x=$? && if [ $x -gt 0 ] ; then echo "Failed memory: $memo_file" >&2 ; exit $x ; fi
 mpiexec -n 2 ./rapid -info > $test_file
-./rtk_mem_chck.sh $test_file | cat > $memo_file
+./rtk_mem_chck.sh $test_file > $memo_file
 x=$? && if [ $x -gt 0 ] ; then echo "Failed memory: $memo_file" >&2 ; exit $x ; fi
 
 rm $test_file
