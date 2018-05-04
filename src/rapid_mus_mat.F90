@@ -22,8 +22,7 @@ use rapid_var, only :                                                          &
                 ZM_M,ZV_C1,ZS_threshold,                                       &
                 ZS_val,IS_one,ZS_one,                                          &
                 IS_opt_run,                                                    &
-                ierr,rank,temp_char,                                           &
-                vecscat,ZV_SeqZero
+                ierr,rank,temp_char
 
 
 implicit none
@@ -60,6 +59,8 @@ PetscInt, dimension(:), allocatable :: IV_nbrows
 PetscScalar, dimension(:), allocatable :: ZV_cols
 
 Mat :: ZM_MC
+VecScatter :: vecscat_all
+Vec :: ZV_all
 
 
 !*******************************************************************************
@@ -76,6 +77,8 @@ call MatSetUp(ZM_MC,ierr)
 !respective location of these elements in M can be obtained from N^(j-1). Such
 !methodology allows for a fast computation of M.
 
+call VecScatterCreateToAll(ZV_C1,vecscat_all,ZV_all,ierr)
+!The vector ZV_all contains all elements of ZV_C1 and is copied on each processor. This way, each processor can access all values of ZV_C1 (needed to count non-zero elements in ZM_MC)
 
 !*******************************************************************************
 !Prepare for matrix preallocation (ZM_MC)
@@ -90,6 +93,14 @@ IV_cols(:)=0
 IV_cols_duplicate(:)=0
 !Used to store the index where each element of MC will be placed in M, IV_cols
 !is updated for every power of N.
+
+allocate(IV_nbrows(IS_riv_bas))
+IV_nbrows(:)=1
+!Used to store, for each column of ZM_MC, how many non-zeros rows
+
+allocate(ZV_cols(IS_riv_bas))
+ZV_cols(:)=1
+!Used to store, for a given row of ZM_MC, the element values for each column
 
 IV_nz(:)=0
 IV_dnz(:)=0
@@ -112,6 +123,11 @@ do JS_riv_bas2=1,IS_riv_bas
     end do
 end do
 
+call VecScatterBegin(vecscat_all,ZV_C1,ZV_all,                                 &
+                     INSERT_VALUES,SCATTER_FORWARD,ierr)
+call VecSCatterEnd(vecscat_all,ZV_C1,ZV_all,                                   &
+                   INSERT_VALUES,SCATTER_FORWARD,ierr)
+
 !-------------------------------------------------------------------------------
 !Count the number of non-zero elements (ZM_MC)
 !-------------------------------------------------------------------------------
@@ -125,28 +141,43 @@ end if
 JS_i=2
 do while ( COUNT( (IV_cols(1:IS_riv_bas).eq.0) ).ne.IS_riv_bas )
 
-    IV_nz(JS_i)=COUNT( (IV_cols(1:IS_riv_bas).ne.0) ) 
+    do JS_riv_bas=1,IS_riv_bas
+        if ( IV_cols(JS_riv_bas).ne.0 ) then
 
-    if ( (JS_i.ge.IS_ownfirst+1).and.(JS_i.lt.IS_ownlast+1) ) then
-        do JS_riv_bas=1,IS_riv_bas
-            if ( IV_cols(JS_riv_bas).ne.0 ) then
-                if ( (JS_riv_bas.ge.IS_ownfirst+1).and. &
-                     (JS_riv_bas.lt.IS_ownlast+1) ) then
-                    IV_dnz(JS_i)=IV_dnz(JS_i)+1
-                end if
-                IV_cols(JS_riv_bas)=IV_cols_duplicate(IV_cols(JS_riv_bas))
-            end if
-        end do
-        IV_onz(JS_i)=IV_nz(JS_i)-IV_dnz(JS_i)
+            call VecGetValues(ZV_all,              &
+                              IS_one,                  &
+                              IV_cols(JS_riv_bas)-1,   &
+                              ZS_val,ierr)
 
-    else
-        do JS_riv_bas=1,IS_riv_bas
-            if ( IV_cols(JS_riv_bas).ne.0 ) then
-                IV_cols(JS_riv_bas)=IV_cols_duplicate(IV_cols(JS_riv_bas))
-            end if
-        end do
+            if ( ABS(ZV_cols(JS_riv_bas)*ZS_val).ge.ZS_threshold ) then
 
-    end if
+                IV_nz(JS_i) = IV_nz(JS_i)+1
+                
+                if (((JS_i.ge.IS_ownfirst+1).and.      &
+                     (JS_i.lt.IS_ownlast+1)).and.      &
+                    ((JS_riv_bas.ge.IS_ownfirst+1).and.&
+                     (JS_riv_bas.lt.IS_ownlast+1))) then 
+                    IV_dnz(JS_i) = IV_dnz(JS_i)+1
+                endif
+
+                if (((JS_i.ge.IS_ownfirst+1).and.      &
+                     (JS_i.lt.IS_ownlast+1)).and.      &
+                    ((JS_riv_bas.lt.IS_ownfirst+1).or.&
+                     (JS_riv_bas.ge.IS_ownlast+1))) then 
+                    IV_onz(JS_i) = IV_onz(JS_i)+1
+                endif
+
+                IV_nbrows(JS_riv_bas) = IV_nbrows(JS_riv_bas)+1
+                ZV_cols(JS_riv_bas) = ZV_cols(JS_riv_bas)*ZS_val
+                IV_cols(JS_riv_bas) = IV_cols_duplicate(IV_cols(JS_riv_bas))
+            else
+
+                IV_cols(JS_riv_bas) = 0        
+            endif
+
+        endif
+    enddo       
+
     JS_i=JS_i+1
 end do
 IS_Knilpotent=JS_i-1
@@ -180,7 +211,7 @@ call MatMPIAIJSetPreallocation(ZM_MC,                                          &
 !Allocate and initialize temporary variables
 !-------------------------------------------------------------------------------
 allocate(IV_ind(IS_riv_bas))
-!
+
 
 !-------------------------------------------------------------------------------
 !Populate temporary variables
@@ -190,98 +221,64 @@ do JS_riv_bas=1,IS_riv_bas
 end do
 !Reset the value of IV_cols
 
+ZV_cols(:)=1
+!Reset the values of ZV_cols
+
 do JS_riv_bas=1,IS_riv_bas
     IV_ind(JS_riv_bas) = JS_riv_bas
 end do
+!Initialize IV_ind
 
-call VecScatterBegin(vecscat,ZV_C1,ZV_SeqZero,                                 &
-                     INSERT_VALUES,SCATTER_FORWARD,ierr)
-call VecSCatterEnd(vecscat,ZV_C1,ZV_SeqZero,                                   &
-                   INSERT_VALUES,SCATTER_FORWARD,ierr)
 
 !-------------------------------------------------------------------------------
 !Fill matrix (ZM_MC)
 !-------------------------------------------------------------------------------
 if (rank==0) then
 
-allocate(ZV_cols(IS_riv_bas))
-allocate(IV_nbrows(IS_riv_bas))
-ZV_cols(:)=1
-IV_nbrows(:)=1
-do JS_i=0,IS_Knilpotent
+call MatSetValues(ZM_MC,                             &
+                  IS_one,0,                          &
+                  IS_riv_bas,IV_ind(1:IS_riv_bas)-1,   &
+                  ZV_cols(1:IS_riv_bas),             &
+                  INSERT_VALUES,ierr)
+!The first row
 
-    call MatSetValues(ZM_MC,   &
-                      IS_one,JS_i,  &
-                      IV_nz(JS_i+1),  &
-                      PACK(IV_ind(1:IS_riv_bas),MASK=IV_ind(1:IS_riv_bas).gt.0)-1, &
-                      ZV_cols( PACK( IV_ind(1:IS_riv_bas),MASK=IV_ind(1:IS_riv_bas).gt.0 ) ),  &
+JS_i=1
+do while ( COUNT( (IV_cols(1:IS_riv_bas).eq.0) ).ne.IS_riv_bas )
+
+    do JS_riv_bas=1,IS_riv_bas
+        if (IV_cols(JS_riv_bas).ne.0) then
+            call VecGetValues(ZV_all,              &
+                              IS_one,                  &
+                              IV_cols(JS_riv_bas)-1,   &
+                              ZS_val,ierr)
+
+            if ( ABS(ZV_cols(JS_riv_bas)*ZS_val).ge.ZS_threshold ) then
+                ZV_cols(JS_riv_bas) = ZV_cols(JS_riv_bas)*ZS_val
+                IV_cols(JS_riv_bas) = IV_cols_duplicate(IV_cols(JS_riv_bas))
+            else
+                IV_cols(JS_riv_bas) = 0   
+                IV_ind(JS_riv_bas) = 0     
+            endif
+        else
+            IV_ind(JS_riv_bas) = 0   
+        endif
+    enddo
+
+    call MatSetValues(ZM_MC,                                                                  &
+                      IS_one,JS_i,                                                            &
+                      IV_nz(JS_i+1),                                                          &
+                      PACK(IV_ind(1:IS_riv_bas),MASK=IV_ind(1:IS_riv_bas).gt.0)-1,            &
+                      ZV_cols( PACK( IV_ind(1:IS_riv_bas),MASK=IV_ind(1:IS_riv_bas).gt.0 ) ), &
                       INSERT_VALUES,ierr)
 
-    if (JS_i.eq.0) then
+    JS_i = JS_i+1
+    
+enddo 
+!The other rows
 
-        do JS_riv_bas2=1,IS_riv_bas
-            if (IV_cols(JS_riv_bas2).ne.0) then
-
-                call VecGetValues(ZV_SeqZero,         &
-                      IS_one,                    &
-                      IV_cols(JS_riv_bas2)-1,     &
-                      ZS_val,ierr)
-
-                !ZV_cols(JS_riv_bas2)=ZV_cols(JS_riv_bas2)*ZS_val
-                if ( ABS(ZV_cols(JS_riv_bas2)*ZS_val).lt.ZS_threshold ) then
-                    IV_ind(JS_riv_bas2)=0
-                    IV_cols(JS_riv_bas2)=0
-                    !ZV_cols(JS_riv_bas2)=-999
-                else
-                    ZV_cols(JS_riv_bas2)=ZV_cols(JS_riv_bas2)*ZS_val
-                    IV_nbrows(JS_riv_bas2)=IV_nbrows(JS_riv_bas2)+1
-                end if
-
-            else 
-               IV_ind(JS_riv_bas2)=0
-               !ZV_cols(JS_riv_bas2)=-999
-            end if
-        end do
-
-    else
-
-        do JS_riv_bas2=1,IS_riv_bas
-            if (IV_cols_duplicate(IV_cols(JS_riv_bas2)).ne.0) then
-
-                call VecGetValues(ZV_SeqZero,                            &
-                                  IS_one,                           &
-                                  IV_cols_duplicate(IV_cols(JS_riv_bas2))-1, &
-                                  ZS_val,ierr)
-
-                !ZV_cols(JS_riv_bas2)=ZV_cols(JS_riv_bas2)*ZS_val 
-                !IV_cols(JS_riv_bas2)=IV_cols_duplicate(IV_cols(JS_riv_bas2))
-                if ( ABS(ZV_cols(JS_riv_bas2)*ZS_val).lt.ZS_threshold ) then
-                    IV_ind(JS_riv_bas2)=0
-                    IV_cols(JS_riv_bas2)=0
-                    !ZV_cols(JS_riv_bas2)=-999
-                else
-                    ZV_cols(JS_riv_bas2)=ZV_cols(JS_riv_bas2)*ZS_val 
-                    IV_cols(JS_riv_bas2)=IV_cols_duplicate(IV_cols(JS_riv_bas2))
-                    IV_nbrows(JS_riv_bas2)=IV_nbrows(JS_riv_bas2)+1
-                end if
-
-            else
-                IV_ind(JS_riv_bas2)=0
-                !ZV_cols(JS_riv_bas2)=-999
-            end if
-        end do
-
-     end if
-
-     !when using threshold higher than 0, less iterations needed to fill ZM_MC
-     if ( COUNT( (IV_ind(1:IS_riv_bas).eq.0) ).eq.IS_riv_bas ) then
-          write(temp_char,'(i10)') JS_i+1
-          if (IS_opt_run/=2) call PetscPrintf(PETSC_COMM_WORLD,'Exit at row='  &
+write(temp_char,'(i10)') JS_i    
+if (IS_opt_run/=2) call PetscPrintf(PETSC_COMM_WORLD,'Exit at row='  &
                                                      //temp_char//char(10),ierr)
-          EXIT
-     endif
- 
-end do
 
 end if
 
@@ -296,42 +293,40 @@ call MatAssemblyEnd(ZM_MC,MAT_FINAL_ASSEMBLY,ierr)
 !-------------------------------------------------------------------------------
 !Allocate and initialize temporary variables
 !-------------------------------------------------------------------------------
-do JS_riv_bas=1,IS_riv_bas
-     IV_nz(JS_riv_bas)=0
-     IV_dnz(JS_riv_bas)=1
-     IV_onz(JS_riv_bas)=0
-end do
+IV_nz(:)=0
+IV_dnz(:)=0
+IV_onz(:)=0
 
 !-------------------------------------------------------------------------------
 !Count the number of non-zero elements (ZM_MC)
 !-------------------------------------------------------------------------------
-do JS_riv_bas2=1,IS_riv_bas
-     IV_nz(JS_riv_bas2)=1
-     if (IV_nbup(IV_riv_index(JS_riv_bas2)).gt.0) then
-          do JS_up=1,IV_nbup(IV_riv_index(JS_riv_bas2))
+do JS_riv_bas=1,IS_riv_bas   !Loop over column
+    do JS_i=1,IV_nbrows(JS_riv_bas)
+   
+        if (JS_i.eq.1) then
+            JS_riv_bas2 = JS_riv_bas  !row index
+        else
+            JS_riv_bas2 = IV_cols_duplicate(JS_riv_bas2)
+        endif
 
-              JS_riv_bas=IM_index_up(JS_riv_bas2,JS_up)
-              IV_nz(JS_riv_bas2)=IV_nz(JS_riv_bas2)+IV_nz(JS_riv_bas)
+        IV_nz(JS_riv_bas2) = IV_nz(JS_riv_bas2)+1
 
-          end do
-     end if
-end do
-
-do JS_riv_bas=1,IS_riv_bas   !loop over column
-    JS_riv_bas2=IV_cols_duplicate(JS_riv_bas)
-    do while (JS_riv_bas2.ne.0)    !loop over row
-        if ( ((JS_riv_bas2.ge.IS_ownfirst+1).and.(JS_riv_bas2.lt.IS_ownlast+1)).and.   &
-             ((JS_riv_bas.ge.IS_ownfirst+1).and.(JS_riv_bas.lt.IS_ownlast+1)) ) then
+        if (((JS_riv_bas2.ge.IS_ownfirst+1).and.   &
+             (JS_riv_bas2.lt.IS_ownlast+1)).and.  &
+            ((JS_riv_bas.ge.IS_ownfirst+1).and.   &
+             (JS_riv_bas.lt.IS_ownlast+1))) then
             IV_dnz(JS_riv_bas2) = IV_dnz(JS_riv_bas2)+1
-        end if
-        if ( ((JS_riv_bas2.ge.IS_ownfirst+1).and.(JS_riv_bas2.lt.IS_ownlast+1)).and.   &
-             ((JS_riv_bas.lt.IS_ownfirst+1).or.(JS_riv_bas.ge.IS_ownlast+1)) ) then
-            IV_onz(JS_riv_bas2) = IV_onz(JS_riv_bas2)+1
-        end if
-        JS_riv_bas2=IV_cols_duplicate(JS_riv_bas2)
-    end do
-end do
+        endif
 
+        if (((JS_riv_bas2.ge.IS_ownfirst+1).and.   &
+             (JS_riv_bas2.lt.IS_ownlast+1)).and.  &
+            ((JS_riv_bas.lt.IS_ownfirst+1).or.    &
+             (JS_riv_bas.ge.IS_ownlast+1))) then
+            IV_onz(JS_riv_bas2) = IV_onz(JS_riv_bas2)+1
+        endif
+
+    enddo
+enddo
 
 !*******************************************************************************
 !Matrix preallocation (ZM_M)
@@ -354,6 +349,7 @@ if (IS_opt_run/=2) call PetscPrintf(PETSC_COMM_WORLD,'Muskingum matrix '       &
 !Allocate and initialize temporary variables
 !-------------------------------------------------------------------------------
 allocate(IV_rows(IS_Knilpotent+1))
+IV_rows(:)=0
 
 !-------------------------------------------------------------------------------
 !Populate temporary variables
@@ -369,31 +365,35 @@ end do
 if (rank==0) then
 deallocate(ZV_cols)
 
-IV_rows(:)=0
-do JS_riv_bas=0,IS_riv_bas-1
 
-    IV_rows(1)=JS_riv_bas+1
-    do JS_i=2,IV_nbrows(JS_riv_bas+1)
-        IV_rows(JS_i)=IV_cols(IV_rows(JS_i-1))
+do JS_riv_bas=1,IS_riv_bas
+
+    do JS_i=1,IV_nbrows(JS_riv_bas)  
+        if (JS_i.eq.1) then
+            IV_rows(JS_i) = JS_riv_bas  !row index
+        else
+            IV_rows(JS_i)=IV_cols_duplicate(IV_rows(JS_i-1)) 
+        endif
     end do
-    allocate(ZV_cols(IV_nbrows(JS_riv_bas+1)))
+    allocate(ZV_cols(IV_nbrows(JS_riv_bas)))
     
     call MatGetValues( ZM_MC,    &
-                       IV_nbrows(JS_riv_bas+1),  &
-                       IV_ind(1:IV_nbrows(JS_riv_bas+1))-1,   &
-                       IS_one,JS_riv_bas,   &
+                       IV_nbrows(JS_riv_bas),  &
+                       IV_ind(1:IV_nbrows(JS_riv_bas))-1,   &
+                       IS_one,JS_riv_bas-1,   &
                        ZV_cols,ierr )
 
     call MatSetValues( ZM_M,    &
-                       IV_nbrows(JS_riv_bas+1),  &
-                       IV_rows(1:IV_nbrows(JS_riv_bas+1))-1,   & 
-                       IS_one, JS_riv_bas,   &
-                       ZV_cols(1:IV_nbrows(JS_riv_bas+1)),  &
+                       IV_nbrows(JS_riv_bas),  &
+                       IV_rows(1:IV_nbrows(JS_riv_bas))-1,   & 
+                       IS_one, JS_riv_bas-1,   &
+                       ZV_cols(1:IV_nbrows(JS_riv_bas)),  &
                        INSERT_VALUES,ierr )
 
     deallocate(ZV_cols)
 
 end do
+
 
 end if
 
@@ -418,6 +418,8 @@ if (rank==0) then
 end if
 
 call MatDestroy(ZM_MC,ierr)
+call VecScatterDestroy(vecscat_all,ierr)
+call VecDestroy(ZV_all,ierr)
 
 
 !*******************************************************************************
