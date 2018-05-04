@@ -387,6 +387,61 @@ fi
 
 
 #*******************************************************************************
+#Test memory allocation in multiple matrices
+#*******************************************************************************
+unt=$((unt+1))
+if (("$unt" >= "$fst")) && (("$unt" <= "$lst")) ; then
+./rtk_nml_tidy_San_Guad_JHM.sh
+echo "Running test $unt/99"
+test_file="tmp_unt_$unt.txt"
+memo_file="tmp_unt_memo_$unt.txt"
+
+
+echo "Matrix-based Muskingum"
+sed -i -e "s|ZS_TauM            =.*|ZS_TauM            =0|"                    \
+       -e "s|IS_opt_routing     =.*|IS_opt_routing     =1|"                    \
+          rapid_namelist_San_Guad_JHM
+sleep 1
+mpiexec -n 1 ./rapid -info > $test_file
+./rtk_mem_chck.sh $test_file | cat > $memo_file
+x=$? && if [ $x -gt 0 ] ; then  echo "Failed memory: $memo_file" >&2 ; exit $x ; fi
+mpiexec -n 2 ./rapid -info > $test_file
+./rtk_mem_chck.sh $test_file | cat > $memo_file
+x=$? && if [ $x -gt 0 ] ; then  echo "Failed memory: $memo_file" >&2 ; exit $x ; fi
+
+echo "Traditional Muskingum"
+sed -i -e "s|ZS_TauM            =.*|ZS_TauM            =0|"                    \
+       -e "s|IS_opt_routing     =.*|IS_opt_routing     =2|"                    \
+          rapid_namelist_San_Guad_JHM
+sleep 1
+mpiexec -n 1 ./rapid -info > $test_file
+./rtk_mem_chck.sh $test_file | cat > $memo_file
+x=$? && if [ $x -gt 0 ] ; then  echo "Failed memory: $memo_file" >&2 ; exit $x ; fi
+mpiexec -n 2 ./rapid -info > $test_file
+./rtk_mem_chck.sh $test_file | cat > $memo_file
+x=$? && if [ $x -gt 0 ] ; then  echo "Failed memory: $memo_file" >&2 ; exit $x ; fi
+
+echo "Transbnd. matrix-based"
+sed -i -e "s|ZS_TauM            =.*|ZS_TauM            =0|"                    \
+       -e "s|IS_opt_routing     =.*|IS_opt_routing     =3|"                    \
+          rapid_namelist_San_Guad_JHM
+sleep 1
+mpiexec -n 1 ./rapid -info > $test_file
+./rtk_mem_chck.sh $test_file | cat > $memo_file
+x=$? && if [ $x -gt 0 ] ; then  echo "Failed memory: $memo_file" >&2 ; exit $x ; fi
+mpiexec -n 2 ./rapid -info > $test_file
+./rtk_mem_chck.sh $test_file | cat > $memo_file
+x=$? && if [ $x -gt 0 ] ; then  echo "Failed memory: $memo_file" >&2 ; exit $x ; fi
+
+rm $test_file
+rm $memo_file
+./rtk_nml_tidy_San_Guad_JHM.sh
+echo "Success"
+echo "********************"
+fi
+
+
+#*******************************************************************************
 #Remove symbolic list to default namelist and clean namelist
 #*******************************************************************************
 rm -f rapid_namelist
