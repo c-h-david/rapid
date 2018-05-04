@@ -141,24 +141,16 @@ echo "Inferring the number of matrices that were assembled"
 if [ $core == 1 ]; then
      IS_exc_mat=`echo $IS_exc_prf | bc -l`
      IS_end_mat=`echo $IS_end_prf | bc -l`
-     if [ $IS_exc_mat == $IS_end_mat ]; then
-          echo "- $IS_exc_mat matrices assembled"
-     else
-          echo "ERROR - Inconsistent number of matrices assembled:"            \
-               "$IS_exc_mat, $IS_end_mat" 1>&2
-     fi
 else
      IS_exc_mat=`echo $IS_exc_prf/$core/2 | bc -l`
-     IS_beg_mat=`echo $IS_beg_prf/$core   | bc -l`
      IS_end_mat=`echo $IS_end_prf/$core/2 | bc -l`
-     if [ $IS_exc_mat == $IS_beg_mat ] && [ $IS_exc_mat == $IS_end_mat ]; then
-          echo "- $IS_exc_mat matrices assembled"
-          echo "- OK"
-     else
-          echo "ERROR - Inconsistent number of matrices assembled:"            \
-               "$IS_exc_mat, $IS_beg_mat, $IS_end_mat" 1>&2
-          exit 44
-     fi
+fi
+
+if [ $IS_exc_mat == $IS_end_mat ]; then
+     echo "- $IS_exc_mat matrices assembled"
+else
+     echo "ERROR - Inconsistent number of matrices assembled:"                 \
+          "$IS_exc_mat, $IS_end_mat" 1>&2
 fi
      
 
