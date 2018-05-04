@@ -106,14 +106,14 @@ ncks -O -h -d Time,0,5847                                                      \
      ../input/San_Guad_JHM/m3_riv_San_Guad_2004_2007_cst.nc                    \
      ../input/San_Guad_JHM/m3_riv_San_Guad_2004_2007_cst_part1_rtk.nc          \
      > $test_file
-x=$? && if [ $x -gt 0 ] ; then  echo "Failed extraction: $test_file" >&2 ; exit $x ; fi
+x=$? && if [ $x -gt 0 ] ; then echo "Failed extraction: $test_file" >&2 ; exit $x ; fi
 
 echo "Extracting time steps"
 ncks -O -h -d Time,5848,11685                                                  \
      ../input/San_Guad_JHM/m3_riv_San_Guad_2004_2007_cst.nc                    \
      ../input/San_Guad_JHM/m3_riv_San_Guad_2004_2007_cst_part2_rtk.nc          \
      > $test_file
-x=$? && if [ $x -gt 0 ] ; then  echo "Failed extraction: $test_file" >&2 ; exit $x ; fi
+x=$? && if [ $x -gt 0 ] ; then echo "Failed extraction: $test_file" >&2 ; exit $x ; fi
 
 echo "Concatenating files"
 ncrcat -O -h                                                                   \
@@ -121,14 +121,14 @@ ncrcat -O -h                                                                   \
      ../input/San_Guad_JHM/m3_riv_San_Guad_2004_2007_cst_part2_rtk.nc          \
      -o ../input/San_Guad_JHM/m3_riv_San_Guad_2004_2007_cst_parts_rtk.nc       \
      > $test_file
-x=$? && if [ $x -gt 0 ] ; then  echo "Failed concatenation: $test_file" >&2 ; exit $x ; fi
+x=$? && if [ $x -gt 0 ] ; then echo "Failed concatenation: $test_file" >&2 ; exit $x ; fi
 
 echo "Comparing files"
 cmp                                                                            \
      ../input/San_Guad_JHM/m3_riv_San_Guad_2004_2007_cst.nc                    \
      ../input/San_Guad_JHM/m3_riv_San_Guad_2004_2007_cst_parts_rtk.nc          \
      > $comp_file
-x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $comp_file" >&2 ; exit $x ; fi
+x=$? && if [ $x -gt 0 ] ; then echo "Failed comparison: $comp_file" >&2 ; exit $x ; fi
 
 #m3_riv has 11686 time steps. The first two years have (366+365)*8=5848 time 
 #steps. There remains 11686-5848=5838 time steps for the last (almost) two years
@@ -157,7 +157,7 @@ sed -i -e "s|Vlat_file          =.*|Vlat_file          ='$Vlat_file'|"         \
           rapid_namelist_San_Guad_JHM  
 sleep 3
 mpiexec -n 1 ./rapid -ksp_type preonly > $test_file
-x=$? && if [ $x -gt 0 ] ; then  echo "Failed simulation: $test_file" >&2 ; exit $x ; fi
+x=$? && if [ $x -gt 0 ] ; then echo "Failed simulation: $test_file" >&2 ; exit $x ; fi
 
 echo "Running simulation"
 Vlat_file='../input/San_Guad_JHM/m3_riv_San_Guad_2004_2007_cst_part2_rtk.nc'
@@ -177,7 +177,7 @@ sed -i -e "s|Vlat_file          =.*|Vlat_file          ='$Vlat_file'|"         \
           rapid_namelist_San_Guad_JHM  
 sleep 3
 mpiexec -n 1 ./rapid -ksp_type preonly > $test_file
-x=$? && if [ $x -gt 0 ] ; then  echo "Failed simulation: $test_file" >&2 ; exit $x ; fi
+x=$? && if [ $x -gt 0 ] ; then echo "Failed simulation: $test_file" >&2 ; exit $x ; fi
 
 echo "Concatenating files"
 ncrcat -O -h                                                                   \
@@ -185,14 +185,14 @@ ncrcat -O -h                                                                   \
      ../output/San_Guad_JHM/Qout_San_Guad_1460days_p1_dtR900s_part2_rtk.nc     \
      -o ../output/San_Guad_JHM/Qout_San_Guad_1460days_p1_dtR900s_parts_rtk.nc  \
      > $test_file
-x=$? && if [ $x -gt 0 ] ; then  echo "Failed concatenation: $test_file" >&2 ; exit $x ; fi
+x=$? && if [ $x -gt 0 ] ; then echo "Failed concatenation: $test_file" >&2 ; exit $x ; fi
 
 echo "Comparing files"
 ./rtk_run_comp                                                                 \
      ../output/San_Guad_JHM/Qout_San_Guad_1460days_p1_dtR900s.nc               \
      ../output/San_Guad_JHM/Qout_San_Guad_1460days_p1_dtR900s_parts_rtk.nc     \
      > $comp_file
-x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $comp_file" >&2 ; exit $x ; fi
+x=$? && if [ $x -gt 0 ] ; then echo "Failed comparison: $comp_file" >&2 ; exit $x ; fi
 
 #-------------------------------------------------------------------------------
 #End
@@ -236,7 +236,7 @@ sleep 3
 mpiexec -n 1 ./rapid > $test_file
 echo "Comparing files"
 ./rtk_run_comp $Qout_gold $Qout_file > $comp_file 
-x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $comp_file" >&2 ; exit $x ; fi
+x=$? && if [ $x -gt 0 ] ; then echo "Failed comparison: $comp_file" >&2 ; exit $x ; fi
 rm $Qout_file
 rm $test_file
 rm $comp_file
@@ -271,7 +271,7 @@ sleep 3
 mpiexec -n 1 ./rapid > $test_file
 echo "Comparing files"
 ./rtk_run_comp $Qout_gold $Qout_file 1e-1 1 > $comp_file 
-x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $comp_file" >&2 ; exit $x ; fi
+x=$? && if [ $x -gt 0 ] ; then echo "Failed comparison: $comp_file" >&2 ; exit $x ; fi
 rm $Qout_file
 rm $test_file
 rm $comp_file
@@ -306,7 +306,7 @@ sleep 3
 mpiexec -n 2 ./rapid > $test_file
 echo "Comparing files"
 ./rtk_run_comp $Qout_gold $Qout_file > $comp_file 
-x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $comp_file" >&2 ; exit $x ; fi
+x=$? && if [ $x -gt 0 ] ; then echo "Failed comparison: $comp_file" >&2 ; exit $x ; fi
 rm $Qout_file
 rm $test_file
 rm $comp_file
@@ -342,7 +342,7 @@ sleep 3
 mpiexec -n 1 ./rapid -tao_gatol 0.01 -tao_grtol 0.0040 > $test_file
 ./rtk_opt_find.sh $test_file | cat > $find_file
 ./rtk_opt_comp.sh $find_file 0.1875 3.90625 6.33277 
-x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $find_file" >&2 ; exit $x ; fi
+x=$? && if [ $x -gt 0 ] ; then echo "Failed comparison: $find_file" >&2 ; exit $x ; fi
 rm $test_file
 rm $find_file
 ./rtk_nml_tidy_San_Guad_JHM.sh
@@ -377,7 +377,7 @@ sleep 3
 mpiexec -n 2 ./rapid -tao_gatol 0.01 -tao_grtol 0.0040 > $test_file
 ./rtk_opt_find.sh $test_file | cat > $find_file
 ./rtk_opt_comp.sh $find_file 0.1875 3.90625 6.33277 
-x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $find_file" >&2 ; exit $x ; fi
+x=$? && if [ $x -gt 0 ] ; then echo "Failed comparison: $find_file" >&2 ; exit $x ; fi
 rm $test_file
 rm $find_file
 ./rtk_nml_tidy_San_Guad_JHM.sh
@@ -404,10 +404,10 @@ sed -i -e "s|ZS_TauM            =.*|ZS_TauM            =0|"                    \
 sleep 1
 mpiexec -n 1 ./rapid -info > $test_file
 ./rtk_mem_chck.sh $test_file | cat > $memo_file
-x=$? && if [ $x -gt 0 ] ; then  echo "Failed memory: $memo_file" >&2 ; exit $x ; fi
+x=$? && if [ $x -gt 0 ] ; then echo "Failed memory: $memo_file" >&2 ; exit $x ; fi
 mpiexec -n 2 ./rapid -info > $test_file
 ./rtk_mem_chck.sh $test_file | cat > $memo_file
-x=$? && if [ $x -gt 0 ] ; then  echo "Failed memory: $memo_file" >&2 ; exit $x ; fi
+x=$? && if [ $x -gt 0 ] ; then echo "Failed memory: $memo_file" >&2 ; exit $x ; fi
 
 echo "Traditional Muskingum"
 sed -i -e "s|ZS_TauM            =.*|ZS_TauM            =0|"                    \
@@ -416,10 +416,10 @@ sed -i -e "s|ZS_TauM            =.*|ZS_TauM            =0|"                    \
 sleep 1
 mpiexec -n 1 ./rapid -info > $test_file
 ./rtk_mem_chck.sh $test_file | cat > $memo_file
-x=$? && if [ $x -gt 0 ] ; then  echo "Failed memory: $memo_file" >&2 ; exit $x ; fi
+x=$? && if [ $x -gt 0 ] ; then echo "Failed memory: $memo_file" >&2 ; exit $x ; fi
 mpiexec -n 2 ./rapid -info > $test_file
 ./rtk_mem_chck.sh $test_file | cat > $memo_file
-x=$? && if [ $x -gt 0 ] ; then  echo "Failed memory: $memo_file" >&2 ; exit $x ; fi
+x=$? && if [ $x -gt 0 ] ; then echo "Failed memory: $memo_file" >&2 ; exit $x ; fi
 
 echo "Transbnd. matrix-based"
 sed -i -e "s|ZS_TauM            =.*|ZS_TauM            =0|"                    \
@@ -428,10 +428,10 @@ sed -i -e "s|ZS_TauM            =.*|ZS_TauM            =0|"                    \
 sleep 1
 mpiexec -n 1 ./rapid -info > $test_file
 ./rtk_mem_chck.sh $test_file | cat > $memo_file
-x=$? && if [ $x -gt 0 ] ; then  echo "Failed memory: $memo_file" >&2 ; exit $x ; fi
+x=$? && if [ $x -gt 0 ] ; then echo "Failed memory: $memo_file" >&2 ; exit $x ; fi
 mpiexec -n 2 ./rapid -info > $test_file
 ./rtk_mem_chck.sh $test_file | cat > $memo_file
-x=$? && if [ $x -gt 0 ] ; then  echo "Failed memory: $memo_file" >&2 ; exit $x ; fi
+x=$? && if [ $x -gt 0 ] ; then echo "Failed memory: $memo_file" >&2 ; exit $x ; fi
 
 rm $test_file
 rm $memo_file
