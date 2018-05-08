@@ -314,16 +314,16 @@ do JS_riv_bas=1,IS_riv_bas   !Loop over column
 
         IV_nz(JS_riv_bas2) = IV_nz(JS_riv_bas2)+1
 
-        if (((JS_riv_bas2.ge.IS_ownfirst+1).and.   &
-             (JS_riv_bas2.lt.IS_ownlast+1)).and.  &
-            ((JS_riv_bas.ge.IS_ownfirst+1).and.   &
+        if (((JS_riv_bas2.ge.IS_ownfirst+1).and.                               &
+             (JS_riv_bas2.lt.IS_ownlast+1)).and.                               &
+            ((JS_riv_bas.ge.IS_ownfirst+1).and.                                &
              (JS_riv_bas.lt.IS_ownlast+1))) then
             IV_dnz(JS_riv_bas2) = IV_dnz(JS_riv_bas2)+1
         endif
 
-        if (((JS_riv_bas2.ge.IS_ownfirst+1).and.   &
-             (JS_riv_bas2.lt.IS_ownlast+1)).and.  &
-            ((JS_riv_bas.lt.IS_ownfirst+1).or.    &
+        if (((JS_riv_bas2.ge.IS_ownfirst+1).and.                               &
+             (JS_riv_bas2.lt.IS_ownlast+1)).and.                               &
+            ((JS_riv_bas.lt.IS_ownfirst+1).or.                                 &
              (JS_riv_bas.ge.IS_ownlast+1))) then
             IV_onz(JS_riv_bas2) = IV_onz(JS_riv_bas2)+1
         endif
@@ -335,10 +335,10 @@ enddo
 !Matrix preallocation (ZM_M)
 !*******************************************************************************
 call MatSeqAIJSetPreallocation(ZM_M,PETSC_NULL_INTEGER,IV_nz,ierr)
-call MatMPIAIJSetPreallocation(ZM_M,                                         &
-                               PETSC_NULL_INTEGER,                           &
-                               IV_dnz(IS_ownfirst+1:IS_ownlast),            &
-                               PETSC_NULL_INTEGER,                           &
+call MatMPIAIJSetPreallocation(ZM_M,                                           &
+                               PETSC_NULL_INTEGER,                             &
+                               IV_dnz(IS_ownfirst+1:IS_ownlast),               &
+                               PETSC_NULL_INTEGER,                             &
                                IV_onz(IS_ownfirst+1:IS_ownlast),ierr)
 if (IS_opt_run/=2) call PetscPrintf(PETSC_COMM_WORLD,'Muskingum matrix '       &
                                                 //'preallocated'//char(10),ierr)
@@ -366,8 +366,8 @@ end do
 !Fill ZM_M
 !-------------------------------------------------------------------------------
 if (rank==0) then
-deallocate(ZV_cols)
 
+deallocate(ZV_cols)
 
 do JS_riv_bas=1,IS_riv_bas
 
@@ -380,29 +380,29 @@ do JS_riv_bas=1,IS_riv_bas
     end do
     allocate(ZV_cols(IV_nbrows(JS_riv_bas)))
     
-    call MatGetValues( ZM_MC,    &
-                       IV_nbrows(JS_riv_bas),  &
-                       IV_ind(1:IV_nbrows(JS_riv_bas))-1,   &
-                       IS_one,JS_riv_bas-1,   &
+    call MatGetValues( ZM_MC,                                                  &
+                       IV_nbrows(JS_riv_bas),                                  &
+                       IV_ind(1:IV_nbrows(JS_riv_bas))-1,                      &
+                       IS_one,JS_riv_bas-1,                                    &
                        ZV_cols,ierr )
 
-    call MatSetValues( ZM_M,    &
-                       IV_nbrows(JS_riv_bas),  &
-                       IV_rows(1:IV_nbrows(JS_riv_bas))-1,   & 
-                       IS_one, JS_riv_bas-1,   &
-                       ZV_cols(1:IV_nbrows(JS_riv_bas)),  &
+    call MatSetValues( ZM_M,                                                   &
+                       IV_nbrows(JS_riv_bas),                                  &
+                       IV_rows(1:IV_nbrows(JS_riv_bas))-1,                     &
+                       IS_one, JS_riv_bas-1,                                   &
+                       ZV_cols(1:IV_nbrows(JS_riv_bas)),                       &
                        INSERT_VALUES,ierr )
 
     deallocate(ZV_cols)
 
 end do
 
-
 end if
 
 call MatAssemblyBegin(ZM_M,MAT_FINAL_ASSEMBLY,ierr)
 call MatAssemblyEnd(ZM_M,MAT_FINAL_ASSEMBLY,ierr)
 !sparse matrices need be assembled once their elements have been filled
+
 if (IS_opt_run/=2) then
      call PetscPrintf(PETSC_COMM_WORLD,'Muskingum matrix created'              &
                                        //char(10),ierr)
