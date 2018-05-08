@@ -64,6 +64,19 @@ Vec :: ZV_all
 
 
 !*******************************************************************************
+!Create a temporary VecScatter object
+!*******************************************************************************
+call VecScatterCreateToAll(ZV_C1,vecscat_all,ZV_all,ierr)
+call VecScatterBegin(vecscat_all,ZV_C1,ZV_all,                                 &
+                     INSERT_VALUES,SCATTER_FORWARD,ierr)
+call VecScatterEnd(vecscat_all,ZV_C1,ZV_all,                                   &
+                   INSERT_VALUES,SCATTER_FORWARD,ierr)
+!The vector ZV_all contains all elements of ZV_C1 and is copied on each
+!processor. This way, each processor can access all values of ZV_C1, which is
+!needed to count non-zero elements in ZM_MC
+
+
+!*******************************************************************************
 !Create a temporary matrix ZM_MC which is a compressed version of (I-C1*N)^(-1)
 !*******************************************************************************
 call MatCreate(PETSC_COMM_WORLD,ZM_MC,ierr)
@@ -77,8 +90,6 @@ call MatSetUp(ZM_MC,ierr)
 !respective location of these elements in M can be obtained from N^(j-1). Such
 !methodology allows for a fast computation of M.
 
-call VecScatterCreateToAll(ZV_C1,vecscat_all,ZV_all,ierr)
-!The vector ZV_all contains all elements of ZV_C1 and is copied on each processor. This way, each processor can access all values of ZV_C1 (needed to count non-zero elements in ZM_MC)
 
 !*******************************************************************************
 !Prepare for matrix preallocation (ZM_MC)
@@ -122,11 +133,6 @@ do JS_riv_bas2=1,IS_riv_bas
         end if
     end do
 end do
-
-call VecScatterBegin(vecscat_all,ZV_C1,ZV_all,                                 &
-                     INSERT_VALUES,SCATTER_FORWARD,ierr)
-call VecSCatterEnd(vecscat_all,ZV_C1,ZV_all,                                   &
-                   INSERT_VALUES,SCATTER_FORWARD,ierr)
 
 !-------------------------------------------------------------------------------
 !Count the number of non-zero elements (ZM_MC)
