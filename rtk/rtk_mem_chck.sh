@@ -78,26 +78,6 @@ echo "- $core core(s)"
 #*******************************************************************************
 
 #-------------------------------------------------------------------------------
-#Checking that allocated storage was not excessive at assembly end
-#-------------------------------------------------------------------------------
-echo "Checking that allocated storage was not excessive at assembly end"
-
-IS_exc_prf=`grep 'storage space' $file | wc -l`
-#Number of occurences of 'storage space'
-IS_exc_fil=`grep 'storage space: 0 unneeded' $file | wc -l`
-#Number of occurences of 'storage space' that have 0 unneeded storage
-
-if [ $IS_sto_prf == $IS_sto_fil ]; then 
-     echo "- $IS_exc_prf occurences of 'MatAssemblyEnd ... storage space:"
-     echo "- $IS_exc_fil occurences of 'MatAssemblyEnd ... storage space:"     \
-          "0 unneeded'"
-     echo "- OK"
-else
-     echo "ERROR - Allocated storage was excessive" 1>&2
-     exit 44
-fi
-
-#-------------------------------------------------------------------------------
 #Checking that allocated storage was not insufficient at assembly begin (// only
 #-------------------------------------------------------------------------------
 echo "Checking that allocated storage was not insufficient at assembly begin"  \
@@ -114,6 +94,26 @@ if [ $IS_beg_prf == $IS_beg_fil ]; then
      echo "- OK"
 else
      echo "ERROR - Allocated storage was insufficient" 1>&2
+     exit 44
+fi
+
+#-------------------------------------------------------------------------------
+#Checking that allocated storage was not excessive at assembly end
+#-------------------------------------------------------------------------------
+echo "Checking that allocated storage was not excessive at assembly end"
+
+IS_exc_prf=`grep 'storage space' $file | wc -l`
+#Number of occurences of 'storage space'
+IS_exc_fil=`grep 'storage space: 0 unneeded' $file | wc -l`
+#Number of occurences of 'storage space' that have 0 unneeded storage
+
+if [ $IS_sto_prf == $IS_sto_fil ]; then
+     echo "- $IS_exc_prf occurences of 'MatAssemblyEnd ... storage space:"
+     echo "- $IS_exc_fil occurences of 'MatAssemblyEnd ... storage space:"     \
+          "0 unneeded'"
+     echo "- OK"
+else
+     echo "ERROR - Allocated storage was excessive" 1>&2
      exit 44
 fi
 
