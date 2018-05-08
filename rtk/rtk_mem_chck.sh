@@ -122,9 +122,10 @@ IS_beg_prf=`grep -e 'MatAssemblyBegin' $file | wc -l`
 IS_beg_fil=`grep -e 'MatAssemblyBegin' $file | grep '0 mallocs' | wc -l`
 #Number of occurences of 'Number of mallocs' that have 0 new memory added
 
+echo "- $IS_beg_prf occurences of 'MatAssemblyBegin'"
+echo "- $IS_beg_fil occurences of 'MatAssemblyBegin ... 0 mallocs'"
+
 if [ $IS_beg_prf == $IS_beg_fil ]; then 
-     echo "- $IS_beg_prf occurences of 'MatAssemblyBegin'"
-     echo "- $IS_beg_fil occurences of 'MatAssemblyBegin ... 0 mallocs'"
      echo "- OK"
 else
      echo "ERROR - Allocated storage was insufficient" 1>&2
@@ -141,10 +142,10 @@ IS_exc_prf=`grep 'storage space' $file | wc -l`
 IS_exc_fil=`grep 'storage space: 0 unneeded' $file | wc -l`
 #Number of occurences of 'storage space' that have 0 unneeded storage
 
+echo "- $IS_exc_prf occurences of 'MatAssemblyEnd ... storage space:"
+echo "- $IS_exc_fil occurences of 'MatAssemblyEnd ... storage space: 0 unneeded"
+
 if [ $IS_sto_prf == $IS_sto_fil ]; then
-     echo "- $IS_exc_prf occurences of 'MatAssemblyEnd ... storage space:"
-     echo "- $IS_exc_fil occurences of 'MatAssemblyEnd ... storage space:"     \
-          "0 unneeded'"
      echo "- OK"
 else
      echo "ERROR - Allocated storage was excessive" 1>&2
@@ -161,11 +162,12 @@ IS_end_prf=`grep 'Number of mallocs' $file | wc -l`
 IS_end_fil=`grep 'Number of mallocs during MatSetValues() is 0' $file | wc -l`
 #Number of occurences of 'Number of mallocs' that have 0 new memory added
 
+echo "- $IS_end_prf occurences of 'MatAssemblyEnd_SeqAIJ(): Number of"         \
+     "mallocs during MatSetValues()'"
+echo "- $IS_end_fil occurences of 'MatAssemblyEnd_SeqAIJ(): Number of"         \
+     "mallocs during MatSetValues() is 0'"
+
 if [ $IS_end_prf == $IS_end_fil ]; then 
-     echo "- $IS_end_prf occurences of 'MatAssemblyEnd_SeqAIJ(): Number of"    \
-          "mallocs during MatSetValues()'"
-     echo "- $IS_end_fil occurences of 'MatAssemblyEnd_SeqAIJ(): Number of"    \
-          "mallocs during MatSetValues() is 0'"
      echo "- OK"
 else
      echo "ERROR - Allocated storage was insufficient" 1>&2
