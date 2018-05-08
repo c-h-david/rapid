@@ -396,7 +396,6 @@ echo "Running test $unt/99"
 test_file="tmp_unt_$unt.txt"
 memo_file="tmp_unt_memo_$unt.txt"
 
-
 echo "Matrix-based Muskingum"
 sed -i -e "s|ZS_TauM            =.*|ZS_TauM            =0|"                    \
        -e "s|IS_opt_routing     =.*|IS_opt_routing     =1|"                    \
