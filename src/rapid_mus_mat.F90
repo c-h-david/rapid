@@ -150,25 +150,22 @@ do while ( COUNT( (IV_cols(1:IS_riv_bas).eq.0) ).ne.IS_riv_bas )
     do JS_riv_bas=1,IS_riv_bas
         if ( IV_cols(JS_riv_bas).ne.0 ) then
 
-            call VecGetValues(ZV_all,              &
-                              IS_one,                  &
-                              IV_cols(JS_riv_bas)-1,   &
-                              ZS_val,ierr)
+            call VecGetValues(ZV_all,IS_one,IV_cols(JS_riv_bas)-1,ZS_val,ierr)
 
             if ( ABS(ZV_cols(JS_riv_bas)*ZS_val).ge.ZS_threshold ) then
 
                 IV_nz(JS_i) = IV_nz(JS_i)+1
                 
-                if (((JS_i.ge.IS_ownfirst+1).and.      &
-                     (JS_i.lt.IS_ownlast+1)).and.      &
-                    ((JS_riv_bas.ge.IS_ownfirst+1).and.&
+                if (((JS_i.ge.IS_ownfirst+1).and.                              &
+                     (JS_i.lt.IS_ownlast+1)).and.                              &
+                    ((JS_riv_bas.ge.IS_ownfirst+1).and.                        &
                      (JS_riv_bas.lt.IS_ownlast+1))) then 
                     IV_dnz(JS_i) = IV_dnz(JS_i)+1
                 endif
 
-                if (((JS_i.ge.IS_ownfirst+1).and.      &
-                     (JS_i.lt.IS_ownlast+1)).and.      &
-                    ((JS_riv_bas.lt.IS_ownfirst+1).or.&
+                if (((JS_i.ge.IS_ownfirst+1).and.                              &
+                     (JS_i.lt.IS_ownlast+1)).and.                              &
+                    ((JS_riv_bas.lt.IS_ownfirst+1).or.                         &
                      (JS_riv_bas.ge.IS_ownlast+1))) then 
                     IV_onz(JS_i) = IV_onz(JS_i)+1
                 endif
@@ -204,7 +201,7 @@ end if
 call MatSeqAIJSetPreallocation(ZM_MC,PETSC_NULL_INTEGER,IV_nz,ierr)
 call MatMPIAIJSetPreallocation(ZM_MC,                                          &
                                PETSC_NULL_INTEGER,                             &
-                               IV_dnz(IS_ownfirst+1:IS_ownlast),              &
+                               IV_dnz(IS_ownfirst+1:IS_ownlast),               &
                                PETSC_NULL_INTEGER,                             &
                                IV_onz(IS_ownfirst+1:IS_ownlast),ierr)
 
@@ -217,7 +214,6 @@ call MatMPIAIJSetPreallocation(ZM_MC,                                          &
 !Allocate and initialize temporary variables
 !-------------------------------------------------------------------------------
 allocate(IV_ind(IS_riv_bas))
-
 
 !-------------------------------------------------------------------------------
 !Populate temporary variables
@@ -235,16 +231,15 @@ do JS_riv_bas=1,IS_riv_bas
 end do
 !Initialize IV_ind
 
-
 !-------------------------------------------------------------------------------
 !Fill matrix (ZM_MC)
 !-------------------------------------------------------------------------------
 if (rank==0) then
 
-call MatSetValues(ZM_MC,                             &
-                  IS_one,0,                          &
-                  IS_riv_bas,IV_ind(1:IS_riv_bas)-1,   &
-                  ZV_cols(1:IS_riv_bas),             &
+call MatSetValues(ZM_MC,                                                       &
+                  IS_one,0,                                                    &
+                  IS_riv_bas,IV_ind(1:IS_riv_bas)-1,                           &
+                  ZV_cols(1:IS_riv_bas),                                       &
                   INSERT_VALUES,ierr)
 !The first row
 
@@ -253,9 +248,9 @@ do while ( COUNT( (IV_cols(1:IS_riv_bas).eq.0) ).ne.IS_riv_bas )
 
     do JS_riv_bas=1,IS_riv_bas
         if (IV_cols(JS_riv_bas).ne.0) then
-            call VecGetValues(ZV_all,              &
-                              IS_one,                  &
-                              IV_cols(JS_riv_bas)-1,   &
+            call VecGetValues(ZV_all,                                          &
+                              IS_one,                                          &
+                              IV_cols(JS_riv_bas)-1,                           &
                               ZS_val,ierr)
 
             if ( ABS(ZV_cols(JS_riv_bas)*ZS_val).ge.ZS_threshold ) then
@@ -270,11 +265,13 @@ do while ( COUNT( (IV_cols(1:IS_riv_bas).eq.0) ).ne.IS_riv_bas )
         endif
     enddo
 
-    call MatSetValues(ZM_MC,                                                                  &
-                      IS_one,JS_i,                                                            &
-                      IV_nz(JS_i+1),                                                          &
-                      PACK(IV_ind(1:IS_riv_bas),MASK=IV_ind(1:IS_riv_bas).gt.0)-1,            &
-                      ZV_cols( PACK( IV_ind(1:IS_riv_bas),MASK=IV_ind(1:IS_riv_bas).gt.0 ) ), &
+    call MatSetValues(ZM_MC,                                                   &
+                      IS_one,JS_i,                                             &
+                      IV_nz(JS_i+1),                                           &
+                      PACK(IV_ind(1:IS_riv_bas),                               &
+                           MASK=IV_ind(1:IS_riv_bas).gt.0)-1,                  &
+                      ZV_cols( PACK( IV_ind(1:IS_riv_bas),                     &
+                                     MASK=IV_ind(1:IS_riv_bas).gt.0 ) ),       &
                       INSERT_VALUES,ierr)
 
     JS_i = JS_i+1
@@ -283,7 +280,7 @@ enddo
 !The other rows
 
 write(temp_char,'(i10)') JS_i    
-if (IS_opt_run/=2) call PetscPrintf(PETSC_COMM_WORLD,'Exit at row='  &
+if (IS_opt_run/=2) call PetscPrintf(PETSC_COMM_WORLD,'Exit at row='            &
                                                      //temp_char//char(10),ierr)
 
 end if
