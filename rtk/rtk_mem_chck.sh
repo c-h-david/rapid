@@ -27,6 +27,40 @@
 
 
 #*******************************************************************************
+#Notes on memory allocation in RAPID
+#*******************************************************************************
+#Proper memory allocation in PETSc is checked by information provided during the
+#MatAssembly process. This process primarily takes place when matrices are
+#created, preallocated, populated, and - more importantly - assembled. However,
+#it also occurs as part of some built-in PETSc functions that manipulate
+#matrices. In RAPID, these built-in functions include MatCopy and MatShift.
+#Following is a summary of matrix that are assembled in RAPID:
+# - ZM_hsh_tot        - MatAssemblyEnd    - rapid_hsh_mat.F90
+# - ZM_hsh_bas        - MatAssemblyEnd    - rapid_hsh_mat.F90
+# - ZM_Net            - MatAssemblyEnd    - rapid_net_mat.F90
+# - ZM_A              - MatAssemblyEnd    - rapid_net_mat.F90
+# - ZM_T              - MatAssemblyEnd    - rapid_net_mat.F90
+# - ZM_TC1            - MatAssemblyEnd    - rapid_net_mat.F90
+# - ZM_Net            - MatAssemblyEnd    - rapid_net_mat_brk.F90 (forcing)
+# - ZM_T              - MatAssemblyEnd    - rapid_net_mat_brk.F90 (forcing)
+# - ZM_Net            - MatAssemblyEnd    - rapid_net_mat_brk.F90 (dam)
+# - ZM_T              - MatAssemblyEnd    - rapid_net_mat_brk.F90 (dam)
+# - ZM_MC             - MatAssemblyEnd    - rapid_mus_mat.F90
+# - ZM_M              - MatAssemblyEnd    - rapid_mus_mat.F90
+# - ZM_Obs            - MatAssemblyEnd    - rapid_obs_mat.F90
+# - ZM_A              - MatCopy           - rapid_routing_param.F90
+# - ZM_TC1            - MatCopy           - rapid_routing_param.F90
+# - ZM_A              - MatCopy           - rapid_uq.F90 (before UQ)
+# - ZM_A              - MatCopy           - rapid_uq.F90 (after UQ)
+# - ZM_A              - MatShift          - rapid_routing_param.F90
+# - ZM_A              - MatShift          - rapid_uq.F90 (before UQ)
+# - ZM_A              - MatShift          - rapid_uq.F90 (after UQ)
+#(This list can be reproduced using grep)
+#Note that MatShift does not trigger a MatAssemblyBegin and therefore such
+#information cannot be used for inferring the number of matrices created.
+
+
+#*******************************************************************************
 #Check command line arguments
 #*******************************************************************************
 if [ "$#" != "1" ]; then
@@ -146,9 +180,13 @@ echo "Inferring the number of matrices that were assembled"
 if [ $core == 1 ]; then
      IS_exc_mat=`echo $IS_exc_prf | bc -l`
      IS_end_mat=`echo $IS_end_prf | bc -l`
+     #A total of 1 PETSc matrix per core and per mathematical matrix is created
+     #in serial mode
 else
      IS_exc_mat=`echo $IS_exc_prf/$core/2 | bc -l`
      IS_end_mat=`echo $IS_end_prf/$core/2 | bc -l`
+     #A total of 2 PETSc matrices (diag and off-diag) per core and per
+     #mathematical matrix is created in parallel
 fi
 
 if [ $IS_exc_mat == $IS_end_mat ]; then
