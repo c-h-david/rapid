@@ -16,7 +16,7 @@ use netcdf
 use rapid_var, only :                                                          &
                    rank,IS_nc_status,IS_nc_id_fil_Vlat,                        &
                    IS_nc_id_var_time,IS_nc_id_var_time_bnds,IS_nc_id_var_crs,  &
-                   IS_nc_id_var_lon,IS_nc_id_var_lat,IS_nc_id_var_sVlat,       &
+                   IS_nc_id_var_lon,IS_nc_id_var_lat,IS_nc_id_var_Vlat_err,    &
                    IS_riv_tot,IS_riv_bas,IS_time,JS_time,ZS_TauR,              &
                    YV_title,YV_institution,YV_comment,                         &
                    YV_time_units,YV_crs_sma,YV_crs_iflat,                      &
@@ -90,8 +90,8 @@ end if
 !Read uncertainty quantification inputs, convert from volume to flow
 !*******************************************************************************
 if (rank==0) then 
-     if (IS_nc_id_var_sVlat>=0) then
-     IS_nc_status=NF90_GET_VAR(IS_nc_id_fil_Vlat,IS_nc_id_var_sVlat,           \
+     if (IS_nc_id_var_Vlat_err>=0) then
+     IS_nc_status=NF90_GET_VAR(IS_nc_id_fil_Vlat,IS_nc_id_var_Vlat_err,        \
                                ZV_riv_tot_sQlat,(/1/),(/IS_riv_tot/))
      ZV_riv_tot_sQlat=ZV_riv_tot_sQlat/ZS_TauR
      end if
