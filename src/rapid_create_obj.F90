@@ -30,7 +30,7 @@ use rapid_var, only :                                                          &
                    ZV_Qobsbarrec,                                              &
                    ZV_vQlat,ZV_sQlat,ZV_vQout,ZV_sQout,                        &
                    ierr,ksp,vecscat,ZV_SeqZero,ZS_one,ZV_one,IS_one,ncore,rank,&
-                   tao,ZV_1stIndex,ZV_2ndIndex,rnd
+                   tao,ZV_1stIndex,ZV_2ndIndex
 
 implicit none
 
@@ -72,11 +72,6 @@ call MPI_Comm_size(PETSC_COMM_WORLD,ncore,ierr)
 call KSPCreate(PETSC_COMM_WORLD,ksp,ierr)
 call KSPSetType(ksp,KSPRICHARDSON,ierr)                    !default=richardson
 call KSPSetFromOptions(ksp,ierr)                           !if runtime options
-
-!Random number generator -------------------------------------------------------
-call PetscRandomCreate(PETSC_COMM_WORLD,rnd,ierr)
-!call PetscRandomSetType(rnd,PETSCRANDER48,ierr)                               !######    
-call PetscRandomSetFromOptions(rnd,ierr)
 
 !Matrices-----------------------------------------------------------------------
 call MatCreate(PETSC_COMM_WORLD,ZM_Net,ierr)

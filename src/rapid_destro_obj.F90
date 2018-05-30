@@ -31,7 +31,7 @@ use rapid_var, only :                                                          &
                    ZV_Qobsbarrec,                                              &
                    ZV_vQlat,ZV_sQlat,ZV_vQout,ZV_sQout,                        &
                    ierr,ksp,vecscat,ZV_SeqZero,ZS_one,ZV_one,IS_one,           &
-                   tao,ZV_1stIndex,ZV_2ndIndex,rnd
+                   tao,ZV_1stIndex,ZV_2ndIndex
 
 implicit none
 
@@ -64,8 +64,6 @@ call VecDestroy(ZV_2ndIndex,ierr)
 call TaoDestroy(tao,ierr)
 
 call KSPDestroy(ksp,ierr)
-
-call PetscRandomDestroy(rnd,ierr)
 
 call MatDestroy(ZM_hsh_tot,ierr)
 call MatDestroy(ZM_hsh_bas,ierr)

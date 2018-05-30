@@ -14,15 +14,14 @@ subroutine rapid_uq
 !Declaration of variables
 !*******************************************************************************
 use rapid_var, only :                                                          &
-                   IS_riv_tot,JS_riv_tot,IS_riv_bas,JS_riv_bas,JS_uq,IS_uq,    &
+                   IS_riv_tot,JS_riv_tot,IS_riv_bas,JS_riv_bas,                &
                    IV_riv_index,IV_riv_loc1,                                   &
                    ZS_TauR,                                                    &
-                   ZS_rnd_uni1,ZS_rnd_uni2,ZS_rnd_norm,ZS_pi,                  &
                    ZV_vQlat,ZV_sQlat,ZV_vQout,ZV_sQout,ZS_alpha_uq,            & 
                    ZM_Net,ZM_A,ZV_C1,ZV_one,                                   &
                    ZV_riv_tot_vQlat,ZV_riv_tot_sQlat,ZV_riv_bas_sQout,         &
                    ZV_SeqZero,ZV_pointer,ZS_one,temp_char,                     &
-                   ierr,rank,vecscat,rnd,ksp 
+                   ierr,rank,vecscat,ksp
 
 implicit none
 

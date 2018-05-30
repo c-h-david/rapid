@@ -423,15 +423,6 @@ PetscScalar :: ZS_V0=10000,ZS_Qout0=0
 !*******************************************************************************
 !Declaration of variables - Uncertainty quantification
 !*******************************************************************************
-PetscRandom :: rnd
-!Object for managing random numbers in PETSc
-PetscScalar :: ZS_rnd_uni1, ZS_rnd_uni2, ZS_rnd_norm
-!Scalars storing random numbers (with uniform and normal distribution)
-PetscScalar :: ZS_pi=4*atan(1.0)
-!Pi (the mathematical constant)
-PetscInt :: IS_uq, JS_uq
-!Total number of ensemble members used for uncertainty quantification
-
 PetscScalar :: ZS_alpha_uq
 !Proportion (belongs to [0, 1]) of the variance in outflow that is attributed to 
 !bias in runoff. The remainder of the variance is attributed to random errors at
@@ -571,7 +562,7 @@ namelist /NL_namelist/                                                         &
                        BS_opt_Qinit,BS_opt_Qfinal,BS_opt_V,                    &
                        BS_opt_hum,BS_opt_for,BS_opt_dam,BS_opt_influence,      &
                        BS_opt_uq,                                              &
-                       IS_opt_routing,IS_opt_run,IS_opt_phi,IS_uq,             &
+                       IS_opt_routing,IS_opt_run,IS_opt_phi,                   &
                        IS_riv_tot,rapid_connect_file,Vlat_file,IS_max_up,      &
                        iS_riv_bas,riv_bas_id_file,                             &
                        Qinit_file,Qfinal_file,                                 &
