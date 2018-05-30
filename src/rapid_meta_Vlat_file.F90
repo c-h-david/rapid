@@ -21,7 +21,7 @@ use rapid_var, only :                                                          &
                    YV_title,YV_institution,YV_comment,                         &
                    YV_time_units,YV_crs_sma,YV_crs_iflat,                      &
                    ZV_riv_tot_lon,ZV_riv_tot_lat,IV_time,IM_time_bnds,         &
-                   ZV_riv_tot_sQlat,ZS_TauR
+                   ZV_riv_tot_bQlat,ZS_TauR
 
 implicit none
 
@@ -92,8 +92,8 @@ end if
 if (rank==0) then 
      if (IS_nc_id_var_Vlat_err>=0) then
      IS_nc_status=NF90_GET_VAR(IS_nc_id_fil_Vlat,IS_nc_id_var_Vlat_err,        \
-                               ZV_riv_tot_sQlat,(/1/),(/IS_riv_tot/))
-     ZV_riv_tot_sQlat=ZV_riv_tot_sQlat/ZS_TauR
+                               ZV_riv_tot_bQlat,(/1/),(/IS_riv_tot/))
+     ZV_riv_tot_bQlat=ZV_riv_tot_bQlat/ZS_TauR
      end if
 end if
 

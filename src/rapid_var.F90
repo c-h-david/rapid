@@ -431,12 +431,15 @@ PetscScalar :: ZS_alpha_uq
 Vec :: ZV_bQlat, ZV_vQlat, ZV_caQlat, ZV_bQout, ZV_sQout, ZV_rQout
 !Vectors of size IS_riv_bas storing the bias, standard error, variance, average 
 !covariances, and RMSE of Qlat and/or Qout
-PetscScalar,dimension(:), allocatable :: ZV_riv_tot_sQlat, ZV_riv_tot_vQlat
-!Vectors of size IS_riv_tot storing standard error and variance of Qlat
-PetscScalar,dimension(:), allocatable :: ZV_riv_bas_sQout, ZV_riv_bas_vQout
-!Vectors of size IS_riv_bas storing standard error and variance of Qout
-PetscScalar,dimension(:), allocatable :: ZV_riv_bas_sV, ZV_riv_bas_vV
-!Vectors of size IS_riv_bas storing standard error and variance of V
+PetscScalar,dimension(:), allocatable :: ZV_riv_tot_bQlat, ZV_riv_tot_vQlat,   &
+                                         ZV_riv_tot_caQlat
+!Vectors of size IS_riv_tot storing bias, variance, and average cov. of Qlat
+PetscScalar,dimension(:), allocatable :: ZV_riv_bas_bQout, ZV_riv_bas_sQout,   &
+                                         ZV_riv_bas_rQout
+!Vectors of size IS_riv_bas storing bias, standard error, and RMSE of Qout
+PetscScalar,dimension(:), allocatable :: ZV_riv_bas_bV, ZV_riv_bas_sV,         &
+                                         ZV_riv_bas_rV
+!Vectors of size IS_riv_bas storing bias, standard error, and RMSE of V
 
 
 !*******************************************************************************

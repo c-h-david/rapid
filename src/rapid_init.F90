@@ -55,9 +55,9 @@ use rapid_var, only :                                                          &
                    IV_dam_tot_id,IV_dam_use_id,                                &
                    ZV_Qin_dam,ZV_Qout_dam,ZV_Qin_dam_prev,ZV_Qout_dam_prev,    &
                    ZV_Qin_dam0,ZV_Qout_dam0,                                   &
-                   ZV_riv_tot_sQlat,ZV_riv_tot_vQlat,                          &
-                   ZV_riv_bas_sQout,ZV_riv_bas_vQout,                          &
-                   ZV_riv_bas_sV,ZV_riv_bas_vV,                                &
+                   ZV_riv_tot_bQlat,ZV_riv_tot_vQlat,ZV_riv_tot_caQlat,        &
+                   ZV_riv_bas_bQout,ZV_riv_bas_sQout,ZV_riv_bas_rQout,         &
+                   ZV_riv_bas_bV,ZV_riv_bas_sV,ZV_riv_bas_rV,                  &
                    ZV_QoutinitM,ZV_QoutinitO,ZV_QoutinitR,                     &
                    ZV_VinitM,ZV_VinitR,                                        &
                    ZV_babsmax,ZV_QoutRabsmin,ZV_QoutRabsmax,                   &
@@ -200,17 +200,20 @@ if (BS_opt_dam) then
      allocate(ZV_Qout_dam0(IS_dam_tot))
 end if
 
-allocate(ZV_riv_tot_sQlat(IS_riv_tot)) !Used in rapid_meta_Vlat_file
-                                       !regardless of BS_opt_uq
-allocate(ZV_riv_bas_sQout(IS_riv_bas)) !Used in rapid_create_Qout_file 
-                                       !regardless of BS_opt_uq
-allocate(ZV_riv_bas_sV(IS_riv_bas))    !Used in rapid_create_V_file 
-                                       !regardless of BS_opt_uq
-if (BS_opt_uq) then
-     allocate(ZV_riv_tot_vQlat(IS_riv_tot))
-     allocate(ZV_riv_bas_vQout(IS_riv_bas))
-     allocate(ZV_riv_bas_vV(IS_riv_bas))
-end if
+allocate(ZV_riv_tot_bQlat(IS_riv_tot))
+allocate(ZV_riv_tot_vQlat(IS_riv_tot))
+allocate(ZV_riv_tot_caQlat(IS_riv_tot))
+!Used in rapid_meta_Vlat_file regardless of BS_opt_uq
+
+allocate(ZV_riv_bas_bQout(IS_riv_bas))
+allocate(ZV_riv_bas_sQout(IS_riv_bas))
+allocate(ZV_riv_bas_rQout(IS_riv_bas))
+!Used in rapid_create_Qout_file regardless of BS_opt_uq
+
+allocate(ZV_riv_bas_bV(IS_riv_bas))
+allocate(ZV_riv_bas_sV(IS_riv_bas))
+allocate(ZV_riv_bas_rV(IS_riv_bas))
+!Used in rapid_create_V_file regardless of BS_opt_uq
 
 !-------------------------------------------------------------------------------
 !Make sure some Fortran arrays are initialized to zero
@@ -227,15 +230,20 @@ if (BS_opt_dam) then
 end if
 !These are not populated anywhere before being used and hold meaningless values
 
-ZV_riv_tot_sQlat=0      !Used in rapid_meta_Vlat_file regardless of BS_opt_uq
-ZV_riv_bas_sQout=0      !Used in rapid_create_Qout_file regardless of BS_opt_uq
-ZV_riv_bas_sV=0         !Used in rapid_create_V_file regardless of BS_opt_uq
-if (BS_opt_uq) then
-     ZV_riv_tot_vQlat=0
-     ZV_riv_bas_vQout=0
-     ZV_riv_bas_vV=0
-end if
-!These are not populated anywhere before being used and hold meaningless values
+ZV_riv_tot_bQlat=0
+ZV_riv_tot_vQlat=0
+ZV_riv_tot_caQlat=0
+!Used in rapid_meta_Vlat_file regardless of BS_opt_uq
+
+ZV_riv_bas_bQout=0
+ZV_riv_bas_sQout=0
+ZV_riv_bas_rQout=0
+!Used in rapid_create_Qout_file regardless of BS_opt_uq
+
+ZV_riv_bas_bV=0
+ZV_riv_bas_sV=0
+ZV_riv_bas_rV=0
+!Used in rapid_create_V_file regardless of BS_opt_uq
 
 !-------------------------------------------------------------------------------
 !Initialize libraries and create objects common to all options

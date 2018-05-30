@@ -19,7 +19,7 @@ use rapid_var, only :                                                          &
                    ZS_TauR,                                                    &
                    ZV_bQlat,ZV_vQlat,ZV_caQlat,ZV_bQout,ZV_sQout,ZV_rQout,     &
                    ZM_Net,ZM_A,ZV_C1,ZV_one,                                   &
-                   ZV_riv_tot_vQlat,ZV_riv_tot_sQlat,ZV_riv_bas_sQout,         &
+                   ZV_riv_tot_bQlat,ZV_riv_tot_vQlat,ZV_riv_bas_sQout,         &
                    ZV_SeqZero,ZV_pointer,ZS_one,temp_char,                     &
                    ierr,rank,vecscat,ksp
 
