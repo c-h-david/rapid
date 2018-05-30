@@ -428,9 +428,9 @@ PetscScalar :: ZS_alpha_uq
 !bias in runoff. The remainder of the variance is attributed to random errors at
 !the reach level
 
-Vec :: ZV_sQlat, ZV_vQlat, ZV_sQout, ZV_vQout
-!Vectors of size IS_riv_bas storing the standard error and the variance of Qlat 
-!and Qout 
+Vec :: ZV_bQlat, ZV_vQlat, ZV_cQlat, ZV_bQout, ZV_sQout, ZV_rQout
+!Vectors of size IS_riv_bas storing the bias, standard error, variance, average 
+!covariances, and RMSE of Qlat and/or Qout
 PetscScalar,dimension(:), allocatable :: ZV_riv_tot_sQlat, ZV_riv_tot_vQlat
 !Vectors of size IS_riv_tot storing standard error and variance of Qlat
 PetscScalar,dimension(:), allocatable :: ZV_riv_bas_sQout, ZV_riv_bas_vQout
