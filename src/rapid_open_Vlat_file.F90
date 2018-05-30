@@ -52,7 +52,7 @@ if (rank==0) then
      if (IS_nc_status<0) IS_nc_id_var_lat=-9999
      IS_nc_status=NF90_INQ_VARID(IS_nc_id_fil_Vlat,'crs',IS_nc_id_var_crs)
      if (IS_nc_status<0) IS_nc_id_var_crs=-9999
-     IS_nc_status=NF90_INQ_VARID(IS_nc_id_fil_Vlat,'sm3_riv',                  \
+     IS_nc_status=NF90_INQ_VARID(IS_nc_id_fil_Vlat,'m3_riv_err',               \
                                  IS_nc_id_var_Vlat_err)
      if (IS_nc_status<0) IS_nc_id_var_Vlat_err=-9999
      !A negative value for IS_nc_id_var_* is used if the variable doesn't exist,
