@@ -138,18 +138,18 @@ call VecSqrtAbs(ZV_sQout,ierr)
 !*******************************************************************************
 !Compute the RMSE of discharge
 !*******************************************************************************
-!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-!Compute the standard error in outflow from its variance
-!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-if (ZS_alpha_uq < 0 .and. ZS_alpha_uq > 1) then
-     print '(a32)','ZS_alpha_uq must belong to [0,1]'
-     stop 99
-end if
-
-call VecScale(ZV_sQout,ZS_alpha_uq,ierr)
-call VecScale(ZV_vQout,ZS_one-ZS_alpha_uq,ierr)
-call VecAXPY(ZV_sQout,ZS_one,ZV_vQout,ierr)
-call VecSqrtAbs(ZV_sQout,ierr)
+!!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+!!Compute the standard error in outflow from its variance
+!!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+!if (ZS_alpha_uq < 0 .and. ZS_alpha_uq > 1) then
+!     print '(a32)','ZS_alpha_uq must belong to [0,1]'
+!     stop 99
+!end if
+!
+!call VecScale(ZV_sQout,ZS_alpha_uq,ierr)
+!call VecScale(ZV_vQout,ZS_one-ZS_alpha_uq,ierr)
+!call VecAXPY(ZV_sQout,ZS_one,ZV_vQout,ierr)
+!call VecSqrtAbs(ZV_sQout,ierr)
 
 
 !*******************************************************************************
