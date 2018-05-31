@@ -115,19 +115,15 @@ call VecAssemblyEnd(ZV_caQlat,ierr)
 
 
 !*******************************************************************************
-!Compute the bias
+!Compute the bias of discharge
 !*******************************************************************************
-!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-!Compute the variance in lateral inflow from its standard error
-!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-call VecPointwiseMult(ZV_vQlat,ZV_sQlat,ZV_sQlat,ierr)
+call KSPSolve(ksp,ZV_bQlat,ZV_bQout,ierr)
+!solves A*bQout=bQlat
 
-!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-!Compute the variance in outflow if only bias in lateral inflow 
-!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-call KSPSolve(ksp,ZV_sQlat,ZV_sQout,ierr)
-!solves A*sQout=sQlat
 
+!*******************************************************************************
+!Compute the standard error of discharge
+!*******************************************************************************
 call VecPointwiseMult(ZV_sQout,ZV_sQout,ZV_sQout,ierr)
 !Pointwise square of each element to go from standard error to variance
 
