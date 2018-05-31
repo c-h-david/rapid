@@ -124,15 +124,20 @@ call KSPSolve(ksp,ZV_bQlat,ZV_bQout,ierr)
 !*******************************************************************************
 !Compute the standard error of discharge
 !*******************************************************************************
-call VecPointwiseMult(ZV_sQout,ZV_sQout,ZV_sQout,ierr)
-!Pointwise square of each element to go from standard error to variance
 
 !- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-!Compute the variance in outflow if only random errors in lateral inflow 
+!Compute the accumulation of error variances in lateral inflows
 !- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-call KSPSolve(ksp,ZV_vQlat,ZV_vQout,ierr)
-!solves A*vQout=vQlat
+call KSPSolve(ksp,ZV_vQlat,ZV_sQout,ierr)
+!solves A*sQout=vQlat
 
+call VecSqrtAbs(ZV_sQout,ierr)
+!sQout=sqrt(sQout)
+
+
+!*******************************************************************************
+!Compute the RMSE of discharge
+!*******************************************************************************
 !- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 !Compute the standard error in outflow from its variance
 !- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
