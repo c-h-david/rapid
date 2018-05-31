@@ -108,7 +108,6 @@ do JS_riv_bas=1,IS_riv_bas   !row index
         if (JS_riv_bas2.ne.0) then
 
             IV_nz(JS_riv_bas) = IV_nz(JS_riv_bas)+1
-            IV_nz(JS_riv_bas2) = IV_nz(JS_riv_bas2)+1
 
             if (((JS_riv_bas.ge.IS_ownfirst+1).and.      &
                  (JS_riv_bas.lt.IS_ownlast+1)).and.      &
@@ -116,7 +115,6 @@ do JS_riv_bas=1,IS_riv_bas   !row index
                  (JS_riv_bas2.lt.IS_ownlast+1))) then
  
                 IV_dnz(JS_riv_bas) = IV_dnz(JS_riv_bas)+1
-                IV_dnz(JS_riv_bas2) = IV_dnz(JS_riv_bas2)+1
 
             endif
 
@@ -126,18 +124,8 @@ do JS_riv_bas=1,IS_riv_bas   !row index
                  (JS_riv_bas2.ge.IS_ownlast+1))) then
  
                 IV_onz(JS_riv_bas) = IV_onz(JS_riv_bas)+1
-                IV_onz(JS_riv_bas2) = IV_onz(JS_riv_bas2)+1
                 
             endif
-
-            if (((JS_riv_bas.lt.IS_ownfirst+1).or.      &
-                 (JS_riv_bas.ge.IS_ownlast+1)).and.      &
-                ((JS_riv_bas2.ge.IS_ownfirst+1).and.     &
-                 (JS_riv_bas2.lt.IS_ownlast+1))) then
-
-                IV_onz(JS_riv_bas2) = IV_onz(JS_riv_bas2)+1
-
-            end if
 
             JS_riv_bas2 = IV_index_down(JS_riv_bas2)
 
@@ -151,12 +139,13 @@ end do
 !Matrix preallocation (ZM_Pb)
 !*******************************************************************************
 
-call MatSeqAIJSetPreallocation(ZM_Pb,PETSC_NULL_INTEGER,IV_nz,ierr)
-call MatMPIAIJSetPreallocation(ZM_Pb,                                          &
-                               PETSC_NULL_INTEGER,                             &
-                               IV_dnz(IS_ownfirst+1:IS_ownlast),              &
-                               PETSC_NULL_INTEGER,                             &
-                               IV_onz(IS_ownfirst+1:IS_ownlast),ierr)
+call MatSeqSBAIJSetPreallocation(ZM_Pb,IS_one,PETSC_NULL_INTEGER,IV_nz,ierr)
+call MatMPISBAIJSetPreallocation(ZM_Pb,IS_one,        &
+                                       PETSC_NULL_INTEGER, &
+                                       IV_dnz(IS_ownfirst+1:IS_ownlast),   &
+                                       PETSC_NULL_INTEGER,  &
+                                       IV_onz(IS_ownfirst+1:IS_ownlast),   &
+                                       ierr)
 
 
 !*******************************************************************************
@@ -187,15 +176,6 @@ do JS_riv_bas=1,IS_riv_bas   !row index
                              JS_riv_bas-1,                                        &
                              IS_one,                                              &
                              JS_riv_bas2-1,                                       &
-                             ZV_riv_tot_cQlat(IV_riv_index(JS_riv_bas),JS_i),     &
-                             INSERT_VALUES,ierr)
-            
-            !populate symmetric element (same column, lower triangular part)
-            call MatSetValues(ZM_Pb,                                              &
-                             IS_one,                                              &
-                             JS_riv_bas2-1,                                       &
-                             IS_one,                                              &
-                             JS_riv_bas-1,                                        &
                              ZV_riv_tot_cQlat(IV_riv_index(JS_riv_bas),JS_i),     &
                              INSERT_VALUES,ierr)
 
