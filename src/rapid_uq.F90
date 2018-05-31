@@ -90,19 +90,33 @@ end if
 
 
 !*******************************************************************************
-!Compute uncertainty using formula 
+!Apply the lateral inflow error estimates to the sub-basin of interest
 !*******************************************************************************
-
-!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-!Apply the standard deviation to the sub-basin of interest 
-!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 if (rank==0) then
-     call VecSetValues(ZV_sQlat,IS_riv_bas,IV_riv_loc1,                        &
-                       ZV_riv_tot_sQlat(IV_riv_index),INSERT_VALUES,ierr)
+     call VecSetValues(ZV_bQlat,IS_riv_bas,IV_riv_loc1,                        &
+                       ZV_riv_tot_bQlat(IV_riv_index),INSERT_VALUES,ierr)
 end if
-call VecAssemblyBegin(ZV_sQlat,ierr)
-call VecAssemblyEnd(ZV_sQlat,ierr)  
+call VecAssemblyBegin(ZV_bQlat,ierr)
+call VecAssemblyEnd(ZV_bQlat,ierr)
 
+if (rank==0) then
+     call VecSetValues(ZV_vQlat,IS_riv_bas,IV_riv_loc1,                        &
+                       ZV_riv_tot_vQlat(IV_riv_index),INSERT_VALUES,ierr)
+end if
+call VecAssemblyBegin(ZV_vQlat,ierr)
+call VecAssemblyEnd(ZV_vQlat,ierr)
+
+if (rank==0) then
+     call VecSetValues(ZV_caQlat,IS_riv_bas,IV_riv_loc1,                       &
+                       ZV_riv_tot_caQlat(IV_riv_index),INSERT_VALUES,ierr)
+end if
+call VecAssemblyBegin(ZV_caQlat,ierr)
+call VecAssemblyEnd(ZV_caQlat,ierr)
+
+
+!*******************************************************************************
+!Compute the bias
+!*******************************************************************************
 !- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 !Compute the variance in lateral inflow from its standard error
 !- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
