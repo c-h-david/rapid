@@ -49,17 +49,23 @@ implicit none
 !*******************************************************************************
 !Initialize variables
 !*******************************************************************************
-call VecSet(ZV_sQlat,0*ZS_one,ierr)
-!Make sure the standard deviation of lateral inflow is initialized to zero.
+call VecSet(ZV_bQlat,0*ZS_one,ierr)
+!Make sure the bias of lateral inflow is initialized to zero.
 
 call VecSet(ZV_vQlat,0*ZS_one,ierr)
-!Make sure the perturbation of lateral inflow is initialized to zero.
+!Make sure the error variance of lateral inflow is initialized to zero.
+
+call VecSet(ZV_caQlat,0*ZS_one,ierr)
+!Make sure the average error covariance of lateral inflow is initialized to zero.
+
+call VecSet(ZV_bQout,0*ZS_one,ierr)
+!Make sure the bias of outflow is initialized to zero.
 
 call VecSet(ZV_sQout,0*ZS_one,ierr)
-!Make sure the standard deviation of outflow is initialized to zero.
+!Make sure the standard error of outflow is initialized to zero.
 
-call VecSet(ZV_vQout,0*ZS_one,ierr)
-!Make sure the perturbation of outflow is initialized to zero.
+call VecSet(ZV_rQout,0*ZS_one,ierr)
+!Make sure the RMSE of outflow is initialized to zero.
 
 
 !*******************************************************************************
@@ -75,9 +81,9 @@ call KSPSetOperators(ksp,ZM_A,ZM_A,ierr)
 
 
 !*******************************************************************************
-!Check that standard error provided is always positive
+!Check that error variance provided is always positive
 !*******************************************************************************
-if (minval(ZV_riv_tot_sQlat) < 0) then
+if (minval(ZV_riv_tot_vQlat) < 0) then
      print *, 'ERROR - The standard error provided includes negative values'
      stop 99
 end if
