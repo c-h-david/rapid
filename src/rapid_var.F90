@@ -427,6 +427,8 @@ PetscScalar :: ZS_alpha_uq
 !Proportion (belongs to [0, 1]) of the variance in outflow that is attributed to 
 !bias in runoff. The remainder of the variance is attributed to random errors at
 !the reach level
+PetscScalar :: ZS_dtUQ
+!Time step at which bias, variance, and covariances were calculated, in seconds
 
 Vec :: ZV_bQlat, ZV_vQlat, ZV_caQlat, ZV_bQout, ZV_sQout, ZV_rQout
 !Vectors of size IS_riv_bas storing the bias, standard error, variance, average 
@@ -578,7 +580,7 @@ namelist /NL_namelist/                                                         &
                        IS_dam_tot,dam_tot_id_file,                             &
                        IS_dam_use,dam_use_id_file,                             &
                        babsmax_file,QoutRabsmin_file,QoutRabsmax_file,         &
-                       ZS_alpha_uq,                                            &
+                       ZS_alpha_uq,ZS_dtUQ,                                    &
                        ZS_threshold,                                           &
                        k_file,x_file,Qout_file,V_file,                         &
                        kfac_file,xfac_file,ZS_knorm_init,ZS_xnorm_init,        &
