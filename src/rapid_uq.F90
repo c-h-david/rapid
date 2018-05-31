@@ -4,8 +4,9 @@
 subroutine rapid_uq
 
 !Purpose:
-!This subroutine generates river flow uncertainty based on the standard 
-!deviation of the combined surface/subsurface flow into the river network.  
+!This subroutine generates river flow uncertainty estimates based on the bias,
+!variance, and average covariances of the combined surface/subsurface flow into
+!the river network.  
 !Author: 
 !Cedric H. David, 2016-2018.
 
@@ -19,7 +20,8 @@ use rapid_var, only :                                                          &
                    ZS_TauR,                                                    &
                    ZV_bQlat,ZV_vQlat,ZV_caQlat,ZV_bQout,ZV_sQout,ZV_rQout,     &
                    ZM_Net,ZM_A,ZV_C1,ZV_one,                                   &
-                   ZV_riv_tot_bQlat,ZV_riv_tot_vQlat,ZV_riv_bas_sQout,         &
+                   ZV_riv_tot_bQlat,ZV_riv_tot_vQlat,ZV_riv_tot_caQlat,        &
+                   ZV_riv_bas_bQout,ZV_riv_bas_sQout,ZV_riv_bas_rQout,         &
                    ZV_SeqZero,ZV_pointer,ZS_one,temp_char,                     &
                    ierr,rank,vecscat,ksp
 
