@@ -208,10 +208,10 @@ fi
 if [ ! -d petsc-3.6.2/linux-gcc-c ]; then
     cd petsc-3.6.2
     if [ "$(expr substr $(uname -s) 1 9)" == "CYGWIN_NT" ]; then
-        python2 './configure' 'PETSC_DIR='$PWD 'PETSC_ARCH=linux-gcc-c' '--download-fblaslapack=1' '--download-mpich=1' '--with-cc=gcc' '--with-cxx=g++' '--with-fc=gfortran' '--with-clanguage=cxx' '--with-debugging=0' '--with-windows-graphics=0'
+        python2 './configure' 'PETSC_DIR='$PWD 'PETSC_ARCH=linux-gcc-c' '--download-fblaslapack=1' '--download-mpich=1' '--with-cc=gcc' '--with-fc=gfortran' '--with-clanguage=c' '--with-debugging=0' '--with-windows-graphics=0'
         #CYGWIN
     else
-        python2 './configure' 'PETSC_DIR='$PWD 'PETSC_ARCH=linux-gcc-c' '--download-fblaslapack=1' '--download-mpich=1' '--with-cc=gcc' '--with-cxx=g++' '--with-fc=gfortran' '--with-clanguage=cxx' '--with-debugging=0'
+        python2 './configure' 'PETSC_DIR='$PWD 'PETSC_ARCH=linux-gcc-c' '--download-fblaslapack=1' '--download-mpich=1' '--with-cc=gcc' '--with-fc=gfortran' '--with-clanguage=c' '--with-debugging=0'
         #Linux/Mac
     fi
     make PETSC_DIR=$PWD PETSC_ARCH=linux-gcc-c all
