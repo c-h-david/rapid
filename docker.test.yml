@@ -1,0 +1,41 @@
+#*******************************************************************************
+#docker.test.yml
+#*******************************************************************************
+
+#Purpose:
+#Docker-compose can be used to build a Docker image from a Dockerfile and run
+#the image in a Docker container using a specific command that performs a series
+#of tests on the software included in the image. The purpose of this
+#docker.test.yml file is to give instructions to docker-compose on how to do the
+#work.
+#Author:
+#Cedric H. David, 2018-2018
+
+
+#*******************************************************************************
+#Usage
+#*******************************************************************************
+#docker-compose -f docker.test.yml up    #Create image if it does not exist, and
+                                         #run it in a container w/ the command.
+                                         #Note: command has no impact on image.
+#docker-compose -f docker.test.yml down  #Remove the container, not the image.
+
+
+#*******************************************************************************
+#Test
+#*******************************************************************************
+sut:
+     build: .
+     #The name of the Docker image that is created will be rapid_sut, this name
+     #is generated automatically based on the folder where docker-compose is run
+     #(rapid) and the service name (sut, i.e. 'system under test')
+     command: bash -xc "cd ./rtk/;"\
+                       "./rtk_pub_dwnl_David_etal_2011_JHM.sh;"\ 
+                       "./rtk_pub_repr_David_etal_2011_JHM.sh 1"
+     #bash -c (string) allows to make the code more readable here
+     #bash -x (verbose) allows to make the commands more readable at runtime
+
+
+#*******************************************************************************
+#End
+#*******************************************************************************
