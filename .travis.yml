@@ -15,11 +15,11 @@
 #System specifications for Travis CI
 #*******************************************************************************
 sudo: false        #Activates the new Travis CI container-based infrastructure
-language: cpp      #Sets the language to C++
+language: c        #Sets the language to C
 addons:
   apt:
     packages:
-    - gfortran     #Add Fortran (C and C++ installed by specifying C++ above)
+    - gfortran     #Add Fortran (gcc was installed by specifying "language: c")
     - bc           #Add Basic Calculator (simple math from command line)
     - nco          #netCDF Operators
 
