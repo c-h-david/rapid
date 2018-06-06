@@ -1,0 +1,46 @@
+#*******************************************************************************
+#.dockerignore
+#*******************************************************************************
+
+#Purpose:
+#The Docker program is informed here to ignore the following files while sending
+#files to the Docker daemon as the build context. Ignoring files helps decrease
+#time for build, pull and push of images; and runtime size for containers.
+#Author:
+#Cedric H. David, 2018-2018
+
+
+#*******************************************************************************
+#List of files that Docker will ignore
+#*******************************************************************************
+
+#-------------------------------------------------------------------------------
+#The input and output files stored in the sub-directories of input/ and output/
+#-------------------------------------------------------------------------------
+input/
+output/
+
+#-------------------------------------------------------------------------------
+#The files added by users to the run directory except for rapid_script.sh
+#-------------------------------------------------------------------------------
+run/*
+!run/rapid_script.sh
+
+#-------------------------------------------------------------------------------
+#The RAPID executable
+#-------------------------------------------------------------------------------
+src/rapid
+
+#-------------------------------------------------------------------------------
+#The files potentially added to the rtk directory 
+#-------------------------------------------------------------------------------
+rtk/rapid
+rtk/rapid_namelist
+rtk/rtk_run_comp
+rtk/rtk_run_conv_Qinit
+rtk/tmp_*
+
+
+#*******************************************************************************
+#End
+#*******************************************************************************
