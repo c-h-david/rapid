@@ -431,7 +431,7 @@ PetscScalar :: ZS_dtUQ
 !Time step at which bias, variance, and covariances were calculated, in seconds
 
 Vec :: ZV_nbuptot
-!Vectors of size IS_riv_bas storing the number of upstream elements, plus one
+!Vectors of size IS_riv_bas storing the number of upstream elements (strictly)
 Vec :: ZV_bQlat, ZV_vQlat, ZV_caQlat, ZV_bQout, ZV_sQout, ZV_rQout
 !Vectors of size IS_riv_bas storing the bias, standard error, variance, average 
 !covariances, and RMSE of Qlat and/or Qout

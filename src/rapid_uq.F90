@@ -138,10 +138,13 @@ call KSPSolve(ksp,ZV_vQlat,ZV_sQout,ierr)
 call KSPSolve(ksp,ZV_one,ZV_nbuptot,ierr)
 !solves A*nbuptot=1
 
+call VecShift(ZV_nbuptot,-ZS_one,ierr)
+!nbuptot=nbuptot-1
+
 call KSPSolve(ksp,ZV_temp1,ZV_caQlat,ierr)
 !solves A*temp1=caQlat
 
-call VecPointwiseMult(ZV_temp2,ZV_temp1,ZV_caQlat,ierr)
+call VecPointwiseMult(ZV_temp2,ZV_nbuptot,ZV_temp1,ierr)
 !temp2=nbuptot.*temp1 (pointwise multiplication)
 
 !- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
