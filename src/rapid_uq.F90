@@ -22,6 +22,7 @@ use rapid_var, only :                                                          &
                    ZM_Net,ZM_A,ZV_C1,ZV_one,                                   &
                    ZV_riv_tot_bQlat,ZV_riv_tot_vQlat,ZV_riv_tot_caQlat,        &
                    ZV_riv_bas_bQout,ZV_riv_bas_sQout,ZV_riv_bas_rQout,         &
+                   ZV_nbuptot,ZV_one,ZV_temp1,ZV_temp2,                        &
                    ZV_SeqZero,ZV_pointer,ZS_one,temp_char,                     &
                    ierr,rank,vecscat,ksp
 
@@ -130,6 +131,24 @@ call KSPSolve(ksp,ZV_bQlat,ZV_bQout,ierr)
 !- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 call KSPSolve(ksp,ZV_vQlat,ZV_sQout,ierr)
 !solves A*sQout=vQlat
+
+!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+!Compute the accumulation of error covariances in lateral inflows
+!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+call KSPSolve(ksp,ZV_one,ZV_nbuptot,ierr)
+!solves A*nbuptot=1
+
+call KSPSolve(ksp,ZV_temp1,ZV_caQlat,ierr)
+!solves A*temp1=caQlat
+
+call VecPointwiseMult(ZV_temp2,ZV_temp1,ZV_caQlat,ierr)
+!temp2=nbuptot.*temp1 (pointwise multiplication)
+
+!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+!Compute the standard error in discharge from the variance in discharge
+!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+call VecAXPY(ZV_sQout,ZS_one,ZV_temp2,ierr)
+!sQout=sQout+temp2
 
 call VecSqrtAbs(ZV_sQout,ierr)
 !sQout=sqrt(sQout)
