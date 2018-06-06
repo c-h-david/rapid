@@ -179,6 +179,25 @@ call VecSqrtAbs(ZV_rQout,ierr)
 !*******************************************************************************
 !Gather PETSc vector on processor zero and get the values of the array
 !*******************************************************************************
+
+!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+!Bias
+!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+call VecScatterBegin(vecscat,ZV_bQout,ZV_SeqZero,                              &
+                     INSERT_VALUES,SCATTER_FORWARD,ierr)
+call VecScatterEnd(vecscat,ZV_bQout,ZV_SeqZero,                                &
+                   INSERT_VALUES,SCATTER_FORWARD,ierr)
+!Gather PETSc vector
+
+if (rank==0) call VecGetArrayF90(ZV_SeqZero,ZV_pointer,ierr)
+!Get array from PETSc vector
+
+if  (rank==0) ZV_riv_bas_bQout=ZV_pointer
+!Copy values into the variable that will be written in netCDF file
+
+!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+!Standard error
+!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 call VecScatterBegin(vecscat,ZV_sQout,ZV_SeqZero,                              &
                      INSERT_VALUES,SCATTER_FORWARD,ierr)
 call VecScatterEnd(vecscat,ZV_sQout,ZV_SeqZero,                                &
@@ -189,6 +208,21 @@ if (rank==0) call VecGetArrayF90(ZV_SeqZero,ZV_pointer,ierr)
 !Get array from PETSc vector
 
 if  (rank==0) ZV_riv_bas_sQout=ZV_pointer
+!Copy values into the variable that will be written in netCDF file
+
+!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+!RMSE
+!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+call VecScatterBegin(vecscat,ZV_rQout,ZV_SeqZero,                              &
+                     INSERT_VALUES,SCATTER_FORWARD,ierr)
+call VecScatterEnd(vecscat,ZV_rQout,ZV_SeqZero,                                &
+                   INSERT_VALUES,SCATTER_FORWARD,ierr)
+!Gather PETSc vector
+
+if (rank==0) call VecGetArrayF90(ZV_SeqZero,ZV_pointer,ierr)
+!Get array from PETSc vector
+
+if  (rank==0) ZV_riv_bas_rQout=ZV_pointer
 !Copy values into the variable that will be written in netCDF file
 
 
