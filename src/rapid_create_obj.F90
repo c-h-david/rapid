@@ -29,6 +29,7 @@ use rapid_var, only :                                                          &
                    ZV_VR,ZV_VinitR,ZV_VprevR,ZV_VbarR,ZV_VoutR,                &
                    ZV_Qobsbarrec,                                              &
                    ZV_bQlat,ZV_vQlat,ZV_caQlat,ZV_bQout,ZV_sQout,ZV_rQout,     &
+                   ZV_nbuptot,                                                 &
                    ierr,ksp,vecscat,ZV_SeqZero,ZS_one,ZV_one,IS_one,ncore,rank,&
                    tao,ZV_1stIndex,ZV_2ndIndex
 
@@ -172,6 +173,7 @@ call VecDuplicate(ZV_k,ZV_Qobs,ierr)
 call VecDuplicate(ZV_k,ZV_kfac,ierr)
 call VecDuplicate(ZV_k,ZV_Qobsbarrec,ierr)
 
+call VecDuplicate(ZV_k,ZV_nbuptot,ierr)
 call VecDuplicate(ZV_k,ZV_bQlat,ierr)
 call VecDuplicate(ZV_k,ZV_vQlat,ierr)
 call VecDuplicate(ZV_k,ZV_caQlat,ierr)
