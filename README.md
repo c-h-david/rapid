@@ -5,6 +5,8 @@
 
 [![Build Status](https://travis-ci.org/c-h-david/rapid.svg?branch=master)](https://travis-ci.org/c-h-david/rapid)
 
+[![Docker Build](https://img.shields.io/docker/automated/chdavid/rapid.svg)](https://hub.docker.com/r/chdavid/rapid/)
+
 The Routing Application for Parallel computatIon of Discharge (RAPID) is a river
 network routing model. Given surface and groundwater inflow to rivers, this 
 model can compute flow and volume of water everywhere in river networks made out 
@@ -14,6 +16,39 @@ For further information on RAPID including peer-reviewed publications, tutorials
 sample input/output data, sample processing scripts and animations of model 
 results, please go to: 
 [http://rapid-hub.org/](http://rapid-hub.org/).
+
+## Installation with Docker
+Installing RAPID is **by far the easiest with Docker**. This document was
+written and tested using
+[Docker Community Edition](https://www.docker.com/community-edition#/download)
+which is available for free and can be installed on a wide variety of operating
+systems. To install it, follow the instructions in the link provided above.
+
+Note that the experienced users may find more up-to-date installation
+instructions in
+[Dockerfile](https://github.com/c-h-david/rapid/blob/master/Dockerfile).
+
+### Download RAPID
+Downloading RAPID with Docker can be done using:
+
+```
+$ docker pull chdavid/rapid
+```
+
+### Install packages
+The beauty of Docker is that there is **no need to install anymore packages**.
+RAPID is ready to go! To run it, just use:
+
+```
+$ docker run --rm --name rapid -it chdavid/rapid
+```
+
+## Testing with Docker
+Testing scripts are currently under development.
+
+Note that the experienced users may find more up-to-date testing instructions
+in
+[docker.test.yml](https://github.com/c-h-david/rapid/blob/master/docker.test.yml).
 
 ## Installation on Ubuntu
 This document was written and tested on a machine with a **clean** image of 
