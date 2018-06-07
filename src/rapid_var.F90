@@ -527,7 +527,8 @@ PetscInt :: IS_nc_id_var_Vlat,IS_nc_id_var_Qout,IS_nc_id_var_rivid,            &
             IS_nc_id_var_time_bnds,IS_nc_id_var_crs,                           &
             IS_nc_id_var_Vlat_err,IS_nc_id_var_Qout_err,IS_nc_id_var_V_err,    &
             IS_nc_id_var_Qinit,IS_nc_id_var_Qfinal
-PetscInt :: IS_nc_id_dim_rivid,IS_nc_id_dim_time,IS_nc_id_dim_nv
+PetscInt :: IS_nc_id_dim_rivid,IS_nc_id_dim_time,IS_nc_id_dim_nv,              &
+            IS_nc_id_dim_nerr
 PetscInt, parameter :: IS_nc_ndim=2
 PetscInt, dimension(IS_nc_ndim) :: IV_nc_id_dim, IV_nc_start, IV_nc_count,     &
                                    IV_nc_count2
