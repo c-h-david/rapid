@@ -17,7 +17,7 @@ use rapid_var, only :                                                          &
                    rank,                                                       &
                    IS_nc_status,IS_nc_id_fil_V,                                &
                    IS_nc_id_dim_time,IS_nc_id_dim_rivid,IV_nc_id_dim,          &
-                   IS_nc_id_dim_nv,                                            &
+                   IS_nc_id_dim_nv,IS_nc_id_dim_nerr,                          &
                    IS_nc_id_var_V,IS_nc_id_var_rivid,                          &
                    IS_nc_id_var_time,IS_nc_id_var_lon,IS_nc_id_var_lat,        &
                    IS_nc_id_var_time_bnds,IS_nc_id_var_crs,                    &
@@ -28,7 +28,7 @@ use rapid_var, only :                                                          &
                    YV_title,YV_institution,YV_comment,                         &
                    YV_time_units,YV_crs_sma,YV_crs_iflat,                      &
                    ZV_riv_tot_lon,ZV_riv_tot_lat,IV_riv_index,                 &
-                   ZV_riv_bas_sV
+                   ZV_riv_bas_bV,ZV_riv_bas_sV,ZV_riv_bas_rV
 
 implicit none
 
@@ -63,6 +63,8 @@ if (rank==0) then
                                IS_nc_id_dim_rivid)
      IS_nc_status=NF90_DEF_DIM(IS_nc_id_fil_V,'nv',2,                          &
                                IS_nc_id_dim_nv)
+     IS_nc_status=NF90_DEF_DIM(IS_nc_id_fil_V,'nerr',3,                        &
+                               IS_nc_id_dim_nerr)
      IV_nc_id_dim(1)=IS_nc_id_dim_rivid
      IV_nc_id_dim(2)=IS_nc_id_dim_time
 
@@ -71,8 +73,9 @@ if (rank==0) then
 !-------------------------------------------------------------------------------
      IS_nc_status=NF90_DEF_VAR(IS_nc_id_fil_V,'V',NF90_REAL,                   &
                                IV_nc_id_dim,IS_nc_id_var_V)
-     IS_nc_status=NF90_DEF_VAR(IS_nc_id_fil_V,'sV',NF90_REAL,                  &
-                               IS_nc_id_dim_rivid,IS_nc_id_var_V_err)
+     IS_nc_status=NF90_DEF_VAR(IS_nc_id_fil_V,'V_err',NF90_REAL,               &
+                               (/IS_nc_id_dim_rivid,IS_nc_id_dim_nerr/),       &
+                               IS_nc_id_var_V_err)
      IS_nc_status=NF90_DEF_VAR(IS_nc_id_fil_V,'rivid',NF90_INT,                &
                                IS_nc_id_dim_rivid,IS_nc_id_var_rivid)
      IS_nc_status=NF90_DEF_VAR(IS_nc_id_fil_V,'time',NF90_INT,                 &
@@ -221,10 +224,20 @@ if (rank==0) then
      IS_nc_status=NF90_PUT_VAR(IS_nc_id_fil_V,IS_nc_id_var_lat,                &
                                ZV_riv_tot_lat(IV_riv_index))
      end if
-     if (maxval(ZV_riv_bas_sV)/=0) then 
-     !The default value for 'no data' in rapid_init.F90 is 0 for stdev of V
+     if (maxval(ZV_riv_bas_bV)/=0) then 
+     !The default value for 'no data' in rapid_init.F90 is 0 for bias of V
      IS_nc_status=NF90_PUT_VAR(IS_nc_id_fil_V,IS_nc_id_var_V_err,              &
-                               ZV_riv_bas_sV)
+                               ZV_riv_bas_bV,(/1,1/),(/IS_riv_bas,1/))
+     end if
+     if (maxval(ZV_riv_bas_sV)/=0) then 
+     !The default value for 'no data' in rapid_init.F90 is 0 for stderr of V
+     IS_nc_status=NF90_PUT_VAR(IS_nc_id_fil_V,IS_nc_id_var_V_err,              &
+                               ZV_riv_bas_sV,(/1,2/),(/IS_riv_bas,1/))
+     end if
+     if (maxval(ZV_riv_bas_rV)/=0) then 
+     !The default value for 'no data' in rapid_init.F90 is 0 for RMSE of V
+     IS_nc_status=NF90_PUT_VAR(IS_nc_id_fil_V,IS_nc_id_var_V_err,              &
+                               ZV_riv_bas_rV,(/1,3/),(/IS_riv_bas,1/))
      end if
 
 !-------------------------------------------------------------------------------
