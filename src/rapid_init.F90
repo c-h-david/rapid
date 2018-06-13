@@ -71,7 +71,8 @@ use rapid_var, only :                                                          &
                    ZV_C1,ZV_C2,ZV_C3,ZM_A,                                     &
                    IV_now,YV_now,YV_version,                                   &
                    ZV_riv_tot_lon,ZV_riv_tot_lat,IV_time,IM_time_bnds,         &
-                   ierr,ksp,rank,ncore,IS_one,ZS_one
+                   ierr,ksp,rank,ncore,IS_one,ZS_one,                          &
+                   ZM_Pb,IS_radius,ZV_riv_tot_cdownQlat
 
 
 implicit none
@@ -215,6 +216,9 @@ allocate(ZV_riv_bas_sV(IS_riv_bas))
 allocate(ZV_riv_bas_rV(IS_riv_bas))
 !Used in rapid_create_V_file regardless of BS_opt_uq
 
+allocate(ZV_riv_tot_cdownQlat(IS_riv_tot,IS_radius))
+!Used in rapid_meta_Vlat_file and rapid_cov_mat for data assimilation
+
 !-------------------------------------------------------------------------------
 !Make sure some Fortran arrays are initialized to zero
 !-------------------------------------------------------------------------------
@@ -244,6 +248,9 @@ ZV_riv_bas_bV=0
 ZV_riv_bas_sV=0
 ZV_riv_bas_rV=0
 !Used in rapid_create_V_file regardless of BS_opt_uq
+
+ZV_riv_tot_cdownQlat=0
+!Used in rapid_meta_Vlat_file and rapid_cov_mat for data assimilation
 
 !-------------------------------------------------------------------------------
 !Initialize libraries and create objects common to all options
