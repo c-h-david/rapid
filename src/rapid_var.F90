@@ -445,6 +445,19 @@ PetscScalar,dimension(:), allocatable :: ZV_riv_bas_bV, ZV_riv_bas_sV,         &
                                          ZV_riv_bas_rV
 !Vectors of size IS_riv_bas storing bias, standard error, and RMSE of V
 
+!*******************************************************************************
+!Declaration of variables - Data assimilation variables
+!*******************************************************************************
+
+Mat :: ZM_Pb
+!Runoff error covariance matrix, symetric.
+
+PetscInt :: IS_radius
+!Number of downstream reaches to include into ZM_Pb
+
+PetscScalar, dimension(:,:), allocatable :: ZV_riv_tot_cdownQlat
+!Array of size IS_riv_tot x IS_radius storing downstream-covariances of Qlat
+
 
 !*******************************************************************************
 !Declaration of variables - PETSc specific objects and variables
@@ -591,7 +604,8 @@ namelist /NL_namelist/                                                         &
                        Qobs_file,Qobsbarrec_file,                              &
                        ZS_TauM,ZS_dtM,ZS_TauO,ZS_dtO,ZS_TauR,ZS_dtR,           &
                        ZS_dtF,ZS_dtH,                                          &
-                       ZS_phifac,IS_strt_opt
+                       ZS_phifac,IS_strt_opt,                                  &
+                       IS_radius
  
 character(len=200) :: namelist_file
 !unit 88 - Namelist

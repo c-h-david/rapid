@@ -88,6 +88,7 @@ rapid:	rapid_main.o \
 	rapid_destro_obj.o \
 	rapid_final.o \
 	rapid_uq.o \
+        rapid_cov_mat.o \
 	rapid_var.o
 	${FLINKER} -o \
 	rapid \
@@ -138,6 +139,7 @@ rapid:	rapid_main.o \
 	rapid_destro_obj.o \
 	rapid_final.o \
 	rapid_uq.o \
+	rapid_cov_mat.o \
 	rapid_var.o \
 	${PETSC_LIB} ${NETCDF_LIB}
 	${RM} *.o *.mod 
@@ -287,6 +289,9 @@ rapid_arrays.o:			rapid_arrays.F90 rapid_var.mod
 	
 rapid_read_namelist.o:		rapid_read_namelist.F90 rapid_var.mod
 	${FLINKER} -c rapid_read_namelist.F90
+
+rapid_cov_mat.o: 		rapid_cov_mat.F90 rapid_var.mod
+	${FLINKER} -c rapid_cov_mat.F90 ${PETSC_FC_INCLUDES}
 	
 rapid_var.o rapid_var.mod:	rapid_var.F90
 	${FLINKER} -c rapid_var.F90 ${PETSC_FC_INCLUDES} 
