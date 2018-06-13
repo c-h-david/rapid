@@ -31,7 +31,8 @@ use rapid_var, only :                                                          &
                    ZV_bQlat,ZV_vQlat,ZV_caQlat,ZV_bQout,ZV_sQout,ZV_rQout,     &
                    ZV_nbuptot,                                                 &
                    ierr,ksp,vecscat,ZV_SeqZero,ZS_one,ZV_one,IS_one,ncore,rank,&
-                   tao,ZV_1stIndex,ZV_2ndIndex
+                   tao,ZV_1stIndex,ZV_2ndIndex,                                &
+                   ZM_Pb
 
 implicit none
 
@@ -119,6 +120,14 @@ call MatSetFromOptions(ZM_hsh_bas,ierr)
 call MatSetUp(ZM_hsh_bas,ierr)
 !These matrices are all mostly flat with size IS_riv_id_max*ncore and will store
 !the same row over all columns
+
+call MatCreate(PETSC_COMM_WORLD,ZM_Pb,ierr)
+call MatSetSizes(ZM_Pb,PETSC_DECIDE,PETSC_DECIDE,IS_riv_bas,IS_riv_bas,ierr)
+call MatSetType(ZM_Pb,"sbaij",ierr)
+call MatSetFromOptions(ZM_Pb,ierr)
+call MatSetUp(ZM_Pb,ierr)
+!Runoff error covariance matrix for data assimilation.
+!This matrix is symetric (type SBAIJ)
 
 !Vectors of size IS_riv_bas-----------------------------------------------------
 !call VecCreateMPI(PETSC_COMM_WORLD,PETSC_DECIDE,IS_riv_bas,ZV_k,ierr)
