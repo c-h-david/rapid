@@ -32,7 +32,8 @@ use rapid_var, only :                                                          &
                    ZV_bQlat,ZV_vQlat,ZV_caQlat,ZV_bQout,ZV_sQout,ZV_rQout,     &
                    ZV_nbuptot,                                                 &
                    ierr,ksp,vecscat,ZV_SeqZero,ZS_one,ZV_one,IS_one,           &
-                   tao,ZV_1stIndex,ZV_2ndIndex
+                   tao,ZV_1stIndex,ZV_2ndIndex,                                &
+                   ZM_Pb
 
 implicit none
 
@@ -75,6 +76,8 @@ call MatDestroy(ZM_T,ierr)
 call MatDestroy(ZM_TC1,ierr)
 call MatDestroy(ZM_M,ierr)
 call MatDestroy(ZM_Obs,ierr)
+
+call MatDestroy(ZM_Pb,ierr)
 
 call VecDestroy(ZV_k,ierr)
 call VecDestroy(ZV_x,ierr)
