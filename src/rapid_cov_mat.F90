@@ -27,7 +27,7 @@ use rapid_var, only :                                                          &
                 !new variables added in rapid_var.F90
                 IS_radius,                                                     &
                 ZM_Pb,                                                         &
-                ZV_riv_tot_vQlat,ZV_riv_tot_cQlat 
+                ZV_riv_tot_vQlat,ZV_riv_tot_cdownQlat 
                 
 
 
@@ -176,7 +176,7 @@ do JS_riv_bas=1,IS_riv_bas   !row index
                              JS_riv_bas-1,                                        &
                              IS_one,                                              &
                              JS_riv_bas2-1,                                       &
-                             ZV_riv_tot_cQlat(IV_riv_index(JS_riv_bas),JS_i),     &
+                             ZV_riv_tot_cdownQlat(IV_riv_index(JS_riv_bas),JS_i), &
                              INSERT_VALUES,ierr)
 
             JS_riv_bas2 = IV_index_down(JS_riv_bas2)
