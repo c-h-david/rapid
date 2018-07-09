@@ -189,6 +189,15 @@ do JS_riv_bas=1,IS_riv_bas   !row index
                              ZV_riv_tot_cdownQlat(IV_riv_index(JS_riv_bas),JS_i),     &
                              INSERT_VALUES,ierr)
 
+            !populate symetruc elemtns
+            call MatSetValues(ZM_Pb,                                              &
+                             IS_one,                                              &
+                             JS_riv_bas2-1,                                       &
+                             IS_one,                                              &
+                             JS_riv_bas1-1,                                       &
+                             ZV_riv_tot_cdownQlat(IV_riv_index(JS_riv_bas),JS_i), &
+                             INSERT_VALUES,ierr)
+
             JS_riv_bas2 = IV_index_down(JS_riv_bas2)
 
         end if
