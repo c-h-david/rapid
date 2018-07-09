@@ -150,13 +150,12 @@ end do
 !Matrix preallocation (ZM_Pb)
 !*******************************************************************************
 
-call MatSeqSBAIJSetPreallocation(ZM_Pb,IS_one,PETSC_NULL_INTEGER,IV_nz,ierr)
-call MatMPISBAIJSetPreallocation(ZM_Pb,IS_one,        &
-                                       PETSC_NULL_INTEGER, &
-                                       IV_dnz(IS_ownfirst+1:IS_ownlast),   &
-                                       PETSC_NULL_INTEGER,  &
-                                       IV_onz(IS_ownfirst+1:IS_ownlast),   &
-                                       ierr)
+call MatSeqAIJSetPreallocation(ZM_Pb,PETSC_NULL_INTEGER,IV_nz,ierr)
+call MatMPIAIJSetPreallocation(ZM_Pb,PETSC_NULL_INTEGER, &
+                                     IV_dnz(IS_ownfirst+1:IS_ownlast),   &
+                                     PETSC_NULL_INTEGER,  &
+                                     IV_onz(IS_ownfirst+1:IS_ownlast),   &
+                                     ierr)
 
 
 !*******************************************************************************
