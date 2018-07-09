@@ -211,6 +211,9 @@ end if
 call MatAssemblyBegin(ZM_Pb,MAT_FINAL_ASSEMBLY,ierr)
 call MatAssemblyEnd(ZM_Pb,MAT_FINAL_ASSEMBLY,ierr)
 
+call PetscPrintf(PETSC_COMM_WORLD,'Runoff error covariance matrix created'       &
+                                  //char(10),ierr)
+
 
 !*******************************************************************************
 !Free up memory used by local (temporary) variables
