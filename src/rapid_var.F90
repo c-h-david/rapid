@@ -375,6 +375,15 @@ Vec :: ZV_QoutRabsmin,ZV_QoutRabsmax
 Vec :: ZV_VR,ZV_VinitR,ZV_VprevR,ZV_VbarR
 Vec :: ZV_VoutR
 
+!Assimilation only variables
+Vec :: ZV_QoutinitR_save
+
+!Information array on ZM_M filling (used to build ZM_L after)
+PetscInt, dimension(:), allocatable :: IV_nbrows
+!For each column of ZM_M, nb of rows with non-zeros
+PetscInt, dimension(:), allocatable :: IV_lastrow
+!For each column of ZM_M, indice of last row with a non-zero
+
 
 !*******************************************************************************
 !Declaration of variables - Observation matrix and optimization variables
@@ -410,6 +419,35 @@ PetscScalar, parameter :: ZS_kfac=3600,ZS_xfac=0.1
 !corresponding factors, k in seconds, x has no dimension
 PetscScalar :: ZS_k,ZS_x
 !constants (k,x) in Muskingum expression.  k in seconds, x has no dimension
+
+!*******************************************************************************
+!Declaration of variables - Data assimilation variables
+!*******************************************************************************
+
+Mat :: ZM_Pb
+!Runoff error covariance matrix
+Mat :: ZM_L
+!Runoff to streamflow operator over 1 day. Based on RAPID equations
+Mat :: ZM_S, ZM_H
+!Kalman filter observation operator
+!Submatrix of ZM_L
+Mat :: ZM_HPbt, ZM_HPbHt
+!Kalman filter control error covariance matrices
+
+Vec :: ZV_Qbmean
+!Daily averaged simulated discharge
+Vec :: ZV_dQeb
+!Kalman filter update
+
+PetscInt :: IS_radius
+!Number of downstream reaches to include into ZM_Pb
+
+PetscScalar :: ZS_stdobs
+!Scaling factor (between 0 and 1) 
+!to get observation error standard deviation from observed discharge
+
+PetscScalar, dimension(:,:), allocatable :: ZV_riv_tot_cdownQlat
+!Array of size IS_riv_tot x IS_radius storing downstream-covariances of Qlat
 
 
 !*******************************************************************************
@@ -451,7 +489,7 @@ PetscScalar,dimension(:), allocatable :: ZV_riv_bas_bV, ZV_riv_bas_sV,         &
 !*******************************************************************************
 PetscErrorCode :: ierr
 !needed for error check of PETSc functions
-KSP :: ksp
+KSP :: ksp, ksp2
 !object used for linear system solver
 PC :: pc
 !preconditioner object
@@ -531,7 +569,7 @@ PetscInt :: IS_nc_id_dim_rivid,IS_nc_id_dim_time,IS_nc_id_dim_nv,              &
             IS_nc_id_dim_nerr
 PetscInt, parameter :: IS_nc_ndim=2
 PetscInt, dimension(IS_nc_ndim) :: IV_nc_id_dim, IV_nc_start, IV_nc_count,     &
-                                   IV_nc_count2
+                                   IV_nc_count2, IV_nc_start_save
 
 
 !*******************************************************************************
@@ -584,7 +622,7 @@ namelist /NL_namelist/                                                         &
                        IS_dam_use,dam_use_id_file,                             &
                        babsmax_file,QoutRabsmin_file,QoutRabsmax_file,         &
                        ZS_alpha_uq,ZS_dtUQ,                                    &
-                       ZS_threshold,                                           &
+                       ZS_threshold,IS_radius,ZS_stdobs,                       &
                        k_file,x_file,Qout_file,V_file,                         &
                        kfac_file,xfac_file,ZS_knorm_init,ZS_xnorm_init,        &
                        IS_obs_tot,obs_tot_id_file,IS_obs_use,obs_use_id_file,  &
