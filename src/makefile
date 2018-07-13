@@ -78,6 +78,8 @@ rapid:	rapid_main.o \
 	rapid_set_Qext0.o \
 	rapid_hsh_mat.o \
 	rapid_mus_mat.o \
+	rapid_runoff2streamflow_mat.o \
+	rapid_kf_obs_mat.o \
 	rapid_net_mat.o \
 	rapid_net_mat_brk.o \
 	rapid_obs_mat.o \
@@ -88,6 +90,9 @@ rapid:	rapid_main.o \
 	rapid_destro_obj.o \
 	rapid_final.o \
 	rapid_uq.o \
+        rapid_kf_update.o \
+        rapid_kf_cov_mat.o \
+        rapid_cov_mat.o \
 	rapid_var.o
 	${FLINKER} -o \
 	rapid \
@@ -128,6 +133,8 @@ rapid:	rapid_main.o \
 	rapid_set_Qext0.o \
 	rapid_hsh_mat.o \
 	rapid_mus_mat.o \
+	rapid_runoff2streamflow_mat.o \
+	rapid_kf_obs_mat.o \
 	rapid_net_mat.o \
 	rapid_net_mat_brk.o \
 	rapid_QtoV.o \
@@ -138,6 +145,9 @@ rapid:	rapid_main.o \
 	rapid_destro_obj.o \
 	rapid_final.o \
 	rapid_uq.o \
+	rapid_kf_update.o \
+	rapid_kf_cov_mat.o \
+	rapid_cov_mat.o \
 	rapid_var.o \
 	${PETSC_LIB} ${NETCDF_LIB}
 	${RM} *.o *.mod 
@@ -179,6 +189,12 @@ rapid_net_mat_brk.o: 		rapid_net_mat_brk.F90 rapid_var.mod
 
 rapid_net_mat.o: 		rapid_net_mat.F90 rapid_var.mod
 	${FLINKER} -c rapid_net_mat.F90 ${PETSC_FC_INCLUDES}
+
+rapid_kf_obs_mat.o:  rapid_kf_obs_mat.F90 rapid_var.mod
+	${FLINKER} -c rapid_kf_obs_mat.F90 ${PETSC_FC_INCLUDES}
+
+rapid_runoff2streamflow_mat.o:  rapid_runoff2streamflow_mat.F90 rapid_var.mod
+	${FLINKER} -c rapid_runoff2streamflow_mat.F90 ${PETSC_FC_INCLUDES}
 
 rapid_mus_mat.o: 		rapid_mus_mat.F90 rapid_var.mod
 	${FLINKER} -c rapid_mus_mat.F90 ${PETSC_FC_INCLUDES}
@@ -287,6 +303,15 @@ rapid_arrays.o:			rapid_arrays.F90 rapid_var.mod
 	
 rapid_read_namelist.o:		rapid_read_namelist.F90 rapid_var.mod
 	${FLINKER} -c rapid_read_namelist.F90
+
+rapid_kf_update.o: 		rapid_kf_update.F90 rapid_var.mod
+	${FLINKER} -c rapid_kf_update.F90 ${PETSC_FC_INCLUDES}
+
+rapid_kf_cov_mat.o: 		rapid_kf_cov_mat.F90 rapid_var.mod
+	${FLINKER} -c rapid_kf_cov_mat.F90 ${PETSC_FC_INCLUDES}
+
+rapid_cov_mat.o: 		rapid_cov_mat.F90 rapid_var.mod
+	${FLINKER} -c rapid_cov_mat.F90 ${PETSC_FC_INCLUDES}
 	
 rapid_var.o rapid_var.mod:	rapid_var.F90
 	${FLINKER} -c rapid_var.F90 ${PETSC_FC_INCLUDES} 
