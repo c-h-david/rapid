@@ -71,7 +71,9 @@ use rapid_var, only :                                                          &
                    ZV_C1,ZV_C2,ZV_C3,ZM_A,                                     &
                    IV_now,YV_now,YV_version,                                   &
                    ZV_riv_tot_lon,ZV_riv_tot_lat,IV_time,IM_time_bnds,         &
-                   ierr,ksp,rank,ncore,IS_one,ZS_one
+                   ierr,ksp,rank,ncore,IS_one,ZS_one,                          &
+                   IS_radius,ZV_riv_tot_cdownQlat,                             &
+                   IV_nbrows,IV_lastrow
 
 
 implicit none
@@ -170,7 +172,7 @@ allocate(ZV_riv_tot_lat(IS_riv_tot))
 allocate(IV_time(IS_time))
 allocate(IM_time_bnds(2,IS_time))
 
-if (IS_opt_run==2) then
+if ((IS_opt_run==2).or.(IS_opt_run==3)) then
      allocate(IV_obs_tot_id(IS_obs_tot))
      allocate(IV_obs_use_id(IS_obs_use))
      allocate(ZV_read_obs_tot(IS_obs_tot))
@@ -215,6 +217,13 @@ allocate(ZV_riv_bas_sV(IS_riv_bas))
 allocate(ZV_riv_bas_rV(IS_riv_bas))
 !Used in rapid_create_V_file regardless of BS_opt_uq
 
+allocate(ZV_riv_tot_cdownQlat(IS_riv_tot,IS_radius))
+!Used in rapid_meta_Vlat_file and rapid_cov_mat for data assimilation
+
+allocate(IV_nbrows(IS_riv_bas))
+allocate(IV_lastrow(IS_riv_bas))
+!Used in rapid_mus_mat and rapid_runoff2streamflow_mat for data assimilation
+
 !-------------------------------------------------------------------------------
 !Make sure some Fortran arrays are initialized to zero
 !-------------------------------------------------------------------------------
@@ -244,6 +253,9 @@ ZV_riv_bas_bV=0
 ZV_riv_bas_sV=0
 ZV_riv_bas_rV=0
 !Used in rapid_create_V_file regardless of BS_opt_uq
+
+ZV_riv_tot_cdownQlat=0
+!Used in rapid_meta_Vlat_file and rapid_cov_mat for data assimilation
 
 !-------------------------------------------------------------------------------
 !Initialize libraries and create objects common to all options
@@ -465,6 +477,69 @@ call VecAssemblyEnd(ZV_pnorm,ierr)
 !End of OPTION 2
 !-------------------------------------------------------------------------------
 end if
+
+!*******************************************************************************
+!Initialization procedure for OPTION 3
+!*******************************************************************************
+if (IS_opt_run==3) then
+
+!-------------------------------------------------------------------------------
+!copy main initial values into routing initial values 
+!-------------------------------------------------------------------------------
+call VecCopy(ZV_QoutinitM,ZV_QoutinitR,ierr)
+call VecCopy(ZV_VinitM,ZV_VinitR,ierr)
+
+!-------------------------------------------------------------------------------
+!Read/set k and x
+!-------------------------------------------------------------------------------
+open(20,file=k_file,status='old')
+read(20,*) ZV_read_riv_tot
+call VecSetValues(ZV_k,IS_riv_bas,IV_riv_loc1,                                 &
+                  ZV_read_riv_tot(IV_riv_index),INSERT_VALUES,ierr)
+call VecAssemblyBegin(ZV_k,ierr)
+call VecAssemblyEnd(ZV_k,ierr)
+close(20)
+!get values for k in a file and create the corresponding ZV_k vector
+
+open(21,file=x_file,status='old')
+read(21,*) ZV_read_riv_tot
+call VecSetValues(ZV_x,IS_riv_bas,IV_riv_loc1,                                 &
+                  ZV_read_riv_tot(IV_riv_index),INSERT_VALUES,ierr)
+call VecAssemblyBegin(ZV_x,ierr)
+call VecAssemblyEnd(ZV_x,ierr)
+close(21)
+!get values for x in a file and create the corresponding ZV_x vector
+
+!-------------------------------------------------------------------------------
+!Compute routing parameters and linear system matrix
+!-------------------------------------------------------------------------------
+call rapid_routing_param(ZV_k,ZV_x,ZV_C1,ZV_C2,ZV_C3,ZM_A)
+!calculate Muskingum parameters and matrix ZM_A
+
+call KSPSetOperators(ksp,ZM_A,ZM_A,ierr)
+!Set KSP to use matrix ZM_A
+
+!-------------------------------------------------------------------------------
+!Calculate Muskingum matrix
+!-------------------------------------------------------------------------------
+call rapid_mus_mat
+
+!-------------------------------------------------------------------------------
+!Calculate observation operator
+!-------------------------------------------------------------------------------
+call rapid_runoff2streamflow_mat
+!Create runoff-to-discharge operator (ZM_L)
+call rapid_kf_obs_mat
+!Create selection operator ZM_S
+!Extract "observed" rows of ZM_L to build ZM_H = ZM_S*ZM_L
+!Destroy ZM_L to free memory
+
+
+!-------------------------------------------------------------------------------
+!End of OPTION 3
+!-------------------------------------------------------------------------------
+end if
+
 
 
 !*******************************************************************************
