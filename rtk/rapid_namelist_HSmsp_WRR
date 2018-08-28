@@ -1,0 +1,166 @@
+&NL_namelist
+!*******************************************************************************
+!rapid_namelist_HSmsp_WRR
+!*******************************************************************************
+
+!Purpose:
+!This ASCII file contains instructions for RAPID corresponding to HSmsp_WRR.
+!Author:
+!Cedric H. David, 2014-2018.
+
+
+!*******************************************************************************
+!Runtime options 
+!*******************************************************************************
+BS_opt_Qinit       =.false.
+!.false. --> no read initial flow    .true. --> read initial flow
+
+BS_opt_Qfinal      =.false.
+!.false. --> no write final flow     .true. --> write final flow 
+
+BS_opt_V           =.false.
+!.false. --> no compute volume       .true. --> compute volume
+
+BS_opt_dam         =.false.
+!.false. --> no dam model used       .true. --> dam model used
+
+BS_opt_for         =.false.
+!.false. --> no forcing              .true. --> forcing
+
+BS_opt_influence   =.false.
+!.false. --> no output influence     .true. --> output influence
+
+BS_opt_uq          =.false.
+!.false. --> no uncertainty quantif. .true. --> uncertainty quantif.
+
+IS_opt_routing     =1
+!1       --> matrix-based Muskingum  2      --> traditional Muskingum
+!3       --> Transbnd. matrix-based  4      --> Muskingum operator
+
+IS_opt_run         =1
+!1       --> regular run             2      --> parameter optimization
+
+IS_opt_phi         =1
+!1       --> phi1                    2      --> phi2
+
+!*******************************************************************************
+!Temporal information
+!*******************************************************************************
+ZS_TauM            =315532800
+!3600*24*3652=315532800
+ZS_dtM             =86400
+!3600*24=86400
+
+ZS_TauO            =31622400
+!3600*24*366=31622400
+ZS_dtO             =86400
+!3600*24=86400
+
+ZS_TauR            =10800
+!3600*3=10800
+ZS_dtR             =1800
+!60*30=1800
+
+ZS_dtF             =86400
+!3600*24=86400
+
+!*******************************************************************************
+!Domain in which input data is available
+!*******************************************************************************
+IS_riv_tot         =102229
+rapid_connect_file ='../../rapid/input/HSmsp_WRR/rapid_connect_HSmsp.csv'
+IS_max_up          =4
+Vlat_file          ='../../rapid/input/HSmsp_WRR/m3_riv_HSmsp_2000_2009_cst_VIC_NASA.nc'
+
+!*******************************************************************************
+!Domain in which model runs
+!*******************************************************************************
+IS_riv_bas         =102229
+riv_bas_id_file    ='../../rapid/input/HSmsp_WRR/riv_bas_id_HSmsp_topo.csv'
+
+!*******************************************************************************
+!Initial instantaneous flow file
+!*******************************************************************************
+Qinit_file         =''
+
+!*******************************************************************************
+!Final instantaneous flow file
+!*******************************************************************************
+Qfinal_file        =''
+
+!*******************************************************************************
+!Available dam data
+!*******************************************************************************
+IS_dam_tot         =0
+dam_tot_id_file    =''
+
+!*******************************************************************************
+!Dam data used
+!*******************************************************************************
+IS_dam_use         =0
+dam_use_id_file    =''
+
+!*******************************************************************************
+!Available forcing data
+!*******************************************************************************
+IS_for_tot         =0
+for_tot_id_file    =''
+Qfor_file          =''
+
+!*******************************************************************************
+!Forcing data used
+!*******************************************************************************
+IS_for_use         =0
+for_use_id_file    =''
+
+!*******************************************************************************
+!File where max (min) of absolute values of b (QoutR) are stored
+!*******************************************************************************
+babsmax_file       ='../../rapid/output/HSmsp_WRR/babsmax_HSmsp_2000_2009_VIC_NASA_pa_phi1_2008_1.csv'
+QoutRabsmin_file   ='../../rapid/output/HSmsp_WRR/QoutRabsmin_HSmsp_2000_2009_VIC_NASA_pa_phi1_2008_1.csv'
+QoutRabsmax_file   ='../../rapid/output/HSmsp_WRR/QoutRabsmax_HSmsp_2000_2009_VIC_NASA_pa_phi1_2008_1.csv'
+
+!*******************************************************************************
+!Uncertainty quantification
+!*******************************************************************************
+ZS_alpha_uq        =0.5
+
+!*******************************************************************************
+!Muskingum operator and data assimilation
+!*******************************************************************************
+ZS_threshold       =0.0
+
+!*******************************************************************************
+!Regular model run
+!*******************************************************************************
+k_file             ='../../rapid/input/HSmsp_WRR/k_HSmsp_pa_guess.csv'
+x_file             ='../../rapid/input/HSmsp_WRR/x_HSmsp_pa_guess.csv'
+Qout_file          ='../../rapid/output/HSmsp_WRR/Qout_HSmsp_2000_2009_VIC_NASA_sgl_pa_guess_nx_method.nc'
+V_file             ='../../rapid/output/HSmsp_WRR/V_HSmsp_2000_2009_VIC_NASA_sgl_pa_guess_nx_method.nc'
+
+!*******************************************************************************
+!Optimization
+!*******************************************************************************
+ZS_phifac          =0.0001
+!-------------------------------------------------------------------------------
+!Routing parameters
+!-------------------------------------------------------------------------------
+kfac_file          ='../../rapid/input/HSmsp_WRR/kfac_HSmsp_1km_hour.csv'
+ZS_knorm_init      =1
+ZS_xnorm_init      =1
+!-------------------------------------------------------------------------------
+!Gage observations
+!-------------------------------------------------------------------------------
+IS_obs_tot         =14
+obs_tot_id_file    ='../../rapid/input/HSmsp_WRR/obs_tot_id_HSmsp_2000_2009.csv'
+Qobs_file          ='../../rapid/input/HSmsp_WRR/Qobs_HSmsp_2000_2009_2923.csv'
+Qobsbarrec_file    ='../../rapid/input/HSmsp_WRR/Qobsbarrec_HSmsp_2000_2009_x0.01.csv'
+IS_obs_use         =14
+obs_use_id_file    ='../../rapid/input/HSmsp_WRR/obs_tot_id_HSmsp_2000_2009.csv'
+IS_strt_opt        =23377
+!2922*8+1=23377
+
+!*******************************************************************************
+!End name list
+!*******************************************************************************
+/
