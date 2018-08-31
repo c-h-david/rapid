@@ -15,12 +15,11 @@ subroutine rapid_get_Qdam
 use rapid_var, only :                                                          &
                    rank,ierr,vecscat,ZV_pointer,ZV_SeqZero,ZS_one,             &
                    ZM_Net,ZV_Qext,ZV_Qdam,ZV_QoutbarR,ZV_QinbarR,              &
-                   IS_dam_bas,IV_dam_index,IV_dam_loc2,                        &
-                   IV_dam_pos
-
-use rapid_var, only :                                                          &
-                   ZV_Qin_dam,ZV_Qout_dam,ZV_Qin_dam_prev,ZV_Qout_dam_prev
-
+                   IS_dam_bas,IV_dam_index,IV_dam_loc2,IV_dam_pos,             &
+                   JS_dam_tot,IS_dam_tot,                                      &
+                   ZV_Qin_dam,ZV_Qout_dam,ZV_Qin_dam_prev,ZV_Qout_dam_prev,    &
+                   ZV_k_dam,ZV_p_dam,ZV_S_dam,ZV_Smax_dam,ZV_Smin_dam,         &
+                   ZS_dtM
 implicit none
 
 
@@ -79,9 +78,9 @@ call VecRestoreArrayF90(ZV_SeqZero,ZV_pointer,ierr)
 !-------------------------------------------------------------------------------
 !If dam module does not exist, outflow is computed from this subroutine
 !-------------------------------------------------------------------------------
-if (rank==0) then 
-     ZV_Qout_dam=ZV_Qin_dam_prev
-end if
+!if (rank==0) then 
+!     ZV_Qout_dam=ZV_Qin_dam_prev
+!end if
 
 !-------------------------------------------------------------------------------
 !If dam module does exist, use it
@@ -90,6 +89,33 @@ end if
 !     call dam_linear(ZV_Qin_dam_prev,ZV_Qout_dam_prev,ZV_Qout_dam)
 !end if
 
+!-------------------------------------------------------------------------------
+!If using Equation (6) in Doll et al. (2003, JH)
+!-------------------------------------------------------------------------------
+if (rank==0) then
+do JS_dam_tot=1,IS_dam_tot
+
+ZV_Qout_dam(JS_dam_tot)=(ZV_k_dam(JS_dam_tot)/ZS_dtM)                          &
+                       *(ZV_S_dam(JS_dam_tot)-ZV_Smin_dam(JS_dam_tot))         &
+                       *(                                                      &
+                          (ZV_S_dam(JS_dam_tot)-ZV_Smin_dam(JS_dam_tot))       &
+                         /(ZV_Smax_dam(JS_dam_tot)-ZV_Smin_dam(JS_dam_tot))    &
+                                                         )**ZV_p_dam(JS_dam_tot)
+!Equation (6) in Doll et al (2003)
+
+ZV_S_dam(JS_dam_tot)=ZV_S_dam(JS_dam_tot)                                      &
+                    +(ZV_Qin_dam(JS_dam_tot)-ZV_Qout_dam(JS_dam_tot))*ZS_dtM
+!Update the storage value
+
+if (ZV_S_dam(JS_dam_tot) <= ZV_Smin_dam(JS_dam_tot)) then
+   ZV_S_dam(JS_dam_tot)=ZV_Smin_dam(JS_dam_tot)
+   ZV_Qout_dam(JS_dam_tot)=ZV_Qin_dam(JS_dam_tot)                              &
+                          +(ZV_S_dam(JS_dam_tot)-ZV_Smin_dam(JS_dam_tot))/ZS_dtM
+end if
+!Check storage value is not below minimum allowable
+
+end do
+end if
 
 !*******************************************************************************
 !Optional - Write information in stdout 

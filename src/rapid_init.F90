@@ -51,10 +51,12 @@ use rapid_var, only :                                                          &
                    IV_hum_tot_id,IV_hum_use_id,                                &
                    IS_for_tot,IS_for_use,                                      &
                    IV_for_tot_id,IV_for_use_id,                                &
-                   IS_dam_tot,IS_dam_use,                                      &
+                   IS_dam_tot,JS_dam_tot,IS_dam_use,                           &
                    IV_dam_tot_id,IV_dam_use_id,                                &
                    ZV_Qin_dam,ZV_Qout_dam,ZV_Qin_dam_prev,ZV_Qout_dam_prev,    &
                    ZV_Qin_dam0,ZV_Qout_dam0,                                   &
+                   ZV_S_dam,ZV_Smax_dam,ZV_Smin_dam,                           &
+                   ZV_k_dam,ZV_p_dam,                                          &
                    ZV_riv_tot_bQlat,ZV_riv_tot_vQlat,ZV_riv_tot_caQlat,        &
                    ZV_riv_bas_bQout,ZV_riv_bas_sQout,ZV_riv_bas_rQout,         &
                    ZV_riv_bas_bV,ZV_riv_bas_sV,ZV_riv_bas_rV,                  &
@@ -65,7 +67,7 @@ use rapid_var, only :                                                          &
                    kfac_file,x_file,k_file,Vlat_file,Qinit_file,               &
                    Qobsbarrec_file,                                            &
                    ZS_Qout0,ZS_V0,                                             &
-                   ZV_Qobsbarrec,                                              &
+                   ZV_Qobsbarrec,dam_file,                                     &
                    ZV_k,ZV_x,ZV_kfac,ZV_p,ZV_pnorm,ZV_pfac,                    &
                    ZS_knorm_init,ZS_xnorm_init,ZS_kfac,ZS_xfac,                &
                    ZV_C1,ZV_C2,ZV_C3,ZM_A,                                     &
@@ -200,6 +202,11 @@ if (BS_opt_dam) then
      allocate(ZV_Qout_dam_prev(IS_dam_tot))
      allocate(ZV_Qin_dam0(IS_dam_tot))
      allocate(ZV_Qout_dam0(IS_dam_tot))
+     allocate(ZV_k_dam(IS_dam_tot))
+     allocate(ZV_p_dam(IS_dam_tot))
+     allocate(ZV_S_dam(IS_dam_tot))
+     allocate(ZV_Smin_dam(IS_dam_tot))
+     allocate(ZV_Smax_dam(IS_dam_tot))
 end if
 
 allocate(ZV_riv_tot_bQlat(IS_riv_tot))
@@ -236,6 +243,7 @@ IM_time_bnds=-9999
 if (BS_opt_dam) then
      ZV_Qin_dam0 =0
      ZV_Qout_dam0=0
+     ZV_S_dam=0
 end if
 !These are not populated anywhere before being used and hold meaningless values
 
@@ -453,6 +461,21 @@ call VecSetValues(ZV_Qobsbarrec,IS_obs_bas,IV_obs_loc1,                        &
 call VecAssemblyBegin(ZV_Qobsbarrec,ierr)
 call VecAssemblyEnd(ZV_Qobsbarrec,ierr)  
 !reads Qobsbarrec and assigns to ZV_Qobsbarrec
+end if
+
+!-------------------------------------------------------------------------------
+!Read dam_file with storage information and parameters
+!-------------------------------------------------------------------------------
+if (BS_opt_dam) then
+open(24,file=dam_file,status='old')
+do JS_dam_tot=1,IS_dam_tot
+     read(24,*) ZV_Smax_dam(JS_dam_tot),ZV_Smin_dam(JS_dam_tot),               &
+                ZV_p_dam(JS_dam_tot),ZV_k_dam(JS_dam_tot)
+end do
+close(24)
+
+ZV_S_dam=ZV_Smin_dam
+!Initialize all dam storage to the minimum storage
 end if
 
 !-------------------------------------------------------------------------------

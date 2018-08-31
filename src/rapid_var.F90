@@ -95,6 +95,8 @@ character(len=200) :: kfac_file
 !unit 22 - file with kfac for all reaches of the domain
 character(len=200) :: xfac_file
 !unit 23 - file with xfac for all reaches of the domain
+character(len=200) :: dam_file
+!unit 24 - file with dam information for all dams of the domain
 
 character(len=200) :: Qinit_file
 !unit 30 - file where initial flowrates can be stored to run the model with them
@@ -325,6 +327,11 @@ PetscScalar, allocatable, dimension(:) :: ZV_Qout_dam,ZV_Qout_dam_prev
 PetscScalar, allocatable, dimension(:) :: ZV_Qin_dam0,ZV_Qout_dam0
 !Fortran vectors where the inflows and outflows for the dam module are saved. 
 !These will be allocated to size IS_dam_tot
+
+PetscScalar, allocatable, dimension(:) :: ZV_k_dam,ZV_p_dam
+!Fortran vectors where dam information is saved, will be allocated to IS_dam_tot
+PetscScalar, allocatable, dimension(:) :: ZV_S_dam,ZV_Smax_dam,ZV_Smin_dam
+!Fortran vectors where dam storage is saved, will be allocated to IS_dam_tot
 
 
 !*******************************************************************************
@@ -623,7 +630,7 @@ namelist /NL_namelist/                                                         &
                        babsmax_file,QoutRabsmin_file,QoutRabsmax_file,         &
                        ZS_alpha_uq,ZS_dtUQ,                                    &
                        ZS_threshold,IS_radius,ZS_stdobs,                       &
-                       k_file,x_file,Qout_file,V_file,                         &
+                       k_file,x_file,dam_file,Qout_file,V_file,                &
                        kfac_file,xfac_file,ZS_knorm_init,ZS_xnorm_init,        &
                        IS_obs_tot,obs_tot_id_file,IS_obs_use,obs_use_id_file,  &
                        Qobs_file,Qobsbarrec_file,                              &
