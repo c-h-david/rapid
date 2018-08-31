@@ -22,7 +22,7 @@ use rapid_var, only :                                                          &
                 ZV_dQeb,ZV_Qbmean,ZV_Qobs,                                     &
                 ZM_S,ZM_HPbt,ZM_HPbHt,                                         &
                 IS_one,ZS_val,                                                 &
-                JS_obs_bas,IS_obs_bas
+                JS_obs_bas
                 
 implicit none
 

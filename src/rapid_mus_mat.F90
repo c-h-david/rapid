@@ -22,7 +22,8 @@ use rapid_var, only :                                                          &
                 ZM_M,ZV_C1,ZS_threshold,                                       &
                 ZS_val,IS_one,ZS_one,                                          &
                 IS_opt_run,                                                    &
-                ierr,rank,temp_char
+                ierr,rank,temp_char,                                           &
+                IV_nbrows,IV_lastrow
 
 
 implicit none
@@ -54,7 +55,7 @@ PetscInt :: IS_Knilpotent
 
 PetscInt, dimension(:), allocatable :: IV_cols, IV_cols_duplicate
 PetscInt, dimension(:), allocatable :: IV_ind, IV_rows
-PetscInt, dimension(:), allocatable :: IV_nbrows
+!PetscInt, dimension(:), allocatable :: IV_nbrows
 
 PetscScalar, dimension(:), allocatable :: ZV_cols
 
@@ -105,7 +106,7 @@ IV_cols_duplicate(:)=0
 !Used to store the index where each element of MC will be placed in M, IV_cols
 !is updated for every power of N.
 
-allocate(IV_nbrows(IS_riv_bas))
+!allocate(IV_nbrows(IS_riv_bas))
 IV_nbrows(:)=1
 !Used to store, for each column of ZM_MC, how many non-zeros rows
 
@@ -349,10 +350,31 @@ if (IS_opt_run/=2) call PetscPrintf(PETSC_COMM_WORLD,'Muskingum matrix '       &
 !*******************************************************************************
 
 !-------------------------------------------------------------------------------
+!Initialize output variable IV_lastrow
+!-------------------------------------------------------------------------------
+
+IV_lastrow(:)=0
+!Used to store the index of the last/largest row with non-zeros for each column
+
+!-------------------------------------------------------------------------------
 !Allocate and initialize temporary variables
 !-------------------------------------------------------------------------------
 allocate(IV_rows(IS_Knilpotent+1))
 IV_rows(:)=0
+
+!-------------------------------------------------------------------------------
+!Populate IV_lastrow
+!-------------------------------------------------------------------------------
+
+do JS_riv_bas=1,IS_riv_bas
+    do JS_i=1,IV_nbrows(JS_riv_bas)  
+        if (JS_i.eq.1) then
+            IV_lastrow(JS_riv_bas) = JS_riv_bas  !row index
+        else
+            IV_lastrow(JS_riv_bas)=IV_cols_duplicate(IV_lastrow(JS_riv_bas)) 
+        endif
+    end do
+end do
 
 !-------------------------------------------------------------------------------
 !Populate temporary variables
@@ -416,9 +438,9 @@ deallocate(IV_cols)
 deallocate(IV_cols_duplicate)
 deallocate(IV_ind)
 deallocate(IV_rows)
-if (rank==0) then
-    deallocate(IV_nbrows)
-end if
+!if (rank==0) then
+!    deallocate(IV_nbrows)
+!end if
 
 call MatDestroy(ZM_MC,ierr)
 call VecScatterDestroy(vecscat_all,ierr)
