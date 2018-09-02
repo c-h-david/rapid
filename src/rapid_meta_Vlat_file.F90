@@ -21,7 +21,8 @@ use rapid_var, only :                                                          &
                    YV_title,YV_institution,YV_comment,                         &
                    YV_time_units,YV_crs_sma,YV_crs_iflat,                      &
                    ZV_riv_tot_lon,ZV_riv_tot_lat,IV_time,IM_time_bnds,         &
-                   ZV_riv_tot_bQlat,ZV_riv_tot_vQlat,ZV_riv_tot_caQlat,ZS_dtUQ
+                   ZV_riv_tot_bQlat,ZV_riv_tot_vQlat,ZV_riv_tot_caQlat,ZS_dtUQ,&
+                   ZV_riv_tot_cdownQlat,IS_radius
 
 implicit none
 
@@ -97,9 +98,13 @@ if (rank==0) then
                                ZV_riv_tot_vQlat,(/1,2/),(/IS_riv_tot,1/))
      IS_nc_status=NF90_GET_VAR(IS_nc_id_fil_Vlat,IS_nc_id_var_Vlat_err,        \
                                ZV_riv_tot_caQlat,(/1,3/),(/IS_riv_tot,1/))
+     IS_nc_status=NF90_GET_VAR(IS_nc_id_fil_Vlat,IS_nc_id_var_Vlat_err,        \
+                               ZV_riv_tot_cdownQlat,(/1,4/),(/IS_riv_tot,IS_radius/))
+
      ZV_riv_tot_bQlat=sign(sqrt(abs(ZV_riv_tot_bQlat)),ZV_riv_tot_bQlat)/ZS_dtUQ
      ZV_riv_tot_vQlat=ZV_riv_tot_vQlat/(ZS_dtUQ**2)
      ZV_riv_tot_caQlat=ZV_riv_tot_caQlat/(ZS_dtUQ**2)
+     ZV_riv_tot_cdownQlat=ZV_riv_tot_cdownQlat/(ZS_dtUQ**2)
      end if
 end if
 

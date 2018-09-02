@@ -51,10 +51,12 @@ use rapid_var, only :                                                          &
                    IV_hum_tot_id,IV_hum_use_id,                                &
                    IS_for_tot,IS_for_use,                                      &
                    IV_for_tot_id,IV_for_use_id,                                &
-                   IS_dam_tot,IS_dam_use,                                      &
+                   IS_dam_tot,JS_dam_tot,IS_dam_use,                           &
                    IV_dam_tot_id,IV_dam_use_id,                                &
                    ZV_Qin_dam,ZV_Qout_dam,ZV_Qin_dam_prev,ZV_Qout_dam_prev,    &
                    ZV_Qin_dam0,ZV_Qout_dam0,                                   &
+                   ZV_S_dam,ZV_Smax_dam,ZV_Smin_dam,                           &
+                   ZV_k_dam,ZV_p_dam,                                          &
                    ZV_riv_tot_bQlat,ZV_riv_tot_vQlat,ZV_riv_tot_caQlat,        &
                    ZV_riv_bas_bQout,ZV_riv_bas_sQout,ZV_riv_bas_rQout,         &
                    ZV_riv_bas_bV,ZV_riv_bas_sV,ZV_riv_bas_rV,                  &
@@ -65,13 +67,15 @@ use rapid_var, only :                                                          &
                    kfac_file,x_file,k_file,Vlat_file,Qinit_file,               &
                    Qobsbarrec_file,                                            &
                    ZS_Qout0,ZS_V0,                                             &
-                   ZV_Qobsbarrec,                                              &
+                   ZV_Qobsbarrec,dam_file,                                     &
                    ZV_k,ZV_x,ZV_kfac,ZV_p,ZV_pnorm,ZV_pfac,                    &
                    ZS_knorm_init,ZS_xnorm_init,ZS_kfac,ZS_xfac,                &
                    ZV_C1,ZV_C2,ZV_C3,ZM_A,                                     &
                    IV_now,YV_now,YV_version,                                   &
                    ZV_riv_tot_lon,ZV_riv_tot_lat,IV_time,IM_time_bnds,         &
-                   ierr,ksp,rank,ncore,IS_one,ZS_one
+                   ierr,ksp,rank,ncore,IS_one,ZS_one,                          &
+                   IS_radius,ZV_riv_tot_cdownQlat,                             &
+                   IV_nbrows,IV_lastrow
 
 
 implicit none
@@ -170,7 +174,7 @@ allocate(ZV_riv_tot_lat(IS_riv_tot))
 allocate(IV_time(IS_time))
 allocate(IM_time_bnds(2,IS_time))
 
-if (IS_opt_run==2) then
+if ((IS_opt_run==2).or.(IS_opt_run==3)) then
      allocate(IV_obs_tot_id(IS_obs_tot))
      allocate(IV_obs_use_id(IS_obs_use))
      allocate(ZV_read_obs_tot(IS_obs_tot))
@@ -198,6 +202,11 @@ if (BS_opt_dam) then
      allocate(ZV_Qout_dam_prev(IS_dam_tot))
      allocate(ZV_Qin_dam0(IS_dam_tot))
      allocate(ZV_Qout_dam0(IS_dam_tot))
+     allocate(ZV_k_dam(IS_dam_tot))
+     allocate(ZV_p_dam(IS_dam_tot))
+     allocate(ZV_S_dam(IS_dam_tot))
+     allocate(ZV_Smin_dam(IS_dam_tot))
+     allocate(ZV_Smax_dam(IS_dam_tot))
 end if
 
 allocate(ZV_riv_tot_bQlat(IS_riv_tot))
@@ -215,6 +224,13 @@ allocate(ZV_riv_bas_sV(IS_riv_bas))
 allocate(ZV_riv_bas_rV(IS_riv_bas))
 !Used in rapid_create_V_file regardless of BS_opt_uq
 
+allocate(ZV_riv_tot_cdownQlat(IS_riv_tot,IS_radius))
+!Used in rapid_meta_Vlat_file and rapid_cov_mat for data assimilation
+
+allocate(IV_nbrows(IS_riv_bas))
+allocate(IV_lastrow(IS_riv_bas))
+!Used in rapid_mus_mat and rapid_runoff2streamflow_mat for data assimilation
+
 !-------------------------------------------------------------------------------
 !Make sure some Fortran arrays are initialized to zero
 !-------------------------------------------------------------------------------
@@ -227,6 +243,7 @@ IM_time_bnds=-9999
 if (BS_opt_dam) then
      ZV_Qin_dam0 =0
      ZV_Qout_dam0=0
+     ZV_S_dam=0
 end if
 !These are not populated anywhere before being used and hold meaningless values
 
@@ -244,6 +261,9 @@ ZV_riv_bas_bV=0
 ZV_riv_bas_sV=0
 ZV_riv_bas_rV=0
 !Used in rapid_create_V_file regardless of BS_opt_uq
+
+ZV_riv_tot_cdownQlat=0
+!Used in rapid_meta_Vlat_file and rapid_cov_mat for data assimilation
 
 !-------------------------------------------------------------------------------
 !Initialize libraries and create objects common to all options
@@ -444,6 +464,21 @@ call VecAssemblyEnd(ZV_Qobsbarrec,ierr)
 end if
 
 !-------------------------------------------------------------------------------
+!Read dam_file with storage information and parameters
+!-------------------------------------------------------------------------------
+if (BS_opt_dam) then
+open(24,file=dam_file,status='old')
+do JS_dam_tot=1,IS_dam_tot
+     read(24,*) ZV_Smax_dam(JS_dam_tot),ZV_Smin_dam(JS_dam_tot),               &
+                ZV_p_dam(JS_dam_tot),ZV_k_dam(JS_dam_tot)
+end do
+close(24)
+
+ZV_S_dam=ZV_Smin_dam
+!Initialize all dam storage to the minimum storage
+end if
+
+!-------------------------------------------------------------------------------
 !Set pnorm, pfac and p
 !-------------------------------------------------------------------------------
 call VecSetValues(ZV_pnorm,IS_one,IS_one-1,ZS_knorm_init,INSERT_VALUES,ierr)
@@ -465,6 +500,69 @@ call VecAssemblyEnd(ZV_pnorm,ierr)
 !End of OPTION 2
 !-------------------------------------------------------------------------------
 end if
+
+!*******************************************************************************
+!Initialization procedure for OPTION 3
+!*******************************************************************************
+if (IS_opt_run==3) then
+
+!-------------------------------------------------------------------------------
+!copy main initial values into routing initial values 
+!-------------------------------------------------------------------------------
+call VecCopy(ZV_QoutinitM,ZV_QoutinitR,ierr)
+call VecCopy(ZV_VinitM,ZV_VinitR,ierr)
+
+!-------------------------------------------------------------------------------
+!Read/set k and x
+!-------------------------------------------------------------------------------
+open(20,file=k_file,status='old')
+read(20,*) ZV_read_riv_tot
+call VecSetValues(ZV_k,IS_riv_bas,IV_riv_loc1,                                 &
+                  ZV_read_riv_tot(IV_riv_index),INSERT_VALUES,ierr)
+call VecAssemblyBegin(ZV_k,ierr)
+call VecAssemblyEnd(ZV_k,ierr)
+close(20)
+!get values for k in a file and create the corresponding ZV_k vector
+
+open(21,file=x_file,status='old')
+read(21,*) ZV_read_riv_tot
+call VecSetValues(ZV_x,IS_riv_bas,IV_riv_loc1,                                 &
+                  ZV_read_riv_tot(IV_riv_index),INSERT_VALUES,ierr)
+call VecAssemblyBegin(ZV_x,ierr)
+call VecAssemblyEnd(ZV_x,ierr)
+close(21)
+!get values for x in a file and create the corresponding ZV_x vector
+
+!-------------------------------------------------------------------------------
+!Compute routing parameters and linear system matrix
+!-------------------------------------------------------------------------------
+call rapid_routing_param(ZV_k,ZV_x,ZV_C1,ZV_C2,ZV_C3,ZM_A)
+!calculate Muskingum parameters and matrix ZM_A
+
+call KSPSetOperators(ksp,ZM_A,ZM_A,ierr)
+!Set KSP to use matrix ZM_A
+
+!-------------------------------------------------------------------------------
+!Calculate Muskingum matrix
+!-------------------------------------------------------------------------------
+call rapid_mus_mat
+
+!-------------------------------------------------------------------------------
+!Calculate observation operator
+!-------------------------------------------------------------------------------
+call rapid_runoff2streamflow_mat
+!Create runoff-to-discharge operator (ZM_L)
+call rapid_kf_obs_mat
+!Create selection operator ZM_S
+!Extract "observed" rows of ZM_L to build ZM_H = ZM_S*ZM_L
+!Destroy ZM_L to free memory
+
+
+!-------------------------------------------------------------------------------
+!End of OPTION 3
+!-------------------------------------------------------------------------------
+end if
+
 
 
 !*******************************************************************************

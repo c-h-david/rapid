@@ -32,7 +32,10 @@ use rapid_var, only :                                                          &
                    ZV_bQlat,ZV_vQlat,ZV_caQlat,ZV_bQout,ZV_sQout,ZV_rQout,     &
                    ZV_nbuptot,                                                 &
                    ierr,ksp,vecscat,ZV_SeqZero,ZS_one,ZV_one,IS_one,           &
-                   tao,ZV_1stIndex,ZV_2ndIndex
+                   tao,ZV_1stIndex,ZV_2ndIndex,                                &
+                   ZM_Pb,ZM_L,ZM_H,ZM_S,ZM_HPbt,ZM_HPbHt,                      &
+                   ZV_Qbmean,ZV_dQeb,ksp2,ZV_QoutinitR_save,                   &
+                   IS_opt_run
 
 implicit none
 
@@ -65,6 +68,7 @@ call VecDestroy(ZV_2ndIndex,ierr)
 call TaoDestroy(tao,ierr)
 
 call KSPDestroy(ksp,ierr)
+call KSPDestroy(ksp2,ierr)
 
 call MatDestroy(ZM_hsh_tot,ierr)
 call MatDestroy(ZM_hsh_bas,ierr)
@@ -75,6 +79,15 @@ call MatDestroy(ZM_T,ierr)
 call MatDestroy(ZM_TC1,ierr)
 call MatDestroy(ZM_M,ierr)
 call MatDestroy(ZM_Obs,ierr)
+
+call MatDestroy(ZM_Pb,ierr)
+if (IS_opt_run.ne.3) call MatDestroy(ZM_L,ierr)
+if (IS_opt_run.eq.3) then
+    call MatDestroy(ZM_H,ierr)
+    call MatDestroy(ZM_S,ierr)
+    call MatDestroy(ZM_HPbt,ierr)
+    call MatDestroy(ZM_HPbHt,ierr)
+end if
 
 call VecDestroy(ZV_k,ierr)
 call VecDestroy(ZV_x,ierr)
@@ -109,6 +122,8 @@ call VecDestroy(ZV_QoutRabsmin,ierr)
 call VecDestroy(ZV_QoutRabsmax,ierr)
 call VecDestroy(ZV_QoutRhat,ierr)
 
+call VecDestroy(ZV_QoutinitR_save,ierr)
+
 call VecDestroy(ZV_VinitM,ierr)
 
 call VecDestroy(ZV_VR,ierr)
@@ -136,6 +151,9 @@ call VecDestroy(ZV_caQlat,ierr)
 call VecDestroy(ZV_bQout,ierr)
 call VecDestroy(ZV_sQout,ierr)
 call VecDestroy(ZV_rQout,ierr)
+
+call VecDestroy(ZV_Qbmean,ierr)
+call VecDestroy(ZV_dQeb,ierr)
 
 call VecDestroy(ZV_SeqZero,ierr)
 call VecScatterDestroy(vecscat,ierr)

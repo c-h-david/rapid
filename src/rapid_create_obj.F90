@@ -31,7 +31,8 @@ use rapid_var, only :                                                          &
                    ZV_bQlat,ZV_vQlat,ZV_caQlat,ZV_bQout,ZV_sQout,ZV_rQout,     &
                    ZV_nbuptot,                                                 &
                    ierr,ksp,vecscat,ZV_SeqZero,ZS_one,ZV_one,IS_one,ncore,rank,&
-                   tao,ZV_1stIndex,ZV_2ndIndex
+                   tao,ZV_1stIndex,ZV_2ndIndex,                                &
+                   ZM_Pb,ZM_L,ZV_Qbmean,ZV_dQeb,ZV_QoutinitR_save,ksp2
 
 implicit none
 
@@ -74,6 +75,10 @@ call KSPCreate(PETSC_COMM_WORLD,ksp,ierr)
 call KSPSetType(ksp,KSPRICHARDSON,ierr)                    !default=richardson
 call KSPSetFromOptions(ksp,ierr)                           !if runtime options
 
+call KSPCreate(PETSC_COMM_WORLD,ksp2,ierr)
+call KSPSetType(ksp2,KSPRICHARDSON,ierr)                    !default=richardson
+call KSPSetFromOptions(ksp2,ierr)                           !if runtime options
+
 !Matrices-----------------------------------------------------------------------
 call MatCreate(PETSC_COMM_WORLD,ZM_Net,ierr)
 call MatSetSizes(ZM_Net,PETSC_DECIDE,PETSC_DECIDE,IS_riv_bas,IS_riv_bas,ierr)
@@ -107,6 +112,19 @@ call MatSetUp(ZM_Obs,ierr)
 !These matrices are all square of size IS_riv_bas.  PETSC_DECIDE allows PETSc 
 !to determine the local sizes on its own. MatSetFromOptions allows to use many
 !different options at runtime, such as "-mat_type aijmumps".
+
+call MatCreate(PETSC_COMM_WORLD,ZM_Pb,ierr)
+call MatSetSizes(ZM_Pb,PETSC_DECIDE,PETSC_DECIDE,IS_riv_bas,IS_riv_bas,ierr)
+call MatSetFromOptions(ZM_Pb,ierr)
+call MatSetUp(ZM_Pb,ierr)
+!Runoff error covariance matrix for data assimilation.
+
+call MatCreate(PETSC_COMM_WORLD,ZM_L,ierr)
+call MatSetSizes(ZM_L,PETSC_DECIDE,PETSC_DECIDE,IS_riv_bas,IS_riv_bas,ierr)
+call MatSetFromOptions(ZM_L,ierr)
+call MatSetUp(ZM_L,ierr)
+!Runoff to streamflow operator over a day (part of KF observation operator)
+!Based on RAPID equation
 
 call MatCreate(PETSC_COMM_WORLD,ZM_hsh_tot,ierr)
 call MatSetSizes(ZM_hsh_tot,PETSC_DECIDE,PETSC_DECIDE,ncore,IS_riv_id_max,ierr)
@@ -159,6 +177,8 @@ call VecDuplicate(ZV_k,ZV_QoutRabsmin,ierr)
 call VecDuplicate(ZV_k,ZV_QoutRabsmax,ierr)
 call VecDuplicate(ZV_k,ZV_QoutRhat,ierr)
 
+call VecDuplicate(ZV_k,ZV_QoutinitR_save,ierr)
+
 call VecDuplicate(ZV_k,ZV_VinitM,ierr)
 
 call VecDuplicate(ZV_k,ZV_VR,ierr)
@@ -180,6 +200,9 @@ call VecDuplicate(ZV_k,ZV_caQlat,ierr)
 call VecDuplicate(ZV_k,ZV_bQout,ierr)
 call VecDuplicate(ZV_k,ZV_sQout,ierr)
 call VecDuplicate(ZV_k,ZV_rQout,ierr)
+
+call VecDuplicate(ZV_k,ZV_Qbmean,ierr)
+call VecDuplicate(ZV_k,ZV_dQeb,ierr)
 !all the other vector objects are duplicates of the first one
 
 

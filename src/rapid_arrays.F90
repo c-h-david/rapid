@@ -615,9 +615,9 @@ end if
 
 
 !*******************************************************************************
-!If optimization mode is selected 
+!If optimization  or data assimilation mode is selected 
 !*******************************************************************************
-if (IS_opt_run==2) then
+if ((IS_opt_run==2).or.(IS_opt_run==3)) then
 
 !-------------------------------------------------------------------------------
 !Read data files
@@ -696,7 +696,7 @@ end do
 !end if
 
 !-------------------------------------------------------------------------------
-!End if optimization mode is selected 
+!End if optimization/data assimilation mode is selected
 !-------------------------------------------------------------------------------
 end if
 
