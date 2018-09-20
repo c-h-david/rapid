@@ -25,7 +25,7 @@ use rapid_var, only :                                                          &
                 IS_one,ZS_one,                                                 &
                 ierr,rank,                                                     &
                 !new variables added in rapid_var.F90
-                IS_radius,                                                     &
+                IS_radius,ZS_inflation,                                        &
                 ZM_Pb,                                                         &
                 ZV_riv_tot_vQlat,ZV_riv_tot_cdownQlat 
                 
@@ -172,7 +172,7 @@ do JS_riv_bas=1,IS_riv_bas   !row index
                      JS_riv_bas-1,                                   &
                      IS_one,                                         &
                      JS_riv_bas-1,                                   &
-                     ZV_riv_tot_vQlat(IV_riv_index(JS_riv_bas)),     &
+        ZV_riv_tot_vQlat(IV_riv_index(JS_riv_bas))*(ZS_inflation)**2,     &
                      INSERT_VALUES,ierr)
 
     JS_riv_bas2 = IV_index_down(JS_riv_bas)
@@ -186,7 +186,7 @@ do JS_riv_bas=1,IS_riv_bas   !row index
                              JS_riv_bas-1,                                        &
                              IS_one,                                              &
                              JS_riv_bas2-1,                                       &
-                             ZV_riv_tot_cdownQlat(IV_riv_index(JS_riv_bas),JS_i),     &
+               ZV_riv_tot_cdownQlat(IV_riv_index(JS_riv_bas),JS_i)*(ZS_inflation)**2,     &
                              INSERT_VALUES,ierr)
 
             !populate symmetry
@@ -195,7 +195,7 @@ do JS_riv_bas=1,IS_riv_bas   !row index
                              JS_riv_bas2-1,                                       &
                              IS_one,                                              &
                              JS_riv_bas-1,                                       &
-                             ZV_riv_tot_cdownQlat(IV_riv_index(JS_riv_bas),JS_i), &
+               ZV_riv_tot_cdownQlat(IV_riv_index(JS_riv_bas),JS_i)*(ZS_inflation)**2, &
                              INSERT_VALUES,ierr)
 
             JS_riv_bas2 = IV_index_down(JS_riv_bas2)
