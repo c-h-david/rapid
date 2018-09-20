@@ -448,6 +448,8 @@ Vec :: ZV_dQeb
 
 PetscInt :: IS_radius
 !Number of downstream reaches to include into ZM_Pb
+PetscScalar :: ZS_inflation
+!Inflation factor for the standard errors
 
 PetscScalar :: ZS_stdobs
 !Scaling factor (between 0 and 1) 
@@ -628,7 +630,7 @@ namelist /NL_namelist/                                                         &
                        IS_dam_tot,dam_tot_id_file,                             &
                        IS_dam_use,dam_use_id_file,                             &
                        babsmax_file,QoutRabsmin_file,QoutRabsmax_file,         &
-                       ZS_alpha_uq,ZS_dtUQ,                                    &
+                       ZS_alpha_uq,ZS_dtUQ,ZS_inflation,                       &
                        ZS_threshold,IS_radius,ZS_stdobs,                       &
                        k_file,x_file,dam_file,Qout_file,V_file,                &
                        kfac_file,xfac_file,ZS_knorm_init,ZS_xnorm_init,        &
