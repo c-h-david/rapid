@@ -1,0 +1,172 @@
+&NL_namelist
+!*******************************************************************************
+!rapid_namelist_San_Guad_DA_XXX 
+!*******************************************************************************
+
+!Purpose:
+!This ASCII file contains instructions for RAPID corresponding to San_Guad_DA_XXX.
+!Authors:
+!Charlotte M. Emery & Cedric H. David, 2015-2018.
+
+
+!*******************************************************************************
+!Runtime options 
+!*******************************************************************************
+BS_opt_Qinit       =.false.
+!.false. --> no read initial flow    .true. --> read initial flow
+
+BS_opt_Qfinal      =.false.
+!.false. --> no write final flow     .true. --> write final flow 
+
+BS_opt_V           =.false.
+!.false. --> no compute volume       .true. --> compute volume
+
+BS_opt_dam         =.false.
+!.false. --> no dam model used       .true. --> dam model used
+
+BS_opt_for         =.false.
+!.false. --> no forcing              .true. --> forcing
+
+BS_opt_influence   =.false.
+!.false. --> no output influence     .true. --> output influence
+
+BS_opt_uq          =.false.
+!.false. --> no uncertainty quantif. .true. --> uncertainty quantif.
+
+IS_opt_routing     =1
+!1       --> matrix-based Muskingum  2      --> traditional Muskingum
+!3       --> Transbnd. matrix-based  4      --> Muskingum operator
+
+IS_opt_run         =1
+!1       --> regular run             2      --> parameter optimization
+!3	 --> data assimilation
+
+IS_opt_phi         =1
+!1       --> phi1                    2      --> phi2
+
+!*******************************************************************************
+!Temporal information
+!*******************************************************************************
+ZS_TauM            =2678400
+!3600*24*31=2678400
+ZS_dtM             =86400
+!3600*24=86400
+
+ZS_TauO            =0
+!3600*24*182=15724800
+ZS_dtO             =0
+!3600*24=86400
+
+ZS_TauR            =10800
+!3600*3=10800
+ZS_dtR             =900
+!60*15=900
+
+ZS_dtF             =0
+!3600*24=86400
+
+!*******************************************************************************
+!Domain in which input data is available
+!*******************************************************************************
+IS_riv_tot         =5175
+rapid_connect_file ='../../rapid/input/San_Guad_DA_XXX/rapid_connect_San_Guad.csv'
+IS_max_up          =4
+Vlat_file          ='../../rapid/input/San_Guad_DA_XXX/m3_riv_NLDAS_VIC0125_3H_2010_2013_utc_err_radius_infinity.nc'
+
+!*******************************************************************************
+!Domain in which model runs
+!*******************************************************************************
+IS_riv_bas         =5175
+riv_bas_id_file    ='../../rapid/input/San_Guad_DA_XXX/basin_id_San_Guad_hydroseq.csv'
+
+!*******************************************************************************
+!Initial instantaneous flow file
+!*******************************************************************************
+Qinit_file         =''
+
+!*******************************************************************************
+!Final instantaneous flow file
+!*******************************************************************************
+Qfinal_file        =''
+
+!*******************************************************************************
+!Available dam data
+!*******************************************************************************
+IS_dam_tot         =0
+dam_tot_id_file    =''
+
+!*******************************************************************************
+!Dam data used
+!*******************************************************************************
+IS_dam_use         =0
+dam_use_id_file    =''
+
+!*******************************************************************************
+!Available forcing data
+!*******************************************************************************
+IS_for_tot         =0
+for_tot_id_file    =''
+Qfor_file          =''
+
+!*******************************************************************************
+!Forcing data used
+!*******************************************************************************
+IS_for_use         =0
+for_use_id_file    =''
+
+!*******************************************************************************
+!File where max (min) of absolute values of b (QoutR) are stored
+!*******************************************************************************
+babsmax_file       =''
+QoutRabsmin_file   =''
+QoutRabsmax_file   =''
+
+!*******************************************************************************
+!Uncertainty quantification
+!*******************************************************************************
+ZS_alpha_uq        =0.5
+ZS_dtUQ            =26280288.0
+
+!*******************************************************************************
+!Muskingum operator and data assimilation
+!*******************************************************************************
+ZS_inflation       =1.0
+ZS_threshold       =0.0
+IS_radius          =30
+ZS_stdobs          =0.1
+
+!*******************************************************************************
+!Regular model run
+!*******************************************************************************
+k_file             ='../../rapid/input/San_Guad_DA_XXX/k_San_Guad_DA.csv'
+x_file             ='../../rapid/input/San_Guad_DA_XXX/x_San_Guad_DA.csv'
+Qout_file          ='../../rapid/output/San_Guad_DA_XXX/Qout_San_Guad_Openloop_20100101_20100131.nc'
+V_file             =''
+
+!*******************************************************************************
+!Optimization
+!*******************************************************************************
+ZS_phifac          =0.001
+!-------------------------------------------------------------------------------
+!Routing parameters
+!-------------------------------------------------------------------------------
+kfac_file          =''
+ZS_knorm_init      =2
+ZS_xnorm_init      =3
+!-------------------------------------------------------------------------------
+!Gage observations
+!-------------------------------------------------------------------------------
+IS_obs_tot         =36
+obs_tot_id_file    ='../../rapid/input/San_Guad_DA_XXX/obs_tot_id_San_Guad_2010_2013_full.csv'
+Qobs_file          ='../../rapid/input/San_Guad_DA_XXX/Qobs_San_Guad_2010_2013_full.csv'
+Qobsbarrec_file    =''
+IS_obs_use         =23
+obs_use_id_file    ='../../rapid/input/San_Guad_DA_XXX/gage_id_San_Guad_2010_2013_subset.csv'
+IS_strt_opt        =1
+!0*8+1=1
+
+
+!*******************************************************************************
+!End name list
+!*******************************************************************************
+/
