@@ -329,9 +329,9 @@ call VecSet(ZV_QoutbarR,0*ZS_one,ierr)                     !QoutbarR=0
 !This should be done by PETSc but just to be safe
 
 !-------------------------------------------------------------------------------
-!Read, compute and write          
+!Read, compute, Kalman, and write          
 !-------------------------------------------------------------------------------
-call PetscLogStageRegister('Read Comp Write',stage,ierr)
+call PetscLogStageRegister('Read Comp KF Write',stage,ierr)
 call PetscLogStagePush(stage,ierr)
 ZS_time3=0
 
@@ -354,12 +354,15 @@ call VecSet(ZV_Qbmean,0*ZS_one,ierr)    !Daily-averaged simulated discharge
 call VecSet(ZV_dQeb,0*ZS_one,ierr)      !Kalman filter correction 
 call VecSet(ZV_Qobs,0*ZS_one,ierr)      !Observation vector (size IS_riv_bas)
 
-!Save initial condition
-call VecCopy(ZV_QoutinitR,ZV_QoutinitR_save,ierr)
-
 !- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 !Run RAPID forecast          
 !- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+
+!  -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -
+!Save initial condition for later (analysis) run
+!  -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -
+call VecCopy(ZV_QoutinitR,ZV_QoutinitR_save,ierr)
+
 do JS_RpM=1,IS_RpM
 
 !  -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -
@@ -425,9 +428,8 @@ call rapid_kf_update
 !  -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -
 !Re-set initial condition and netcdf location 
 !  -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -
-if (rank==0) IV_nc_start(2)=IV_nc_start(2)-IS_RpM
-
 call VecCopy(ZV_QoutinitR_save,ZV_QoutinitR,ierr)
+if (rank==0) IV_nc_start(2)=IV_nc_start(2)-IS_RpM
 
 do JS_RpM=1,IS_RpM
 
