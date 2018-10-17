@@ -36,7 +36,7 @@ use rapid_var, only :                                                          &
                    tao,                                                        &
                    Qobs_file,ZV_Qobs,                                          &
                    ZV_Qbmean,ZV_dQeb,ZS_val,                                   &
-                   IV_nc_start_save,ZV_QoutinitR_save
+                   ZV_QoutinitR_save
 
 implicit none
 
@@ -355,8 +355,6 @@ call VecSet(ZV_dQeb,0*ZS_one,ierr)      !Kalman filter correction
 call VecSet(ZV_Qobs,0*ZS_one,ierr)      !Observation vector (size IS_riv_bas)
 
 !Save initial condition
-IV_nc_start_save(1)=IV_nc_start(1)
-IV_nc_start_save(2)=IV_nc_start(2)
 call VecCopy(ZV_QoutinitR,ZV_QoutinitR_save,ierr)
 
 !-------------------------------------------------------------------------------
@@ -428,7 +426,8 @@ call rapid_kf_update
 !- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 !Re-set initial condition and netcdf location 
 !- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-if (rank==0) IV_nc_start(2)=IV_nc_start_save(2)
+if (rank==0) IV_nc_start(2)=IV_nc_start(2)-IS_RpM
+
 call VecCopy(ZV_QoutinitR_save,ZV_QoutinitR,ierr)
 
 do JS_RpM=1,IS_RpM

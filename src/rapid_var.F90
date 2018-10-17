@@ -574,7 +574,7 @@ PetscInt :: IS_nc_id_dim_rivid,IS_nc_id_dim_time,IS_nc_id_dim_nv,              &
             IS_nc_id_dim_nerr
 PetscInt, parameter :: IS_nc_ndim=2
 PetscInt, dimension(IS_nc_ndim) :: IV_nc_id_dim, IV_nc_start, IV_nc_count,     &
-                                   IV_nc_count2, IV_nc_start_save
+                                   IV_nc_count2
 
 
 !*******************************************************************************
