@@ -317,6 +317,8 @@ if (rank==0 .and. IS_opt_run==2 .and. IS_opt_phi==1)       print '(a70)',      &
        'RAPID mode: optimizing parameters, using phi1                          ' 
 if (rank==0 .and. IS_opt_run==2 .and. IS_opt_phi==2)       print '(a70)',      &
        'RAPID mode: optimizing parameters, using phi2                          ' 
+if (rank==0 .and. IS_opt_run==3)                           print '(a70)',      &
+       'RAPID mode: data assimilation                                          '
 if (rank==0)                                               print '(a10,a60)',  &
        'Using    :', Vlat_file 
 if (rank==0 .and. IS_opt_run==1)                           print '(a10,a60)',  &
