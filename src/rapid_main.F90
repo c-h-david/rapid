@@ -334,17 +334,15 @@ call VecSet(ZV_QoutbarR,0*ZS_one,ierr)                     !QoutbarR=0
 call PetscLogStageRegister('Read Comp Write',stage,ierr)
 call PetscLogStagePush(stage,ierr)
 ZS_time3=0
-call PetscTime(ZS_time1,ierr)
 
 IV_nc_start=(/1,1/)
 IV_nc_count=(/IS_riv_tot,1/)
 IV_nc_count2=(/IS_riv_bas,1/)
 
-write(temp_char,'(i10)') IS_M 
-
 do JS_M=1,IS_M
 
-write(temp_char2,'(i10)') JS_M    
+!write(temp_char,'(i10)') IS_M 
+!write(temp_char2,'(i10)') JS_M    
 !call PetscPrintf(PETSC_COMM_WORLD,'Assimilation day '                          &
 !                                  //temp_char2//'/'//temp_char//               &
 !                                  char(10),ierr)
@@ -382,12 +380,16 @@ call VecCopy(ZV_Qlat,ZV_Qext,ierr)                            !Qext=Qlat
 !- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 !Routing procedure with background runoff
 !- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+call PetscTime(ZS_time1,ierr)
+
 call rapid_routing(ZV_C1,ZV_C2,ZV_C3,ZV_Qext,                                  &
                    ZV_QoutinitR,                                               &
                    ZV_QoutR,ZV_QoutbarR)
 
 if (BS_opt_V) call rapid_QtoV(ZV_k,ZV_x,ZV_QoutbarR,ZV_Qext,ZV_VbarR)
 
+call PetscTime(ZS_time2,ierr)
+ZS_time3=ZS_time3+ZS_time2-ZS_time1
 
 !- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 !Update ZV_Qbmean
@@ -452,11 +454,16 @@ call VecCopy(ZV_Qlat,ZV_Qext,ierr)                            !Qext=Qlat+dQeb
 !- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 !Routing procedure with analysis runoff
 !- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+call PetscTime(ZS_time1,ierr)
+
 call rapid_routing(ZV_C1,ZV_C2,ZV_C3,ZV_Qext,                                  &
                    ZV_QoutinitR,                                               &
                    ZV_QoutR,ZV_QoutbarR)
 
 if (BS_opt_V) call rapid_QtoV(ZV_k,ZV_x,ZV_QoutbarR,ZV_Qext,ZV_VbarR)
+
+call PetscTime(ZS_time2,ierr)
+ZS_time3=ZS_time3+ZS_time2-ZS_time1
 
 !- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 !Update variables
@@ -480,9 +487,6 @@ if (rank==0) IV_nc_start(2)=IV_nc_start(2)+1
 end do
 
 end do
-
-call PetscTime(ZS_time2,ierr)
-ZS_time3=ZS_time3+ZS_time2-ZS_time1
 
 !-------------------------------------------------------------------------------
 !Performance statistics
