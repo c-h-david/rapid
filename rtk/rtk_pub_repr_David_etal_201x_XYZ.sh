@@ -107,7 +107,6 @@ echo "Running simul. $sim/x"
 BS_opt_Qinit=".false."
 BS_opt_Qfinal=".true."
 BS_opt_uq=".true."
-ZS_alpha_uq=0.5
 Qinit_file=''
 Qfinal_file='../../rapid/output/WSWM_XYZ/Qfinal_WSWM_729days_p0_dtR900s_n1_preonly_rtk.nc'
 Qout_file='../../rapid/output/WSWM_XYZ/Qout_WSWM_729days_p0_dtR900s_n1_preonly_rtk.nc'
@@ -118,7 +117,6 @@ comp_file="tmp_run_comp_$sim.txt"
 sed -i -e "s|BS_opt_Qinit       =.*|BS_opt_Qinit       =$BS_opt_Qinit|"        \
        -e "s|BS_opt_Qfinal      =.*|BS_opt_Qfinal      =$BS_opt_Qfinal|"       \
        -e "s|BS_opt_uq          =.*|BS_opt_uq          =$BS_opt_uq|"           \
-       -e "s|ZS_alpha_uq        =.*|ZS_alpha_uq        =$ZS_alpha_uq|"         \
        -e "s|Qinit_file         =.*|Qinit_file         ='$Qinit_file'|"        \
        -e "s|Qfinal_file        =.*|Qfinal_file        ='$Qfinal_file'|"       \
        -e "s|Qout_file          =.*|Qout_file          ='$Qout_file'|"         \
@@ -151,7 +149,6 @@ echo "Running simul. $sim/x"
 BS_opt_Qinit=".true."
 BS_opt_Qfinal=".false."
 BS_opt_uq=".true."
-ZS_alpha_uq=0.0
 Qinit_file='../../rapid/output/WSWM_XYZ/Qfinal_WSWM_729days_p0_dtR900s_n1_preonly_20170912.nc'
 Qfinal_file=''
 Qout_file='../../rapid/output/WSWM_XYZ/Qout_WSWM_729days_p0_dtR900s_n1_preonly_rtk_init_uq_0.0.nc'
@@ -162,7 +159,6 @@ comp_file="tmp_run_comp_$sim.txt"
 sed -i -e "s|BS_opt_Qinit       =.*|BS_opt_Qinit       =$BS_opt_Qinit|"        \
        -e "s|BS_opt_Qfinal      =.*|BS_opt_Qfinal      =$BS_opt_Qfinal|"       \
        -e "s|BS_opt_uq          =.*|BS_opt_uq          =$BS_opt_uq|"           \
-       -e "s|ZS_alpha_uq        =.*|ZS_alpha_uq        =$ZS_alpha_uq|"         \
        -e "s|Qinit_file         =.*|Qinit_file         ='$Qinit_file'|"        \
        -e "s|Qfinal_file        =.*|Qfinal_file        ='$Qfinal_file'|"       \
        -e "s|Qout_file          =.*|Qout_file          ='$Qout_file'|"         \
@@ -191,7 +187,6 @@ echo "Running simul. $sim/x"
 BS_opt_Qinit=".true."
 BS_opt_Qfinal=".false."
 BS_opt_uq=".true."
-ZS_alpha_uq=1.0
 Qinit_file='../../rapid/output/WSWM_XYZ/Qfinal_WSWM_729days_p0_dtR900s_n1_preonly_20170912.nc'
 Qfinal_file=''
 Qout_file='../../rapid/output/WSWM_XYZ/Qout_WSWM_729days_p0_dtR900s_n1_preonly_rtk_init_uq_1.0.nc'
@@ -202,7 +197,6 @@ comp_file="tmp_run_comp_$sim.txt"
 sed -i -e "s|BS_opt_Qinit       =.*|BS_opt_Qinit       =$BS_opt_Qinit|"        \
        -e "s|BS_opt_Qfinal      =.*|BS_opt_Qfinal      =$BS_opt_Qfinal|"       \
        -e "s|BS_opt_uq          =.*|BS_opt_uq          =$BS_opt_uq|"           \
-       -e "s|ZS_alpha_uq        =.*|ZS_alpha_uq        =$ZS_alpha_uq|"         \
        -e "s|Qinit_file         =.*|Qinit_file         ='$Qinit_file'|"        \
        -e "s|Qfinal_file        =.*|Qfinal_file        ='$Qfinal_file'|"       \
        -e "s|Qout_file          =.*|Qout_file          ='$Qout_file'|"         \
@@ -231,7 +225,6 @@ echo "Running simul. $sim/x"
 BS_opt_Qinit=".true."
 BS_opt_Qfinal=".false."
 BS_opt_uq=".true."
-ZS_alpha_uq=0.5
 Qinit_file='../../rapid/output/WSWM_XYZ/Qfinal_WSWM_729days_p0_dtR900s_n1_preonly_20170912.nc'
 Qfinal_file=''
 Qout_file='../../rapid/output/WSWM_XYZ/Qout_WSWM_729days_p0_dtR900s_n1_preonly_rtk_init_uq_0.5.nc'
@@ -242,7 +235,6 @@ comp_file="tmp_run_comp_$sim.txt"
 sed -i -e "s|BS_opt_Qinit       =.*|BS_opt_Qinit       =$BS_opt_Qinit|"        \
        -e "s|BS_opt_Qfinal      =.*|BS_opt_Qfinal      =$BS_opt_Qfinal|"       \
        -e "s|BS_opt_uq          =.*|BS_opt_uq          =$BS_opt_uq|"           \
-       -e "s|ZS_alpha_uq        =.*|ZS_alpha_uq        =$ZS_alpha_uq|"         \
        -e "s|Qinit_file         =.*|Qinit_file         ='$Qinit_file'|"        \
        -e "s|Qfinal_file        =.*|Qfinal_file        ='$Qfinal_file'|"       \
        -e "s|Qout_file          =.*|Qout_file          ='$Qout_file'|"         \
