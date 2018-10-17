@@ -99,8 +99,6 @@ sed -i -e "s|babsmax_file       =.*|babsmax_file       ='../../rapid/output/HSms
 #*******************************************************************************
 #Uncertainty quantification
 #*******************************************************************************
-sed -i -e "s|ZS_alpha_uq        =.*|ZS_alpha_uq        =0.5|"                  \
-          rapid_namelist_HSmsp_WRR  
 
 #*******************************************************************************
 #Muskingum operator and data assimilation

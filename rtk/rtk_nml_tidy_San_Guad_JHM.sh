@@ -99,8 +99,6 @@ sed -i -e "s|babsmax_file       =.*|babsmax_file       =''|"                   \
 #*******************************************************************************
 #Uncertainty quantification
 #*******************************************************************************
-sed -i -e "s|ZS_alpha_uq        =.*|ZS_alpha_uq        =0.5|"                  \
-          rapid_namelist_San_Guad_JHM  
 
 #*******************************************************************************
 #Muskingum operator and data assimilation
