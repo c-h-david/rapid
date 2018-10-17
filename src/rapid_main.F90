@@ -29,7 +29,7 @@ use rapid_var, only :                                                          &
                    ierr,rank,stage,temp_char,temp_char2,                       &
                    ZS_one,                                                     &
                    IS_riv_tot,IS_riv_bas,IS_for_bas,IS_dam_bas,IS_hum_bas,     &
-                   ZS_time1,ZS_time2,ZS_time3,                                 &
+                   ZS_time1,ZS_time2,ZS_time3,ZS_time4,                        &
                    IV_nc_start,IV_nc_count,IV_nc_count2,                       &
                    BS_opt_V,BS_opt_for,BS_opt_hum,BS_opt_dam,IS_opt_run,       &
                    BS_opt_uq,                                                  &
@@ -334,6 +334,7 @@ call VecSet(ZV_QoutbarR,0*ZS_one,ierr)                     !QoutbarR=0
 call PetscLogStageRegister('Read Comp KF Write',stage,ierr)
 call PetscLogStagePush(stage,ierr)
 ZS_time3=0
+ZS_time4=0
 
 IV_nc_start=(/1,1/)
 IV_nc_count=(/IS_riv_tot,1/)
@@ -415,11 +416,16 @@ end do
 !- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 !Kalman filtering
 !- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+call PetscTime(ZS_time1,ierr)
+
 call rapid_read_Qobs_file
 !Build observation vector
 
 call rapid_kf_update
 !Kalman filter update
+
+call PetscTime(ZS_time2,ierr)
+ZS_time4=ZS_time4+ZS_time2-ZS_time1
 
 !- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 !Run RAPID analysis          
@@ -491,10 +497,19 @@ end do
 !-------------------------------------------------------------------------------
 !Performance statistics
 !-------------------------------------------------------------------------------
-call PetscPrintf(PETSC_COMM_WORLD,'Cumulative time for routing only'           &
-                                  //char(10),ierr)
+call PetscPrintf(PETSC_COMM_WORLD,'Cumulative time for routing (background '// &
+                                  'and analysis)'//char(10),ierr)
 write(temp_char ,'(i10)')   rank
 write(temp_char2,'(f10.2)') ZS_time3
+call PetscSynchronizedPrintf(PETSC_COMM_WORLD,'Rank     :'//temp_char //', '// &
+                                              'Time     :'//temp_char2//       &
+                                               char(10),ierr)
+call PetscSynchronizedFlush(PETSC_COMM_WORLD,PETSC_NULL_INTEGER,ierr)
+
+call PetscPrintf(PETSC_COMM_WORLD,'Cumulative time for Kalman filtering'       &
+                                  //char(10),ierr)
+write(temp_char ,'(i10)')   rank
+write(temp_char2,'(f10.2)') ZS_time4
 call PetscSynchronizedPrintf(PETSC_COMM_WORLD,'Rank     :'//temp_char //', '// &
                                               'Time     :'//temp_char2//       &
                                                char(10),ierr)

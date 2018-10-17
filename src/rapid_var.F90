@@ -533,7 +533,7 @@ PetscScalar,dimension(:), allocatable :: ZV_read_for_tot
 !same as previous, with size IS_for_tot
 PetscScalar,dimension(:), allocatable :: ZV_read_dam_tot
 !same as previous, with size IS_dam_tot
-PetscScalar :: ZS_time1, ZS_time2, ZS_time3
+PetscScalar :: ZS_time1, ZS_time2, ZS_time3, ZS_time4
 !to estimate computing time
 
 PetscScalar, pointer :: ZV_pointer(:)
