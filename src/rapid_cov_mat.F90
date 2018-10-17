@@ -218,7 +218,12 @@ call PetscPrintf(PETSC_COMM_WORLD,'Runoff error covariance matrix created'      
 !*******************************************************************************
 !Free up memory used by local (temporary) variables
 !*******************************************************************************
-
 deallocate(IV_index_down)
+
+
+!*******************************************************************************
+!End subroutine
+!*******************************************************************************
+call PetscPrintf(PETSC_COMM_WORLD,'--------------------------'//char(10),ierr)
 
 end subroutine rapid_cov_mat

@@ -76,10 +76,12 @@ call PetscPrintf(PETSC_COMM_WORLD,'Kalman Filter control error covariance matrix
 !*******************************************************************************
 !Delete temporary variables
 !*******************************************************************************
-
 call MatDestroy(ZM_Ht,ierr)
+
 
 !*******************************************************************************
 !End subroutine 
 !*******************************************************************************
+call PetscPrintf(PETSC_COMM_WORLD,'--------------------------'//char(10),ierr)
+
 end subroutine rapid_kf_cov_mat
