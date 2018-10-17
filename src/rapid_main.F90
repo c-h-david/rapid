@@ -286,6 +286,7 @@ call PetscLogStagePop(ierr)
 !-------------------------------------------------------------------------------
 end if
 
+
 !*******************************************************************************
 !OPTION 3 - data assimilation (of discharge to correct runoff input)
 !*******************************************************************************
@@ -306,7 +307,6 @@ call rapid_kf_cov_mat
 !-------------------------------------------------------------------------------
 !Open observation file
 !-------------------------------------------------------------------------------
-
 call rapid_open_Qobs_file(Qobs_file)
 
 !-------------------------------------------------------------------------------
@@ -345,14 +345,13 @@ write(temp_char,'(i10)') IS_M
 do JS_M=1,IS_M
 
 write(temp_char2,'(i10)') JS_M    
-call PetscPrintf(PETSC_COMM_WORLD,'Assimilation day '               &
-                                  //temp_char2//'/'//temp_char//    &
+call PetscPrintf(PETSC_COMM_WORLD,'Assimilation day '                          &
+                                  //temp_char2//'/'//temp_char//               &
                                   char(10),ierr)
 
 !- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 !Initialize ZV_Qbmean and ZV_dQeb for assimilation and save initial condition
 !- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
 call VecSet(ZV_Qbmean,0*ZS_one,ierr)    !Daily-averaged simulated discharge
 call VecSet(ZV_dQeb,0*ZS_one,ierr)      !Kalman filter correction 
 call VecSet(ZV_Qobs,0*ZS_one,ierr)      !Observation vector (size IS_riv_bas)
@@ -365,13 +364,11 @@ call VecCopy(ZV_QoutinitR,ZV_QoutinitR_save,ierr)
 !-------------------------------------------------------------------------------
 !Run RAPID forecast          
 !-------------------------------------------------------------------------------
-
 do JS_RpM=1,IS_RpM
 
 !- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 !Read/set surface and subsurface volumes 
 !- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-
 call rapid_read_Vlat_file
 
 call VecCopy(ZV_Vlat,ZV_Qlat,ierr)            !Qlat=Vlat
@@ -380,15 +377,11 @@ call VecScale(ZV_Qlat,1/ZS_TauR,ierr)         !Qlat=Qlat/TauR
 !- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 !calculation of Qext
 !- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-
 call VecCopy(ZV_Qlat,ZV_Qext,ierr)                            !Qext=Qlat
 
 !- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 !Routing procedure with background runoff
 !- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-
-!call PetscTime(ZS_time1,ierr)
-
 call rapid_routing(ZV_C1,ZV_C2,ZV_C3,ZV_Qext,                                  &
                    ZV_QoutinitR,                                               &
                    ZV_QoutR,ZV_QoutbarR)
@@ -399,7 +392,6 @@ if (BS_opt_V) call rapid_QtoV(ZV_k,ZV_x,ZV_QoutbarR,ZV_Qext,ZV_VbarR)
 !- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 !Update ZV_Qbmean
 !- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-
 ZS_val= ZS_one/(REAL(IS_RpM))
 call VecAXPY(ZV_Qbmean,ZS_val,ZV_QoutbarR,ierr)
 
@@ -420,13 +412,11 @@ end do
 !-------------------------------------------------------------------------------
 !Build observation vector         
 !-------------------------------------------------------------------------------
-
 call rapid_read_Qobs_file
 
 !-------------------------------------------------------------------------------
 !Kalman filter update         
 !-------------------------------------------------------------------------------
-
 call rapid_kf_update
 
 !-------------------------------------------------------------------------------
@@ -436,7 +426,6 @@ call rapid_kf_update
 !- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 !Re-set initial condition and netcdf location 
 !- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
 if (rank==0) IV_nc_start(2)=IV_nc_start_save(2)
 call VecCopy(ZV_QoutinitR_save,ZV_QoutinitR,ierr)
 
@@ -445,7 +434,6 @@ do JS_RpM=1,IS_RpM
 !- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 !Read/set surface and subsurface volumes 
 !- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-
 call rapid_read_Vlat_file
 
 call VecCopy(ZV_Vlat,ZV_Qlat,ierr)            !Qlat=Vlat
@@ -454,48 +442,37 @@ call VecScale(ZV_Qlat,1/ZS_TauR,ierr)         !Qlat=Qlat/TauR
 !- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 !Update surface and subsurface flow with Kalman Filter correction 
 !- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
 call VecAXPY(ZV_Qlat,ZS_one,ZV_dQeb,ierr)         !Qlat=Qlat+dQeb
 
 !- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 !calculation of Qext
 !- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
 call VecCopy(ZV_Qlat,ZV_Qext,ierr)                            !Qext=Qlat+dQeb
 
 !- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 !Routing procedure with analysis runoff
 !- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-
-!call PetscTime(ZS_time1,ierr)
-
 call rapid_routing(ZV_C1,ZV_C2,ZV_C3,ZV_Qext,                                  &
                    ZV_QoutinitR,                                               &
                    ZV_QoutR,ZV_QoutbarR)
 
 if (BS_opt_V) call rapid_QtoV(ZV_k,ZV_x,ZV_QoutbarR,ZV_Qext,ZV_VbarR)
 
-!call PetscTime(ZS_time2,ierr)
-!ZS_time3=ZS_time3+ZS_time2-ZS_time1
-
 !- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 !Update variables
 !- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
- 
 call VecCopy(ZV_QoutR,ZV_QoutinitR,ierr)
 call VecCopy(ZV_VR,ZV_VinitR,ierr)
 
 !- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 !write outputs         
 !- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
- 
 call rapid_write_Qout_file
 if (BS_opt_V) call rapid_write_V_file
 
 !- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 !Update netCDF location         
 !- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
 if (rank==0) IV_nc_start(2)=IV_nc_start(2)+1
 !do not comment out if writing directly from the routing subroutine
 
