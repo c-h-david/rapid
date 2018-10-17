@@ -345,9 +345,9 @@ write(temp_char,'(i10)') IS_M
 do JS_M=1,IS_M
 
 write(temp_char2,'(i10)') JS_M    
-call PetscPrintf(PETSC_COMM_WORLD,'Assimilation day '                          &
-                                  //temp_char2//'/'//temp_char//               &
-                                  char(10),ierr)
+!call PetscPrintf(PETSC_COMM_WORLD,'Assimilation day '                          &
+!                                  //temp_char2//'/'//temp_char//               &
+!                                  char(10),ierr)
 
 !- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 !Initialize ZV_Qbmean and ZV_dQeb for assimilation and save initial condition
