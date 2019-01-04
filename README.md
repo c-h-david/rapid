@@ -105,7 +105,7 @@ $ wget "http://www.unidata.ucar.edu/downloads/netcdf/ftp/netcdf-4.1.3.tar.gz"
 $ mkdir netcdf-4.1.3-install
 $ tar -xzf netcdf-4.1.3.tar.gz 
 $ cd netcdf-4.1.3
-$ ./configure CC=gcc CXX=g++ FC=gfortran --prefix=$HOME/installz/netcdf-4.1.3-install
+$ ./configure CC=gcc CXX=g++ FC=gfortran --prefix=$HOME/installz/netcdf-4.1.3-install --disable-dap
 $ make check > check.log
 $ make install > install.log
 ```
