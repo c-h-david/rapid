@@ -101,11 +101,11 @@ The Network Common Data Form (NetCDF) can be installed using:
 ```
 $ mkdir $HOME/installz
 $ cd $HOME/installz
-$ wget "http://www.unidata.ucar.edu/downloads/netcdf/ftp/netcdf-3.6.3.tar.gz"
-$ mkdir netcdf-3.6.3-install
-$ tar -xzf netcdf-3.6.3.tar.gz 
-$ cd netcdf-3.6.3
-$ ./configure CC=gcc CXX=g++ FC=gfortran --prefix=$HOME/installz/netcdf-3.6.3-install
+$ wget "http://www.unidata.ucar.edu/downloads/netcdf/ftp/netcdf-4.1.3.tar.gz"
+$ mkdir netcdf-4.1.3-install
+$ tar -xzf netcdf-4.1.3.tar.gz 
+$ cd netcdf-4.1.3
+$ ./configure CC=gcc CXX=g++ FC=gfortran --prefix=$HOME/installz/netcdf-4.1.3-install
 $ make check > check.log
 $ make install > install.log
 ```
@@ -113,7 +113,7 @@ $ make install > install.log
 Then, the environment should be updated using:
 
 ```
-$ export TACC_NETCDF_DIR=$HOME/installz/netcdf-3.6.3-install$ export TACC_NETCDF_LIB=$TACC_NETCDF_DIR/lib$ export TACC_NETCDF_INC=$TACC_NETCDF_DIR/include
+$ export TACC_NETCDF_DIR=$HOME/installz/netcdf-4.1.3-install$ export TACC_NETCDF_LIB=$TACC_NETCDF_DIR/lib$ export TACC_NETCDF_INC=$TACC_NETCDF_DIR/include
 $ export PATH=$PATH:$TACC_NETCDF_DIR/bin
 ```
 
