@@ -22,6 +22,7 @@ addons:
     - gfortran     #Add Fortran (gcc was installed by specifying "language: c")
     - bc           #Add Basic Calculator (simple math from command line)
     - nco          #netCDF Operators
+    - libhdf5-dev  #HDF5 library
 
 
 #*******************************************************************************
