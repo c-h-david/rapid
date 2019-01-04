@@ -73,8 +73,8 @@ ENV  PATH=$PATH:$PETSC_DIR/$PETSC_ARCH/bin
 RUN  cd ./src/ && \
      make rapid && \
      cd ../rtk/ && \
-     gfortran -o rtk_run_comp rtk_run_comp.f90 -I $TACC_NETCDF_INC -L $TACC_NETCDF_LIB -lnetcdf && \
-     gfortran -o rtk_run_conv_Qinit rtk_run_conv_Qinit.f90 -I $TACC_NETCDF_INC -L $TACC_NETCDF_LIB -lnetcdf
+     gfortran -o rtk_run_comp rtk_run_comp.f90 -I $TACC_NETCDF_INC -L $TACC_NETCDF_LIB -lnetcdff && \
+     gfortran -o rtk_run_conv_Qinit rtk_run_conv_Qinit.f90 -I $TACC_NETCDF_INC -L $TACC_NETCDF_LIB -lnetcdff
 
 
 #*******************************************************************************
