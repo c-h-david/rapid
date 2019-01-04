@@ -18,7 +18,7 @@ include ${PETSC_DIR}/lib/petsc/conf/rules
 #*******************************************************************************
 #Location of netCDF include and lib directories
 #*******************************************************************************
-NETCDF_LIB=-L ${TACC_NETCDF_LIB} -lnetcdf
+NETCDF_LIB=-L ${TACC_NETCDF_LIB} -lnetcdff
 NETCDF_INCLUDE=-I ${TACC_NETCDF_INC}
 
 

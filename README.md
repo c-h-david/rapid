@@ -159,8 +159,8 @@ Testing scripts are currently under development.
 ```
 $ cd rapid/
 $ cd rtk/
-$ gfortran -o rtk_run_comp rtk_run_comp.f90 -I $TACC_NETCDF_INC -L $TACC_NETCDF_LIB -lnetcdf
-$ gfortran -o rtk_run_conv_Qinit rtk_run_conv_Qinit.f90 -I $TACC_NETCDF_INC -L $TACC_NETCDF_LIB -lnetcdf
+$ gfortran -o rtk_run_comp rtk_run_comp.f90 -I $TACC_NETCDF_INC -L $TACC_NETCDF_LIB -lnetcdff
+$ gfortran -o rtk_run_conv_Qinit rtk_run_conv_Qinit.f90 -I $TACC_NETCDF_INC -L $TACC_NETCDF_LIB -lnetcdff
 ```
 
 Note that the experienced users may find more up-to-date testing instructions 
