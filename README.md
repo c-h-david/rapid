@@ -113,7 +113,9 @@ $ make install > install.log
 Then, the environment should be updated using:
 
 ```
-$ export TACC_NETCDF_DIR=$HOME/installz/netcdf-4.1.3-install$ export TACC_NETCDF_LIB=$TACC_NETCDF_DIR/lib$ export TACC_NETCDF_INC=$TACC_NETCDF_DIR/include
+$ export TACC_NETCDF_DIR=$HOME/installz/netcdf-4.1.3-install
+$ export TACC_NETCDF_LIB=$TACC_NETCDF_DIR/lib
+$ export TACC_NETCDF_INC=$TACC_NETCDF_DIR/include
 $ export PATH=$PATH:$TACC_NETCDF_DIR/bin
 ```
 
