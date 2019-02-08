@@ -1,5 +1,5 @@
 # RAPID
-[![DOI](https://zenodo.org/badge/11296/c-h-david/rapid.svg)](https://zenodo.org/badge/latestdoi/11296/c-h-david/rapid)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.593867.svg)](https://doi.org/10.5281/zenodo.593867)
 
 [![License (3-Clause BSD)](https://img.shields.io/badge/license-BSD%203--Clause-yellow.svg)](https://github.com/c-h-david/rapid/blob/master/LICENSE)
 
