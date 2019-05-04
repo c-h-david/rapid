@@ -1,23 +1,27 @@
 #!/bin/bash
 #*******************************************************************************
-#rtk_pub_dwnl_David_etal_201x_XYZ.sh
+#rtk_pub_dwnl_David_etal_2019_GRL.sh
 #*******************************************************************************
 
 #Purpose:
-#This script downloads all the files corresponding to:
-#David, Cédric H., et al. (201x)
-#xxx
+#This script reproduces all RAPID simulations that were used in the writing of:
+#David, Cédric H., Jonathan M. Hobbs, Michael J. Turmon, Charlotte M. Emery,
+#John T. Reager, and James S. Famiglietti (2019), Analytical Propagation of
+#Runoff Uncertainty into Discharge Uncertainty through a Large River Network,
+#Geophysical Research Letters.
 #DOI: xx.xxxx/xxxxxx
-#These files are available from:
-#David, Cédric H., et al. (201x)
-#xxx
-#DOI: xx.xxxx/xxxxxx
+#The files used are available from:
+#David, Cédric H., Jonathan M. Hobbs, Michael J. Turmon, Charlotte M. Emery,
+#John T. Reager, and James S. Famiglietti (2019), RRR/RAPID input and output
+#files corresponding to "Analytical Propagation of Runoff Uncertainty into
+#Discharge Uncertainty through a Large River Network", Zenodo.
+#DOI: 10.5281/zenodo.2665084
 #The script returns the following exit codes
 # - 0  if all downloads are successful 
 # - 22 if there was a conversion problem
 # - 44 if one download is not successful
 #Author:
-#Cedric H. David, 2015-2018.
+#Cedric H. David, 2015-2019.
 
 
 #*******************************************************************************
@@ -30,7 +34,7 @@
 #Publication message
 #*******************************************************************************
 echo "********************"
-echo "Downloading files from:   http://dx.doi.org/xx.xxxx/xxxxxx"
+echo "Downloading files from:   http://dx.doi.org/10.5281/zenodo.2665084"
 echo "which correspond to   :   http://dx.doi.org/xx.xxxx/xxxxxx"
 echo "These files are under a Creative Commons Attribution (CC BY) license."
 echo "Please cite these two DOIs if using these files for your publications."
@@ -40,13 +44,13 @@ echo "********************"
 #*******************************************************************************
 #Location of the dataset
 #*******************************************************************************
-URL="https://zenodo.org/record/xxxxx/files"
+URL="https://zenodo.org/record/2665084/files"
 
 
 #*******************************************************************************
 #Download all input files
 #*******************************************************************************
-folder="../input/WSWM_XYZ"
+folder="../input/WSWM_GRL"
 list="                                           \
      "
 
@@ -61,7 +65,7 @@ done
 #*******************************************************************************
 #Download all output files
 #*******************************************************************************
-folder="../output/WSWM_XYZ"
+folder="../output/WSWM_GRL"
 list="                                           \
      "
 
