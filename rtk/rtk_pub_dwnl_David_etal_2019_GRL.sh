@@ -51,7 +51,12 @@ URL="https://zenodo.org/record/2665084/files"
 #Download all input files
 #*******************************************************************************
 folder="../input/WSWM_GRL"
-list="                                           \
+list="                                                                         \
+      rapid_connect_WSWM.csv                                                   \
+      m3_riv_WSWM_19970101_19981231_VIC0125_cst_err.nc                         \
+      k_WSWM_ag.csv                                                            \
+      x_WSWM_ag.csv                                                            \
+      riv_bas_id_WSWM_hydroseq.csv                                             \
      "
 
 mkdir -p $folder
@@ -66,7 +71,10 @@ done
 #Download all output files
 #*******************************************************************************
 folder="../output/WSWM_GRL"
-list="                                           \
+list="                                                                         \
+      Qout_WSWM_729days_p0_dtR900s_n1_preonly.nc                               \
+      Qfinal_WSWM_729days_p0_dtR900s_n1_preonly.nc                             \
+      Qout_WSWM_729days_p0_dtR900s_n1_preonly_init_err.nc                      \
      "
 
 mkdir -p $folder
