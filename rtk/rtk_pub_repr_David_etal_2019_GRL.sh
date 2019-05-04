@@ -86,7 +86,7 @@ unt=0
 #Create symbolic list to default namelist
 #-------------------------------------------------------------------------------
 rm -f rapid_namelist
-ln -s rapid_namelist_WSWM_XYZ rapid_namelist
+ln -s rapid_namelist_WSWM_GRL rapid_namelist
 
 #-------------------------------------------------------------------------------
 #Run simulations and compare output files (single core, 729 days)
@@ -96,7 +96,7 @@ ln -s rapid_namelist_WSWM_XYZ rapid_namelist
 #Make sure RAPID is in regular run mode
 #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 sed -i -e "s|IS_opt_run         =.*|IS_opt_run         =1|"                    \
-          rapid_namelist_WSWM_XYZ  
+          rapid_namelist_WSWM_GRL
 
 #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 #Simulation 1/2
@@ -104,16 +104,16 @@ sed -i -e "s|IS_opt_run         =.*|IS_opt_run         =1|"                    \
 unt=$((unt+1))
 sim=$((sim+1))
 if (("$unt" >= "$fst")) && (("$unt" <= "$lst")) ; then
-./rtk_nml_tidy_WSWM_XYZ.sh
+./rtk_nml_tidy_WSWM_GRL.sh
 echo "Running simul. $sim/2"
 BS_opt_Qinit=".false."
 BS_opt_Qfinal=".true."
 BS_opt_uq=".false."
 Qinit_file=''
-Qfinal_file='../../rapid/output/WSWM_XYZ/Qfinal_WSWM_729days_p0_dtR900s_n1_preonly_rtk.nc'
-Qout_file='../../rapid/output/WSWM_XYZ/Qout_WSWM_729days_p0_dtR900s_n1_preonly_rtk.nc'
-Qfinal_gold='../../rapid/output/WSWM_XYZ/Qfinal_WSWM_729days_p0_dtR900s_n1_preonly.nc'
-Qout_gold='../../rapid/output/WSWM_XYZ/Qout_WSWM_729days_p0_dtR900s_n1_preonly.nc'
+Qfinal_file='../../rapid/output/WSWM_GRL/Qfinal_WSWM_729days_p0_dtR900s_n1_preonly_rtk.nc'
+Qout_file='../../rapid/output/WSWM_GRL/Qout_WSWM_729days_p0_dtR900s_n1_preonly_rtk.nc'
+Qfinal_gold='../../rapid/output/WSWM_GRL/Qfinal_WSWM_729days_p0_dtR900s_n1_preonly.nc'
+Qout_gold='../../rapid/output/WSWM_GRL/Qout_WSWM_729days_p0_dtR900s_n1_preonly.nc'
 rapd_file="tmp_run_$sim.txt"
 comp_file="tmp_run_comp_$sim.txt"
 sed -i -e "s|BS_opt_Qinit       =.*|BS_opt_Qinit       =$BS_opt_Qinit|"        \
@@ -122,7 +122,7 @@ sed -i -e "s|BS_opt_Qinit       =.*|BS_opt_Qinit       =$BS_opt_Qinit|"        \
        -e "s|Qinit_file         =.*|Qinit_file         ='$Qinit_file'|"        \
        -e "s|Qfinal_file        =.*|Qfinal_file        ='$Qfinal_file'|"       \
        -e "s|Qout_file          =.*|Qout_file          ='$Qout_file'|"         \
-          rapid_namelist_WSWM_XYZ  
+          rapid_namelist_WSWM_GRL
 sleep 3
 mpiexec -n 1 ./rapid -ksp_type preonly > $rapd_file
 echo "Comparing files"
@@ -135,7 +135,7 @@ rm $Qout_file
 rm $Qfinal_file
 rm $rapd_file
 rm $comp_file
-./rtk_nml_tidy_WSWM_XYZ.sh
+./rtk_nml_tidy_WSWM_GRL.sh
 echo "Success"
 echo "********************"
 fi
@@ -146,16 +146,16 @@ fi
 unt=$((unt+1))
 sim=$((sim+1))
 if (("$unt" >= "$fst")) && (("$unt" <= "$lst")) ; then
-./rtk_nml_tidy_WSWM_XYZ.sh
+./rtk_nml_tidy_WSWM_GRL.sh
 echo "Running simul. $sim/2"
 BS_opt_Qinit=".true."
 BS_opt_Qfinal=".false."
 BS_opt_uq=".true."
-Qinit_file='../../rapid/output/WSWM_XYZ/Qfinal_WSWM_729days_p0_dtR900s_n1_preonly.nc'
+Qinit_file='../../rapid/output/WSWM_GRL/Qfinal_WSWM_729days_p0_dtR900s_n1_preonly.nc'
 Qfinal_file=''
-Qout_file='../../rapid/output/WSWM_XYZ/Qout_WSWM_729days_p0_dtR900s_n1_preonly_init_err_rtk.nc'
+Qout_file='../../rapid/output/WSWM_GRL/Qout_WSWM_729days_p0_dtR900s_n1_preonly_init_err_rtk.nc'
 Qfinal_gold=''
-Qout_gold='../../rapid/output/WSWM_XYZ/Qout_WSWM_729days_p0_dtR900s_n1_preonly_init_err.nc'
+Qout_gold='../../rapid/output/WSWM_GRL/Qout_WSWM_729days_p0_dtR900s_n1_preonly_init_err.nc'
 rapd_file="tmp_run_$sim.txt"
 comp_file="tmp_run_comp_$sim.txt"
 sed -i -e "s|BS_opt_Qinit       =.*|BS_opt_Qinit       =$BS_opt_Qinit|"        \
@@ -164,7 +164,7 @@ sed -i -e "s|BS_opt_Qinit       =.*|BS_opt_Qinit       =$BS_opt_Qinit|"        \
        -e "s|Qinit_file         =.*|Qinit_file         ='$Qinit_file'|"        \
        -e "s|Qfinal_file        =.*|Qfinal_file        ='$Qfinal_file'|"       \
        -e "s|Qout_file          =.*|Qout_file          ='$Qout_file'|"         \
-          rapid_namelist_WSWM_XYZ  
+          rapid_namelist_WSWM_GRL
 sleep 3
 mpiexec -n 1 ./rapid -ksp_type preonly > $rapd_file
 echo "Comparing files"
@@ -173,7 +173,7 @@ x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $comp_file" >&2 ; exit 
 rm $Qout_file
 rm $rapd_file
 rm $comp_file
-./rtk_nml_tidy_WSWM_XYZ.sh
+./rtk_nml_tidy_WSWM_GRL.sh
 echo "Success"
 echo "********************"
 fi
