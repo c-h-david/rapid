@@ -110,10 +110,10 @@ BS_opt_Qinit=".false."
 BS_opt_Qfinal=".true."
 BS_opt_uq=".false."
 Qinit_file=''
-Qfinal_file='../../rapid/output/WSWM_GRL/Qfinal_WSWM_729days_p0_dtR900s_n1_preonly_rtk.nc'
-Qout_file='../../rapid/output/WSWM_GRL/Qout_WSWM_729days_p0_dtR900s_n1_preonly_rtk.nc'
-Qfinal_gold='../../rapid/output/WSWM_GRL/Qfinal_WSWM_729days_p0_dtR900s_n1_preonly.nc'
-Qout_gold='../../rapid/output/WSWM_GRL/Qout_WSWM_729days_p0_dtR900s_n1_preonly.nc'
+Qfinal_file='../../rapid/output/WSWM_GRL/Qfinal_WSWM_729days_pag_dtR900s_n1_preonly_rtk.nc'
+Qout_file='../../rapid/output/WSWM_GRL/Qout_WSWM_729days_pag_dtR900s_n1_preonly_rtk.nc'
+Qfinal_gold='../../rapid/output/WSWM_GRL/Qfinal_WSWM_729days_pag_dtR900s_n1_preonly.nc'
+Qout_gold='../../rapid/output/WSWM_GRL/Qout_WSWM_729days_pag_dtR900s_n1_preonly.nc'
 rapd_file="tmp_run_$sim.txt"
 comp_file="tmp_run_comp_$sim.txt"
 sed -i -e "s|BS_opt_Qinit       =.*|BS_opt_Qinit       =$BS_opt_Qinit|"        \
@@ -151,11 +151,11 @@ echo "Running simul. $sim/2"
 BS_opt_Qinit=".true."
 BS_opt_Qfinal=".false."
 BS_opt_uq=".true."
-Qinit_file='../../rapid/output/WSWM_GRL/Qfinal_WSWM_729days_p0_dtR900s_n1_preonly.nc'
+Qinit_file='../../rapid/output/WSWM_GRL/Qfinal_WSWM_729days_pag_dtR900s_n1_preonly.nc'
 Qfinal_file=''
-Qout_file='../../rapid/output/WSWM_GRL/Qout_WSWM_729days_p0_dtR900s_n1_preonly_init_err_rtk.nc'
+Qout_file='../../rapid/output/WSWM_GRL/Qout_WSWM_729days_pag_dtR900s_n1_preonly_init_err_rtk.nc'
 Qfinal_gold=''
-Qout_gold='../../rapid/output/WSWM_GRL/Qout_WSWM_729days_p0_dtR900s_n1_preonly_init_err.nc'
+Qout_gold='../../rapid/output/WSWM_GRL/Qout_WSWM_729days_pag_dtR900s_n1_preonly_init_err.nc'
 rapd_file="tmp_run_$sim.txt"
 comp_file="tmp_run_comp_$sim.txt"
 sed -i -e "s|BS_opt_Qinit       =.*|BS_opt_Qinit       =$BS_opt_Qinit|"        \

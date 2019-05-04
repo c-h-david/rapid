@@ -72,9 +72,9 @@ done
 #*******************************************************************************
 folder="../output/WSWM_GRL"
 list="                                                                         \
-      Qout_WSWM_729days_p0_dtR900s_n1_preonly.nc                               \
-      Qfinal_WSWM_729days_p0_dtR900s_n1_preonly.nc                             \
-      Qout_WSWM_729days_p0_dtR900s_n1_preonly_init_err.nc                      \
+      Qout_WSWM_729days_pag_dtR900s_n1_preonly.nc                              \
+      Qfinal_WSWM_729days_pag_dtR900s_n1_preonly.nc                            \
+      Qout_WSWM_729days_pag_dtR900s_n1_preonly_init_err.nc                     \
      "
 
 mkdir -p $folder
