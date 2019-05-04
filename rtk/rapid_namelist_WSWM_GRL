@@ -1,12 +1,12 @@
 &NL_namelist
 !*******************************************************************************
-!rapid_namelist_WSWM_XYZ
+!rapid_namelist_WSWM_GRL
 !*******************************************************************************
 
 !Purpose:
-!This ASCII file contains instructions for RAPID corresponding to WSWM_XYZ.
+!This ASCII file contains instructions for RAPID corresponding to WSWM_GRL.
 !Author:
-!Cedric H. David, 2015-2018.
+!Cedric H. David, 2015-2019.
 
 
 !*******************************************************************************
@@ -68,15 +68,15 @@ ZS_dtF             =86400
 !Domain in which input data is available
 !*******************************************************************************
 IS_riv_tot         =658702
-rapid_connect_file ='../../rapid/input/WSWM_XYZ/rapid_connect_WSWM.csv'
+rapid_connect_file ='../../rapid/input/WSWM_GRL/rapid_connect_WSWM.csv'
 IS_max_up          =12
-Vlat_file          ='../../rapid/input/WSWM_XYZ/m3_riv_WSWM_19970101_19981231_VIC0125_cst_10p.nc'
+Vlat_file          ='../../rapid/input/WSWM_GRL/m3_riv_WSWM_19970101_19981231_VIC0125_cst_10p.nc'
 
 !*******************************************************************************
 !Domain in which model runs
 !*******************************************************************************
 IS_riv_bas         =658702
-riv_bas_id_file    ='../../rapid/input/WSWM_XYZ/riv_bas_id_WSWM_hydroseq.csv'
+riv_bas_id_file    ='../../rapid/input/WSWM_GRL/riv_bas_id_WSWM_hydroseq.csv'
 
 !*******************************************************************************
 !Initial instantaneous flow file
@@ -133,10 +133,10 @@ ZS_threshold       =0.0
 !*******************************************************************************
 !Regular model run
 !*******************************************************************************
-k_file             ='../../rapid/input/WSWM_XYZ/k_WSWM_ag.csv'
-x_file             ='../../rapid/input/WSWM_XYZ/x_WSWM_ag.csv'
-Qout_file          ='../../rapid/output/WSWM_XYZ/Qout_WSWM_729days_p0_dtR900s_nx_method.nc'
-V_file             ='../../rapid/output/WSWM_XYZ/V_WSWM_729days_p0_dtR900s_nx_method.nc'
+k_file             ='../../rapid/input/WSWM_GRL/k_WSWM_ag.csv'
+x_file             ='../../rapid/input/WSWM_GRL/x_WSWM_ag.csv'
+Qout_file          ='../../rapid/output/WSWM_GRL/Qout_WSWM_729days_p0_dtR900s_nx_method.nc'
+V_file             ='../../rapid/output/WSWM_GRL/V_WSWM_729days_p0_dtR900s_nx_method.nc'
 
 !*******************************************************************************
 !Optimization
@@ -145,18 +145,18 @@ ZS_phifac          =0.001
 !-------------------------------------------------------------------------------
 !Routing parameters
 !-------------------------------------------------------------------------------
-kfac_file          ='../../rapid/input/WSWM_XYZ/kfac_WSWM_1km_hour.csv'
+kfac_file          ='../../rapid/input/WSWM_GRL/kfac_WSWM_1km_hour.csv'
 ZS_knorm_init      =2
 ZS_xnorm_init      =3
 !-------------------------------------------------------------------------------
 !Gage observations
 !-------------------------------------------------------------------------------
 IS_obs_tot         =1562
-obs_tot_id_file    ='../../rapid/input/WSWM_XYZ/gage_id_WSWM_1997_1998_full.csv'
-Qobs_file          ='../../rapid/input/WSWM_XYZ/Qobs_WSWM_1997_1998_full.csv'
+obs_tot_id_file    ='../../rapid/input/WSWM_GRL/gage_id_WSWM_1997_1998_full.csv'
+Qobs_file          ='../../rapid/input/WSWM_GRL/Qobs_WSWM_1997_1998_full.csv'
 Qobsbarrec_file    =''
 IS_obs_use         =1562
-obs_use_id_file    ='../../rapid/input/WSWM_XYZ/gage_id_WSWM_1997_1998_full.csv'
+obs_use_id_file    ='../../rapid/input/WSWM_GRL/gage_id_WSWM_1997_1998_full.csv'
 IS_strt_opt        =1
 !0*8+1=1
 
