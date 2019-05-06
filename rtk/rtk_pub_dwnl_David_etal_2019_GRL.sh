@@ -53,7 +53,7 @@ URL="https://zenodo.org/record/2665084/files"
 folder="../input/WSWM_GRL"
 list="                                                                         \
       rapid_connect_WSWM.csv                                                   \
-      m3_riv_WSWM_19970101_19981231_VIC0125_cst_err.nc                         \
+      m3_riv_WSWM_19970101_19981231_VIC0125_3H_cst_err.nc4                     \
       k_WSWM_ag.csv                                                            \
       x_WSWM_ag.csv                                                            \
       riv_bas_id_WSWM_hydroseq.csv                                             \

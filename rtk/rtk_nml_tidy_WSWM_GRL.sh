@@ -43,7 +43,7 @@ sed -i -e "s|ZS_TauM            =.*|ZS_TauM            =62985600|"             \
 sed -i -e "s|IS_riv_tot         =.*|IS_riv_tot         =658702|"               \
        -e "s|rapid_connect_file =.*|rapid_connect_file ='../../rapid/input/WSWM_GRL/rapid_connect_WSWM.csv'|" \
        -e "s|IS_max_up          =.*|IS_max_up          =12|"                   \
-       -e "s|Vlat_file          =.*|Vlat_file          ='../../rapid/input/WSWM_GRL/m3_riv_WSWM_19970101_19981231_VIC0125_cst_err.nc'|" \
+       -e "s|Vlat_file          =.*|Vlat_file          ='../../rapid/input/WSWM_GRL/m3_riv_WSWM_19970101_19981231_VIC0125_3H_cst_err.nc4'|" \
           rapid_namelist_WSWM_GRL
 
 #*******************************************************************************

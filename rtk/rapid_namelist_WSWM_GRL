@@ -70,7 +70,7 @@ ZS_dtF             =86400
 IS_riv_tot         =658702
 rapid_connect_file ='../../rapid/input/WSWM_GRL/rapid_connect_WSWM.csv'
 IS_max_up          =12
-Vlat_file          ='../../rapid/input/WSWM_GRL/m3_riv_WSWM_19970101_19981231_VIC0125_cst_err.nc'
+Vlat_file          ='../../rapid/input/WSWM_GRL/m3_riv_WSWM_19970101_19981231_VIC0125_3H_cst_err.nc4'
 
 !*******************************************************************************
 !Domain in which model runs
