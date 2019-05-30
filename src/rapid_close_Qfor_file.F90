@@ -6,7 +6,7 @@ subroutine rapid_close_Qfor_file
 !Purpose:
 !Close Qfor_file from Fortran.
 !Author: 
-!Cedric H. David, 2013-2018.
+!Cedric H. David, 2013-2019.
 
 
 !*******************************************************************************

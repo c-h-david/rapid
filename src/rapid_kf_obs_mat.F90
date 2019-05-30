@@ -10,7 +10,7 @@ subroutine rapid_kf_obs_mat
 !As it contains only the rows of ZM_L that corresponds to potentially 
 !observed reach
 !Authors: 
-!Charlotte M. Emery, and Cedric H. David, 2018-2018.
+!Charlotte M. Emery, and Cedric H. David, 2018-2019.
 
 !*******************************************************************************
 !Declaration of variables

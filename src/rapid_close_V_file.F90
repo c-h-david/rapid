@@ -6,7 +6,7 @@ subroutine rapid_close_V_file
 !Purpose:
 !Close V_file from Fortran/netCDF.
 !Author: 
-!Cedric H. David, 2015-2018.
+!Cedric H. David, 2015-2019.
 
 
 !*******************************************************************************

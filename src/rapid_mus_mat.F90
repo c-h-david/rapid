@@ -7,7 +7,7 @@ subroutine rapid_mus_mat
 !Compute RAPID Muskingum operator M, using the equation:
 !M=(I-C1*N)^(-1)
 !Authors: 
-!Charlotte M. Emery, and Cedric H. David, 2018-2018.
+!Charlotte M. Emery, and Cedric H. David, 2018-2019.
 
 
 !*******************************************************************************
