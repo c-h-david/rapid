@@ -151,7 +151,7 @@ rapid:	rapid_main.o \
 	rapid_var.o \
 	${PETSC_LIB} ${NETCDF_LIB}
 	${RM} *.o *.mod 
-	ln -sf ../src/rapid ../rtk/rapid
+	ln -sf ../src/rapid ../tst/rapid
 
 #-------------------------------------------------------------------------------
 #Compile RAPID
@@ -320,5 +320,5 @@ rapid_var.o rapid_var.mod:	rapid_var.F90
 #Clean
 #-------------------------------------------------------------------------------
 clean::
-	${RM} *.o *.mod rapid ../rtk/rapid
+	${RM} *.o *.mod rapid ../tst/rapid
 
