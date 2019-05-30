@@ -15,7 +15,7 @@ program rtk_run_comp
 ! - 22 if netCDF fonctions crash (arguments are faulty) 
 ! - 99 if one of the comparisons failed 
 !Author:
-!Cedric H. David, 2012-2018.
+!Cedric H. David, 2012-2019.
 
 
 !*******************************************************************************
