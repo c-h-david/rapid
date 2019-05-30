@@ -133,8 +133,8 @@ ZS_threshold       =0.0
 !*******************************************************************************
 !Regular model run
 !*******************************************************************************
-k_file             ='../../rapid/input/WSWM_GRL/k_WSWM_ag.csv'
-x_file             ='../../rapid/input/WSWM_GRL/x_WSWM_ag.csv'
+k_file             ='../../rapid/input/WSWM_GRL/k_WSWM_pag.csv'
+x_file             ='../../rapid/input/WSWM_GRL/x_WSWM_pag.csv'
 Qout_file          ='../../rapid/output/WSWM_GRL/Qout_WSWM_729days_pag_dtR900s_nx_method.nc'
 V_file             ='../../rapid/output/WSWM_GRL/V_WSWM_729days_pag_dtR900s_nx_method.nc'
 

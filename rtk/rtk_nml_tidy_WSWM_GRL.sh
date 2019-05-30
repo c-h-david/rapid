@@ -115,8 +115,8 @@ sed -i -e "s|ZS_threshold       =.*|ZS_threshold       =0.0|"                  \
 #*******************************************************************************
 #Regular model run
 #*******************************************************************************
-sed -i -e "s|k_file             =.*|k_file             ='../../rapid/input/WSWM_GRL/k_WSWM_ag.csv'|" \
-       -e "s|x_file             =.*|x_file             ='../../rapid/input/WSWM_GRL/x_WSWM_ag.csv'|" \
+sed -i -e "s|k_file             =.*|k_file             ='../../rapid/input/WSWM_GRL/k_WSWM_pag.csv'|" \
+       -e "s|x_file             =.*|x_file             ='../../rapid/input/WSWM_GRL/x_WSWM_pag.csv'|" \
        -e "s|Qout_file          =.*|Qout_file          ='../../rapid/output/WSWM_GRL/Qout_WSWM_729days_pag_dtR900s_nx_method.nc'|" \
        -e "s|V_file             =.*|V_file             ='../../rapid/output/WSWM_GRL/V_WSWM_729days_pag_dtR900s_nx_method.nc'|" \
           rapid_namelist_WSWM_GRL
