@@ -41,10 +41,10 @@ run/*
 src/rapid
 
 #-------------------------------------------------------------------------------
-#The files potentially added to the rtk directory 
+#The files potentially added to the tst directory 
 #-------------------------------------------------------------------------------
-rtk/rapid
-rtk/rapid_namelist
-rtk/rtk_run_comp
-rtk/rtk_run_conv_Qinit
-rtk/tmp_*
+tst/rapid
+tst/rapid_namelist
+tst/tst_run_comp
+tst/tst_run_conv_Qinit
+tst/tmp_*
