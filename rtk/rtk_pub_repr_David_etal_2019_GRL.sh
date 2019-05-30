@@ -9,7 +9,7 @@
 #John T. Reager, and James S. Famiglietti (2019), Analytical Propagation of
 #Runoff Uncertainty into Discharge Uncertainty through a Large River Network,
 #Geophysical Research Letters.
-#DOI: xx.xxxx/xxxxxx
+#DOI: 10.1029/2019GL083342
 #The files used are available from:
 #David, Cédric H., Jonathan M. Hobbs, Michael J. Turmon, Charlotte M. Emery,
 #John T. Reager, and James S. Famiglietti (2019), RRR/RAPID input and output
@@ -33,7 +33,7 @@
 #Publication message
 #*******************************************************************************
 echo "********************"
-echo "Reproducing results of:   http://dx.doi.org/xx.xxxx/xxxxxx"
+echo "Reproducing results of:   http://dx.doi.org/10.1029/2019GL083342"
 echo "********************"
 
 
