@@ -1,6 +1,6 @@
 #!/bin/bash
 #*******************************************************************************
-#rtk_pub_repr_David_etal_2015_WRR.sh
+#tst_pub_repr_David_etal_2015_WRR.sh
 #*******************************************************************************
 
 #Purpose:
@@ -96,14 +96,14 @@ ln -s rapid_namelist_HSmsp_WRR rapid_namelist
 #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 unt=$((unt+1))
 if (("$unt" >= "$fst")) && (("$unt" <= "$lst")) ; then
-./rtk_nml_tidy_HSmsp_WRR.sh
+./tst_nml_tidy_HSmsp_WRR.sh
 echo "Running test $unt/x - simulation"
 
 test_file="tmp_run_$unt.txt"
 comp_file="tmp_run_comp_$unt.txt"
 Qout_gold='../output/HSmsp_WRR/Qout_HSmsp_2000_2009_VIC_NASA_sgl_pa_guess_n1_preonly_ilu.nc'
 
-Qout_file='../output/HSmsp_WRR/Qout_HSmsp_2000_2009_VIC_NASA_sgl_pa_guess_n1_preonly_ilu_rtk.nc'
+Qout_file='../output/HSmsp_WRR/Qout_HSmsp_2000_2009_VIC_NASA_sgl_pa_guess_n1_preonly_ilu_tst.nc'
 sed -i -e "s|Qout_file          =.*|Qout_file          ='$Qout_file'|"         \
           rapid_namelist_HSmsp_WRR  
 sleep 3
@@ -111,13 +111,13 @@ sleep 3
 mpiexec -n 1 ./rapid -ksp_type preonly > $test_file
 
 echo "Comparing files"
-./rtk_run_comp $Qout_gold $Qout_file 1e-12 1e-10 > $comp_file 
+./tst_run_comp $Qout_gold $Qout_file 1e-12 1e-10 > $comp_file 
 x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $comp_file" >&2 ; exit $x ; fi
 
 rm $Qout_file
 rm $test_file
 rm $comp_file
-./rtk_nml_tidy_HSmsp_WRR.sh
+./tst_nml_tidy_HSmsp_WRR.sh
 echo "Success"
 echo "********************"
 fi

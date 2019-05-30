@@ -1,11 +1,11 @@
 #!/bin/bash
 #*******************************************************************************
-#rtk_opt_comp.sh
+#tst_opt_comp.sh
 #*******************************************************************************
 
 #Purpose:
 #This script compares previous RAPID optimization results to the values given in
-#a text file (from rtk_opt_find.sh or rtk_opt_pick.sh).  
+#a text file (from tst_opt_find.sh or tst_opt_pick.sh).  
 #A total of 4 arguments must be provided:
 # - Argument 1: Name of the text file
 # - Argument 2: Value for Lambda k (to be compared with line 2 of text file) 

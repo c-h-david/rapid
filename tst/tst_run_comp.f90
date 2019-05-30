@@ -1,7 +1,7 @@
 !*******************************************************************************
-!Program - rtk_run_comp
+!Program - tst_run_comp
 !*******************************************************************************
-program rtk_run_comp
+program tst_run_comp
 
 !Purpose:
 !This Fortran program allows omparing two netCDF files from RAPID simulations.
@@ -356,4 +356,4 @@ end if
 
 end subroutine nc_check_status
 
-end program rtk_run_comp
+end program tst_run_comp

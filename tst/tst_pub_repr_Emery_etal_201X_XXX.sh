@@ -1,6 +1,6 @@
 #!/bin/bash
 #*******************************************************************************
-#rtk_pub_repr_Emery_etal_201X_XXX.sh
+#tst_pub_repr_Emery_etal_201X_XXX.sh
 #*******************************************************************************
 
 #Purpose:
@@ -94,9 +94,9 @@ ln -s rapid_namelist_San_Guad_DA_XXX rapid_namelist
 unt=$((unt+1))
 sim=$((sim+1))
 if (("$unt" >= "$fst")) && (("$unt" <= "$lst")) ; then
-./rtk_nml_tidy_San_Guad_DA_XXX.sh
+./tst_nml_tidy_San_Guad_DA_XXX.sh
 echo "Running simul. $sim/8"
-Qout_file='../../rapid/output/San_Guad_DA_XXX/Qout_San_Guad_Openloop_20100101_20100131_n1_preonly_rtk.nc'
+Qout_file='../../rapid/output/San_Guad_DA_XXX/Qout_San_Guad_Openloop_20100101_20100131_n1_preonly_tst.nc'
 Qout_gold='../../rapid/output/San_Guad_DA_XXX/Qout_San_Guad_Openloop_20100101_20100131.nc'
 rapd_file="tmp_run_$sim.txt"
 comp_file="tmp_run_comp_$sim.txt"
@@ -105,12 +105,12 @@ sed -i -e "s|Qout_file          =.*|Qout_file          ='$Qout_file'|"         \
 sleep 3
 mpiexec -n 1 ./rapid -ksp_type preonly > $rapd_file
 echo "Comparing files"
-./rtk_run_comp $Qout_gold $Qout_file > $comp_file 
+./tst_run_comp $Qout_gold $Qout_file > $comp_file 
 x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $comp_file" >&2 ; exit $x ; fi
 rm $Qout_file
 rm $rapd_file
 rm $comp_file
-./rtk_nml_tidy_San_Guad_DA_XXX.sh
+./tst_nml_tidy_San_Guad_DA_XXX.sh
 echo "Success"
 echo "********************"
 fi
@@ -122,9 +122,9 @@ fi
 unt=$((unt+1))
 sim=$((sim+1))
 if (("$unt" >= "$fst")) && (("$unt" <= "$lst")) ; then
-./rtk_nml_tidy_San_Guad_DA_XXX.sh
+./tst_nml_tidy_San_Guad_DA_XXX.sh
 echo "Running simul. $sim/8"
-Qout_file='../../rapid/output/San_Guad_DA_XXX/Qout_San_Guad_Analysis_20100101_20100131_tauR30_tauI1.50_tauTe-03_n1_preonly_rtk.nc'
+Qout_file='../../rapid/output/San_Guad_DA_XXX/Qout_San_Guad_Analysis_20100101_20100131_tauR30_tauI1.50_tauTe-03_n1_preonly_tst.nc'
 Qout_gold='../../rapid/output/San_Guad_DA_XXX/Qout_San_Guad_Analysis_20100101_20100131_tauR30_tauI1.50_tauTe-03.nc'
 rapd_file="tmp_run_$sim.txt"
 comp_file="tmp_run_comp_$sim.txt"
@@ -136,12 +136,12 @@ sed -i -e "s|Qout_file          =.*|Qout_file          ='$Qout_file'|"         \
 sleep 3
 mpiexec -n 1 ./rapid -ksp_type preonly > $rapd_file
 echo "Comparing files"
-./rtk_run_comp $Qout_gold $Qout_file > $comp_file 
+./tst_run_comp $Qout_gold $Qout_file > $comp_file 
 x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $comp_file" >&2 ; exit $x ; fi
 rm $Qout_file
 rm $rapd_file
 rm $comp_file
-./rtk_nml_tidy_San_Guad_DA_XXX.sh
+./tst_nml_tidy_San_Guad_DA_XXX.sh
 echo "Success"
 echo "********************"
 fi
@@ -153,9 +153,9 @@ fi
 unt=$((unt+1))
 sim=$((sim+1))
 if (("$unt" >= "$fst")) && (("$unt" <= "$lst")) ; then
-./rtk_nml_tidy_San_Guad_DA_XXX.sh
+./tst_nml_tidy_San_Guad_DA_XXX.sh
 echo "Running simul. $sim/8"
-Qout_file='../../rapid/output/San_Guad_DA_XXX/Qout_San_Guad_Analysis_20100101_20100131_tauR30_tauI1.50_tauT0_n1_preonly_rtk.nc'
+Qout_file='../../rapid/output/San_Guad_DA_XXX/Qout_San_Guad_Analysis_20100101_20100131_tauR30_tauI1.50_tauT0_n1_preonly_tst.nc'
 Qout_gold='../../rapid/output/San_Guad_DA_XXX/Qout_San_Guad_Analysis_20100101_20100131_tauR30_tauI1.50_tauT0.nc'
 rapd_file="tmp_run_$sim.txt"
 comp_file="tmp_run_comp_$sim.txt"
@@ -167,12 +167,12 @@ sed -i -e "s|Qout_file          =.*|Qout_file          ='$Qout_file'|"         \
 sleep 3
 mpiexec -n 1 ./rapid -ksp_type preonly > $rapd_file
 echo "Comparing files"
-./rtk_run_comp $Qout_gold $Qout_file > $comp_file 
+./tst_run_comp $Qout_gold $Qout_file > $comp_file 
 x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $comp_file" >&2 ; exit $x ; fi
 rm $Qout_file
 rm $rapd_file
 rm $comp_file
-./rtk_nml_tidy_San_Guad_DA_XXX.sh
+./tst_nml_tidy_San_Guad_DA_XXX.sh
 echo "Success"
 echo "********************"
 fi
@@ -184,9 +184,9 @@ fi
 unt=$((unt+1))
 sim=$((sim+1))
 if (("$unt" >= "$fst")) && (("$unt" <= "$lst")) ; then
-./rtk_nml_tidy_San_Guad_DA_XXX.sh
+./tst_nml_tidy_San_Guad_DA_XXX.sh
 echo "Running simul. $sim/8"
-Qout_file='../../rapid/output/San_Guad_DA_XXX/Qout_San_Guad_Analysis_20100101_20100131_tauR30_tauI1.00_tauTe-03_n1_preonly_rtk.nc'
+Qout_file='../../rapid/output/San_Guad_DA_XXX/Qout_San_Guad_Analysis_20100101_20100131_tauR30_tauI1.00_tauTe-03_n1_preonly_tst.nc'
 Qout_gold='../../rapid/output/San_Guad_DA_XXX/Qout_San_Guad_Analysis_20100101_20100131_tauR30_tauI1.00_tauTe-03.nc'
 rapd_file="tmp_run_$sim.txt"
 comp_file="tmp_run_comp_$sim.txt"
@@ -198,12 +198,12 @@ sed -i -e "s|Qout_file          =.*|Qout_file          ='$Qout_file'|"         \
 sleep 3
 mpiexec -n 1 ./rapid -ksp_type preonly > $rapd_file
 echo "Comparing files"
-./rtk_run_comp $Qout_gold $Qout_file > $comp_file 
+./tst_run_comp $Qout_gold $Qout_file > $comp_file 
 x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $comp_file" >&2 ; exit $x ; fi
 rm $Qout_file
 rm $rapd_file
 rm $comp_file
-./rtk_nml_tidy_San_Guad_DA_XXX.sh
+./tst_nml_tidy_San_Guad_DA_XXX.sh
 echo "Success"
 echo "********************"
 fi
@@ -222,9 +222,9 @@ do
 unt=$((unt+1))
 sim=$((sim+1))
 if (("$unt" >= "$fst")) && (("$unt" <= "$lst")) ; then
-./rtk_nml_tidy_San_Guad_DA_XXX.sh
+./tst_nml_tidy_San_Guad_DA_XXX.sh
 echo "Running simul. $sim/8"
-Qout_file='../../rapid/output/San_Guad_DA_XXX/Qout_San_Guad_Analysis_20100101_20100131_tauR30_tauI1.50_tauTe-03_n'$proc'_preonly_rtk.nc'
+Qout_file='../../rapid/output/San_Guad_DA_XXX/Qout_San_Guad_Analysis_20100101_20100131_tauR30_tauI1.50_tauTe-03_n'$proc'_preonly_tst.nc'
 Qout_gold='../../rapid/output/San_Guad_DA_XXX/Qout_San_Guad_Analysis_20100101_20100131_tauR30_tauI1.50_tauTe-03.nc'
 rapd_file="tmp_run_$sim.txt"
 comp_file="tmp_run_comp_$sim.txt"
@@ -236,12 +236,12 @@ sed -i -e "s|Qout_file          =.*|Qout_file          ='$Qout_file'|"         \
 sleep 3
 mpiexec -n $proc ./rapid -ksp_type richardson > $rapd_file
 echo "Comparing files"
-./rtk_run_comp $Qout_gold $Qout_file 0.0001 0.01 > $comp_file 
+./tst_run_comp $Qout_gold $Qout_file 0.0001 0.01 > $comp_file 
 x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $comp_file" >&2 ; exit $x ; fi
 rm $Qout_file
 rm $rapd_file
 rm $comp_file
-./rtk_nml_tidy_San_Guad_DA_XXX.sh
+./tst_nml_tidy_San_Guad_DA_XXX.sh
 echo "Success"
 echo "********************"
 fi

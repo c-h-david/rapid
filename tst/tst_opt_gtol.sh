@@ -1,6 +1,6 @@
 #!/bin/bash
 #*******************************************************************************
-#rtk_opt_gtol.sh
+#tst_opt_gtol.sh
 #*******************************************************************************
 
 #Purpose:
@@ -13,10 +13,10 @@
 #suggested values of gatol and grtol that can be used in order to reproduce the 
 #same results. 
 #A total of n (n>=1) arguments can be provided:
-# - Argument 1: Name of the 1st text file output from rtk_opt_find.sh
-# - Argument 2: Name of the 2nd text file output from rtk_opt_find.sh (optional)
+# - Argument 1: Name of the 1st text file output from tst_opt_find.sh
+# - Argument 2: Name of the 2nd text file output from tst_opt_find.sh (optional)
 # - ... 
-# - Argument n: Name of the nth text file output from rtk_opt_find.sh (optional)
+# - Argument n: Name of the nth text file output from tst_opt_find.sh (optional)
 #The script returns the following exit codes
 # - 0  if the script found the desired answer
 # - 22 if arguments are faulty 

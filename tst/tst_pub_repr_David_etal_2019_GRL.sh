@@ -1,6 +1,6 @@
 #!/bin/bash
 #*******************************************************************************
-#rtk_pub_repr_David_etal_2019_GRL.sh
+#tst_pub_repr_David_etal_2019_GRL.sh
 #*******************************************************************************
 
 #Purpose:
@@ -104,14 +104,14 @@ sed -i -e "s|IS_opt_run         =.*|IS_opt_run         =1|"                    \
 unt=$((unt+1))
 sim=$((sim+1))
 if (("$unt" >= "$fst")) && (("$unt" <= "$lst")) ; then
-./rtk_nml_tidy_WSWM_GRL.sh
+./tst_nml_tidy_WSWM_GRL.sh
 echo "Running simul. $sim/2"
 BS_opt_Qinit=".false."
 BS_opt_Qfinal=".true."
 BS_opt_uq=".false."
 Qinit_file=''
-Qfinal_file='../../rapid/output/WSWM_GRL/Qfinal_WSWM_729days_pag_dtR900s_n1_preonly_rtk.nc'
-Qout_file='../../rapid/output/WSWM_GRL/Qout_WSWM_729days_pag_dtR900s_n1_preonly_rtk.nc'
+Qfinal_file='../../rapid/output/WSWM_GRL/Qfinal_WSWM_729days_pag_dtR900s_n1_preonly_tst.nc'
+Qout_file='../../rapid/output/WSWM_GRL/Qout_WSWM_729days_pag_dtR900s_n1_preonly_tst.nc'
 Qfinal_gold='../../rapid/output/WSWM_GRL/Qfinal_WSWM_729days_pag_dtR900s_n1_preonly.nc'
 Qout_gold='../../rapid/output/WSWM_GRL/Qout_WSWM_729days_pag_dtR900s_n1_preonly.nc'
 rapd_file="tmp_run_$sim.txt"
@@ -126,16 +126,16 @@ sed -i -e "s|BS_opt_Qinit       =.*|BS_opt_Qinit       =$BS_opt_Qinit|"        \
 sleep 3
 mpiexec -n 1 ./rapid -ksp_type preonly > $rapd_file
 echo "Comparing files"
-./rtk_run_comp $Qout_gold $Qout_file 1e-40 1e-37 > $comp_file 
+./tst_run_comp $Qout_gold $Qout_file 1e-40 1e-37 > $comp_file 
 x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $comp_file" >&2 ; exit $x ; fi
 echo "Comparing files"
-./rtk_run_comp $Qfinal_gold $Qfinal_file 1e-40 1e-37 > $comp_file 
+./tst_run_comp $Qfinal_gold $Qfinal_file 1e-40 1e-37 > $comp_file 
 x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $comp_file" >&2 ; exit $x ; fi
 rm $Qout_file
 rm $Qfinal_file
 rm $rapd_file
 rm $comp_file
-./rtk_nml_tidy_WSWM_GRL.sh
+./tst_nml_tidy_WSWM_GRL.sh
 echo "Success"
 echo "********************"
 fi
@@ -146,14 +146,14 @@ fi
 unt=$((unt+1))
 sim=$((sim+1))
 if (("$unt" >= "$fst")) && (("$unt" <= "$lst")) ; then
-./rtk_nml_tidy_WSWM_GRL.sh
+./tst_nml_tidy_WSWM_GRL.sh
 echo "Running simul. $sim/2"
 BS_opt_Qinit=".true."
 BS_opt_Qfinal=".false."
 BS_opt_uq=".true."
 Qinit_file='../../rapid/output/WSWM_GRL/Qfinal_WSWM_729days_pag_dtR900s_n1_preonly.nc'
 Qfinal_file=''
-Qout_file='../../rapid/output/WSWM_GRL/Qout_WSWM_729days_pag_dtR900s_n1_preonly_init_err_rtk.nc'
+Qout_file='../../rapid/output/WSWM_GRL/Qout_WSWM_729days_pag_dtR900s_n1_preonly_init_err_tst.nc'
 Qfinal_gold=''
 Qout_gold='../../rapid/output/WSWM_GRL/Qout_WSWM_729days_pag_dtR900s_n1_preonly_init_err.nc'
 rapd_file="tmp_run_$sim.txt"
@@ -168,12 +168,12 @@ sed -i -e "s|BS_opt_Qinit       =.*|BS_opt_Qinit       =$BS_opt_Qinit|"        \
 sleep 3
 mpiexec -n 1 ./rapid -ksp_type preonly > $rapd_file
 echo "Comparing files"
-./rtk_run_comp $Qout_gold $Qout_file 1e-40 1e-37 > $comp_file 
+./tst_run_comp $Qout_gold $Qout_file 1e-40 1e-37 > $comp_file 
 x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $comp_file" >&2 ; exit $x ; fi
 rm $Qout_file
 rm $rapd_file
 rm $comp_file
-./rtk_nml_tidy_WSWM_GRL.sh
+./tst_nml_tidy_WSWM_GRL.sh
 echo "Success"
 echo "********************"
 fi

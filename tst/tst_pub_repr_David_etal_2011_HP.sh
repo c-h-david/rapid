@@ -1,6 +1,6 @@
 #!/bin/bash
 #*******************************************************************************
-#rtk_pub_repr_David_etal_2011_HP.sh
+#tst_pub_repr_David_etal_2011_HP.sh
 #*******************************************************************************
 
 #Purpose:
@@ -104,11 +104,11 @@ sed -i -e "s|IS_opt_run         =.*|IS_opt_run         =1|"                    \
 unt=$((unt+1))
 sim=$((sim+1))
 if (("$unt" >= "$fst")) && (("$unt" <= "$lst")) ; then
-./rtk_nml_tidy_France_HP.sh
+./tst_nml_tidy_France_HP.sh
 echo "Running simul. $sim/10"
 k_file='../../rapid/input/France_HP/k_modcou_1.csv'
 x_file='../../rapid/input/France_HP/x_modcou_1.csv'
-Qout_file='../../rapid/output/France_HP/Qout_France_201101_c_zvol_ext_3653days_p1_dtR1800s_n1_preonly_rtk.nc'
+Qout_file='../../rapid/output/France_HP/Qout_France_201101_c_zvol_ext_3653days_p1_dtR1800s_n1_preonly_tst.nc'
 Qout_gold='../../rapid/output/France_HP/Qout_France_201101_c_zvol_ext_3653days_p1_dtR1800s.nc'
 rapd_file="tmp_run_$sim.txt"
 comp_file="tmp_run_comp_$sim.txt"
@@ -119,12 +119,12 @@ sed -i -e "s|k_file             =.*|k_file             ='$k_file'   |"         \
 sleep 3
 mpiexec -n 1 ./rapid -ksp_type preonly > $rapd_file
 echo "Comparing files"
-./rtk_run_comp $Qout_gold $Qout_file 1e-40 1e-37 > $comp_file 
+./tst_run_comp $Qout_gold $Qout_file 1e-40 1e-37 > $comp_file 
 x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $comp_file" >&2 ; exit $x ; fi
 rm $Qout_file
 rm $rapd_file
 rm $comp_file
-./rtk_nml_tidy_France_HP.sh
+./tst_nml_tidy_France_HP.sh
 echo "Success"
 echo "********************"
 fi
@@ -135,11 +135,11 @@ fi
 unt=$((unt+1))
 sim=$((sim+1))
 if (("$unt" >= "$fst")) && (("$unt" <= "$lst")) ; then
-./rtk_nml_tidy_France_HP.sh
+./tst_nml_tidy_France_HP.sh
 echo "Running simul. $sim/10"
 k_file='../../rapid/input/France_HP/k_modcou_2.csv'
 x_file='../../rapid/input/France_HP/x_modcou_2.csv'
-Qout_file='../../rapid/output/France_HP/Qout_France_201101_c_zvol_ext_3653days_p2_dtR1800s_n1_preonly_rtk.nc'
+Qout_file='../../rapid/output/France_HP/Qout_France_201101_c_zvol_ext_3653days_p2_dtR1800s_n1_preonly_tst.nc'
 Qout_gold='../../rapid/output/France_HP/Qout_France_201101_c_zvol_ext_3653days_p2_dtR1800s.nc'
 rapd_file="tmp_run_$sim.txt"
 comp_file="tmp_run_comp_$sim.txt"
@@ -150,12 +150,12 @@ sed -i -e "s|k_file             =.*|k_file             ='$k_file'   |"         \
 sleep 3
 mpiexec -n 1 ./rapid -ksp_type preonly > $rapd_file
 echo "Comparing files"
-./rtk_run_comp $Qout_gold $Qout_file 1e-40 1e-37 > $comp_file 
+./tst_run_comp $Qout_gold $Qout_file 1e-40 1e-37 > $comp_file 
 x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $comp_file" >&2 ; exit $x ; fi
 rm $Qout_file
 rm $rapd_file
 rm $comp_file
-./rtk_nml_tidy_France_HP.sh
+./tst_nml_tidy_France_HP.sh
 echo "Success"
 echo "********************"
 fi
@@ -166,11 +166,11 @@ fi
 unt=$((unt+1))
 sim=$((sim+1))
 if (("$unt" >= "$fst")) && (("$unt" <= "$lst")) ; then
-./rtk_nml_tidy_France_HP.sh
+./tst_nml_tidy_France_HP.sh
 echo "Running simul. $sim/10"
 k_file='../../rapid/input/France_HP/k_modcou_3.csv'
 x_file='../../rapid/input/France_HP/x_modcou_3.csv'
-Qout_file='../../rapid/output/France_HP/Qout_France_201101_c_zvol_ext_3653days_p3_dtR1800s_n1_preonly_rtk.nc'
+Qout_file='../../rapid/output/France_HP/Qout_France_201101_c_zvol_ext_3653days_p3_dtR1800s_n1_preonly_tst.nc'
 Qout_gold='../../rapid/output/France_HP/Qout_France_201101_c_zvol_ext_3653days_p3_dtR1800s.nc'
 rapd_file="tmp_run_$sim.txt"
 comp_file="tmp_run_comp_$sim.txt"
@@ -181,12 +181,12 @@ sed -i -e "s|k_file             =.*|k_file             ='$k_file'   |"         \
 sleep 3
 mpiexec -n 1 ./rapid -ksp_type preonly > $rapd_file
 echo "Comparing files"
-./rtk_run_comp $Qout_gold $Qout_file 1e-40 1e-37 > $comp_file 
+./tst_run_comp $Qout_gold $Qout_file 1e-40 1e-37 > $comp_file 
 x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $comp_file" >&2 ; exit $x ; fi
 rm $Qout_file
 rm $rapd_file
 rm $comp_file
-./rtk_nml_tidy_France_HP.sh
+./tst_nml_tidy_France_HP.sh
 echo "Success"
 echo "********************"
 fi
@@ -197,11 +197,11 @@ fi
 unt=$((unt+1))
 sim=$((sim+1))
 if (("$unt" >= "$fst")) && (("$unt" <= "$lst")) ; then
-./rtk_nml_tidy_France_HP.sh
+./tst_nml_tidy_France_HP.sh
 echo "Running simul. $sim/10"
 k_file='../../rapid/input/France_HP/k_modcou_4.csv'
 x_file='../../rapid/input/France_HP/x_modcou_4.csv'
-Qout_file='../../rapid/output/France_HP/Qout_France_201101_c_zvol_ext_3653days_p4_dtR1800s_n1_preonly_rtk.nc'
+Qout_file='../../rapid/output/France_HP/Qout_France_201101_c_zvol_ext_3653days_p4_dtR1800s_n1_preonly_tst.nc'
 Qout_gold='../../rapid/output/France_HP/Qout_France_201101_c_zvol_ext_3653days_p4_dtR1800s.nc'
 rapd_file="tmp_run_$sim.txt"
 comp_file="tmp_run_comp_$sim.txt"
@@ -212,12 +212,12 @@ sed -i -e "s|k_file             =.*|k_file             ='$k_file'   |"         \
 sleep 3
 mpiexec -n 1 ./rapid -ksp_type preonly > $rapd_file
 echo "Comparing files"
-./rtk_run_comp $Qout_gold $Qout_file 1e-40 1e-37 > $comp_file 
+./tst_run_comp $Qout_gold $Qout_file 1e-40 1e-37 > $comp_file 
 x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $comp_file" >&2 ; exit $x ; fi
 rm $Qout_file
 rm $rapd_file
 rm $comp_file
-./rtk_nml_tidy_France_HP.sh
+./tst_nml_tidy_France_HP.sh
 echo "Success"
 echo "********************"
 fi
@@ -228,11 +228,11 @@ fi
 unt=$((unt+1))
 sim=$((sim+1))
 if (("$unt" >= "$fst")) && (("$unt" <= "$lst")) ; then
-./rtk_nml_tidy_France_HP.sh
+./tst_nml_tidy_France_HP.sh
 echo "Running simul. $sim/10"
 k_file='../../rapid/input/France_HP/k_modcou_a.csv'
 x_file='../../rapid/input/France_HP/x_modcou_a.csv'
-Qout_file='../../rapid/output/France_HP/Qout_France_201101_c_zvol_ext_3653days_pa_dtR1800s_n1_preonly_rtk.nc'
+Qout_file='../../rapid/output/France_HP/Qout_France_201101_c_zvol_ext_3653days_pa_dtR1800s_n1_preonly_tst.nc'
 Qout_gold='../../rapid/output/France_HP/Qout_France_201101_c_zvol_ext_3653days_pa_dtR1800s.nc'
 rapd_file="tmp_run_$sim.txt"
 comp_file="tmp_run_comp_$sim.txt"
@@ -243,12 +243,12 @@ sed -i -e "s|k_file             =.*|k_file             ='$k_file'   |"         \
 sleep 3
 mpiexec -n 1 ./rapid -ksp_type preonly > $rapd_file
 echo "Comparing files"
-./rtk_run_comp $Qout_gold $Qout_file 1e-40 1e-37 > $comp_file 
+./tst_run_comp $Qout_gold $Qout_file 1e-40 1e-37 > $comp_file 
 x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $comp_file" >&2 ; exit $x ; fi
 rm $Qout_file
 rm $rapd_file
 rm $comp_file
-./rtk_nml_tidy_France_HP.sh
+./tst_nml_tidy_France_HP.sh
 echo "Success"
 echo "********************"
 fi
@@ -259,11 +259,11 @@ fi
 unt=$((unt+1))
 sim=$((sim+1))
 if (("$unt" >= "$fst")) && (("$unt" <= "$lst")) ; then
-./rtk_nml_tidy_France_HP.sh
+./tst_nml_tidy_France_HP.sh
 echo "Running simul. $sim/10"
 k_file='../../rapid/input/France_HP/k_modcou_b.csv'
 x_file='../../rapid/input/France_HP/x_modcou_b.csv'
-Qout_file='../../rapid/output/France_HP/Qout_France_201101_c_zvol_ext_3653days_pb_dtR1800s_n1_preonly_rtk.nc'
+Qout_file='../../rapid/output/France_HP/Qout_France_201101_c_zvol_ext_3653days_pb_dtR1800s_n1_preonly_tst.nc'
 Qout_gold='../../rapid/output/France_HP/Qout_France_201101_c_zvol_ext_3653days_pb_dtR1800s.nc'
 rapd_file="tmp_run_$sim.txt"
 comp_file="tmp_run_comp_$sim.txt"
@@ -274,12 +274,12 @@ sed -i -e "s|k_file             =.*|k_file             ='$k_file'   |"         \
 sleep 3
 mpiexec -n 1 ./rapid -ksp_type preonly > $rapd_file
 echo "Comparing files"
-./rtk_run_comp $Qout_gold $Qout_file 1e-40 1e-37 > $comp_file 
+./tst_run_comp $Qout_gold $Qout_file 1e-40 1e-37 > $comp_file 
 x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $comp_file" >&2 ; exit $x ; fi
 rm $Qout_file
 rm $rapd_file
 rm $comp_file
-./rtk_nml_tidy_France_HP.sh
+./tst_nml_tidy_France_HP.sh
 echo "Success"
 echo "********************"
 fi
@@ -290,11 +290,11 @@ fi
 unt=$((unt+1))
 sim=$((sim+1))
 if (("$unt" >= "$fst")) && (("$unt" <= "$lst")) ; then
-./rtk_nml_tidy_France_HP.sh
+./tst_nml_tidy_France_HP.sh
 echo "Running simul. $sim/10"
 k_file='../../rapid/input/France_HP/k_modcou_c.csv'
 x_file='../../rapid/input/France_HP/x_modcou_c.csv'
-Qout_file='../../rapid/output/France_HP/Qout_France_201101_c_zvol_ext_3653days_pc_dtR1800s_n1_preonly_rtk.nc'
+Qout_file='../../rapid/output/France_HP/Qout_France_201101_c_zvol_ext_3653days_pc_dtR1800s_n1_preonly_tst.nc'
 Qout_gold='../../rapid/output/France_HP/Qout_France_201101_c_zvol_ext_3653days_pc_dtR1800s.nc'
 rapd_file="tmp_run_$sim.txt"
 comp_file="tmp_run_comp_$sim.txt"
@@ -305,12 +305,12 @@ sed -i -e "s|k_file             =.*|k_file             ='$k_file'   |"         \
 sleep 3
 mpiexec -n 1 ./rapid -ksp_type preonly > $rapd_file
 echo "Comparing files"
-./rtk_run_comp $Qout_gold $Qout_file 1e-40 1e-37 > $comp_file 
+./tst_run_comp $Qout_gold $Qout_file 1e-40 1e-37 > $comp_file 
 x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $comp_file" >&2 ; exit $x ; fi
 rm $Qout_file
 rm $rapd_file
 rm $comp_file
-./rtk_nml_tidy_France_HP.sh
+./tst_nml_tidy_France_HP.sh
 echo "Success"
 echo "********************"
 fi
@@ -325,11 +325,11 @@ fi
 unt=$((unt+1))
 sim=$((sim+1))
 if (("$unt" >= "$fst")) && (("$unt" <= "$lst")) ; then
-./rtk_nml_tidy_France_HP.sh
+./tst_nml_tidy_France_HP.sh
 echo "Running simul. $sim/10"
 k_file='../../rapid/input/France_HP/k_modcou_0.csv'
 x_file='../../rapid/input/France_HP/x_modcou_0.csv'
-Qout_file='../../rapid/output/France_HP/Qout_France_201101_c_zvol_ext_366days_p0_dtR1800s_n1_preonly_rtk.nc'
+Qout_file='../../rapid/output/France_HP/Qout_France_201101_c_zvol_ext_366days_p0_dtR1800s_n1_preonly_tst.nc'
 Qout_gold='../../rapid/output/France_HP/Qout_France_201101_c_zvol_ext_366days_p0_dtR1800s.nc'
 rapd_file="tmp_run_$sim.txt"
 comp_file="tmp_run_comp_$sim.txt"
@@ -342,12 +342,12 @@ sed -i -e "s|k_file             =.*|k_file             ='$k_file'   |"         \
 sleep 3
 mpiexec -n 1 ./rapid -ksp_type preonly > $rapd_file
 echo "Comparing files"
-./rtk_run_comp $Qout_gold $Qout_file 1e-40 1e-37 > $comp_file 
+./tst_run_comp $Qout_gold $Qout_file 1e-40 1e-37 > $comp_file 
 x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $comp_file" >&2 ; exit $x ; fi
 rm $Qout_file
 rm $rapd_file
 rm $comp_file
-./rtk_nml_tidy_France_HP.sh
+./tst_nml_tidy_France_HP.sh
 echo "Success"
 echo "********************"
 fi
@@ -358,11 +358,11 @@ fi
 unt=$((unt+1))
 sim=$((sim+1))
 if (("$unt" >= "$fst")) && (("$unt" <= "$lst")) ; then
-./rtk_nml_tidy_France_HP.sh
+./tst_nml_tidy_France_HP.sh
 echo "Running simul. $sim/10"
 k_file='../../rapid/input/France_HP/k_modcou_b.csv'
 x_file='../../rapid/input/France_HP/x_modcou_b.csv'
-Qout_file='../../rapid/output/France_HP/Qout_France_201101_c_zvol_ext_366days_pb_dtR1800s_n1_preonly_rtk.nc'
+Qout_file='../../rapid/output/France_HP/Qout_France_201101_c_zvol_ext_366days_pb_dtR1800s_n1_preonly_tst.nc'
 Qout_gold='../../rapid/output/France_HP/Qout_France_201101_c_zvol_ext_366days_pb_dtR1800s.nc'
 rapd_file="tmp_run_$sim.txt"
 comp_file="tmp_run_comp_$sim.txt"
@@ -375,12 +375,12 @@ sed -i -e "s|k_file             =.*|k_file             ='$k_file'   |"         \
 sleep 3
 mpiexec -n 1 ./rapid -ksp_type preonly > $rapd_file
 echo "Comparing files"
-./rtk_run_comp $Qout_gold $Qout_file 1e-40 1e-37 > $comp_file 
+./tst_run_comp $Qout_gold $Qout_file 1e-40 1e-37 > $comp_file 
 x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $comp_file" >&2 ; exit $x ; fi
 rm $Qout_file
 rm $rapd_file
 rm $comp_file
-./rtk_nml_tidy_France_HP.sh
+./tst_nml_tidy_France_HP.sh
 echo "Success"
 echo "********************"
 fi
@@ -391,11 +391,11 @@ fi
 unt=$((unt+1))
 sim=$((sim+1))
 if (("$unt" >= "$fst")) && (("$unt" <= "$lst")) ; then
-./rtk_nml_tidy_France_HP.sh
+./tst_nml_tidy_France_HP.sh
 echo "Running simul. $sim/10"
 k_file='../../rapid/input/France_HP/k_modcou_b.csv'
 x_file='../../rapid/input/France_HP/x_modcou_b.csv'
-Qout_file='../../rapid/output/France_HP/Qout_France_201101_c_zvol_ext_366days_pb_dtR1800s_pougny_n1_preonly_rtk.nc'
+Qout_file='../../rapid/output/France_HP/Qout_France_201101_c_zvol_ext_366days_pb_dtR1800s_pougny_n1_preonly_tst.nc'
 Qout_gold='../../rapid/output/France_HP/Qout_France_201101_c_zvol_ext_366days_pb_dtR1800s_pougny.nc'
 rapd_file="tmp_run_$sim.txt"
 comp_file="tmp_run_comp_$sim.txt"
@@ -410,12 +410,12 @@ sed -i -e "s|k_file             =.*|k_file             ='$k_file'   |"         \
 sleep 3
 mpiexec -n 1 ./rapid -ksp_type preonly > $rapd_file
 echo "Comparing files"
-./rtk_run_comp $Qout_gold $Qout_file 1e-40 1e-37 > $comp_file 
+./tst_run_comp $Qout_gold $Qout_file 1e-40 1e-37 > $comp_file 
 x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $comp_file" >&2 ; exit $x ; fi
 rm $Qout_file
 rm $rapd_file
 rm $comp_file
-./rtk_nml_tidy_France_HP.sh
+./tst_nml_tidy_France_HP.sh
 echo "Success"
 echo "********************"
 fi
@@ -437,7 +437,7 @@ for ii in `seq 0 2`;
 do
 unt=$((unt+1))
 if (("$unt" >= "$fst")) && (("$unt" <= "$lst")) ; then
-./rtk_nml_tidy_France_HP.sh
+./tst_nml_tidy_France_HP.sh
 echo "Running optim. ${opt}.$ii/35"
 kfac_file='../../rapid/input/France_HP/kfac_modcou_1km_hour.csv'
 IS_opt_phi=1
@@ -456,17 +456,17 @@ sed -i -e "s|IS_opt_run         =.*|IS_opt_run         =2|"                    \
           rapid_namelist_France_HP  
 sleep 3
 mpiexec -n 1 ./rapid -ksp_type preonly -tao_gatol 0.01 -tao_grtol 0.00092 > $rapd_file
-./rtk_opt_find.sh $rapd_file | cat > $find_file
-./rtk_opt_comp.sh $find_file ${ZS_knorm_finals[ii]} ${ZS_xnorm_finals[ii]} ${ZS_phi_finals[ii]} 
+./tst_opt_find.sh $rapd_file | cat > $find_file
+./tst_opt_comp.sh $find_file ${ZS_knorm_finals[ii]} ${ZS_xnorm_finals[ii]} ${ZS_phi_finals[ii]} 
 x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $find_file" >&2 ; exit $x ; fi
-./rtk_nml_tidy_France_HP.sh
+./tst_nml_tidy_France_HP.sh
 fi
 done
 if (("$unt-2" >= "$fst")) && (("$unt" <= "$lst")) ; then
 echo "Comparing best values"
 pick_file="tmp_opt_pick_$opt.txt"
-./rtk_opt_pick.sh tmp_opt_find_$opt*.txt | cat > $pick_file
-./rtk_opt_comp.sh $pick_file 0.188477 0.0307617 117.426
+./tst_opt_pick.sh tmp_opt_find_$opt*.txt | cat > $pick_file
+./tst_opt_comp.sh $pick_file 0.188477 0.0307617 117.426
 x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $pick_file" >&2 ; exit $x ; fi
 echo "Success"
 echo "********************"
@@ -486,7 +486,7 @@ for ii in `seq 0 2`;
 do
 unt=$((unt+1))
 if (("$unt" >= "$fst")) && (("$unt" <= "$lst")) ; then
-./rtk_nml_tidy_France_HP.sh
+./tst_nml_tidy_France_HP.sh
 echo "Running optim. ${opt}.$ii/35"
 kfac_file='../../rapid/input/France_HP/kfac_modcou_1km_hour.csv'
 IS_opt_phi=2
@@ -505,17 +505,17 @@ sed -i -e "s|IS_opt_run         =.*|IS_opt_run         =2|"                    \
           rapid_namelist_France_HP  
 sleep 3
 mpiexec -n 1 ./rapid -ksp_type preonly -tao_gatol 0.01 -tao_grtol 0.000050 > $rapd_file
-./rtk_opt_find.sh $rapd_file | cat > $find_file
-./rtk_opt_comp.sh $find_file ${ZS_knorm_finals[ii]} ${ZS_xnorm_finals[ii]} ${ZS_phi_finals[ii]} 
+./tst_opt_find.sh $rapd_file | cat > $find_file
+./tst_opt_comp.sh $find_file ${ZS_knorm_finals[ii]} ${ZS_xnorm_finals[ii]} ${ZS_phi_finals[ii]} 
 x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $find_file" >&2 ; exit $x ; fi
-./rtk_nml_tidy_France_HP.sh
+./tst_nml_tidy_France_HP.sh
 fi
 done
 if (("$unt-2" >= "$fst")) && (("$unt" <= "$lst")) ; then
 echo "Comparing best values"
 pick_file="tmp_opt_pick_$opt.txt"
-./rtk_opt_pick.sh tmp_opt_find_$opt*.txt | cat > $pick_file
-./rtk_opt_comp.sh $pick_file 0.365616 0.237343 40761.756
+./tst_opt_pick.sh tmp_opt_find_$opt*.txt | cat > $pick_file
+./tst_opt_comp.sh $pick_file 0.365616 0.237343 40761.756
 x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $pick_file" >&2 ; exit $x ; fi
 echo "Success"
 echo "********************"
@@ -535,7 +535,7 @@ for ii in `seq 0 2`;
 do
 unt=$((unt+1))
 if (("$unt" >= "$fst")) && (("$unt" <= "$lst")) ; then
-./rtk_nml_tidy_France_HP.sh
+./tst_nml_tidy_France_HP.sh
 echo "Running optim. ${opt}.$ii/35"
 kfac_file='../../rapid/input/France_HP/kfac_modcou_ttra_length.csv'
 IS_opt_phi=1
@@ -554,17 +554,17 @@ sed -i -e "s|IS_opt_run         =.*|IS_opt_run         =2|"                    \
           rapid_namelist_France_HP  
 sleep 3
 mpiexec -n 1 ./rapid -ksp_type preonly -tao_gatol 0.01 -tao_grtol 0.00091 > $rapd_file
-./rtk_opt_find.sh $rapd_file | cat > $find_file
-./rtk_opt_comp.sh $find_file ${ZS_knorm_finals[ii]} ${ZS_xnorm_finals[ii]} ${ZS_phi_finals[ii]} 
+./tst_opt_find.sh $rapd_file | cat > $find_file
+./tst_opt_comp.sh $find_file ${ZS_knorm_finals[ii]} ${ZS_xnorm_finals[ii]} ${ZS_phi_finals[ii]} 
 x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $find_file" >&2 ; exit $x ; fi
-./rtk_nml_tidy_France_HP.sh
+./tst_nml_tidy_France_HP.sh
 fi
 done
 if (("$unt-2" >= "$fst")) && (("$unt" <= "$lst")) ; then
 echo "Comparing best values"
 pick_file="tmp_opt_pick_$opt.txt"
-./rtk_opt_pick.sh tmp_opt_find_$opt*.txt | cat > $pick_file
-./rtk_opt_comp.sh $pick_file 1.25 0.375 119.829 
+./tst_opt_pick.sh tmp_opt_find_$opt*.txt | cat > $pick_file
+./tst_opt_comp.sh $pick_file 1.25 0.375 119.829 
 x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $pick_file" >&2 ; exit $x ; fi
 echo "Success"
 echo "********************"
@@ -584,7 +584,7 @@ for ii in `seq 0 2`;
 do
 unt=$((unt+1))
 if (("$unt" >= "$fst")) && (("$unt" <= "$lst")) ; then
-./rtk_nml_tidy_France_HP.sh
+./tst_nml_tidy_France_HP.sh
 echo "Running optim. ${opt}.$ii/35"
 kfac_file='../../rapid/input/France_HP/kfac_modcou_ttra_length.csv'
 IS_opt_phi=2
@@ -603,17 +603,17 @@ sed -i -e "s|IS_opt_run         =.*|IS_opt_run         =2|"                    \
           rapid_namelist_France_HP  
 sleep 3
 mpiexec -n 1 ./rapid -ksp_type preonly -tao_gatol 0.01 -tao_grtol 0.000050 > $rapd_file
-./rtk_opt_find.sh $rapd_file | cat > $find_file
-./rtk_opt_comp.sh $find_file ${ZS_knorm_finals[ii]} ${ZS_xnorm_finals[ii]} ${ZS_phi_finals[ii]} 
+./tst_opt_find.sh $rapd_file | cat > $find_file
+./tst_opt_comp.sh $find_file ${ZS_knorm_finals[ii]} ${ZS_xnorm_finals[ii]} ${ZS_phi_finals[ii]} 
 x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $find_file" >&2 ; exit $x ; fi
-./rtk_nml_tidy_France_HP.sh
+./tst_nml_tidy_France_HP.sh
 fi
 done
 if (("$unt-2" >= "$fst")) && (("$unt" <= "$lst")) ; then
 echo "Comparing best values"
 pick_file="tmp_opt_pick_$opt.txt"
-./rtk_opt_pick.sh tmp_opt_find_$opt*.txt | cat > $pick_file
-./rtk_opt_comp.sh $pick_file 2 0 40257.926 
+./tst_opt_pick.sh tmp_opt_find_$opt*.txt | cat > $pick_file
+./tst_opt_comp.sh $pick_file 2 0 40257.926 
 x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $pick_file" >&2 ; exit $x ; fi
 echo "Success"
 echo "********************"
@@ -633,7 +633,7 @@ for ii in `seq 0 2`;
 do
 unt=$((unt+1))
 if (("$unt" >= "$fst")) && (("$unt" <= "$lst")) ; then
-./rtk_nml_tidy_France_HP.sh
+./tst_nml_tidy_France_HP.sh
 echo "Running optim. ${opt}.$ii/35"
 kfac_file='../../rapid/input/France_HP/kfac_modcou_1km_hour.csv'
 IS_opt_phi=2
@@ -652,17 +652,17 @@ sed -i -e "s|IS_opt_run         =.*|IS_opt_run         =2|"                    \
           rapid_namelist_France_HP  
 sleep 3
 mpiexec -n 1 ./rapid -ksp_type preonly -tao_gatol 0.01 -tao_grtol 0.00026 > $rapd_file
-./rtk_opt_find.sh $rapd_file | cat > $find_file
-./rtk_opt_comp.sh $find_file ${ZS_knorm_finals[ii]} ${ZS_xnorm_finals[ii]} ${ZS_phi_finals[ii]} 
+./tst_opt_find.sh $rapd_file | cat > $find_file
+./tst_opt_comp.sh $find_file ${ZS_knorm_finals[ii]} ${ZS_xnorm_finals[ii]} ${ZS_phi_finals[ii]} 
 x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $find_file" >&2 ; exit $x ; fi
-./rtk_nml_tidy_France_HP.sh
+./tst_nml_tidy_France_HP.sh
 fi
 done
 if (("$unt-2" >= "$fst")) && (("$unt" <= "$lst")) ; then
 echo "Comparing best values"
 pick_file="tmp_opt_pick_$opt.txt"
-./rtk_opt_pick.sh tmp_opt_find_$opt*.txt | cat > $pick_file
-./rtk_opt_comp.sh $pick_file 0.375 0.3125 1452.146 
+./tst_opt_pick.sh tmp_opt_find_$opt*.txt | cat > $pick_file
+./tst_opt_comp.sh $pick_file 0.375 0.3125 1452.146 
 x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $pick_file" >&2 ; exit $x ; fi
 echo "Success"
 echo "********************"
@@ -682,7 +682,7 @@ for ii in `seq 0 2`;
 do
 unt=$((unt+1))
 if (("$unt" >= "$fst")) && (("$unt" <= "$lst")) ; then
-./rtk_nml_tidy_France_HP.sh
+./tst_nml_tidy_France_HP.sh
 echo "Running optim. ${opt}.$ii/35"
 kfac_file='../../rapid/input/France_HP/kfac_modcou_1km_hour.csv'
 IS_opt_phi=2
@@ -701,17 +701,17 @@ sed -i -e "s|IS_opt_run         =.*|IS_opt_run         =2|"                    \
           rapid_namelist_France_HP  
 sleep 3
 mpiexec -n 1 ./rapid -ksp_type preonly -tao_gatol 0.01 -tao_grtol 0.00012 > $rapd_file
-./rtk_opt_find.sh $rapd_file | cat > $find_file
-./rtk_opt_comp.sh $find_file ${ZS_knorm_finals[ii]} ${ZS_xnorm_finals[ii]} ${ZS_phi_finals[ii]} 
+./tst_opt_find.sh $rapd_file | cat > $find_file
+./tst_opt_comp.sh $find_file ${ZS_knorm_finals[ii]} ${ZS_xnorm_finals[ii]} ${ZS_phi_finals[ii]} 
 x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $find_file" >&2 ; exit $x ; fi
-./rtk_nml_tidy_France_HP.sh
+./tst_nml_tidy_France_HP.sh
 fi
 done
 if (("$unt-2" >= "$fst")) && (("$unt" <= "$lst")) ; then
 echo "Comparing best values"
 pick_file="tmp_opt_pick_$opt.txt"
-./rtk_opt_pick.sh tmp_opt_find_$opt*.txt | cat > $pick_file
-./rtk_opt_comp.sh $pick_file 0.294052 0.00948334 6802.511
+./tst_opt_pick.sh tmp_opt_find_$opt*.txt | cat > $pick_file
+./tst_opt_comp.sh $pick_file 0.294052 0.00948334 6802.511
 x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $pick_file" >&2 ; exit $x ; fi
 echo "Success"
 echo "********************"
@@ -731,7 +731,7 @@ for ii in `seq 0 2`;
 do
 unt=$((unt+1))
 if (("$unt" >= "$fst")) && (("$unt" <= "$lst")) ; then
-./rtk_nml_tidy_France_HP.sh
+./tst_nml_tidy_France_HP.sh
 echo "Running optim. ${opt}.$ii/35"
 kfac_file='../../rapid/input/France_HP/kfac_modcou_1km_hour.csv'
 IS_opt_phi=2
@@ -750,17 +750,17 @@ sed -i -e "s|IS_opt_run         =.*|IS_opt_run         =2|"                    \
           rapid_namelist_France_HP  
 sleep 3
 mpiexec -n 1 ./rapid -ksp_type preonly -tao_gatol 0.01 -tao_grtol 0.000094 > $rapd_file
-./rtk_opt_find.sh $rapd_file | cat > $find_file
-./rtk_opt_comp.sh $find_file ${ZS_knorm_finals[ii]} ${ZS_xnorm_finals[ii]} ${ZS_phi_finals[ii]} 
+./tst_opt_find.sh $rapd_file | cat > $find_file
+./tst_opt_comp.sh $find_file ${ZS_knorm_finals[ii]} ${ZS_xnorm_finals[ii]} ${ZS_phi_finals[ii]} 
 x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $find_file" >&2 ; exit $x ; fi
-./rtk_nml_tidy_France_HP.sh
+./tst_nml_tidy_France_HP.sh
 fi
 done
 if (("$unt-2" >= "$fst")) && (("$unt" <= "$lst")) ; then
 echo "Comparing best values"
 pick_file="tmp_opt_pick_$opt.txt"
-./rtk_opt_pick.sh tmp_opt_find_$opt*.txt | cat > $pick_file
-./rtk_opt_comp.sh $pick_file 0.414429 0.196747 11355.138
+./tst_opt_pick.sh tmp_opt_find_$opt*.txt | cat > $pick_file
+./tst_opt_comp.sh $pick_file 0.414429 0.196747 11355.138
 x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $pick_file" >&2 ; exit $x ; fi
 echo "Success"
 echo "********************"
@@ -780,7 +780,7 @@ for ii in `seq 0 2`;
 do
 unt=$((unt+1))
 if (("$unt" >= "$fst")) && (("$unt" <= "$lst")) ; then
-./rtk_nml_tidy_France_HP.sh
+./tst_nml_tidy_France_HP.sh
 echo "Running optim. ${opt}.$ii/35"
 kfac_file='../../rapid/input/France_HP/kfac_modcou_1km_hour.csv'
 IS_opt_phi=2
@@ -799,17 +799,17 @@ sed -i -e "s|IS_opt_run         =.*|IS_opt_run         =2|"                    \
           rapid_namelist_France_HP  
 sleep 3
 mpiexec -n 1 ./rapid -ksp_type preonly -tao_gatol 0.01 -tao_grtol 0.00016 > $rapd_file
-./rtk_opt_find.sh $rapd_file | cat > $find_file
-./rtk_opt_comp.sh $find_file ${ZS_knorm_finals[ii]} ${ZS_xnorm_finals[ii]} ${ZS_phi_finals[ii]} 
+./tst_opt_find.sh $rapd_file | cat > $find_file
+./tst_opt_comp.sh $find_file ${ZS_knorm_finals[ii]} ${ZS_xnorm_finals[ii]} ${ZS_phi_finals[ii]} 
 x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $find_file" >&2 ; exit $x ; fi
-./rtk_nml_tidy_France_HP.sh
+./tst_nml_tidy_France_HP.sh
 fi
 done
 if (("$unt-2" >= "$fst")) && (("$unt" <= "$lst")) ; then
 echo "Comparing best values"
 pick_file="tmp_opt_pick_$opt.txt"
-./rtk_opt_pick.sh tmp_opt_find_$opt*.txt | cat > $pick_file
-./rtk_opt_comp.sh $pick_file 0.53125 0.234375 4062.069
+./tst_opt_pick.sh tmp_opt_find_$opt*.txt | cat > $pick_file
+./tst_opt_comp.sh $pick_file 0.53125 0.234375 4062.069
 x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $pick_file" >&2 ; exit $x ; fi
 echo "Success"
 echo "********************"
@@ -829,7 +829,7 @@ for ii in `seq 0 2`;
 do
 unt=$((unt+1))
 if (("$unt" >= "$fst")) && (("$unt" <= "$lst")) ; then
-./rtk_nml_tidy_France_HP.sh
+./tst_nml_tidy_France_HP.sh
 echo "Running optim. ${opt}.$ii/35"
 kfac_file='../../rapid/input/France_HP/kfac_modcou_1km_hour.csv'
 IS_opt_phi=2
@@ -848,17 +848,17 @@ sed -i -e "s|IS_opt_run         =.*|IS_opt_run         =2|"                    \
           rapid_namelist_France_HP  
 sleep 3
 mpiexec -n 1 ./rapid -ksp_type preonly -tao_gatol 0.01 -tao_grtol 0.00012 > $rapd_file
-./rtk_opt_find.sh $rapd_file | cat > $find_file
-./rtk_opt_comp.sh $find_file ${ZS_knorm_finals[ii]} ${ZS_xnorm_finals[ii]} ${ZS_phi_finals[ii]} 
+./tst_opt_find.sh $rapd_file | cat > $find_file
+./tst_opt_comp.sh $find_file ${ZS_knorm_finals[ii]} ${ZS_xnorm_finals[ii]} ${ZS_phi_finals[ii]} 
 x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $find_file" >&2 ; exit $x ; fi
-./rtk_nml_tidy_France_HP.sh
+./tst_nml_tidy_France_HP.sh
 fi
 done
 if (("$unt-2" >= "$fst")) && (("$unt" <= "$lst")) ; then
 echo "Comparing best values"
 pick_file="tmp_opt_pick_$opt.txt"
-./rtk_opt_pick.sh tmp_opt_find_$opt*.txt | cat > $pick_file
-./rtk_opt_comp.sh $pick_file 0.256366 0.117874 6792.728
+./tst_opt_pick.sh tmp_opt_find_$opt*.txt | cat > $pick_file
+./tst_opt_comp.sh $pick_file 0.256366 0.117874 6792.728
 x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $pick_file" >&2 ; exit $x ; fi
 echo "Success"
 echo "********************"
@@ -878,7 +878,7 @@ for ii in `seq 0 2`;
 do
 unt=$((unt+1))
 if (("$unt" >= "$fst")) && (("$unt" <= "$lst")) ; then
-./rtk_nml_tidy_France_HP.sh
+./tst_nml_tidy_France_HP.sh
 echo "Running optim. ${opt}.$ii/35"
 kfac_file='../../rapid/input/France_HP/kfac_modcou_1km_hour.csv'
 IS_opt_phi=2
@@ -897,17 +897,17 @@ sed -i -e "s|IS_opt_run         =.*|IS_opt_run         =2|"                    \
           rapid_namelist_France_HP  
 sleep 3
 mpiexec -n 1 ./rapid -ksp_type preonly -tao_gatol 0.01 -tao_grtol 0.00070 > $rapd_file
-./rtk_opt_find.sh $rapd_file | cat > $find_file
-./rtk_opt_comp.sh $find_file ${ZS_knorm_finals[ii]} ${ZS_xnorm_finals[ii]} ${ZS_phi_finals[ii]} 
+./tst_opt_find.sh $rapd_file | cat > $find_file
+./tst_opt_comp.sh $find_file ${ZS_knorm_finals[ii]} ${ZS_xnorm_finals[ii]} ${ZS_phi_finals[ii]} 
 x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $find_file" >&2 ; exit $x ; fi
-./rtk_nml_tidy_France_HP.sh
+./tst_nml_tidy_France_HP.sh
 fi
 done
 if (("$unt-2" >= "$fst")) && (("$unt" <= "$lst")) ; then
 echo "Comparing best values"
 pick_file="tmp_opt_pick_$opt.txt"
-./rtk_opt_pick.sh tmp_opt_find_$opt*.txt | cat > $pick_file
-./rtk_opt_comp.sh $pick_file 0.382812 0.0585938 204.141
+./tst_opt_pick.sh tmp_opt_find_$opt*.txt | cat > $pick_file
+./tst_opt_comp.sh $pick_file 0.382812 0.0585938 204.141
 x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $pick_file" >&2 ; exit $x ; fi
 echo "Success"
 echo "********************"
@@ -927,7 +927,7 @@ for ii in `seq 0 2`;
 do
 unt=$((unt+1))
 if (("$unt" >= "$fst")) && (("$unt" <= "$lst")) ; then
-./rtk_nml_tidy_France_HP.sh
+./tst_nml_tidy_France_HP.sh
 echo "Running optim. ${opt}.$ii/35"
 kfac_file='../../rapid/input/France_HP/kfac_modcou_1km_hour.csv'
 IS_opt_phi=2
@@ -946,17 +946,17 @@ sed -i -e "s|IS_opt_run         =.*|IS_opt_run         =2|"                    \
           rapid_namelist_France_HP  
 sleep 3
 mpiexec -n 1 ./rapid -ksp_type preonly -tao_gatol 0.01 -tao_grtol 0.00044 > $rapd_file
-./rtk_opt_find.sh $rapd_file | cat > $find_file
-./rtk_opt_comp.sh $find_file ${ZS_knorm_finals[ii]} ${ZS_xnorm_finals[ii]} ${ZS_phi_finals[ii]} 
+./tst_opt_find.sh $rapd_file | cat > $find_file
+./tst_opt_comp.sh $find_file ${ZS_knorm_finals[ii]} ${ZS_xnorm_finals[ii]} ${ZS_phi_finals[ii]} 
 x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $find_file" >&2 ; exit $x ; fi
-./rtk_nml_tidy_France_HP.sh
+./tst_nml_tidy_France_HP.sh
 fi
 done
 if (("$unt-2" >= "$fst")) && (("$unt" <= "$lst")) ; then
 echo "Comparing best values"
 pick_file="tmp_opt_pick_$opt.txt"
-./rtk_opt_pick.sh tmp_opt_find_$opt*.txt | cat > $pick_file
-./rtk_opt_comp.sh $pick_file 0.375 4.8125 513.702
+./tst_opt_pick.sh tmp_opt_find_$opt*.txt | cat > $pick_file
+./tst_opt_comp.sh $pick_file 0.375 4.8125 513.702
 x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $pick_file" >&2 ; exit $x ; fi
 echo "Success"
 echo "********************"
@@ -976,7 +976,7 @@ for ii in `seq 0 2`;
 do
 unt=$((unt+1))
 if (("$unt" >= "$fst")) && (("$unt" <= "$lst")) ; then
-./rtk_nml_tidy_France_HP.sh
+./tst_nml_tidy_France_HP.sh
 echo "Running optim. ${opt}.$ii/35"
 kfac_file='../../rapid/input/France_HP/kfac_modcou_1km_hour.csv'
 IS_opt_phi=2
@@ -995,17 +995,17 @@ sed -i -e "s|IS_opt_run         =.*|IS_opt_run         =2|"                    \
           rapid_namelist_France_HP  
 sleep 3
 mpiexec -n 1 ./rapid -ksp_type preonly -tao_gatol 0.01 -tao_grtol 0.00053 > $rapd_file
-./rtk_opt_find.sh $rapd_file | cat > $find_file
-./rtk_opt_comp.sh $find_file ${ZS_knorm_finals[ii]} ${ZS_xnorm_finals[ii]} ${ZS_phi_finals[ii]} 
+./tst_opt_find.sh $rapd_file | cat > $find_file
+./tst_opt_comp.sh $find_file ${ZS_knorm_finals[ii]} ${ZS_xnorm_finals[ii]} ${ZS_phi_finals[ii]} 
 x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $find_file" >&2 ; exit $x ; fi
-./rtk_nml_tidy_France_HP.sh
+./tst_nml_tidy_France_HP.sh
 fi
 done
 if (("$unt-2" >= "$fst")) && (("$unt" <= "$lst")) ; then
 echo "Comparing best values"
 pick_file="tmp_opt_pick_$opt.txt"
-./rtk_opt_pick.sh tmp_opt_find_$opt*.txt | cat > $pick_file
-./rtk_opt_comp.sh $pick_file 0.160156 0.419922 314.061
+./tst_opt_pick.sh tmp_opt_find_$opt*.txt | cat > $pick_file
+./tst_opt_comp.sh $pick_file 0.160156 0.419922 314.061
 x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $pick_file" >&2 ; exit $x ; fi
 echo "Success"
 echo "********************"
@@ -1025,7 +1025,7 @@ for ii in `seq 0 2`;
 do
 unt=$((unt+1))
 if (("$unt" >= "$fst")) && (("$unt" <= "$lst")) ; then
-./rtk_nml_tidy_France_HP.sh
+./tst_nml_tidy_France_HP.sh
 echo "Running optim. ${opt}.$ii/35"
 kfac_file='../../rapid/input/France_HP/kfac_modcou_1km_hour.csv'
 IS_opt_phi=2
@@ -1044,17 +1044,17 @@ sed -i -e "s|IS_opt_run         =.*|IS_opt_run         =2|"                    \
           rapid_namelist_France_HP  
 sleep 3
 mpiexec -n 1 ./rapid -ksp_type preonly -tao_gatol 0.01 -tao_grtol 0.00035 > $rapd_file
-./rtk_opt_find.sh $rapd_file | cat > $find_file
-./rtk_opt_comp.sh $find_file ${ZS_knorm_finals[ii]} ${ZS_xnorm_finals[ii]} ${ZS_phi_finals[ii]} 
+./tst_opt_find.sh $rapd_file | cat > $find_file
+./tst_opt_comp.sh $find_file ${ZS_knorm_finals[ii]} ${ZS_xnorm_finals[ii]} ${ZS_phi_finals[ii]} 
 x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $find_file" >&2 ; exit $x ; fi
-./rtk_nml_tidy_France_HP.sh
+./tst_nml_tidy_France_HP.sh
 fi
 done
 if (("$unt-2" >= "$fst")) && (("$unt" <= "$lst")) ; then
 echo "Comparing best values"
 pick_file="tmp_opt_pick_$opt.txt"
-./rtk_opt_pick.sh tmp_opt_find_$opt*.txt | cat > $pick_file
-./rtk_opt_comp.sh $pick_file 0.152344 0.673828 816.461
+./tst_opt_pick.sh tmp_opt_find_$opt*.txt | cat > $pick_file
+./tst_opt_comp.sh $pick_file 0.152344 0.673828 816.461
 x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $pick_file" >&2 ; exit $x ; fi
 echo "Success"
 echo "********************"
@@ -1074,7 +1074,7 @@ for ii in `seq 0 2`;
 do
 unt=$((unt+1))
 if (("$unt" >= "$fst")) && (("$unt" <= "$lst")) ; then
-./rtk_nml_tidy_France_HP.sh
+./tst_nml_tidy_France_HP.sh
 echo "Running optim. ${opt}.$ii/35"
 kfac_file='../../rapid/input/France_HP/kfac_modcou_1km_hour.csv'
 IS_opt_phi=2
@@ -1093,17 +1093,17 @@ sed -i -e "s|IS_opt_run         =.*|IS_opt_run         =2|"                    \
           rapid_namelist_France_HP  
 sleep 3
 mpiexec -n 1 ./rapid -ksp_type preonly -tao_gatol 0.01 -tao_grtol 0.00028 > $rapd_file
-./rtk_opt_find.sh $rapd_file | cat > $find_file
-./rtk_opt_comp.sh $find_file ${ZS_knorm_finals[ii]} ${ZS_xnorm_finals[ii]} ${ZS_phi_finals[ii]} 
+./tst_opt_find.sh $rapd_file | cat > $find_file
+./tst_opt_comp.sh $find_file ${ZS_knorm_finals[ii]} ${ZS_xnorm_finals[ii]} ${ZS_phi_finals[ii]} 
 x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $find_file" >&2 ; exit $x ; fi
-./rtk_nml_tidy_France_HP.sh
+./tst_nml_tidy_France_HP.sh
 fi
 done
 if (("$unt-2" >= "$fst")) && (("$unt" <= "$lst")) ; then
 echo "Comparing best values"
 pick_file="tmp_opt_pick_$opt.txt"
-./rtk_opt_pick.sh tmp_opt_find_$opt*.txt | cat > $pick_file
-./rtk_opt_comp.sh $pick_file 0.394089 0.112606 1300.646
+./tst_opt_pick.sh tmp_opt_find_$opt*.txt | cat > $pick_file
+./tst_opt_comp.sh $pick_file 0.394089 0.112606 1300.646
 x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $pick_file" >&2 ; exit $x ; fi
 echo "Success"
 echo "********************"
@@ -1123,7 +1123,7 @@ for ii in `seq 0 2`;
 do
 unt=$((unt+1))
 if (("$unt" >= "$fst")) && (("$unt" <= "$lst")) ; then
-./rtk_nml_tidy_France_HP.sh
+./tst_nml_tidy_France_HP.sh
 echo "Running optim. ${opt}.$ii/35"
 kfac_file='../../rapid/input/France_HP/kfac_modcou_1km_hour.csv'
 IS_opt_phi=2
@@ -1142,17 +1142,17 @@ sed -i -e "s|IS_opt_run         =.*|IS_opt_run         =2|"                    \
           rapid_namelist_France_HP  
 sleep 3
 mpiexec -n 1 ./rapid -ksp_type preonly -tao_gatol 0.01 -tao_grtol 0.00027 > $rapd_file
-./rtk_opt_find.sh $rapd_file | cat > $find_file
-./rtk_opt_comp.sh $find_file ${ZS_knorm_finals[ii]} ${ZS_xnorm_finals[ii]} ${ZS_phi_finals[ii]} 
+./tst_opt_find.sh $rapd_file | cat > $find_file
+./tst_opt_comp.sh $find_file ${ZS_knorm_finals[ii]} ${ZS_xnorm_finals[ii]} ${ZS_phi_finals[ii]} 
 x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $find_file" >&2 ; exit $x ; fi
-./rtk_nml_tidy_France_HP.sh
+./tst_nml_tidy_France_HP.sh
 fi
 done
 if (("$unt-2" >= "$fst")) && (("$unt" <= "$lst")) ; then
 echo "Comparing best values"
 pick_file="tmp_opt_pick_$opt.txt"
-./rtk_opt_pick.sh tmp_opt_find_$opt*.txt | cat > $pick_file
-./rtk_opt_comp.sh $pick_file 0.355804 0.0558929 1329.170
+./tst_opt_pick.sh tmp_opt_find_$opt*.txt | cat > $pick_file
+./tst_opt_comp.sh $pick_file 0.355804 0.0558929 1329.170
 x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $pick_file" >&2 ; exit $x ; fi
 echo "Success"
 echo "********************"
@@ -1172,7 +1172,7 @@ for ii in `seq 0 2`;
 do
 unt=$((unt+1))
 if (("$unt" >= "$fst")) && (("$unt" <= "$lst")) ; then
-./rtk_nml_tidy_France_HP.sh
+./tst_nml_tidy_France_HP.sh
 echo "Running optim. ${opt}.$ii/35"
 kfac_file='../../rapid/input/France_HP/kfac_modcou_1km_hour.csv'
 IS_opt_phi=2
@@ -1191,17 +1191,17 @@ sed -i -e "s|IS_opt_run         =.*|IS_opt_run         =2|"                    \
           rapid_namelist_France_HP  
 sleep 3
 mpiexec -n 1 ./rapid -ksp_type preonly -tao_gatol 0.01 -tao_grtol 0.00019 > $rapd_file
-./rtk_opt_find.sh $rapd_file | cat > $find_file
-./rtk_opt_comp.sh $find_file ${ZS_knorm_finals[ii]} ${ZS_xnorm_finals[ii]} ${ZS_phi_finals[ii]} 
+./tst_opt_find.sh $rapd_file | cat > $find_file
+./tst_opt_comp.sh $find_file ${ZS_knorm_finals[ii]} ${ZS_xnorm_finals[ii]} ${ZS_phi_finals[ii]} 
 x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $find_file" >&2 ; exit $x ; fi
-./rtk_nml_tidy_France_HP.sh
+./tst_nml_tidy_France_HP.sh
 fi
 done
 if (("$unt-2" >= "$fst")) && (("$unt" <= "$lst")) ; then
 echo "Comparing best values"
 pick_file="tmp_opt_pick_$opt.txt"
-./rtk_opt_pick.sh tmp_opt_find_$opt*.txt | cat > $pick_file
-./rtk_opt_comp.sh $pick_file 0.385983 0.145435 2785.886
+./tst_opt_pick.sh tmp_opt_find_$opt*.txt | cat > $pick_file
+./tst_opt_comp.sh $pick_file 0.385983 0.145435 2785.886
 x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $pick_file" >&2 ; exit $x ; fi
 echo "Success"
 echo "********************"
@@ -1221,7 +1221,7 @@ for ii in `seq 0 2`;
 do
 unt=$((unt+1))
 if (("$unt" >= "$fst")) && (("$unt" <= "$lst")) ; then
-./rtk_nml_tidy_France_HP.sh
+./tst_nml_tidy_France_HP.sh
 echo "Running optim. ${opt}.$ii/35"
 kfac_file='../../rapid/input/France_HP/kfac_modcou_1km_hour.csv'
 IS_opt_phi=2
@@ -1240,17 +1240,17 @@ sed -i -e "s|IS_opt_run         =.*|IS_opt_run         =2|"                    \
           rapid_namelist_France_HP  
 sleep 3
 mpiexec -n 1 ./rapid -ksp_type preonly -tao_gatol 0.01 -tao_grtol 0.00028 > $rapd_file
-./rtk_opt_find.sh $rapd_file | cat > $find_file
-./rtk_opt_comp.sh $find_file ${ZS_knorm_finals[ii]} ${ZS_xnorm_finals[ii]} ${ZS_phi_finals[ii]} 
+./tst_opt_find.sh $rapd_file | cat > $find_file
+./tst_opt_comp.sh $find_file ${ZS_knorm_finals[ii]} ${ZS_xnorm_finals[ii]} ${ZS_phi_finals[ii]} 
 x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $find_file" >&2 ; exit $x ; fi
-./rtk_nml_tidy_France_HP.sh
+./tst_nml_tidy_France_HP.sh
 fi
 done
 if (("$unt-2" >= "$fst")) && (("$unt" <= "$lst")) ; then
 echo "Comparing best values"
 pick_file="tmp_opt_pick_$opt.txt"
-./rtk_opt_pick.sh tmp_opt_find_$opt*.txt | cat > $pick_file
-./rtk_opt_comp.sh $pick_file 0.307755 2.67046 1306.25
+./tst_opt_pick.sh tmp_opt_find_$opt*.txt | cat > $pick_file
+./tst_opt_comp.sh $pick_file 0.307755 2.67046 1306.25
 x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $pick_file" >&2 ; exit $x ; fi
 echo "Success"
 echo "********************"
@@ -1270,7 +1270,7 @@ for ii in `seq 0 2`;
 do
 unt=$((unt+1))
 if (("$unt" >= "$fst")) && (("$unt" <= "$lst")) ; then
-./rtk_nml_tidy_France_HP.sh
+./tst_nml_tidy_France_HP.sh
 echo "Running optim. ${opt}.$ii/35"
 kfac_file='../../rapid/input/France_HP/kfac_modcou_1km_hour.csv'
 IS_opt_phi=2
@@ -1289,17 +1289,17 @@ sed -i -e "s|IS_opt_run         =.*|IS_opt_run         =2|"                    \
           rapid_namelist_France_HP  
 sleep 3
 mpiexec -n 1 ./rapid -ksp_type preonly -tao_gatol 0.01 -tao_grtol 0.00032 > $rapd_file
-./rtk_opt_find.sh $rapd_file | cat > $find_file
-./rtk_opt_comp.sh $find_file ${ZS_knorm_finals[ii]} ${ZS_xnorm_finals[ii]} ${ZS_phi_finals[ii]} 
+./tst_opt_find.sh $rapd_file | cat > $find_file
+./tst_opt_comp.sh $find_file ${ZS_knorm_finals[ii]} ${ZS_xnorm_finals[ii]} ${ZS_phi_finals[ii]} 
 x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $find_file" >&2 ; exit $x ; fi
-./rtk_nml_tidy_France_HP.sh
+./tst_nml_tidy_France_HP.sh
 fi
 done
 if (("$unt-2" >= "$fst")) && (("$unt" <= "$lst")) ; then
 echo "Comparing best values"
 pick_file="tmp_opt_pick_$opt.txt"
-./rtk_opt_pick.sh tmp_opt_find_$opt*.txt | cat > $pick_file
-./rtk_opt_comp.sh $pick_file 0.390625 0.304688 996.783
+./tst_opt_pick.sh tmp_opt_find_$opt*.txt | cat > $pick_file
+./tst_opt_comp.sh $pick_file 0.390625 0.304688 996.783
 x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $pick_file" >&2 ; exit $x ; fi
 echo "Success"
 echo "********************"
@@ -1319,7 +1319,7 @@ for ii in `seq 0 2`;
 do
 unt=$((unt+1))
 if (("$unt" >= "$fst")) && (("$unt" <= "$lst")) ; then
-./rtk_nml_tidy_France_HP.sh
+./tst_nml_tidy_France_HP.sh
 echo "Running optim. ${opt}.$ii/35"
 kfac_file='../../rapid/input/France_HP/kfac_modcou_1km_hour.csv'
 IS_opt_phi=2
@@ -1338,17 +1338,17 @@ sed -i -e "s|IS_opt_run         =.*|IS_opt_run         =2|"                    \
           rapid_namelist_France_HP  
 sleep 3
 mpiexec -n 1 ./rapid -ksp_type preonly -tao_gatol 0.01 -tao_grtol 0.00019 > $rapd_file
-./rtk_opt_find.sh $rapd_file | cat > $find_file
-./rtk_opt_comp.sh $find_file ${ZS_knorm_finals[ii]} ${ZS_xnorm_finals[ii]} ${ZS_phi_finals[ii]} 
+./tst_opt_find.sh $rapd_file | cat > $find_file
+./tst_opt_comp.sh $find_file ${ZS_knorm_finals[ii]} ${ZS_xnorm_finals[ii]} ${ZS_phi_finals[ii]} 
 x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $find_file" >&2 ; exit $x ; fi
-./rtk_nml_tidy_France_HP.sh
+./tst_nml_tidy_France_HP.sh
 fi
 done
 if (("$unt-2" >= "$fst")) && (("$unt" <= "$lst")) ; then
 echo "Comparing best values"
 pick_file="tmp_opt_pick_$opt.txt"
-./rtk_opt_pick.sh tmp_opt_find_$opt*.txt | cat > $pick_file
-./rtk_opt_comp.sh $pick_file 0.453125 0.273438 2677.687
+./tst_opt_pick.sh tmp_opt_find_$opt*.txt | cat > $pick_file
+./tst_opt_comp.sh $pick_file 0.453125 0.273438 2677.687
 x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $pick_file" >&2 ; exit $x ; fi
 echo "Success"
 echo "********************"
@@ -1368,7 +1368,7 @@ for ii in `seq 0 2`;
 do
 unt=$((unt+1))
 if (("$unt" >= "$fst")) && (("$unt" <= "$lst")) ; then
-./rtk_nml_tidy_France_HP.sh
+./tst_nml_tidy_France_HP.sh
 echo "Running optim. ${opt}.$ii/35"
 kfac_file='../../rapid/input/France_HP/kfac_modcou_1km_hour.csv'
 IS_opt_phi=2
@@ -1387,17 +1387,17 @@ sed -i -e "s|IS_opt_run         =.*|IS_opt_run         =2|"                    \
           rapid_namelist_France_HP  
 sleep 3
 mpiexec -n 1 ./rapid -ksp_type preonly -tao_gatol 0.01 -tao_grtol 0.00018 > $rapd_file
-./rtk_opt_find.sh $rapd_file | cat > $find_file
-./rtk_opt_comp.sh $find_file ${ZS_knorm_finals[ii]} ${ZS_xnorm_finals[ii]} ${ZS_phi_finals[ii]} 
+./tst_opt_find.sh $rapd_file | cat > $find_file
+./tst_opt_comp.sh $find_file ${ZS_knorm_finals[ii]} ${ZS_xnorm_finals[ii]} ${ZS_phi_finals[ii]} 
 x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $find_file" >&2 ; exit $x ; fi
-./rtk_nml_tidy_France_HP.sh
+./tst_nml_tidy_France_HP.sh
 fi
 done
 if (("$unt-2" >= "$fst")) && (("$unt" <= "$lst")) ; then
 echo "Comparing best values"
 pick_file="tmp_opt_pick_$opt.txt"
-./rtk_opt_pick.sh tmp_opt_find_$opt*.txt | cat > $pick_file
-./rtk_opt_comp.sh $pick_file 0.578796 0.144882 2973.548
+./tst_opt_pick.sh tmp_opt_find_$opt*.txt | cat > $pick_file
+./tst_opt_comp.sh $pick_file 0.578796 0.144882 2973.548
 x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $pick_file" >&2 ; exit $x ; fi
 echo "Success"
 echo "********************"
@@ -1417,7 +1417,7 @@ for ii in `seq 0 2`;
 do
 unt=$((unt+1))
 if (("$unt" >= "$fst")) && (("$unt" <= "$lst")) ; then
-./rtk_nml_tidy_France_HP.sh
+./tst_nml_tidy_France_HP.sh
 echo "Running optim. ${opt}.$ii/35"
 kfac_file='../../rapid/input/France_HP/kfac_modcou_1km_hour.csv'
 IS_opt_phi=2
@@ -1436,17 +1436,17 @@ sed -i -e "s|IS_opt_run         =.*|IS_opt_run         =2|"                    \
           rapid_namelist_France_HP  
 sleep 3
 mpiexec -n 1 ./rapid -ksp_type preonly -tao_gatol 0.01 -tao_grtol 0.00031 > $rapd_file
-./rtk_opt_find.sh $rapd_file | cat > $find_file
-./rtk_opt_comp.sh $find_file ${ZS_knorm_finals[ii]} ${ZS_xnorm_finals[ii]} ${ZS_phi_finals[ii]} 
+./tst_opt_find.sh $rapd_file | cat > $find_file
+./tst_opt_comp.sh $find_file ${ZS_knorm_finals[ii]} ${ZS_xnorm_finals[ii]} ${ZS_phi_finals[ii]} 
 x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $find_file" >&2 ; exit $x ; fi
-./rtk_nml_tidy_France_HP.sh
+./tst_nml_tidy_France_HP.sh
 fi
 done
 if (("$unt-2" >= "$fst")) && (("$unt" <= "$lst")) ; then
 echo "Comparing best values"
 pick_file="tmp_opt_pick_$opt.txt"
-./rtk_opt_pick.sh tmp_opt_find_$opt*.txt | cat > $pick_file
-./rtk_opt_comp.sh $pick_file 0.46875 3.76562 1046.73
+./tst_opt_pick.sh tmp_opt_find_$opt*.txt | cat > $pick_file
+./tst_opt_comp.sh $pick_file 0.46875 3.76562 1046.73
 x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $pick_file" >&2 ; exit $x ; fi
 echo "Success"
 echo "********************"
@@ -1466,7 +1466,7 @@ for ii in `seq 0 2`;
 do
 unt=$((unt+1))
 if (("$unt" >= "$fst")) && (("$unt" <= "$lst")) ; then
-./rtk_nml_tidy_France_HP.sh
+./tst_nml_tidy_France_HP.sh
 echo "Running optim. ${opt}.$ii/35"
 kfac_file='../../rapid/input/France_HP/kfac_modcou_1km_hour.csv'
 IS_opt_phi=2
@@ -1485,17 +1485,17 @@ sed -i -e "s|IS_opt_run         =.*|IS_opt_run         =2|"                    \
           rapid_namelist_France_HP  
 sleep 3
 mpiexec -n 1 ./rapid -ksp_type preonly -tao_gatol 0.01 -tao_grtol 0.00015 > $rapd_file
-./rtk_opt_find.sh $rapd_file | cat > $find_file
-./rtk_opt_comp.sh $find_file ${ZS_knorm_finals[ii]} ${ZS_xnorm_finals[ii]} ${ZS_phi_finals[ii]} 
+./tst_opt_find.sh $rapd_file | cat > $find_file
+./tst_opt_comp.sh $find_file ${ZS_knorm_finals[ii]} ${ZS_xnorm_finals[ii]} ${ZS_phi_finals[ii]} 
 x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $find_file" >&2 ; exit $x ; fi
-./rtk_nml_tidy_France_HP.sh
+./tst_nml_tidy_France_HP.sh
 fi
 done
 if (("$unt-2" >= "$fst")) && (("$unt" <= "$lst")) ; then
 echo "Comparing best values"
 pick_file="tmp_opt_pick_$opt.txt"
-./rtk_opt_pick.sh tmp_opt_find_$opt*.txt | cat > $pick_file
-./rtk_opt_comp.sh $pick_file 0.236328 0.00683594 4581.497
+./tst_opt_pick.sh tmp_opt_find_$opt*.txt | cat > $pick_file
+./tst_opt_comp.sh $pick_file 0.236328 0.00683594 4581.497
 x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $pick_file" >&2 ; exit $x ; fi
 echo "Success"
 echo "********************"
@@ -1515,7 +1515,7 @@ for ii in `seq 0 2`;
 do
 unt=$((unt+1))
 if (("$unt" >= "$fst")) && (("$unt" <= "$lst")) ; then
-./rtk_nml_tidy_France_HP.sh
+./tst_nml_tidy_France_HP.sh
 echo "Running optim. ${opt}.$ii/35"
 kfac_file='../../rapid/input/France_HP/kfac_modcou_1km_hour.csv'
 IS_opt_phi=2
@@ -1534,17 +1534,17 @@ sed -i -e "s|IS_opt_run         =.*|IS_opt_run         =2|"                    \
           rapid_namelist_France_HP  
 sleep 3
 mpiexec -n 1 ./rapid -ksp_type richardson -tao_gatol 0.01 -tao_grtol 0.00059 > $rapd_file ######
-./rtk_opt_find.sh $rapd_file | cat > $find_file
-./rtk_opt_comp.sh $find_file ${ZS_knorm_finals[ii]} ${ZS_xnorm_finals[ii]} ${ZS_phi_finals[ii]} 
+./tst_opt_find.sh $rapd_file | cat > $find_file
+./tst_opt_comp.sh $find_file ${ZS_knorm_finals[ii]} ${ZS_xnorm_finals[ii]} ${ZS_phi_finals[ii]} 
 x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $find_file" >&2 ; exit $x ; fi
-./rtk_nml_tidy_France_HP.sh
+./tst_nml_tidy_France_HP.sh
 fi
 done
 if (("$unt-2" >= "$fst")) && (("$unt" <= "$lst")) ; then
 echo "Comparing best values"
 pick_file="tmp_opt_pick_$opt.txt"
-./rtk_opt_pick.sh tmp_opt_find_$opt*.txt | cat > $pick_file
-./rtk_opt_comp.sh $pick_file 0.00012207 0.156189 285.789
+./tst_opt_pick.sh tmp_opt_find_$opt*.txt | cat > $pick_file
+./tst_opt_comp.sh $pick_file 0.00012207 0.156189 285.789
 x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $pick_file" >&2 ; exit $x ; fi
 echo "Success"
 echo "********************"
@@ -1564,7 +1564,7 @@ for ii in `seq 0 2`;
 do
 unt=$((unt+1))
 if (("$unt" >= "$fst")) && (("$unt" <= "$lst")) ; then
-./rtk_nml_tidy_France_HP.sh
+./tst_nml_tidy_France_HP.sh
 echo "Running optim. ${opt}.$ii/35"
 kfac_file='../../rapid/input/France_HP/kfac_modcou_1km_hour.csv'
 IS_opt_phi=2
@@ -1583,17 +1583,17 @@ sed -i -e "s|IS_opt_run         =.*|IS_opt_run         =2|"                    \
           rapid_namelist_France_HP  
 sleep 3
 mpiexec -n 1 ./rapid -ksp_type preonly -tao_gatol 0.01 -tao_grtol 0.0042 > $rapd_file
-./rtk_opt_find.sh $rapd_file | cat > $find_file
-./rtk_opt_comp.sh $find_file ${ZS_knorm_finals[ii]} ${ZS_xnorm_finals[ii]} ${ZS_phi_finals[ii]} 
+./tst_opt_find.sh $rapd_file | cat > $find_file
+./tst_opt_comp.sh $find_file ${ZS_knorm_finals[ii]} ${ZS_xnorm_finals[ii]} ${ZS_phi_finals[ii]} 
 x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $find_file" >&2 ; exit $x ; fi
-./rtk_nml_tidy_France_HP.sh
+./tst_nml_tidy_France_HP.sh
 fi
 done
 if (("$unt-2" >= "$fst")) && (("$unt" <= "$lst")) ; then
 echo "Comparing best values"
 pick_file="tmp_opt_pick_$opt.txt"
-./rtk_opt_pick.sh tmp_opt_find_$opt*.txt | cat > $pick_file
-./rtk_opt_comp.sh $pick_file 0.5 4.75 5.59231
+./tst_opt_pick.sh tmp_opt_find_$opt*.txt | cat > $pick_file
+./tst_opt_comp.sh $pick_file 0.5 4.75 5.59231
 x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $pick_file" >&2 ; exit $x ; fi
 echo "Success"
 echo "********************"
@@ -1613,7 +1613,7 @@ for ii in `seq 0 2`;
 do
 unt=$((unt+1))
 if (("$unt" >= "$fst")) && (("$unt" <= "$lst")) ; then
-./rtk_nml_tidy_France_HP.sh
+./tst_nml_tidy_France_HP.sh
 echo "Running optim. ${opt}.$ii/35"
 kfac_file='../../rapid/input/France_HP/kfac_modcou_ttra_length.csv'
 IS_opt_phi=2
@@ -1632,17 +1632,17 @@ sed -i -e "s|IS_opt_run         =.*|IS_opt_run         =2|"                    \
           rapid_namelist_France_HP  
 sleep 3
 mpiexec -n 1 ./rapid -ksp_type preonly -tao_gatol 0.01 -tao_grtol 0.00027 > $rapd_file
-./rtk_opt_find.sh $rapd_file | cat > $find_file
-./rtk_opt_comp.sh $find_file ${ZS_knorm_finals[ii]} ${ZS_xnorm_finals[ii]} ${ZS_phi_finals[ii]} 
+./tst_opt_find.sh $rapd_file | cat > $find_file
+./tst_opt_comp.sh $find_file ${ZS_knorm_finals[ii]} ${ZS_xnorm_finals[ii]} ${ZS_phi_finals[ii]} 
 x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $find_file" >&2 ; exit $x ; fi
-./rtk_nml_tidy_France_HP.sh
+./tst_nml_tidy_France_HP.sh
 fi
 done
 if (("$unt-2" >= "$fst")) && (("$unt" <= "$lst")) ; then
 echo "Comparing best values"
 pick_file="tmp_opt_pick_$opt.txt"
-./rtk_opt_pick.sh tmp_opt_find_$opt*.txt | cat > $pick_file
-./rtk_opt_comp.sh $pick_file 1.4375 0.28125 1417.761
+./tst_opt_pick.sh tmp_opt_find_$opt*.txt | cat > $pick_file
+./tst_opt_comp.sh $pick_file 1.4375 0.28125 1417.761
 x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $pick_file" >&2 ; exit $x ; fi
 echo "Success"
 echo "********************"
@@ -1662,7 +1662,7 @@ for ii in `seq 0 2`;
 do
 unt=$((unt+1))
 if (("$unt" >= "$fst")) && (("$unt" <= "$lst")) ; then
-./rtk_nml_tidy_France_HP.sh
+./tst_nml_tidy_France_HP.sh
 echo "Running optim. ${opt}.$ii/35"
 kfac_file='../../rapid/input/France_HP/kfac_modcou_ttra_length.csv'
 IS_opt_phi=2
@@ -1681,17 +1681,17 @@ sed -i -e "s|IS_opt_run         =.*|IS_opt_run         =2|"                    \
           rapid_namelist_France_HP  
 sleep 3
 mpiexec -n 1 ./rapid -ksp_type preonly -tao_gatol 0.01 -tao_grtol 0.00012 > $rapd_file
-./rtk_opt_find.sh $rapd_file | cat > $find_file
-./rtk_opt_comp.sh $find_file ${ZS_knorm_finals[ii]} ${ZS_xnorm_finals[ii]} ${ZS_phi_finals[ii]} 
+./tst_opt_find.sh $rapd_file | cat > $find_file
+./tst_opt_comp.sh $find_file ${ZS_knorm_finals[ii]} ${ZS_xnorm_finals[ii]} ${ZS_phi_finals[ii]} 
 x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $find_file" >&2 ; exit $x ; fi
-./rtk_nml_tidy_France_HP.sh
+./tst_nml_tidy_France_HP.sh
 fi
 done
 if (("$unt-2" >= "$fst")) && (("$unt" <= "$lst")) ; then
 echo "Comparing best values"
 pick_file="tmp_opt_pick_$opt.txt"
-./rtk_opt_pick.sh tmp_opt_find_$opt*.txt | cat > $pick_file
-./rtk_opt_comp.sh $pick_file 1.75 0.625 6684.343
+./tst_opt_pick.sh tmp_opt_find_$opt*.txt | cat > $pick_file
+./tst_opt_comp.sh $pick_file 1.75 0.625 6684.343
 x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $pick_file" >&2 ; exit $x ; fi
 echo "Success"
 echo "********************"
@@ -1711,7 +1711,7 @@ for ii in `seq 0 2`;
 do
 unt=$((unt+1))
 if (("$unt" >= "$fst")) && (("$unt" <= "$lst")) ; then
-./rtk_nml_tidy_France_HP.sh
+./tst_nml_tidy_France_HP.sh
 echo "Running optim. ${opt}.$ii/35"
 kfac_file='../../rapid/input/France_HP/kfac_modcou_ttra_length.csv'
 IS_opt_phi=2
@@ -1730,17 +1730,17 @@ sed -i -e "s|IS_opt_run         =.*|IS_opt_run         =2|"                    \
           rapid_namelist_France_HP  
 sleep 3
 mpiexec -n 1 ./rapid -ksp_type preonly -tao_gatol 0.01 -tao_grtol 0.000095 > $rapd_file
-./rtk_opt_find.sh $rapd_file | cat > $find_file
-./rtk_opt_comp.sh $find_file ${ZS_knorm_finals[ii]} ${ZS_xnorm_finals[ii]} ${ZS_phi_finals[ii]} 
+./tst_opt_find.sh $rapd_file | cat > $find_file
+./tst_opt_comp.sh $find_file ${ZS_knorm_finals[ii]} ${ZS_xnorm_finals[ii]} ${ZS_phi_finals[ii]} 
 x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $find_file" >&2 ; exit $x ; fi
-./rtk_nml_tidy_France_HP.sh
+./tst_nml_tidy_France_HP.sh
 fi
 done
 if (("$unt-2" >= "$fst")) && (("$unt" <= "$lst")) ; then
 echo "Comparing best values"
 pick_file="tmp_opt_pick_$opt.txt"
-./rtk_opt_pick.sh tmp_opt_find_$opt*.txt | cat > $pick_file
-./rtk_opt_comp.sh $pick_file 2.79688 0.640625 11131.267
+./tst_opt_pick.sh tmp_opt_find_$opt*.txt | cat > $pick_file
+./tst_opt_comp.sh $pick_file 2.79688 0.640625 11131.267
 x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $pick_file" >&2 ; exit $x ; fi
 echo "Success"
 echo "********************"
@@ -1760,7 +1760,7 @@ for ii in `seq 0 2`;
 do
 unt=$((unt+1))
 if (("$unt" >= "$fst")) && (("$unt" <= "$lst")) ; then
-./rtk_nml_tidy_France_HP.sh
+./tst_nml_tidy_France_HP.sh
 echo "Running optim. ${opt}.$ii/35"
 kfac_file='../../rapid/input/France_HP/kfac_modcou_ttra_length.csv'
 IS_opt_phi=2
@@ -1779,17 +1779,17 @@ sed -i -e "s|IS_opt_run         =.*|IS_opt_run         =2|"                    \
           rapid_namelist_France_HP  
 sleep 3
 mpiexec -n 1 ./rapid -ksp_type preonly -tao_gatol 0.01 -tao_grtol 0.00016 > $rapd_file
-./rtk_opt_find.sh $rapd_file | cat > $find_file
-./rtk_opt_comp.sh $find_file ${ZS_knorm_finals[ii]} ${ZS_xnorm_finals[ii]} ${ZS_phi_finals[ii]} 
+./tst_opt_find.sh $rapd_file | cat > $find_file
+./tst_opt_comp.sh $find_file ${ZS_knorm_finals[ii]} ${ZS_xnorm_finals[ii]} ${ZS_phi_finals[ii]} 
 x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $find_file" >&2 ; exit $x ; fi
-./rtk_nml_tidy_France_HP.sh
+./tst_nml_tidy_France_HP.sh
 fi
 done
 if (("$unt-2" >= "$fst")) && (("$unt" <= "$lst")) ; then
 echo "Comparing best values"
 pick_file="tmp_opt_pick_$opt.txt"
-./rtk_opt_pick.sh tmp_opt_find_$opt*.txt | cat > $pick_file
-./rtk_opt_comp.sh $pick_file 1.1875 0.40625 4068.502
+./tst_opt_pick.sh tmp_opt_find_$opt*.txt | cat > $pick_file
+./tst_opt_comp.sh $pick_file 1.1875 0.40625 4068.502
 x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $pick_file" >&2 ; exit $x ; fi
 echo "Success"
 echo "********************"
@@ -1809,7 +1809,7 @@ for ii in `seq 0 2`;
 do
 unt=$((unt+1))
 if (("$unt" >= "$fst")) && (("$unt" <= "$lst")) ; then
-./rtk_nml_tidy_France_HP.sh
+./tst_nml_tidy_France_HP.sh
 echo "Running optim. ${opt}.$ii/35"
 kfac_file='../../rapid/input/France_HP/kfac_modcou_ttra_length.csv'
 IS_opt_phi=2
@@ -1828,17 +1828,17 @@ sed -i -e "s|IS_opt_run         =.*|IS_opt_run         =2|"                    \
           rapid_namelist_France_HP  
 sleep 3
 mpiexec -n 1 ./rapid -ksp_type preonly -tao_gatol 0.01 -tao_grtol 0.00012 > $rapd_file
-./rtk_opt_find.sh $rapd_file | cat > $find_file
-./rtk_opt_comp.sh $find_file ${ZS_knorm_finals[ii]} ${ZS_xnorm_finals[ii]} ${ZS_phi_finals[ii]} 
+./tst_opt_find.sh $rapd_file | cat > $find_file
+./tst_opt_comp.sh $find_file ${ZS_knorm_finals[ii]} ${ZS_xnorm_finals[ii]} ${ZS_phi_finals[ii]} 
 x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $find_file" >&2 ; exit $x ; fi
-./rtk_nml_tidy_France_HP.sh
+./tst_nml_tidy_France_HP.sh
 fi
 done
 if (("$unt-2" >= "$fst")) && (("$unt" <= "$lst")) ; then
 echo "Comparing best values"
 pick_file="tmp_opt_pick_$opt.txt"
-./rtk_opt_pick.sh tmp_opt_find_$opt*.txt | cat > $pick_file
-./rtk_opt_comp.sh $pick_file 2.26562 0.1875 6622.473
+./tst_opt_pick.sh tmp_opt_find_$opt*.txt | cat > $pick_file
+./tst_opt_comp.sh $pick_file 2.26562 0.1875 6622.473
 x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $pick_file" >&2 ; exit $x ; fi
 echo "Success"
 echo "********************"
@@ -1858,7 +1858,7 @@ for ii in `seq 0 2`;
 do
 unt=$((unt+1))
 if (("$unt" >= "$fst")) && (("$unt" <= "$lst")) ; then
-./rtk_nml_tidy_France_HP.sh
+./tst_nml_tidy_France_HP.sh
 echo "Running optim. ${opt}.$ii/35"
 kfac_file='../../rapid/input/France_HP/kfac_modcou_ttra_length.csv'
 IS_opt_phi=2
@@ -1877,17 +1877,17 @@ sed -i -e "s|IS_opt_run         =.*|IS_opt_run         =2|"                    \
           rapid_namelist_France_HP  
 sleep 3
 mpiexec -n 1 ./rapid -ksp_type preonly -tao_gatol 0.01 -tao_grtol 0.00068 > $rapd_file
-./rtk_opt_find.sh $rapd_file | cat > $find_file
-./rtk_opt_comp.sh $find_file ${ZS_knorm_finals[ii]} ${ZS_xnorm_finals[ii]} ${ZS_phi_finals[ii]} 
+./tst_opt_find.sh $rapd_file | cat > $find_file
+./tst_opt_comp.sh $find_file ${ZS_knorm_finals[ii]} ${ZS_xnorm_finals[ii]} ${ZS_phi_finals[ii]} 
 x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $find_file" >&2 ; exit $x ; fi
-./rtk_nml_tidy_France_HP.sh
+./tst_nml_tidy_France_HP.sh
 fi
 done
 if (("$unt-2" >= "$fst")) && (("$unt" <= "$lst")) ; then
 echo "Comparing best values"
 pick_file="tmp_opt_pick_$opt.txt"
-./rtk_opt_pick.sh tmp_opt_find_$opt*.txt | cat > $pick_file
-./rtk_opt_comp.sh $pick_file 1.9375 0.03125 216.681
+./tst_opt_pick.sh tmp_opt_find_$opt*.txt | cat > $pick_file
+./tst_opt_comp.sh $pick_file 1.9375 0.03125 216.681
 x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $pick_file" >&2 ; exit $x ; fi
 echo "Success"
 echo "********************"
@@ -1907,7 +1907,7 @@ for ii in `seq 0 2`;
 do
 unt=$((unt+1))
 if (("$unt" >= "$fst")) && (("$unt" <= "$lst")) ; then
-./rtk_nml_tidy_France_HP.sh
+./tst_nml_tidy_France_HP.sh
 echo "Running optim. ${opt}.$ii/35"
 kfac_file='../../rapid/input/France_HP/kfac_modcou_ttra_length.csv'
 IS_opt_phi=2
@@ -1926,17 +1926,17 @@ sed -i -e "s|IS_opt_run         =.*|IS_opt_run         =2|"                    \
           rapid_namelist_France_HP  
 sleep 3
 mpiexec -n 1 ./rapid -ksp_type preonly -tao_gatol 0.01 -tao_grtol 0.00044 > $rapd_file
-./rtk_opt_find.sh $rapd_file | cat > $find_file
-./rtk_opt_comp.sh $find_file ${ZS_knorm_finals[ii]} ${ZS_xnorm_finals[ii]} ${ZS_phi_finals[ii]} 
+./tst_opt_find.sh $rapd_file | cat > $find_file
+./tst_opt_comp.sh $find_file ${ZS_knorm_finals[ii]} ${ZS_xnorm_finals[ii]} ${ZS_phi_finals[ii]} 
 x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $find_file" >&2 ; exit $x ; fi
-./rtk_nml_tidy_France_HP.sh
+./tst_nml_tidy_France_HP.sh
 fi
 done
 if (("$unt-2" >= "$fst")) && (("$unt" <= "$lst")) ; then
 echo "Comparing best values"
 pick_file="tmp_opt_pick_$opt.txt"
-./rtk_opt_pick.sh tmp_opt_find_$opt*.txt | cat > $pick_file
-./rtk_opt_comp.sh $pick_file 1.875 0.0625 509.309
+./tst_opt_pick.sh tmp_opt_find_$opt*.txt | cat > $pick_file
+./tst_opt_comp.sh $pick_file 1.875 0.0625 509.309
 x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $pick_file" >&2 ; exit $x ; fi
 echo "Success"
 echo "********************"
@@ -1956,7 +1956,7 @@ for ii in `seq 0 2`;
 do
 unt=$((unt+1))
 if (("$unt" >= "$fst")) && (("$unt" <= "$lst")) ; then
-./rtk_nml_tidy_France_HP.sh
+./tst_nml_tidy_France_HP.sh
 echo "Running optim. ${opt}.$ii/35"
 kfac_file='../../rapid/input/France_HP/kfac_modcou_1km_hour.csv'
 IS_opt_phi=2
@@ -1983,17 +1983,17 @@ sed -i -e "s|IS_opt_run         =.*|IS_opt_run         =2|"                    \
           rapid_namelist_France_HP  
 sleep 3
 mpiexec -n 1 ./rapid -ksp_type preonly -tao_max_funcs 100 -tao_gatol 0.01 -tao_grtol 0.00019 > $rapd_file ######
-./rtk_opt_find.sh $rapd_file | cat > $find_file
-./rtk_opt_comp.sh $find_file ${ZS_knorm_finals[ii]} ${ZS_xnorm_finals[ii]} ${ZS_phi_finals[ii]} 
+./tst_opt_find.sh $rapd_file | cat > $find_file
+./tst_opt_comp.sh $find_file ${ZS_knorm_finals[ii]} ${ZS_xnorm_finals[ii]} ${ZS_phi_finals[ii]} 
 x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $find_file" >&2 ; exit $x ; fi
-./rtk_nml_tidy_France_HP.sh
+./tst_nml_tidy_France_HP.sh
 fi
 done
 if (("$unt-2" >= "$fst")) && (("$unt" <= "$lst")) ; then
 echo "Comparing best values"
 pick_file="tmp_opt_pick_$opt.txt"
-./rtk_opt_pick.sh tmp_opt_find_$opt*.txt | cat > $pick_file
-./rtk_opt_comp.sh $pick_file 0.386933 0.109875 2720.664
+./tst_opt_pick.sh tmp_opt_find_$opt*.txt | cat > $pick_file
+./tst_opt_comp.sh $pick_file 0.386933 0.109875 2720.664
 x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $pick_file" >&2 ; exit $x ; fi
 echo "Success"
 echo "********************"
@@ -2013,7 +2013,7 @@ for ii in `seq 0 2`;
 do
 unt=$((unt+1))
 if (("$unt" >= "$fst")) && (("$unt" <= "$lst")) ; then
-./rtk_nml_tidy_France_HP.sh
+./tst_nml_tidy_France_HP.sh
 echo "Running optim. ${opt}.$ii/35"
 kfac_file='../../rapid/input/France_HP/kfac_modcou_1km_hour.csv'
 IS_opt_phi=2
@@ -2040,17 +2040,17 @@ sed -i -e "s|IS_opt_run         =.*|IS_opt_run         =2|"                    \
           rapid_namelist_France_HP  
 sleep 3
 mpiexec -n 1 ./rapid -ksp_type preonly -tao_gatol 0.01 -tao_grtol 0.00017 > $rapd_file
-./rtk_opt_find.sh $rapd_file | cat > $find_file
-./rtk_opt_comp.sh $find_file ${ZS_knorm_finals[ii]} ${ZS_xnorm_finals[ii]} ${ZS_phi_finals[ii]} 
+./tst_opt_find.sh $rapd_file | cat > $find_file
+./tst_opt_comp.sh $find_file ${ZS_knorm_finals[ii]} ${ZS_xnorm_finals[ii]} ${ZS_phi_finals[ii]} 
 x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $find_file" >&2 ; exit $x ; fi
-./rtk_nml_tidy_France_HP.sh
+./tst_nml_tidy_France_HP.sh
 fi
 done
 if (("$unt-2" >= "$fst")) && (("$unt" <= "$lst")) ; then
 echo "Comparing best values"
 pick_file="tmp_opt_pick_$opt.txt"
-./rtk_opt_pick.sh tmp_opt_find_$opt*.txt | cat > $pick_file
-./rtk_opt_comp.sh $pick_file 0.435547 0.0913086 3448.233
+./tst_opt_pick.sh tmp_opt_find_$opt*.txt | cat > $pick_file
+./tst_opt_comp.sh $pick_file 0.435547 0.0913086 3448.233
 x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $pick_file" >&2 ; exit $x ; fi
 echo "Success"
 echo "********************"
@@ -2070,7 +2070,7 @@ for ii in `seq 0 2`;
 do
 unt=$((unt+1))
 if (("$unt" >= "$fst")) && (("$unt" <= "$lst")) ; then
-./rtk_nml_tidy_France_HP.sh
+./tst_nml_tidy_France_HP.sh
 echo "Running optim. ${opt}.$ii/35"
 kfac_file='../../rapid/input/France_HP/kfac_modcou_1km_hour.csv'
 IS_opt_phi=2
@@ -2097,17 +2097,17 @@ sed -i -e "s|IS_opt_run         =.*|IS_opt_run         =2|"                    \
           rapid_namelist_France_HP  
 sleep 3
 mpiexec -n 1 ./rapid -ksp_type preonly -tao_gatol 0.01 -tao_grtol 0.0031 > $rapd_file
-./rtk_opt_find.sh $rapd_file | cat > $find_file
-./rtk_opt_comp.sh $find_file ${ZS_knorm_finals[ii]} ${ZS_xnorm_finals[ii]} ${ZS_phi_finals[ii]} 
+./tst_opt_find.sh $rapd_file | cat > $find_file
+./tst_opt_comp.sh $find_file ${ZS_knorm_finals[ii]} ${ZS_xnorm_finals[ii]} ${ZS_phi_finals[ii]} 
 x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $find_file" >&2 ; exit $x ; fi
-./rtk_nml_tidy_France_HP.sh
+./tst_nml_tidy_France_HP.sh
 fi
 done
 if (("$unt-2" >= "$fst")) && (("$unt" <= "$lst")) ; then
 echo "Comparing best values"
 pick_file="tmp_opt_pick_$opt.txt"
-./rtk_opt_pick.sh tmp_opt_find_$opt*.txt | cat > $pick_file
-./rtk_opt_comp.sh $pick_file 0.03125 4.98438 1.01198 
+./tst_opt_pick.sh tmp_opt_find_$opt*.txt | cat > $pick_file
+./tst_opt_comp.sh $pick_file 0.03125 4.98438 1.01198 
 x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $pick_file" >&2 ; exit $x ; fi
 echo "Success"
 echo "********************"
@@ -2127,7 +2127,7 @@ for ii in `seq 0 2`;
 do
 unt=$((unt+1))
 if (("$unt" >= "$fst")) && (("$unt" <= "$lst")) ; then
-./rtk_nml_tidy_France_HP.sh
+./tst_nml_tidy_France_HP.sh
 echo "Running optim. ${opt}.$ii/35"
 kfac_file='../../rapid/input/France_HP/kfac_modcou_1km_hour.csv'
 IS_opt_phi=2
@@ -2154,17 +2154,17 @@ sed -i -e "s|IS_opt_run         =.*|IS_opt_run         =2|"                    \
           rapid_namelist_France_HP  
 sleep 3
 mpiexec -n 1 ./rapid -ksp_type preonly -tao_gatol 0.01 -tao_grtol 0.00023 > $rapd_file
-./rtk_opt_find.sh $rapd_file | cat > $find_file
-./rtk_opt_comp.sh $find_file ${ZS_knorm_finals[ii]} ${ZS_xnorm_finals[ii]} ${ZS_phi_finals[ii]} 
+./tst_opt_find.sh $rapd_file | cat > $find_file
+./tst_opt_comp.sh $find_file ${ZS_knorm_finals[ii]} ${ZS_xnorm_finals[ii]} ${ZS_phi_finals[ii]} 
 x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $find_file" >&2 ; exit $x ; fi
-./rtk_nml_tidy_France_HP.sh
+./tst_nml_tidy_France_HP.sh
 fi
 done
 if (("$unt-2" >= "$fst")) && (("$unt" <= "$lst")) ; then
 echo "Comparing best values"
 pick_file="tmp_opt_pick_$opt.txt"
-./rtk_opt_pick.sh tmp_opt_find_$opt*.txt | cat > $pick_file
-./rtk_opt_comp.sh $pick_file 0.390686 0.184753 1854.941 
+./tst_opt_pick.sh tmp_opt_find_$opt*.txt | cat > $pick_file
+./tst_opt_comp.sh $pick_file 0.390686 0.184753 1854.941 
 x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $pick_file" >&2 ; exit $x ; fi
 echo "Success"
 echo "********************"

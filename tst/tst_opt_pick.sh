@@ -1,11 +1,11 @@
 #!/bin/bash
 #*******************************************************************************
-#rtk_opt_pick.sh
+#tst_opt_pick.sh
 #*******************************************************************************
 
 #Purpose:
 #This script picks the best values of Lamba k, Lambda x and Phi in a series of
-#text files (from rtk_opt_find.sh) provided as input   
+#text files (from tst_opt_find.sh) provided as input   
 #A total of at least one argument must be provided:
 # - Argument 1: Name of the text file 1
 # - Argument 2: Name of the text file 2 (optional)

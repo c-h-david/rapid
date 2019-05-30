@@ -1,7 +1,7 @@
 !*******************************************************************************
-!Program - rtk_run_conv_Qint
+!Program - tst_run_conv_Qint
 !*******************************************************************************
-program rtk_run_conv_Qinit
+program tst_run_conv_Qinit
 
 !Purpose:
 !This Fortran program allows converting the initialization file for RAPID from
@@ -215,4 +215,4 @@ end if
 
 end subroutine nc_check_status
 
-end program rtk_run_conv_Qinit
+end program tst_run_conv_Qinit

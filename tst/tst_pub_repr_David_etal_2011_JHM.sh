@@ -1,6 +1,6 @@
 #!/bin/bash
 #*******************************************************************************
-#rtk_pub_repr_David_etal_2011_JHM.sh
+#tst_pub_repr_David_etal_2011_JHM.sh
 #*******************************************************************************
 
 #Purpose:
@@ -102,11 +102,11 @@ ln -s rapid_namelist_San_Guad_JHM rapid_namelist
 unt=$((unt+1))
 sim=$((sim+1))
 if (("$unt" >= "$fst")) && (("$unt" <= "$lst")) ; then
-./rtk_nml_tidy_San_Guad_JHM.sh
+./tst_nml_tidy_San_Guad_JHM.sh
 echo "Running simul. $sim/17"
 k_file='../../rapid/input/San_Guad_JHM/k_San_Guad_2004_1.csv'
 x_file='../../rapid/input/San_Guad_JHM/x_San_Guad_2004_1.csv'
-Qout_file='../../rapid/output/San_Guad_JHM/Qout_San_Guad_1460days_p1_dtR900s_n1_preonly_rtk.nc'
+Qout_file='../../rapid/output/San_Guad_JHM/Qout_San_Guad_1460days_p1_dtR900s_n1_preonly_tst.nc'
 Qout_gold='../../rapid/output/San_Guad_JHM/Qout_San_Guad_1460days_p1_dtR900s.nc'
 rapd_file="tmp_run_$sim.txt"
 comp_file="tmp_run_comp_$sim.txt"
@@ -117,12 +117,12 @@ sed -i -e "s|k_file             =.*|k_file             ='$k_file'   |"         \
 sleep 3
 mpiexec -n 1 ./rapid -ksp_type preonly > $rapd_file
 echo "Comparing files"
-./rtk_run_comp $Qout_gold $Qout_file > $comp_file 
+./tst_run_comp $Qout_gold $Qout_file > $comp_file 
 x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $comp_file" >&2 ; exit $x ; fi
 rm $Qout_file
 rm $rapd_file
 rm $comp_file
-./rtk_nml_tidy_San_Guad_JHM.sh
+./tst_nml_tidy_San_Guad_JHM.sh
 echo "Success"
 echo "********************"
 fi
@@ -133,11 +133,11 @@ fi
 unt=$((unt+1))
 sim=$((sim+1))
 if (("$unt" >= "$fst")) && (("$unt" <= "$lst")) ; then
-./rtk_nml_tidy_San_Guad_JHM.sh
+./tst_nml_tidy_San_Guad_JHM.sh
 echo "Running simul. $sim/17"
 k_file='../../rapid/input/San_Guad_JHM/k_San_Guad_2004_2.csv'
 x_file='../../rapid/input/San_Guad_JHM/x_San_Guad_2004_2.csv'
-Qout_file='../../rapid/output/San_Guad_JHM/Qout_San_Guad_1460days_p2_dtR900s_n1_preonly_rtk.nc'
+Qout_file='../../rapid/output/San_Guad_JHM/Qout_San_Guad_1460days_p2_dtR900s_n1_preonly_tst.nc'
 Qout_gold='../../rapid/output/San_Guad_JHM/Qout_San_Guad_1460days_p2_dtR900s.nc'
 rapd_file="tmp_run_$sim.txt"
 comp_file="tmp_run_comp_$sim.txt"
@@ -148,12 +148,12 @@ sed -i -e "s|k_file             =.*|k_file             ='$k_file'   |"         \
 sleep 3
 mpiexec -n 1 ./rapid -ksp_type preonly > $rapd_file
 echo "Comparing files"
-./rtk_run_comp $Qout_gold $Qout_file > $comp_file 
+./tst_run_comp $Qout_gold $Qout_file > $comp_file 
 x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $comp_file" >&2 ; exit $x ; fi
 rm $Qout_file
 rm $rapd_file
 rm $comp_file
-./rtk_nml_tidy_San_Guad_JHM.sh
+./tst_nml_tidy_San_Guad_JHM.sh
 echo "Success"
 echo "********************"
 fi
@@ -164,11 +164,11 @@ fi
 unt=$((unt+1))
 sim=$((sim+1))
 if (("$unt" >= "$fst")) && (("$unt" <= "$lst")) ; then
-./rtk_nml_tidy_San_Guad_JHM.sh
+./tst_nml_tidy_San_Guad_JHM.sh
 echo "Running simul. $sim/17"
 k_file='../../rapid/input/San_Guad_JHM/k_San_Guad_2004_3.csv'
 x_file='../../rapid/input/San_Guad_JHM/x_San_Guad_2004_3.csv'
-Qout_file='../../rapid/output/San_Guad_JHM/Qout_San_Guad_1460days_p3_dtR900s_n1_preonly_rtk.nc'
+Qout_file='../../rapid/output/San_Guad_JHM/Qout_San_Guad_1460days_p3_dtR900s_n1_preonly_tst.nc'
 Qout_gold='../../rapid/output/San_Guad_JHM/Qout_San_Guad_1460days_p3_dtR900s.nc'
 rapd_file="tmp_run_$sim.txt"
 comp_file="tmp_run_comp_$sim.txt"
@@ -179,12 +179,12 @@ sed -i -e "s|k_file             =.*|k_file             ='$k_file'   |"         \
 sleep 3
 mpiexec -n 1 ./rapid -ksp_type preonly > $rapd_file
 echo "Comparing files"
-./rtk_run_comp $Qout_gold $Qout_file > $comp_file 
+./tst_run_comp $Qout_gold $Qout_file > $comp_file 
 x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $comp_file" >&2 ; exit $x ; fi
 rm $Qout_file
 rm $rapd_file
 rm $comp_file
-./rtk_nml_tidy_San_Guad_JHM.sh
+./tst_nml_tidy_San_Guad_JHM.sh
 echo "Success"
 echo "********************"
 fi
@@ -195,11 +195,11 @@ fi
 unt=$((unt+1))
 sim=$((sim+1))
 if (("$unt" >= "$fst")) && (("$unt" <= "$lst")) ; then
-./rtk_nml_tidy_San_Guad_JHM.sh
+./tst_nml_tidy_San_Guad_JHM.sh
 echo "Running simul. $sim/17"
 k_file='../../rapid/input/San_Guad_JHM/k_San_Guad_2004_4.csv'
 x_file='../../rapid/input/San_Guad_JHM/x_San_Guad_2004_4.csv'
-Qout_file='../../rapid/output/San_Guad_JHM/Qout_San_Guad_1460days_p4_dtR900s_n1_preonly_rtk.nc'
+Qout_file='../../rapid/output/San_Guad_JHM/Qout_San_Guad_1460days_p4_dtR900s_n1_preonly_tst.nc'
 Qout_gold='../../rapid/output/San_Guad_JHM/Qout_San_Guad_1460days_p4_dtR900s.nc'
 rapd_file="tmp_run_$sim.txt"
 comp_file="tmp_run_comp_$sim.txt"
@@ -211,12 +211,12 @@ sed -i -e "s|k_file             =.*|k_file             ='$k_file'   |"         \
 sleep 3
 mpiexec -n 1 ./rapid -ksp_type preonly > $rapd_file
 echo "Comparing files"
-./rtk_run_comp $Qout_gold $Qout_file > $comp_file 
+./tst_run_comp $Qout_gold $Qout_file > $comp_file 
 x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $comp_file" >&2 ; exit $x ; fi
 rm $Qout_file
 rm $rapd_file
 rm $comp_file
-./rtk_nml_tidy_San_Guad_JHM.sh
+./tst_nml_tidy_San_Guad_JHM.sh
 echo "Success"
 echo "********************"
 fi
@@ -231,11 +231,11 @@ fi
 unt=$((unt+1))
 sim=$((sim+1))
 if (("$unt" >= "$fst")) && (("$unt" <= "$lst")) ; then
-./rtk_nml_tidy_San_Guad_JHM.sh
+./tst_nml_tidy_San_Guad_JHM.sh
 k_file='../../rapid/input/San_Guad_JHM/k_San_Guad_2004_3.csv'
 x_file='../../rapid/input/San_Guad_JHM/x_San_Guad_2004_3.csv'
 Qout_gold='../../rapid/output/San_Guad_JHM/Qout_San_Guad_1460days_p3_dtR900s.nc'
-Qout_file='../../rapid/output/San_Guad_JHM/Qout_San_Guad_1460days_p3_dtR900s_n1_muskingum_rtk.nc'
+Qout_file='../../rapid/output/San_Guad_JHM/Qout_San_Guad_1460days_p3_dtR900s_n1_muskingum_tst.nc'
 rapd_file="tmp_run_$sim.txt"
 comp_file="tmp_run_comp_$sim.txt"
 echo "Running simul. $sim/17"
@@ -247,12 +247,12 @@ sed -i -e "s|k_file             =.*|k_file             ='$k_file'   |"         \
 sleep 3
 mpiexec -n 1 ./rapid > $rapd_file
 echo "Comparing files"
-./rtk_run_comp $Qout_gold $Qout_file > $comp_file 
+./tst_run_comp $Qout_gold $Qout_file > $comp_file 
 x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $comp_file" >&2 ; exit $x ; fi
 rm $Qout_file
 rm $rapd_file
 rm $comp_file
-./rtk_nml_tidy_San_Guad_JHM.sh
+./tst_nml_tidy_San_Guad_JHM.sh
 echo "Success"
 echo "********************"
 fi
@@ -269,11 +269,11 @@ do
 unt=$((unt+1))
 sim=$((sim+1))
 if (("$unt" >= "$fst")) && (("$unt" <= "$lst")) ; then
-./rtk_nml_tidy_San_Guad_JHM.sh
+./tst_nml_tidy_San_Guad_JHM.sh
 k_file='../../rapid/input/San_Guad_JHM/k_San_Guad_2004_3.csv'
 x_file='../../rapid/input/San_Guad_JHM/x_San_Guad_2004_3.csv'
 Qout_gold='../../rapid/output/San_Guad_JHM/Qout_San_Guad_1460days_p3_dtR900s.nc'
-Qout_file='../../rapid/output/San_Guad_JHM/Qout_San_Guad_1460days_p3_dtR900s_n'$proc'_richardson_rtk.nc'
+Qout_file='../../rapid/output/San_Guad_JHM/Qout_San_Guad_1460days_p3_dtR900s_n'$proc'_richardson_tst.nc'
 rapd_file="tmp_run_$sim.txt"
 comp_file="tmp_run_comp_$sim.txt"
 echo "Running simul. $sim/17"
@@ -284,12 +284,12 @@ sed -i -e "s|k_file             =.*|k_file             ='$k_file'   |"         \
 sleep 3
 mpiexec -n $proc ./rapid -ksp_type richardson > $rapd_file
 echo "Comparing files"
-./rtk_run_comp $Qout_gold $Qout_file > $comp_file 
+./tst_run_comp $Qout_gold $Qout_file > $comp_file 
 x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $comp_file" >&2 ; exit $x ; fi
 rm $Qout_file
 rm $rapd_file
 rm $comp_file
-./rtk_nml_tidy_San_Guad_JHM.sh
+./tst_nml_tidy_San_Guad_JHM.sh
 echo "Success"
 echo "********************"
 fi
@@ -310,7 +310,7 @@ opt=$((opt+1))
 #  -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   - 
 unt=$((unt+1))
 if (("$unt" >= "$fst")) && (("$unt" <= "$lst")) ; then
-./rtk_nml_tidy_San_Guad_JHM.sh
+./tst_nml_tidy_San_Guad_JHM.sh
 echo "Running optim. ${opt}.0/2"
 ZS_knorm_init=2
 ZS_xnorm_init=3
@@ -325,10 +325,10 @@ sed -i -e "s|IS_opt_run         =.*|IS_opt_run         =2|"                    \
 
 sleep 3
 mpiexec -n 1 ./rapid -ksp_type preonly -tao_gatol 0.01 -tao_grtol 0.0040 > $rapd_file
-./rtk_opt_find.sh $rapd_file | cat > $find_file
-./rtk_opt_comp.sh $find_file 0.1875 3.90625 6.33277 
+./tst_opt_find.sh $rapd_file | cat > $find_file
+./tst_opt_comp.sh $find_file 0.1875 3.90625 6.33277 
 x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $find_file" >&2 ; exit $x ; fi
-./rtk_nml_tidy_San_Guad_JHM.sh
+./tst_nml_tidy_San_Guad_JHM.sh
 fi
 
 #  -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   - 
@@ -336,7 +336,7 @@ fi
 #  -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   - 
 unt=$((unt+1))
 if (("$unt" >= "$fst")) && (("$unt" <= "$lst")) ; then
-./rtk_nml_tidy_San_Guad_JHM.sh
+./tst_nml_tidy_San_Guad_JHM.sh
 echo "Running optim. ${opt}.1/2"
 ZS_knorm_init=4
 ZS_xnorm_init=1
@@ -351,10 +351,10 @@ sed -i -e "s|IS_opt_run         =.*|IS_opt_run         =2|"                    \
 
 sleep 3
 mpiexec -n 1 ./rapid -ksp_type preonly -tao_gatol 0.01 -tao_grtol 0.0040 > $rapd_file
-./rtk_opt_find.sh $rapd_file | cat > $find_file
-./rtk_opt_comp.sh $find_file 0.131042 2.58128 6.32834
+./tst_opt_find.sh $rapd_file | cat > $find_file
+./tst_opt_comp.sh $find_file 0.131042 2.58128 6.32834
 x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $find_file" >&2 ; exit $x ; fi
-./rtk_nml_tidy_San_Guad_JHM.sh
+./tst_nml_tidy_San_Guad_JHM.sh
 fi
 
 #  -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   - 
@@ -362,7 +362,7 @@ fi
 #  -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   - 
 unt=$((unt+1))
 if (("$unt" >= "$fst")) && (("$unt" <= "$lst")) ; then
-./rtk_nml_tidy_San_Guad_JHM.sh
+./tst_nml_tidy_San_Guad_JHM.sh
 echo "Running optim. ${opt}.2/2"
 ZS_knorm_init=1
 ZS_xnorm_init=1
@@ -376,10 +376,10 @@ sed -i -e "s|IS_opt_run         =.*|IS_opt_run         =2|"                    \
           rapid_namelist_San_Guad_JHM  
 sleep 3
 mpiexec -n 1 ./rapid -ksp_type preonly -tao_gatol 0.01 -tao_grtol 0.0040 > $rapd_file
-./rtk_opt_find.sh $rapd_file | cat > $find_file
-./rtk_opt_comp.sh $find_file 0.125 0.9375 6.3315
+./tst_opt_find.sh $rapd_file | cat > $find_file
+./tst_opt_comp.sh $find_file 0.125 0.9375 6.3315
 x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $find_file" >&2 ; exit $x ; fi
-./rtk_nml_tidy_San_Guad_JHM.sh
+./tst_nml_tidy_San_Guad_JHM.sh
 fi
 
 #  -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   - 
@@ -388,8 +388,8 @@ fi
 if (("10" >= "$fst")) && (("12" <= "$lst")) ; then
 echo "Comparing best values"
 pick_file='tmp_opt_pick_1.txt'
-./rtk_opt_pick.sh tmp_opt_find_1*.txt | cat > $pick_file
-./rtk_opt_comp.sh $pick_file 0.131042 2.58128 6.32834  
+./tst_opt_pick.sh tmp_opt_find_1*.txt | cat > $pick_file
+./tst_opt_comp.sh $pick_file 0.131042 2.58128 6.32834  
 x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $pick_file" >&2 ; exit $x ; fi
 echo "Success"
 echo "********************"
@@ -406,7 +406,7 @@ opt=$((opt+1))
 #  -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   - 
 unt=$((unt+1))
 if (("$unt" >= "$fst")) && (("$unt" <= "$lst")) ; then
-./rtk_nml_tidy_San_Guad_JHM.sh
+./tst_nml_tidy_San_Guad_JHM.sh
 echo "Running optim. ${opt}.0/2"
 ZS_knorm_init=2
 ZS_xnorm_init=3
@@ -421,10 +421,10 @@ sed -i -e "s|IS_opt_run         =.*|IS_opt_run         =2|"                    \
 
 sleep 3
 mpiexec -n 1 ./rapid -ksp_type preonly -tao_gatol 0.01 -tao_grtol 0.0040 > $rapd_file
-./rtk_opt_find.sh $rapd_file | cat > $find_file
-./rtk_opt_comp.sh $find_file 0.5 3.75 6.33895
+./tst_opt_find.sh $rapd_file | cat > $find_file
+./tst_opt_comp.sh $find_file 0.5 3.75 6.33895
 x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $find_file" >&2 ; exit $x ; fi
-./rtk_nml_tidy_San_Guad_JHM.sh
+./tst_nml_tidy_San_Guad_JHM.sh
 fi
 
 #  -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   - 
@@ -432,7 +432,7 @@ fi
 #  -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   - 
 unt=$((unt+1))
 if (("$unt" >= "$fst")) && (("$unt" <= "$lst")) ; then
-./rtk_nml_tidy_San_Guad_JHM.sh
+./tst_nml_tidy_San_Guad_JHM.sh
 echo "Running optim. ${opt}.1/2"
 ZS_knorm_init=4
 ZS_xnorm_init=1
@@ -446,10 +446,10 @@ sed -i -e "s|IS_opt_run         =.*|IS_opt_run         =2|"                    \
           rapid_namelist_San_Guad_JHM  
 sleep 3
 mpiexec -n 1 ./rapid -ksp_type preonly -tao_gatol 0.01 -tao_grtol 0.0040 > $rapd_file
-./rtk_opt_find.sh $rapd_file | cat > $find_file
-./rtk_opt_comp.sh $find_file 0.617188 1.95898 6.32206
+./tst_opt_find.sh $rapd_file | cat > $find_file
+./tst_opt_comp.sh $find_file 0.617188 1.95898 6.32206
 x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $find_file" >&2 ; exit $x ; fi
-./rtk_nml_tidy_San_Guad_JHM.sh
+./tst_nml_tidy_San_Guad_JHM.sh
 fi
 
 #  -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   - 
@@ -457,7 +457,7 @@ fi
 #  -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   - 
 unt=$((unt+1))
 if (("$unt" >= "$fst")) && (("$unt" <= "$lst")) ; then
-./rtk_nml_tidy_San_Guad_JHM.sh
+./tst_nml_tidy_San_Guad_JHM.sh
 echo "Running optim. ${opt}.2/2"
 ZS_knorm_init=1
 ZS_xnorm_init=1
@@ -471,10 +471,10 @@ sed -i -e "s|IS_opt_run         =.*|IS_opt_run         =2|"                    \
           rapid_namelist_San_Guad_JHM  
 sleep 3
 mpiexec -n 1 ./rapid -ksp_type preonly -tao_gatol 0.01 -tao_grtol 0.0040 > $rapd_file
-./rtk_opt_find.sh $rapd_file | cat > $find_file
-./rtk_opt_comp.sh $find_file 0.5 1.75 6.33788
+./tst_opt_find.sh $rapd_file | cat > $find_file
+./tst_opt_comp.sh $find_file 0.5 1.75 6.33788
 x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $find_file" >&2 ; exit $x ; fi
-./rtk_nml_tidy_San_Guad_JHM.sh
+./tst_nml_tidy_San_Guad_JHM.sh
 fi
 
 #  -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   - 
@@ -483,8 +483,8 @@ fi
 if (("13" >= "$fst")) && (("15" <= "$lst")) ; then
 echo "Comparing best values"
 pick_file='tmp_opt_pick_2.txt'
-./rtk_opt_pick.sh tmp_opt_find_2*.txt | cat > $pick_file
-./rtk_opt_comp.sh $pick_file 0.617188 1.95898 6.32206
+./tst_opt_pick.sh tmp_opt_find_2*.txt | cat > $pick_file
+./tst_opt_comp.sh $pick_file 0.617188 1.95898 6.32206
 x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $pick_file" >&2 ; exit $x ; fi
 echo "Success"
 echo "********************"
@@ -517,9 +517,9 @@ ln -s rapid_namelist_Reg07_JHM rapid_namelist
 unt=$((unt+1))
 sim=$((sim+1))
 if (("$unt" >= "$fst")) && (("$unt" <= "$lst")) ; then
-./rtk_nml_tidy_Reg07_JHM.sh
+./tst_nml_tidy_Reg07_JHM.sh
 Qout_gold='../../rapid/output/Reg07_JHM/Qout_Reg07_100days_pfac_dtR900s.nc'
-Qout_file='../../rapid/output/Reg07_JHM/Qout_Reg07_100days_pfac_dtR900s_n1_muskingum_rtk.nc'
+Qout_file='../../rapid/output/Reg07_JHM/Qout_Reg07_100days_pfac_dtR900s_n1_muskingum_tst.nc'
 rapd_file="tmp_run_$sim.txt"
 comp_file="tmp_run_comp_$sim.txt"
 echo "Running simul. $sim/17"
@@ -529,12 +529,12 @@ sed -i -e "s|Qout_file          =.*|Qout_file          ='$Qout_file'|"         \
 sleep 3
 mpiexec -n 1 ./rapid > $rapd_file
 echo "Comparing files"
-./rtk_run_comp $Qout_gold $Qout_file > $comp_file 
+./tst_run_comp $Qout_gold $Qout_file > $comp_file 
 x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $comp_file" >&2 ; exit $x ; fi
 rm $Qout_file
 rm $rapd_file
 rm $comp_file
-./rtk_nml_tidy_Reg07_JHM.sh
+./tst_nml_tidy_Reg07_JHM.sh
 echo "Success"
 echo "********************"
 fi
@@ -545,9 +545,9 @@ fi
 unt=$((unt+1))
 sim=$((sim+1))
 if (("$unt" >= "$fst")) && (("$unt" <= "$lst")) ; then
-./rtk_nml_tidy_Reg07_JHM.sh
+./tst_nml_tidy_Reg07_JHM.sh
 Qout_gold='../../rapid/output/Reg07_JHM/Qout_Reg07_100days_pfac_dtR900s.nc'
-Qout_file='../../rapid/output/Reg07_JHM/Qout_Reg07_100days_pfac_dtR900s_n1_preonly_rtk.nc'
+Qout_file='../../rapid/output/Reg07_JHM/Qout_Reg07_100days_pfac_dtR900s_n1_preonly_tst.nc'
 rapd_file="tmp_run_$sim.txt"
 comp_file="tmp_run_comp_$sim.txt"
 echo "Running simul. $sim/17"
@@ -557,12 +557,12 @@ sed -i -e "s|Qout_file          =.*|Qout_file          ='$Qout_file'|"         \
 sleep 3
 mpiexec -n 1 ./rapid -ksp_type preonly > $rapd_file
 echo "Comparing files"
-./rtk_run_comp $Qout_gold $Qout_file > $comp_file 
+./tst_run_comp $Qout_gold $Qout_file > $comp_file 
 x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $comp_file" >&2 ; exit $x ; fi
 rm $Qout_file
 rm $rapd_file
 rm $comp_file
-./rtk_nml_tidy_Reg07_JHM.sh
+./tst_nml_tidy_Reg07_JHM.sh
 echo "Success"
 echo "********************"
 fi
@@ -577,8 +577,8 @@ do
 unt=$((unt+1))
 sim=$((sim+1))
 if (("$unt" >= "$fst")) && (("$unt" <= "$lst")) ; then
-./rtk_nml_tidy_Reg07_JHM.sh
-Qout_file='../../rapid/output/Reg07_JHM/Qout_Reg07_100days_pfac_dtR900s_n'$proc'_richardson_rtk.nc'
+./tst_nml_tidy_Reg07_JHM.sh
+Qout_file='../../rapid/output/Reg07_JHM/Qout_Reg07_100days_pfac_dtR900s_n'$proc'_richardson_tst.nc'
 rapd_file="tmp_run_$sim.txt"
 comp_file="tmp_run_comp_$sim.txt"
 echo "Running simul. $sim/17"
@@ -587,12 +587,12 @@ sed -i -e "s|Qout_file          =.*|Qout_file          ='$Qout_file'|"         \
 sleep 3
 mpiexec -n $proc ./rapid -ksp_type richardson > $rapd_file
 echo "Comparing files"
-./rtk_run_comp $Qout_gold $Qout_file > $comp_file 
+./tst_run_comp $Qout_gold $Qout_file > $comp_file 
 x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $comp_file" >&2 ; exit $x ; fi
 rm $Qout_file
 rm $rapd_file
 rm $comp_file
-./rtk_nml_tidy_Reg07_JHM.sh
+./tst_nml_tidy_Reg07_JHM.sh
 echo "Success"
 echo "********************"
 fi

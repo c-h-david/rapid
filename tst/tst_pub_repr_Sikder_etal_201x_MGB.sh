@@ -1,6 +1,6 @@
 #!/bin/bash
 #*******************************************************************************
-#rtk_pub_repr_Sikder_etal_201x_FRN.sh
+#tst_pub_repr_Sikder_etal_201x_FRN.sh
 #*******************************************************************************
 
 #Purpose:
@@ -93,14 +93,14 @@ ln -s rapid_namelist_MIGBM_GGG rapid_namelist
 #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 unt=$((unt+1))
 if (("$unt" >= "$fst")) && (("$unt" <= "$lst")) ; then
-./rtk_nml_tidy_MIGBM_GGG.sh
+./tst_nml_tidy_MIGBM_GGG.sh
 echo "Running test $unt/x - simulation"
 
 test_file="tmp_run_$unt.txt"
 comp_file="tmp_run_comp_$unt.txt"
 Qout_gold='../output/MIGBM_GGG/Qout_MIGBM_20000101_20091231_utc_p0_dtR1800s_n1_preonly.nc'
 
-Qout_file='../output/MIGBM_GGG/Qout_MIGBM_20000101_20091231_utc_p0_dtR1800s_n1_preonly_rtk.nc'
+Qout_file='../output/MIGBM_GGG/Qout_MIGBM_20000101_20091231_utc_p0_dtR1800s_n1_preonly_tst.nc'
 sed -i -e "s|Qout_file          =.*|Qout_file          ='$Qout_file'|"         \
           rapid_namelist_MIGBM_GGG  
 sleep 3
@@ -108,13 +108,13 @@ sleep 3
 mpiexec -n 1 ./rapid -ksp_type preonly > $test_file
 
 echo "Comparing files"
-./rtk_run_comp $Qout_gold $Qout_file 1e-6 1e-3 > $comp_file 
+./tst_run_comp $Qout_gold $Qout_file 1e-6 1e-3 > $comp_file 
 x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $comp_file" >&2 ; exit $x ; fi
 
 rm $Qout_file
 rm $test_file
 rm $comp_file
-./rtk_nml_tidy_MIGBM_GGG.sh
+./tst_nml_tidy_MIGBM_GGG.sh
 echo "Success"
 echo "********************"
 fi
