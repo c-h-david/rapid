@@ -1,15 +1,15 @@
 #!/bin/bash
 #*******************************************************************************
-#rtk_pub_repr_Allen_etal_201x_GGG.sh
+#rtk_pub_repr_Sikder_etal_201x_FRN.sh
 #*******************************************************************************
 
 #Purpose:
 #This script reproduces all RAPID simulations that were used in the writing of:
-#Allen, George H., et al. (201x)
+#Sikder, M. Safat, et al. (201x)
 #xxx
 #DOI: xx.xxxx/xxxxxx
 #The files used are available from:
-#Allen, George H., et al. (201x)
+#Sikder, M. Safat, et al. (201x)
 #xxx
 #DOI: xx.xxxx/xxxxxx
 #The script returns the following exit codes

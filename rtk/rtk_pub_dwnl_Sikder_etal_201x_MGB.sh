@@ -1,15 +1,15 @@
 #!/bin/bash
 #*******************************************************************************
-#rtk_pub_dwnl_Allen_etal_201x_GGG.sh
+#rtk_pub_dwnl_Sikder_etal_201x_FRN.sh
 #*******************************************************************************
 
 #Purpose:
 #This script downloads all the files corresponding to:
-#Allen, George H., et al. (201x)
+#Sikder, M. Safat, et al. (201x)
 #xxx
 #DOI: xx.xxxx/xxxxxx
 #These files are available from:
-#Allen, George H., et al. (201x)
+#Sikder, M. Safat, et al. (201x)
 #xxx
 #DOI: xx.xxxx/xxxxxx
 #The script returns the following exit codes
