@@ -7,7 +7,7 @@
 #This script resets the namelist of the corresponding publication to default 
 #values.
 #Authors:
-#Charlotte M. Emery, Cedric H. David, 2015-2018.
+#Charlotte M. Emery, Cedric H. David, 2015-2019.
 
 #*******************************************************************************
 #Runtime options 
