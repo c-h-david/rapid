@@ -201,7 +201,7 @@ call nc_check_status(IS_nc_status)
 !*******************************************************************************
 !Getting sizes of dimensions and checking consistency
 !*******************************************************************************
-IS_nc_status=NF90_INQUIRE_DIMENSION(IS_nc_id_fil_Qout_2, IS_nc_id_dim_rivid_1, & 
+IS_nc_status=NF90_INQUIRE_DIMENSION(IS_nc_id_fil_Qout_1, IS_nc_id_dim_rivid_1, &
                                     temp_char, IS_riv_bas_1)
 call nc_check_status(IS_nc_status)
 IS_nc_status=NF90_INQUIRE_DIMENSION(IS_nc_id_fil_Qout_1, IS_nc_id_dim_time_1,  &
