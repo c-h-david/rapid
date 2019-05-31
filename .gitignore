@@ -46,5 +46,6 @@ src/rapid
 tst/rapid
 tst/rapid_namelist
 tst/tst_run_comp
+tst/tst_run_cerr
 tst/tst_run_conv_Qinit
 tst/tmp_*
