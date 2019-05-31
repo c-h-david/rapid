@@ -168,7 +168,10 @@ sed -i -e "s|BS_opt_Qinit       =.*|BS_opt_Qinit       =$BS_opt_Qinit|"        \
 sleep 3
 mpiexec -n 1 ./rapid -ksp_type preonly > $rapd_file
 echo "Comparing files"
-./tst_run_comp $Qout_gold $Qout_file 1e-40 1e-37 > $comp_file 
+./tst_run_comp $Qout_gold $Qout_file 1e-40 1e-37 > $comp_file
+x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $comp_file" >&2 ; exit $x ; fi
+echo "Comparing errors"
+./tst_run_cerr $Qout_gold $Qout_file > $comp_file
 x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $comp_file" >&2 ; exit $x ; fi
 rm $Qout_file
 rm $rapd_file
