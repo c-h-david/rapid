@@ -26,7 +26,7 @@ use rapid_var, only :                                                          &
                    YV_now,YV_version,                                          &
                    Vlat_file,                                                  &
                    YV_title,YV_institution,YV_comment,                         &
-                   YV_time_units,YV_crs_sma,YV_crs_iflat,                      &
+                   YV_time_units,ZS_crs_sma,ZS_crs_iflat,                      &
                    ZV_riv_tot_lon,ZV_riv_tot_lat,IV_riv_index,                 &
                    ZV_riv_bas_bV,ZV_riv_bas_sV,ZV_riv_bas_rV
 
@@ -161,9 +161,9 @@ if (rank==0) then
      IS_nc_status=NF90_PUT_ATT(IS_nc_id_fil_V,IS_nc_id_var_crs,                &
                                'grid_mapping_name','latitude_longitude')
      IS_nc_status=NF90_PUT_ATT(IS_nc_id_fil_V,IS_nc_id_var_crs,                &
-                               'semi_major_axis',YV_crs_sma)
+                               'semi_major_axis',ZS_crs_sma)
      IS_nc_status=NF90_PUT_ATT(IS_nc_id_fil_V,IS_nc_id_var_crs,                &
-                               'inverse_flattening',YV_crs_iflat)
+                               'inverse_flattening',ZS_crs_iflat)
 
 !-------------------------------------------------------------------------------
 !Define global attributes

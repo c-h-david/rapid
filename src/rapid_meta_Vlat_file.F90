@@ -19,7 +19,7 @@ use rapid_var, only :                                                          &
                    IS_nc_id_var_lon,IS_nc_id_var_lat,IS_nc_id_var_Vlat_err,    &
                    IS_riv_tot,IS_riv_bas,IS_time,JS_time,ZS_TauR,              &
                    YV_title,YV_institution,YV_comment,                         &
-                   YV_time_units,YV_crs_sma,YV_crs_iflat,                      &
+                   YV_time_units,ZS_crs_sma,ZS_crs_iflat,                      &
                    ZV_riv_tot_lon,ZV_riv_tot_lat,IV_time,IM_time_bnds,         &
                    ZV_riv_tot_bQlat,ZV_riv_tot_vQlat,ZV_riv_tot_caQlat,ZS_dtUQ,&
                    ZV_riv_tot_cdownQlat,IS_radius
@@ -58,9 +58,9 @@ if (rank==0) then
      IS_nc_status=NF90_GET_ATT(IS_nc_id_fil_Vlat,IS_nc_id_var_time,            \
                   "units", YV_time_units)
      IS_nc_status=NF90_GET_ATT(IS_nc_id_fil_Vlat,IS_nc_id_var_crs,             \
-                  "semi_major_axis", YV_crs_sma)
+                  "semi_major_axis", ZS_crs_sma)
      IS_nc_status=NF90_GET_ATT(IS_nc_id_fil_Vlat,IS_nc_id_var_crs,             \
-                  "inverse_flattening", YV_crs_iflat)
+                  "inverse_flattening", ZS_crs_iflat)
 end if
 
 

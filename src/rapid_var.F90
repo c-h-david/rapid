@@ -595,10 +595,10 @@ character(len=100) :: YV_comment
 
 character(len=100) :: YV_time_units
 !Character string containing the units of time 
-character(len=100) :: YV_crs_sma
-!Character string containing the semi major axis of the spheroid
-character(len=100) :: YV_crs_iflat
-!Character string containing the inverse flattening of the spheroid
+PetscScalar :: ZS_crs_sma
+!Float containing the semi major axis of the spheroid
+PetscScalar :: ZS_crs_iflat
+!Float containing the inverse flattening of the spheroid
 
 PetscScalar,dimension(:), allocatable :: ZV_riv_tot_lon, ZV_riv_tot_lat
 PetscInt,dimension(:), allocatable :: IV_time
