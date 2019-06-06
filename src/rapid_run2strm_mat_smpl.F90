@@ -86,8 +86,8 @@ do JS_riv_bas2=1,IS_riv_bas
     do JS_up=1,IV_nbup(IV_riv_index(JS_riv_bas2))
         if (IM_index_up(JS_riv_bas2,JS_up)/=0) then
 
-        	JS_riv_bas=IM_index_up(JS_riv_bas2,JS_up)
-        	IV_index_down(JS_riv_bas)=JS_riv_bas2
+                JS_riv_bas=IM_index_up(JS_riv_bas2,JS_up)
+                IV_index_down(JS_riv_bas)=JS_riv_bas2
 
         end if
     end do
@@ -114,69 +114,69 @@ call VecScatterEnd(vecscat2,ZV_k,ZV_k_SeqAll,                                  &
 
 do JS_riv_bas=1,IS_riv_bas  !loop over columns
 
-	! diagonal term (already accounted for at initialization)
-	call VecGetValues(ZV_C3_SeqAll,                                        &
-			  IS_one,                                              &
+        ! diagonal term (already accounted for at initialization)
+        call VecGetValues(ZV_C3_SeqAll,                                        &
+                          IS_one,                                              &
                           JS_riv_bas-1,                                        &
-	         	  ZS_val3,ierr)
-	
-	ZS_val = 1.0-(ZS_val3/real(IS_n))*                                     &
+                           ZS_val3,ierr)
+        
+        ZS_val = 1.0-(ZS_val3/real(IS_n))*                                     &
                      ((1.0-ZS_val3**(IS_n))/                                   &
                       (1.0-ZS_val3))
 
-	! next downstream reach
-	JS_riv_bas2 = IV_index_down(JS_riv_bas)
+        ! next downstream reach
+        JS_riv_bas2 = IV_index_down(JS_riv_bas)
 
-	if (JS_riv_bas2 .ne. 0) then
+        if (JS_riv_bas2 .ne. 0) then
 
-		! next downstream term
-		call VecGetValues(ZV_k_SeqAll,                                 &
-				  IS_one,                                      &
+                ! next downstream term
+                call VecGetValues(ZV_k_SeqAll,                                 &
+                                  IS_one,                                      &
                                   JS_riv_bas2-1,                               &
-				  ZS_val3,ierr)
+                                  ZS_val3,ierr)
 
-		ZS_val2 = ZS_val - ZS_val3/86400.0
+                ZS_val2 = ZS_val - ZS_val3/86400.0
 
-		do while ((JS_riv_bas2 .ne. 0).and.(ZS_val2 .ge. 0.0))
+                do while ((JS_riv_bas2 .ne. 0).and.(ZS_val2 .ge. 0.0))
 
-			IV_nz(JS_riv_bas2) = IV_nz(JS_riv_bas2) + 1
+                        IV_nz(JS_riv_bas2) = IV_nz(JS_riv_bas2) + 1
 
-			! diagonal block
-			if (((JS_riv_bas2.ge.IS_ownfirst+1).and.               &
-                 	     (JS_riv_bas2.lt.IS_ownlast+1)).and.               &
-                	    ((JS_riv_bas.ge.IS_ownfirst+1).and.                &
-                 	     (JS_riv_bas.lt.IS_ownlast+1))) then
+                        ! diagonal block
+                        if (((JS_riv_bas2.ge.IS_ownfirst+1).and.               &
+                              (JS_riv_bas2.lt.IS_ownlast+1)).and.               &
+                            ((JS_riv_bas.ge.IS_ownfirst+1).and.                &
+                              (JS_riv_bas.lt.IS_ownlast+1))) then
    
-                		IV_dnz(JS_riv_bas2) = IV_dnz(JS_riv_bas2)+1
+                                IV_dnz(JS_riv_bas2) = IV_dnz(JS_riv_bas2)+1
 
-            		end if
+                            end if
 
-			! off-diagonal block
-			if (((JS_riv_bas2.ge.IS_ownfirst+1).and.               &
-                 	     (JS_riv_bas2.lt.IS_ownlast+1)).and.               &
-                	    ((JS_riv_bas.lt.IS_ownfirst+1).or.                 &
-                 	     (JS_riv_bas.ge.IS_ownlast+1))) then
+                        ! off-diagonal block
+                        if (((JS_riv_bas2.ge.IS_ownfirst+1).and.               &
+                              (JS_riv_bas2.lt.IS_ownlast+1)).and.               &
+                            ((JS_riv_bas.lt.IS_ownfirst+1).or.                 &
+                              (JS_riv_bas.ge.IS_ownlast+1))) then
    
-                		IV_onz(JS_riv_bas2) = IV_onz(JS_riv_bas2)+1
+                                IV_onz(JS_riv_bas2) = IV_onz(JS_riv_bas2)+1
 
-            		end if
+                            end if
 
-			ZS_val = ZS_val2
-			JS_riv_bas2 = IV_index_down(JS_riv_bas2)
-			if (JS_riv_bas2 .ne. 0) then
+                        ZS_val = ZS_val2
+                        JS_riv_bas2 = IV_index_down(JS_riv_bas2)
+                        if (JS_riv_bas2 .ne. 0) then
 
-				call VecGetValues(ZV_k_SeqAll,                &
-				  		  IS_one,                     &
+                                call VecGetValues(ZV_k_SeqAll,                &
+                                                    IS_one,                     &
                                                   JS_riv_bas2-1,              &
-				                  ZS_val3,ierr)
+                                                  ZS_val3,ierr)
 
-				ZS_val2 = ZS_val - ZS_val3/86400.0
+                                ZS_val2 = ZS_val - ZS_val3/86400.0
 
-			endif
+                        endif
 
-		end do
+                end do
 
-	end if
+        end if
 end do
 
 !*******************************************************************************
@@ -205,64 +205,64 @@ if (rank==0) then
 
 do JS_riv_bas=1,IS_riv_bas  !loop over columns
 
-	! diagonal term (already accounted for at initialization)
-	call VecGetValues(ZV_C3_SeqAll,                                        &
-			  IS_one,                                              &
+        ! diagonal term (already accounted for at initialization)
+        call VecGetValues(ZV_C3_SeqAll,                                        &
+                          IS_one,                                              &
                           JS_riv_bas-1,                                        &
-	         	  ZS_val3,ierr)
+                           ZS_val3,ierr)
 
-	ZS_val = 1.0-(ZS_val3/real(IS_n))*                                     &
+        ZS_val = 1.0-(ZS_val3/real(IS_n))*                                     &
                      ((1.0-ZS_val3**(IS_n))/                                   &
                       (1.0-ZS_val3))
 
-	call MatSetValues(ZM_L,                                                &
+        call MatSetValues(ZM_L,                                                &
                           IS_one,                                              &
                           JS_riv_bas-1,                                        &
                           IS_one,                                              &
                           JS_riv_bas-1,                                        &
                           ZS_val,                                              &
-			  INSERT_VALUES,                                       &
+                          INSERT_VALUES,                                       &
                           ierr)
 
-	! next downstream reach
-	JS_riv_bas2 = IV_index_down(JS_riv_bas)
+        ! next downstream reach
+        JS_riv_bas2 = IV_index_down(JS_riv_bas)
 
-	if (JS_riv_bas2 .ne. 0) then
+        if (JS_riv_bas2 .ne. 0) then
 
-		! next downstream term
-		call VecGetValues(ZV_k_SeqAll,                                 &
-				  IS_one,                                      &
+                ! next downstream term
+                call VecGetValues(ZV_k_SeqAll,                                 &
+                                  IS_one,                                      &
                                   JS_riv_bas2-1,                               &
-				  ZS_val3,ierr)
+                                  ZS_val3,ierr)
 
-		ZS_val2 = ZS_val - ZS_val3/86400.0
+                ZS_val2 = ZS_val - ZS_val3/86400.0
 
-		do while ((JS_riv_bas2 .ne. 0).and.(ZS_val2 .ge. 0.0))
+                do while ((JS_riv_bas2 .ne. 0).and.(ZS_val2 .ge. 0.0))
 
-			call MatSetValues(ZM_L,                                &
+                        call MatSetValues(ZM_L,                                &
                                           IS_one,                              &
-                          		  JS_riv_bas2-1,                       &
-                          		  IS_one,                              &
-                          		  JS_riv_bas-1,                        &
-                          		  ZS_val2,                             &
-			  		  INSERT_VALUES,                       &
-                          		  ierr)
+                                            JS_riv_bas2-1,                       &
+                                            IS_one,                              &
+                                            JS_riv_bas-1,                        &
+                                            ZS_val2,                             &
+                                            INSERT_VALUES,                       &
+                                            ierr)
 
-			ZS_val = ZS_val2
-			JS_riv_bas2 = IV_index_down(JS_riv_bas2)
-			if (JS_riv_bas2 .ne. 0) then
+                        ZS_val = ZS_val2
+                        JS_riv_bas2 = IV_index_down(JS_riv_bas2)
+                        if (JS_riv_bas2 .ne. 0) then
 
-				call VecGetValues(ZV_k_SeqAll,                 &
-				                  IS_one,                      &
+                                call VecGetValues(ZV_k_SeqAll,                 &
+                                                  IS_one,                      &
                                                   JS_riv_bas2-1,               &
-				                  ZS_val3,ierr)
+                                                  ZS_val3,ierr)
 
-				ZS_val2 = ZS_val - ZS_val3/86400.0
+                                ZS_val2 = ZS_val - ZS_val3/86400.0
 
-			end if
+                        end if
 
-		end do
-	end if
+                end do
+        end if
 
 end do
 
