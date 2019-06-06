@@ -288,9 +288,9 @@ end if
 
 
 !*******************************************************************************
-!OPTION 3 - data assimilation (of discharge to correct runoff input)
+!OPTION 3/4 - data assimilation (of discharge to correct runoff input)
 !*******************************************************************************
-if (IS_opt_run==3) then
+if ((IS_opt_run==3).or.(IS_opt_run==4)) then
 
 !-------------------------------------------------------------------------------
 !Open Vlat file
@@ -528,7 +528,7 @@ call rapid_close_Qobs_file
 if (BS_opt_V) call rapid_close_V_file(V_file)
 
 !-------------------------------------------------------------------------------
-!End of OPTION 3
+!End of OPTION 3/4
 !-------------------------------------------------------------------------------
 end if
 
