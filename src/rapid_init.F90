@@ -567,7 +567,62 @@ call rapid_kf_obs_mat
 !-------------------------------------------------------------------------------
 end if
 
+!*******************************************************************************
+!Initialization procedure for OPTION 4
+!*******************************************************************************
+if (IS_opt_run==4) then
 
+!-------------------------------------------------------------------------------
+!copy main initial values into routing initial values 
+!-------------------------------------------------------------------------------
+call VecCopy(ZV_QoutinitM,ZV_QoutinitR,ierr)
+call VecCopy(ZV_VinitM,ZV_VinitR,ierr)
+
+!-------------------------------------------------------------------------------
+!Read/set k and x
+!-------------------------------------------------------------------------------
+open(20,file=k_file,status='old')
+read(20,*) ZV_read_riv_tot
+call VecSetValues(ZV_k,IS_riv_bas,IV_riv_loc1,                                 &
+                  ZV_read_riv_tot(IV_riv_index),INSERT_VALUES,ierr)
+call VecAssemblyBegin(ZV_k,ierr)
+call VecAssemblyEnd(ZV_k,ierr)
+close(20)
+!get values for k in a file and create the corresponding ZV_k vector
+
+open(21,file=x_file,status='old')
+read(21,*) ZV_read_riv_tot
+call VecSetValues(ZV_x,IS_riv_bas,IV_riv_loc1,                                 &
+                  ZV_read_riv_tot(IV_riv_index),INSERT_VALUES,ierr)
+call VecAssemblyBegin(ZV_x,ierr)
+call VecAssemblyEnd(ZV_x,ierr)
+close(21)
+!get values for x in a file and create the corresponding ZV_x vector
+
+!-------------------------------------------------------------------------------
+!Compute routing parameters and linear system matrix
+!-------------------------------------------------------------------------------
+call rapid_routing_param(ZV_k,ZV_x,ZV_C1,ZV_C2,ZV_C3,ZM_A)
+!calculate Muskingum parameters and matrix ZM_A
+
+call KSPSetOperators(ksp,ZM_A,ZM_A,ierr)
+!Set KSP to use matrix ZM_A
+
+!-------------------------------------------------------------------------------
+!Calculate observation operator
+!-------------------------------------------------------------------------------
+call rapid_run2strm_mat_smpl
+!Create simplified runoff-to-discharge operator (ZM_L)
+
+call rapid_kf_obs_mat
+!Create selection operator ZM_S
+!Extract "observed" rows of ZM_L to build ZM_H = ZM_S*ZM_L
+!Destroy ZM_L to free memory
+
+!-------------------------------------------------------------------------------
+!End of OPTION 4
+!-------------------------------------------------------------------------------
+end if
 
 !*******************************************************************************
 !End subroutine
