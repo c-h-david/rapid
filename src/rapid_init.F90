@@ -174,7 +174,7 @@ allocate(ZV_riv_tot_lat(IS_riv_tot))
 allocate(IV_time(IS_time))
 allocate(IM_time_bnds(2,IS_time))
 
-if ((IS_opt_run==2).or.(IS_opt_run==3)) then
+if ((IS_opt_run==2).or.(IS_opt_run==3).or.(IS_opt_run==4)) then
      allocate(IV_obs_tot_id(IS_obs_tot))
      allocate(IV_obs_use_id(IS_obs_use))
      allocate(ZV_read_obs_tot(IS_obs_tot))
@@ -319,6 +319,8 @@ if (rank==0 .and. IS_opt_run==2 .and. IS_opt_phi==2)       print '(a70)',      &
        'RAPID mode: optimizing parameters, using phi2                          ' 
 if (rank==0 .and. IS_opt_run==3)                           print '(a70)',      &
        'RAPID mode: data assimilation                                          '
+if (rank==0 .and. IS_opt_run==3)                           print '(a70)',      &
+       'RAPID mode: data assimilation with simplified observation operator     '
 if (rank==0)                                               print '(a10,a60)',  &
        'Using    :', Vlat_file 
 if (rank==0 .and. IS_opt_run==1)                           print '(a10,a60)',  &
