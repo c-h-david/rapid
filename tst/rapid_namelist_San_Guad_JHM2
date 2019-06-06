@@ -1,10 +1,10 @@
 &NL_namelist
 !*******************************************************************************
-!rapid_namelist_San_Guad_DA_XXX 
+!rapid_namelist_San_Guad_JHM2
 !*******************************************************************************
 
 !Purpose:
-!This ASCII file contains instructions for RAPID corresponding to San_Guad_DA_XXX.
+!This ASCII file contains instructions for RAPID corresponding to San_Guad_JHM2.
 !Authors:
 !Charlotte M. Emery & Cedric H. David, 2017-2019.
 
@@ -47,8 +47,8 @@ IS_opt_phi         =1
 !*******************************************************************************
 !Temporal information
 !*******************************************************************************
-ZS_TauM            =2678400
-!3600*24*31=2678400
+ZS_TauM            =126230400
+!3600*24*1461=126230400
 ZS_dtM             =86400
 !3600*24=86400
 
@@ -71,7 +71,7 @@ ZS_dtF             =0
 IS_riv_tot         =5175
 rapid_connect_file ='../../rapid/input/San_Guad_DA_XXX/rapid_connect_San_Guad.csv'
 IS_max_up          =4
-Vlat_file          ='../../rapid/input/San_Guad_DA_XXX/m3_riv_NLDAS_VIC0125_3H_2010_2013_utc_err_radius_infinity.nc'
+Vlat_file          ='../../rapid/input/San_Guad_DA_XXX/m3_riv_NLDAS_VIC0125_3H_2010_2013_utc_err24H_radius286.nc'
 
 !*******************************************************************************
 !Domain in which model runs
@@ -124,14 +124,14 @@ QoutRabsmax_file   =''
 !*******************************************************************************
 !Uncertainty quantification
 !*******************************************************************************
-ZS_dtUQ            =26280288.0
+ZS_dtUQ            =2628028.8
 
 !*******************************************************************************
 !Muskingum operator and data assimilation
 !*******************************************************************************
-ZS_inflation       =1.0
+ZS_inflation       =2.58
 ZS_threshold       =0.0
-IS_radius          =30
+IS_radius          =20
 ZS_stdobs          =0.1
 
 !*******************************************************************************
@@ -139,7 +139,7 @@ ZS_stdobs          =0.1
 !*******************************************************************************
 k_file             ='../../rapid/input/San_Guad_DA_XXX/k_San_Guad_DA.csv'
 x_file             ='../../rapid/input/San_Guad_DA_XXX/x_San_Guad_DA.csv'
-Qout_file          ='../../rapid/output/San_Guad_DA_XXX/Qout_San_Guad_Openloop_20100101_20100131.nc'
+Qout_file          ='../../rapid/output/San_Guad_DA_XXX/Qout_San_Guad_nx_method.nc'
 V_file             =''
 
 !*******************************************************************************
