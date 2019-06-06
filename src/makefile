@@ -79,6 +79,7 @@ rapid:	rapid_main.o \
 	rapid_hsh_mat.o \
 	rapid_mus_mat.o \
 	rapid_runoff2streamflow_mat.o \
+	rapid_run2strm_mat_smpl.o \
 	rapid_kf_obs_mat.o \
 	rapid_net_mat.o \
 	rapid_net_mat_brk.o \
@@ -134,6 +135,7 @@ rapid:	rapid_main.o \
 	rapid_hsh_mat.o \
 	rapid_mus_mat.o \
 	rapid_runoff2streamflow_mat.o \
+	rapid_run2strm_mat_smpl.o \
 	rapid_kf_obs_mat.o \
 	rapid_net_mat.o \
 	rapid_net_mat_brk.o \
@@ -191,6 +193,9 @@ rapid_net_mat.o: 		rapid_net_mat.F90 rapid_var.mod
 
 rapid_kf_obs_mat.o:  rapid_kf_obs_mat.F90 rapid_var.mod
 	${FLINKER} -c rapid_kf_obs_mat.F90 ${PETSC_FC_INCLUDES}
+
+rapid_run2strm_mat_smpl.o:  rapid_run2strm_mat_smpl.F90 rapid_var.mod
+	${FLINKER} -c rapid_run2strm_mat_smpl.F90 ${PETSC_FC_INCLUDES}
 
 rapid_runoff2streamflow_mat.o:  rapid_runoff2streamflow_mat.F90 rapid_var.mod
 	${FLINKER} -c rapid_runoff2streamflow_mat.F90 ${PETSC_FC_INCLUDES}
