@@ -1,6 +1,6 @@
 #!/bin/bash
 #*******************************************************************************
-#tst_nml_tidy_San_Guad_DA_XXX.sh
+#rtk_nml_tidy_San_Guad_DA_XXX.sh
 #*******************************************************************************
 
 #Purpose:
@@ -27,7 +27,7 @@ sed -i -e "s|BS_opt_Qinit       =.*|BS_opt_Qinit       =.false.|"              \
 #*******************************************************************************
 #Temporal information
 #*******************************************************************************
-sed -i -e "s|ZS_TauM            =.*|ZS_TauM            =2678400|"              \
+sed -i -e "s|ZS_TauM            =.*|ZS_TauM            =126230400|"            \
        -e "s|ZS_dtM             =.*|ZS_dtM             =86400|"                \
        -e "s|ZS_TauO            =.*|ZS_TauO            =0|"                    \
        -e "s|ZS_dtO             =.*|ZS_dtO             =0|"                    \
@@ -42,7 +42,7 @@ sed -i -e "s|ZS_TauM            =.*|ZS_TauM            =2678400|"              \
 sed -i -e "s|IS_riv_tot         =.*|IS_riv_tot         =5175|"                 \
        -e "s|rapid_connect_file =.*|rapid_connect_file ='../../rapid/input/San_Guad_DA_XXX/rapid_connect_San_Guad.csv'|" \
        -e "s|IS_max_up          =.*|IS_max_up          =4|"                    \
-       -e "s|Vlat_file          =.*|Vlat_file          ='../../rapid/input/San_Guad_DA_XXX/m3_riv_NLDAS_VIC0125_3H_2010_2013_utc_err_radius_infinity.nc'|" \
+       -e "s|Vlat_file          =.*|Vlat_file          ='../../rapid/input/San_Guad_DA_XXX/m3_riv_NLDAS_VIC0125_3H_2010_2013_utc_err24H_radius286.nc'|" \
           rapid_namelist_San_Guad_DA_XXX
 
 #*******************************************************************************
@@ -98,24 +98,24 @@ sed -i -e "s|babsmax_file       =.*|babsmax_file       =''|"                   \
 #*******************************************************************************
 #Uncertainty quantification
 #*******************************************************************************
-sed -i -e "s|ZS_dtUQ            =.*|ZS_dtUQ            =26280288.0|"           \
+sed -i -e "s|ZS_dtUQ            =.*|ZS_dtUQ            =86400.0|"              \
           rapid_namelist_San_Guad_DA_XXX  
 
 #*******************************************************************************
 #Muskingum operator and data assimilation
 #*******************************************************************************
-sed -i -e "s|ZS_inflation       =.*|ZS_inflation       =1.0|"                  \
+sed -i -e "s|ZS_inflation       =.*|ZS_inflation       =2.58|"                 \
        -e "s|ZS_threshold       =.*|ZS_threshold       =0.0|"                  \
-       -e "s|IS_radius          =.*|IS_radius          =30|"                   \
+       -e "s|IS_radius          =.*|IS_radius          =20|"                   \
        -e "s|ZS_stdobs          =.*|ZS_stdobs          =0.1|"                  \
-          rapid_namelist_San_Guad_DA_XXX  
+          rapid_namelist_San_Guad_DA_XXX
 
 #*******************************************************************************
 #Regular model run
 #*******************************************************************************
 sed -i -e "s|k_file             =.*|k_file             ='../../rapid/input/San_Guad_DA_XXX/k_San_Guad_DA.csv'|" \
        -e "s|x_file             =.*|x_file             ='../../rapid/input/San_Guad_DA_XXX/x_San_Guad_DA.csv'|" \
-       -e "s|Qout_file          =.*|Qout_file          ='../../rapid/output/San_Guad_DA_XXX/Qout_San_Guad_Openloop_20100101_20100131.nc'|" \
+       -e "s|Qout_file          =.*|Qout_file          ='../../rapid/output/San_Guad_DA_XXX/Qout_San_Guad_DA.nc'|" \
        -e "s|V_file             =.*|V_file             =''|"                   \
           rapid_namelist_San_Guad_DA_XXX  
 
@@ -130,7 +130,7 @@ sed -i -e "s|ZS_phifac          =.*|ZS_phifac          =0.001|"                \
 sed -i -e "s|kfac_file          =.*|kfac_file          =''|" \
        -e "s|ZS_knorm_init      =.*|ZS_knorm_init      =2|"                    \
        -e "s|ZS_xnorm_init      =.*|ZS_xnorm_init      =3|"                    \
-          rapid_namelist_San_Guad_DA_XXX 
+          rapid_namelist_San_Guad_DA_XXX
 
 #-------------------------------------------------------------------------------
 #Gage observations
