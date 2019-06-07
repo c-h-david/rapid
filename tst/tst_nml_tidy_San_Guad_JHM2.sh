@@ -42,14 +42,14 @@ sed -i -e "s|ZS_TauM            =.*|ZS_TauM            =126230400|"            \
 sed -i -e "s|IS_riv_tot         =.*|IS_riv_tot         =5175|"                 \
        -e "s|rapid_connect_file =.*|rapid_connect_file ='../../rapid/input/San_Guad_JHM2/rapid_connect_San_Guad.csv'|" \
        -e "s|IS_max_up          =.*|IS_max_up          =4|"                    \
-       -e "s|Vlat_file          =.*|Vlat_file          ='../../rapid/input/San_Guad_JHM2/m3_riv_NLDAS_VIC0125_3H_2010_2013_utc_err24H_radius286.nc'|" \
+       -e "s|Vlat_file          =.*|Vlat_file          ='../../rapid/input/San_Guad_JHM2/m3_riv_NLDAS_VIC0125_3H_2010_2013_utc_err24H_R286.nc'|" \
           rapid_namelist_San_Guad_JHM2
 
 #*******************************************************************************
 #Domain in which model runs
 #*******************************************************************************
 sed -i -e "s|IS_riv_bas         =.*|IS_riv_bas         =5175|"                 \
-       -e "s|riv_bas_id_file    =.*|riv_bas_id_file    ='../../rapid/input/San_Guad_JHM2/basin_id_San_Guad_hydroseq.csv'|" \
+       -e "s|riv_bas_id_file    =.*|riv_bas_id_file    ='../../rapid/input/San_Guad_JHM2/riv_bas_id_San_Guad_hydroseq.csv'|" \
           rapid_namelist_San_Guad_JHM2
 
 #*******************************************************************************
@@ -98,7 +98,7 @@ sed -i -e "s|babsmax_file       =.*|babsmax_file       =''|"                   \
 #*******************************************************************************
 #Uncertainty quantification
 #*******************************************************************************
-sed -i -e "s|ZS_dtUQ            =.*|ZS_dtUQ            =86400.0|"              \
+sed -i -e "s|ZS_dtUQ            =.*|ZS_dtUQ            =2628028.8|"            \
           rapid_namelist_San_Guad_JHM2
 
 #*******************************************************************************
@@ -113,9 +113,9 @@ sed -i -e "s|ZS_inflation       =.*|ZS_inflation       =2.58|"                 \
 #*******************************************************************************
 #Regular model run
 #*******************************************************************************
-sed -i -e "s|k_file             =.*|k_file             ='../../rapid/input/San_Guad_JHM2/k_San_Guad_DA.csv'|" \
-       -e "s|x_file             =.*|x_file             ='../../rapid/input/San_Guad_JHM2/x_San_Guad_DA.csv'|" \
-       -e "s|Qout_file          =.*|Qout_file          ='../../rapid/output/San_Guad_JHM2/Qout_San_Guad_DA.nc'|" \
+sed -i -e "s|k_file             =.*|k_file             ='../../rapid/input/San_Guad_JHM2/k_San_Guad_2004_1.csv'|" \
+       -e "s|x_file             =.*|x_file             ='../../rapid/input/San_Guad_JHM2/x_San_Guad_2004_1.csv'|" \
+       -e "s|Qout_file          =.*|Qout_file          ='../../rapid/output/San_Guad_JHM2/Qout_San_Guad_nx_method.nc'|" \
        -e "s|V_file             =.*|V_file             =''|"                   \
           rapid_namelist_San_Guad_JHM2
 
@@ -140,7 +140,7 @@ sed -i -e "s|IS_obs_tot         =.*|IS_obs_tot         =36|"                   \
        -e "s|Qobs_file          =.*|Qobs_file          ='../../rapid/input/San_Guad_JHM2/Qobs_San_Guad_2010_2013_full.csv'|" \
        -e "s|Qobsbarrec_file    =.*|Qobsbarrec_file    =''|"                   \
        -e "s|IS_obs_use         =.*|IS_obs_use         =23|"                   \
-       -e "s|obs_use_id_file    =.*|obs_use_id_file    ='../../rapid/input/San_Guad_JHM2/gage_id_San_Guad_2010_2013_subset.csv'|" \
+       -e "s|obs_use_id_file    =.*|obs_use_id_file    ='../../rapid/input/San_Guad_JHM2/obs_use_id_San_Guad_2010_2013_23.csv'|" \
        -e "s|IS_strt_opt        =.*|IS_strt_opt        =1|"                    \
           rapid_namelist_San_Guad_JHM2
 
