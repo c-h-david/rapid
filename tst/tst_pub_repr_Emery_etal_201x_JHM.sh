@@ -1,16 +1,22 @@
 #!/bin/bash
 #*******************************************************************************
-#tst_pub_repr_Emery_etal_201X_JHM.sh
+#tst_pub_repr_Emery_etal_201x_JHM.sh
 #*******************************************************************************
 
 #Purpose:
 #This script reproduces all RAPID simulations that were used in the writing of:
 #Emery, Charlotte M., Cedric H. David, Kostas M. Andreadis, Michael J. Turmon,
 #John T. Reager, Jonathan M. Hobbs, Ming Pan, James S. Famiglietti,
-#Edward Beighley, Matthew Rodell
-#DOI:
+#R. Edward Beighley, and Matthew Rodell (201x), Underlying Fundamentals of
+#Kalman Filtering for River Network Modeling,
+#DOI: xx.xxxx/xxxxxxxxxxxx
 #The files used are available from:
-#DOI:
+#Emery, Charlotte M., Cedric H. David, Kostas M. Andreadis, Michael J. Turmon,
+#John T. Reager, Jonathan M. Hobbs, Ming Pan, James S. Famiglietti,
+#R. Edward Beighley, and Matthew Rodell (201x), RRR/RAPID input and output files
+#for "Underlying Fundamentals of Kalman Filtering for River Network Modeling",
+#Zenodo.
+#DOI: xx.xxxx/xxxxxxxxxxxx
 #The following are the possible arguments:
 # - No argument: all unit tests are run
 # - One unique unit test number: this test is run
@@ -21,7 +27,7 @@
 # - 33 if a search failed
 # - 99 if a comparison failed
 #Authors:
-#Charlotte M. Emery, Cedric H. David, 2115-2121.
+#Charlotte M. Emery, Cedric H. David, 2017-2019.
 
 #*******************************************************************************
 #Notes on tricks used here
@@ -32,14 +38,9 @@
 #Publication message
 #*******************************************************************************
 echo "********************"
-echo "Reproducing results of:"
+echo "Reproducing results of:   http://dx.doi.org/xx.xxxx/xxxxxxxxxxxx"
 echo "********************"
 
-#*******************************************************************************
-#Initialize counts for number of RAPID regular, optimizations and unit tests
-#*******************************************************************************
-sim=0
-unt=0
 
 #*******************************************************************************
 #Select which unit tests to perform based on inputs to this shell script
@@ -73,6 +74,13 @@ if [ "$#" -gt "2" ]; then
      exit 22
 fi
 #Exit if more than two options are given
+
+
+#*******************************************************************************
+#Initialize counts for number of RAPID regular, optimizations and unit tests
+#*******************************************************************************
+sim=0
+unt=0
 
 #*******************************************************************************
 #Run all simulations for San Antonio and Guadalupe Basins
