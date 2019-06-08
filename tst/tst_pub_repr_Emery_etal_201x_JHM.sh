@@ -109,7 +109,6 @@ Qout_gold='../../rapid/output/San_Guad_JHM2/Qout_San_Guad_DA_run00.nc'
 rapd_file="tmp_run_$sim.txt"
 comp_file="tmp_run_comp_$sim.txt"
 sed -i -e "s|Qout_file          =.*|Qout_file          ='$Qout_file'|"         \
-       -e "s|IS_opt_run         =.*|IS_opt_run         =1|"                    \
           rapid_namelist_San_Guad_JHM2
 sleep 3
 mpiexec -n 1 ./rapid -ksp_type preonly > $rapd_file
@@ -125,32 +124,20 @@ echo "********************"
 fi
 
 #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-#Simulations 2/21 - 9/21
+#Simulation 2/21
 #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-run=0
-
-for IS_radius in 40 30 25 20 15 10 5 0
-do
-
 unt=$((unt+1))
 sim=$((sim+1))
-run=$((run+1))
 if (("$unt" >= "$fst")) && (("$unt" <= "$lst")) ; then
 ./tst_nml_tidy_San_Guad_JHM2.sh
 echo "Running simul. $sim/21"
-if (($run < 10)) ; then
-run_st="0$run"
-else
-run_st="$run"
-fi
-#echo $run_st $IS_radius
-Qout_file="../../rapid/output/San_Guad_JHM2/Qout_San_Guad_DA_run${run_st}_n1_preonly_tst.nc"
-Qout_gold="../../rapid/output/San_Guad_JHM2/Qout_San_Guad_DA_run${run_st}.nc"
+Qout_file='../../rapid/output/San_Guad_JHM2/Qout_San_Guad_DA_run01_n1_preonly_tst.nc'
+Qout_gold='../../rapid/output/San_Guad_JHM2/Qout_San_Guad_DA_run01.nc'
 rapd_file="tmp_run_$sim.txt"
 comp_file="tmp_run_comp_$sim.txt"
 sed -i -e "s|Qout_file          =.*|Qout_file          ='$Qout_file'|"         \
-       -e "s|IS_radius          =.*|IS_radius          =$IS_radius|"           \
+       -e "s|IS_opt_run         =.*|IS_opt_run         =3|"                    \
+       -e "s|IS_radius          =.*|IS_radius          =40|"                   \
           rapid_namelist_San_Guad_JHM2
 sleep 3
 mpiexec -n 1 ./rapid -ksp_type preonly > $rapd_file
@@ -165,7 +152,208 @@ echo "Success"
 echo "********************"
 fi
 
-done
+#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+#Simulation 3/21
+#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+unt=$((unt+1))
+sim=$((sim+1))
+if (("$unt" >= "$fst")) && (("$unt" <= "$lst")) ; then
+./tst_nml_tidy_San_Guad_JHM2.sh
+echo "Running simul. $sim/21"
+Qout_file='../../rapid/output/San_Guad_JHM2/Qout_San_Guad_DA_run02_n1_preonly_tst.nc'
+Qout_gold='../../rapid/output/San_Guad_JHM2/Qout_San_Guad_DA_run02.nc'
+rapd_file="tmp_run_$sim.txt"
+comp_file="tmp_run_comp_$sim.txt"
+sed -i -e "s|Qout_file          =.*|Qout_file          ='$Qout_file'|"         \
+       -e "s|IS_opt_run         =.*|IS_opt_run         =3|"                    \
+       -e "s|IS_radius          =.*|IS_radius          =30|"                   \
+          rapid_namelist_San_Guad_JHM2
+sleep 3
+mpiexec -n 1 ./rapid -ksp_type preonly > $rapd_file
+echo "Comparing files"
+./tst_run_comp $Qout_gold $Qout_file > $comp_file
+x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $comp_file" >&2 ; exit $x ; fi
+rm $Qout_file
+rm $rapd_file
+rm $comp_file
+./tst_nml_tidy_San_Guad_JHM2.sh
+echo "Success"
+echo "********************"
+fi
+
+#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+#Simulation 4/21
+#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+unt=$((unt+1))
+sim=$((sim+1))
+if (("$unt" >= "$fst")) && (("$unt" <= "$lst")) ; then
+./tst_nml_tidy_San_Guad_JHM2.sh
+echo "Running simul. $sim/21"
+Qout_file='../../rapid/output/San_Guad_JHM2/Qout_San_Guad_DA_run03_n1_preonly_tst.nc'
+Qout_gold='../../rapid/output/San_Guad_JHM2/Qout_San_Guad_DA_run03.nc'
+rapd_file="tmp_run_$sim.txt"
+comp_file="tmp_run_comp_$sim.txt"
+sed -i -e "s|Qout_file          =.*|Qout_file          ='$Qout_file'|"         \
+       -e "s|IS_opt_run         =.*|IS_opt_run         =3|"                    \
+       -e "s|IS_radius          =.*|IS_radius          =25|"                   \
+          rapid_namelist_San_Guad_JHM2
+sleep 3
+mpiexec -n 1 ./rapid -ksp_type preonly > $rapd_file
+echo "Comparing files"
+./tst_run_comp $Qout_gold $Qout_file > $comp_file
+x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $comp_file" >&2 ; exit $x ; fi
+rm $Qout_file
+rm $rapd_file
+rm $comp_file
+./tst_nml_tidy_San_Guad_JHM2.sh
+echo "Success"
+echo "********************"
+fi
+
+#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+#Simulation 5/21
+#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+unt=$((unt+1))
+sim=$((sim+1))
+if (("$unt" >= "$fst")) && (("$unt" <= "$lst")) ; then
+./tst_nml_tidy_San_Guad_JHM2.sh
+echo "Running simul. $sim/21"
+Qout_file='../../rapid/output/San_Guad_JHM2/Qout_San_Guad_DA_run04_n1_preonly_tst.nc'
+Qout_gold='../../rapid/output/San_Guad_JHM2/Qout_San_Guad_DA_run04.nc'
+rapd_file="tmp_run_$sim.txt"
+comp_file="tmp_run_comp_$sim.txt"
+sed -i -e "s|Qout_file          =.*|Qout_file          ='$Qout_file'|"         \
+       -e "s|IS_opt_run         =.*|IS_opt_run         =3|"                    \
+       -e "s|IS_radius          =.*|IS_radius          =20|"                   \
+          rapid_namelist_San_Guad_JHM2
+sleep 3
+mpiexec -n 1 ./rapid -ksp_type preonly > $rapd_file
+echo "Comparing files"
+./tst_run_comp $Qout_gold $Qout_file > $comp_file
+x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $comp_file" >&2 ; exit $x ; fi
+rm $Qout_file
+rm $rapd_file
+rm $comp_file
+./tst_nml_tidy_San_Guad_JHM2.sh
+echo "Success"
+echo "********************"
+fi
+
+#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+#Simulation 6/21
+#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+unt=$((unt+1))
+sim=$((sim+1))
+if (("$unt" >= "$fst")) && (("$unt" <= "$lst")) ; then
+./tst_nml_tidy_San_Guad_JHM2.sh
+echo "Running simul. $sim/21"
+Qout_file='../../rapid/output/San_Guad_JHM2/Qout_San_Guad_DA_run05_n1_preonly_tst.nc'
+Qout_gold='../../rapid/output/San_Guad_JHM2/Qout_San_Guad_DA_run05.nc'
+rapd_file="tmp_run_$sim.txt"
+comp_file="tmp_run_comp_$sim.txt"
+sed -i -e "s|Qout_file          =.*|Qout_file          ='$Qout_file'|"         \
+       -e "s|IS_opt_run         =.*|IS_opt_run         =3|"                    \
+       -e "s|IS_radius          =.*|IS_radius          =15|"                   \
+          rapid_namelist_San_Guad_JHM2
+sleep 3
+mpiexec -n 1 ./rapid -ksp_type preonly > $rapd_file
+echo "Comparing files"
+./tst_run_comp $Qout_gold $Qout_file > $comp_file
+x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $comp_file" >&2 ; exit $x ; fi
+rm $Qout_file
+rm $rapd_file
+rm $comp_file
+./tst_nml_tidy_San_Guad_JHM2.sh
+echo "Success"
+echo "********************"
+fi
+
+#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+#Simulation 7/21
+#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+unt=$((unt+1))
+sim=$((sim+1))
+if (("$unt" >= "$fst")) && (("$unt" <= "$lst")) ; then
+./tst_nml_tidy_San_Guad_JHM2.sh
+echo "Running simul. $sim/21"
+Qout_file='../../rapid/output/San_Guad_JHM2/Qout_San_Guad_DA_run06_n1_preonly_tst.nc'
+Qout_gold='../../rapid/output/San_Guad_JHM2/Qout_San_Guad_DA_run06.nc'
+rapd_file="tmp_run_$sim.txt"
+comp_file="tmp_run_comp_$sim.txt"
+sed -i -e "s|Qout_file          =.*|Qout_file          ='$Qout_file'|"         \
+       -e "s|IS_opt_run         =.*|IS_opt_run         =3|"                    \
+       -e "s|IS_radius          =.*|IS_radius          =10|"                   \
+          rapid_namelist_San_Guad_JHM2
+sleep 3
+mpiexec -n 1 ./rapid -ksp_type preonly > $rapd_file
+echo "Comparing files"
+./tst_run_comp $Qout_gold $Qout_file > $comp_file
+x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $comp_file" >&2 ; exit $x ; fi
+rm $Qout_file
+rm $rapd_file
+rm $comp_file
+./tst_nml_tidy_San_Guad_JHM2.sh
+echo "Success"
+echo "********************"
+fi
+
+#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+#Simulation 8/21
+#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+unt=$((unt+1))
+sim=$((sim+1))
+if (("$unt" >= "$fst")) && (("$unt" <= "$lst")) ; then
+./tst_nml_tidy_San_Guad_JHM2.sh
+echo "Running simul. $sim/21"
+Qout_file='../../rapid/output/San_Guad_JHM2/Qout_San_Guad_DA_run07_n1_preonly_tst.nc'
+Qout_gold='../../rapid/output/San_Guad_JHM2/Qout_San_Guad_DA_run07.nc'
+rapd_file="tmp_run_$sim.txt"
+comp_file="tmp_run_comp_$sim.txt"
+sed -i -e "s|Qout_file          =.*|Qout_file          ='$Qout_file'|"         \
+       -e "s|IS_opt_run         =.*|IS_opt_run         =3|"                    \
+       -e "s|IS_radius          =.*|IS_radius          =5|"                    \
+          rapid_namelist_San_Guad_JHM2
+sleep 3
+mpiexec -n 1 ./rapid -ksp_type preonly > $rapd_file
+echo "Comparing files"
+./tst_run_comp $Qout_gold $Qout_file > $comp_file
+x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $comp_file" >&2 ; exit $x ; fi
+rm $Qout_file
+rm $rapd_file
+rm $comp_file
+./tst_nml_tidy_San_Guad_JHM2.sh
+echo "Success"
+echo "********************"
+fi
+
+#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+#Simulation 9/21
+#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+unt=$((unt+1))
+sim=$((sim+1))
+if (("$unt" >= "$fst")) && (("$unt" <= "$lst")) ; then
+./tst_nml_tidy_San_Guad_JHM2.sh
+echo "Running simul. $sim/21"
+Qout_file='../../rapid/output/San_Guad_JHM2/Qout_San_Guad_DA_run08_n1_preonly_tst.nc'
+Qout_gold='../../rapid/output/San_Guad_JHM2/Qout_San_Guad_DA_run08.nc'
+rapd_file="tmp_run_$sim.txt"
+comp_file="tmp_run_comp_$sim.txt"
+sed -i -e "s|Qout_file          =.*|Qout_file          ='$Qout_file'|"         \
+       -e "s|IS_opt_run         =.*|IS_opt_run         =3|"                    \
+       -e "s|IS_radius          =.*|IS_radius          =0|"                    \
+          rapid_namelist_San_Guad_JHM2
+sleep 3
+mpiexec -n 1 ./rapid -ksp_type preonly > $rapd_file
+echo "Comparing files"
+./tst_run_comp $Qout_gold $Qout_file > $comp_file
+x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $comp_file" >&2 ; exit $x ; fi
+rm $Qout_file
+rm $rapd_file
+rm $comp_file
+./tst_nml_tidy_San_Guad_JHM2.sh
+echo "Success"
+echo "********************"
+fi
 
 #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 #Simulations 10/21 - 13/21
