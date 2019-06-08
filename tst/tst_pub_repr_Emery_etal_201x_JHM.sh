@@ -104,9 +104,9 @@ sim=$((sim+1))
 if (("$unt" >= "$fst")) && (("$unt" <= "$lst")) ; then
 ./tst_nml_tidy_San_Guad_JHM2.sh
 echo "Running simul. $sim/21"
-Qout_file="../../rapid/output/San_Guad_JHM2/Qout_San_Guad_DA_run00_UQ_24H_n1_preonly_tst.nc"
-Qout_gold="../../rapid/output/San_Guad_JHM2/Qout_San_Guad_DA_run00_UQ_24H.nc"
-Vlat_file="../../rapid/input/San_Guad_JHM2/m3_riv_NLDAS_VIC0125_3H_2010_2013_utc_err24H_R286.nc"
+Qout_file="../../rapid/output/San_Guad_JHM2/Qout_San_Guad_exp00_err_D_n1_preonly_tst.nc"
+Qout_gold="../../rapid/output/San_Guad_JHM2/Qout_San_Guad_exp00_err_D.nc"
+Vlat_file="../../rapid/input/San_Guad_JHM2/m3_riv_NLDAS_VIC0125_3H_2010_2013_utc_R286_err_D.nc"
 rapd_file="tmp_run_$sim.txt"
 comp_file="tmp_run_comp_$sim.txt"
 sed -i -e "s|Qout_file          =.*|Qout_file          ='$Qout_file'|"         \
@@ -137,9 +137,9 @@ sim=$((sim+1))
 if (("$unt" >= "$fst")) && (("$unt" <= "$lst")) ; then
 ./tst_nml_tidy_San_Guad_JHM2.sh
 echo "Running simul. $sim/21"
-Qout_file="../../rapid/output/San_Guad_JHM2/Qout_San_Guad_DA_run00_UQ_24Hscaled_n1_preonly_tst.nc"
-Qout_gold="../../rapid/output/San_Guad_JHM2/Qout_San_Guad_DA_run00_UQ_24Hscaled.nc"
-Vlat_file="../../rapid/input/San_Guad_JHM2/m3_riv_NLDAS_VIC0125_3H_2010_2013_utc_scalederr24H_R286.nc"
+Qout_file="../../rapid/output/San_Guad_JHM2/Qout_San_Guad_exp00_err_D_scl_n1_preonly_tst.nc"
+Qout_gold="../../rapid/output/San_Guad_JHM2/Qout_San_Guad_exp00_err_D_scl.nc"
+Vlat_file="../../rapid/input/San_Guad_JHM2/m3_riv_NLDAS_VIC0125_3H_2010_2013_utc_R286_err_D_scl.nc"
 rapd_file="tmp_run_$sim.txt"
 comp_file="tmp_run_comp_$sim.txt"
 sed -i -e "s|Qout_file          =.*|Qout_file          ='$Qout_file'|"         \
@@ -170,9 +170,9 @@ sim=$((sim+1))
 if (("$unt" >= "$fst")) && (("$unt" <= "$lst")) ; then
 ./tst_nml_tidy_San_Guad_JHM2.sh
 echo "Running simul. $sim/21"
-Qout_file="../../rapid/output/San_Guad_JHM2/Qout_San_Guad_DA_run00_UQ_M_n1_preonly_tst.nc"
-Qout_gold="../../rapid/output/San_Guad_JHM2/Qout_San_Guad_DA_run00_UQ_M.nc"
-Vlat_file="../../rapid/input/San_Guad_JHM2/m3_riv_NLDAS_VIC0125_3H_2010_2013_utc_errM_R286.nc"
+Qout_file="../../rapid/output/San_Guad_JHM2/Qout_San_Guad_exp00_err_M_n1_preonly_tst.nc"
+Qout_gold="../../rapid/output/San_Guad_JHM2/Qout_San_Guad_exp00_err_M.nc"
+Vlat_file="../../rapid/input/San_Guad_JHM2/m3_riv_NLDAS_VIC0125_3H_2010_2013_utc_R286_err_M.nc"
 rapd_file="tmp_run_$sim.txt"
 comp_file="tmp_run_comp_$sim.txt"
 sed -i -e "s|Qout_file          =.*|Qout_file          ='$Qout_file'|"         \
@@ -204,8 +204,8 @@ sim=$((sim+1))
 if (("$unt" >= "$fst")) && (("$unt" <= "$lst")) ; then
 ./tst_nml_tidy_San_Guad_JHM2.sh
 echo "Running simul. $sim/21"
-Qout_file='../../rapid/output/San_Guad_JHM2/Qout_San_Guad_DA_run00_n1_preonly_tst.nc'
-Qout_gold='../../rapid/output/San_Guad_JHM2/Qout_San_Guad_DA_run00.nc'
+Qout_file='../../rapid/output/San_Guad_JHM2/Qout_San_Guad_exp00_n1_preonly_tst.nc'
+Qout_gold='../../rapid/output/San_Guad_JHM2/Qout_San_Guad_exp00.nc'
 rapd_file="tmp_run_$sim.txt"
 comp_file="tmp_run_comp_$sim.txt"
 sed -i -e "s|Qout_file          =.*|Qout_file          ='$Qout_file'|"         \
@@ -231,8 +231,8 @@ sim=$((sim+1))
 if (("$unt" >= "$fst")) && (("$unt" <= "$lst")) ; then
 ./tst_nml_tidy_San_Guad_JHM2.sh
 echo "Running simul. $sim/21"
-Qout_file='../../rapid/output/San_Guad_JHM2/Qout_San_Guad_DA_run01_n1_preonly_tst.nc'
-Qout_gold='../../rapid/output/San_Guad_JHM2/Qout_San_Guad_DA_run01.nc'
+Qout_file='../../rapid/output/San_Guad_JHM2/Qout_San_Guad_exp01_n1_preonly_tst.nc'
+Qout_gold='../../rapid/output/San_Guad_JHM2/Qout_San_Guad_exp01.nc'
 rapd_file="tmp_run_$sim.txt"
 comp_file="tmp_run_comp_$sim.txt"
 sed -i -e "s|Qout_file          =.*|Qout_file          ='$Qout_file'|"         \
@@ -260,8 +260,8 @@ sim=$((sim+1))
 if (("$unt" >= "$fst")) && (("$unt" <= "$lst")) ; then
 ./tst_nml_tidy_San_Guad_JHM2.sh
 echo "Running simul. $sim/21"
-Qout_file='../../rapid/output/San_Guad_JHM2/Qout_San_Guad_DA_run02_n1_preonly_tst.nc'
-Qout_gold='../../rapid/output/San_Guad_JHM2/Qout_San_Guad_DA_run02.nc'
+Qout_file='../../rapid/output/San_Guad_JHM2/Qout_San_Guad_exp02_n1_preonly_tst.nc'
+Qout_gold='../../rapid/output/San_Guad_JHM2/Qout_San_Guad_exp02.nc'
 rapd_file="tmp_run_$sim.txt"
 comp_file="tmp_run_comp_$sim.txt"
 sed -i -e "s|Qout_file          =.*|Qout_file          ='$Qout_file'|"         \
@@ -289,8 +289,8 @@ sim=$((sim+1))
 if (("$unt" >= "$fst")) && (("$unt" <= "$lst")) ; then
 ./tst_nml_tidy_San_Guad_JHM2.sh
 echo "Running simul. $sim/21"
-Qout_file='../../rapid/output/San_Guad_JHM2/Qout_San_Guad_DA_run03_n1_preonly_tst.nc'
-Qout_gold='../../rapid/output/San_Guad_JHM2/Qout_San_Guad_DA_run03.nc'
+Qout_file='../../rapid/output/San_Guad_JHM2/Qout_San_Guad_exp03_n1_preonly_tst.nc'
+Qout_gold='../../rapid/output/San_Guad_JHM2/Qout_San_Guad_exp03.nc'
 rapd_file="tmp_run_$sim.txt"
 comp_file="tmp_run_comp_$sim.txt"
 sed -i -e "s|Qout_file          =.*|Qout_file          ='$Qout_file'|"         \
@@ -318,8 +318,8 @@ sim=$((sim+1))
 if (("$unt" >= "$fst")) && (("$unt" <= "$lst")) ; then
 ./tst_nml_tidy_San_Guad_JHM2.sh
 echo "Running simul. $sim/21"
-Qout_file='../../rapid/output/San_Guad_JHM2/Qout_San_Guad_DA_run04_n1_preonly_tst.nc'
-Qout_gold='../../rapid/output/San_Guad_JHM2/Qout_San_Guad_DA_run04.nc'
+Qout_file='../../rapid/output/San_Guad_JHM2/Qout_San_Guad_exp04_n1_preonly_tst.nc'
+Qout_gold='../../rapid/output/San_Guad_JHM2/Qout_San_Guad_exp04.nc'
 rapd_file="tmp_run_$sim.txt"
 comp_file="tmp_run_comp_$sim.txt"
 sed -i -e "s|Qout_file          =.*|Qout_file          ='$Qout_file'|"         \
@@ -347,8 +347,8 @@ sim=$((sim+1))
 if (("$unt" >= "$fst")) && (("$unt" <= "$lst")) ; then
 ./tst_nml_tidy_San_Guad_JHM2.sh
 echo "Running simul. $sim/21"
-Qout_file='../../rapid/output/San_Guad_JHM2/Qout_San_Guad_DA_run05_n1_preonly_tst.nc'
-Qout_gold='../../rapid/output/San_Guad_JHM2/Qout_San_Guad_DA_run05.nc'
+Qout_file='../../rapid/output/San_Guad_JHM2/Qout_San_Guad_exp05_n1_preonly_tst.nc'
+Qout_gold='../../rapid/output/San_Guad_JHM2/Qout_San_Guad_exp05.nc'
 rapd_file="tmp_run_$sim.txt"
 comp_file="tmp_run_comp_$sim.txt"
 sed -i -e "s|Qout_file          =.*|Qout_file          ='$Qout_file'|"         \
@@ -376,8 +376,8 @@ sim=$((sim+1))
 if (("$unt" >= "$fst")) && (("$unt" <= "$lst")) ; then
 ./tst_nml_tidy_San_Guad_JHM2.sh
 echo "Running simul. $sim/21"
-Qout_file='../../rapid/output/San_Guad_JHM2/Qout_San_Guad_DA_run06_n1_preonly_tst.nc'
-Qout_gold='../../rapid/output/San_Guad_JHM2/Qout_San_Guad_DA_run06.nc'
+Qout_file='../../rapid/output/San_Guad_JHM2/Qout_San_Guad_exp06_n1_preonly_tst.nc'
+Qout_gold='../../rapid/output/San_Guad_JHM2/Qout_San_Guad_exp06.nc'
 rapd_file="tmp_run_$sim.txt"
 comp_file="tmp_run_comp_$sim.txt"
 sed -i -e "s|Qout_file          =.*|Qout_file          ='$Qout_file'|"         \
@@ -405,8 +405,8 @@ sim=$((sim+1))
 if (("$unt" >= "$fst")) && (("$unt" <= "$lst")) ; then
 ./tst_nml_tidy_San_Guad_JHM2.sh
 echo "Running simul. $sim/21"
-Qout_file='../../rapid/output/San_Guad_JHM2/Qout_San_Guad_DA_run07_n1_preonly_tst.nc'
-Qout_gold='../../rapid/output/San_Guad_JHM2/Qout_San_Guad_DA_run07.nc'
+Qout_file='../../rapid/output/San_Guad_JHM2/Qout_San_Guad_exp07_n1_preonly_tst.nc'
+Qout_gold='../../rapid/output/San_Guad_JHM2/Qout_San_Guad_exp07.nc'
 rapd_file="tmp_run_$sim.txt"
 comp_file="tmp_run_comp_$sim.txt"
 sed -i -e "s|Qout_file          =.*|Qout_file          ='$Qout_file'|"         \
@@ -434,8 +434,8 @@ sim=$((sim+1))
 if (("$unt" >= "$fst")) && (("$unt" <= "$lst")) ; then
 ./tst_nml_tidy_San_Guad_JHM2.sh
 echo "Running simul. $sim/21"
-Qout_file='../../rapid/output/San_Guad_JHM2/Qout_San_Guad_DA_run08_n1_preonly_tst.nc'
-Qout_gold='../../rapid/output/San_Guad_JHM2/Qout_San_Guad_DA_run08.nc'
+Qout_file='../../rapid/output/San_Guad_JHM2/Qout_San_Guad_exp08_n1_preonly_tst.nc'
+Qout_gold='../../rapid/output/San_Guad_JHM2/Qout_San_Guad_exp08.nc'
 rapd_file="tmp_run_$sim.txt"
 comp_file="tmp_run_comp_$sim.txt"
 sed -i -e "s|Qout_file          =.*|Qout_file          ='$Qout_file'|"         \
@@ -463,8 +463,8 @@ sim=$((sim+1))
 if (("$unt" >= "$fst")) && (("$unt" <= "$lst")) ; then
 ./tst_nml_tidy_San_Guad_JHM2.sh
 echo "Running simul. $sim/21"
-Qout_file='../../rapid/output/San_Guad_JHM2/Qout_San_Guad_DA_run09_n1_preonly_tst.nc'
-Qout_gold='../../rapid/output/San_Guad_JHM2/Qout_San_Guad_DA_run09.nc'
+Qout_file='../../rapid/output/San_Guad_JHM2/Qout_San_Guad_exp09_n1_preonly_tst.nc'
+Qout_gold='../../rapid/output/San_Guad_JHM2/Qout_San_Guad_exp09.nc'
 rapd_file="tmp_run_$sim.txt"
 comp_file="tmp_run_comp_$sim.txt"
 sed -i -e "s|Qout_file          =.*|Qout_file          ='$Qout_file'|"         \
@@ -492,8 +492,8 @@ sim=$((sim+1))
 if (("$unt" >= "$fst")) && (("$unt" <= "$lst")) ; then
 ./tst_nml_tidy_San_Guad_JHM2.sh
 echo "Running simul. $sim/21"
-Qout_file='../../rapid/output/San_Guad_JHM2/Qout_San_Guad_DA_run10_n1_preonly_tst.nc'
-Qout_gold='../../rapid/output/San_Guad_JHM2/Qout_San_Guad_DA_run10.nc'
+Qout_file='../../rapid/output/San_Guad_JHM2/Qout_San_Guad_exp10_n1_preonly_tst.nc'
+Qout_gold='../../rapid/output/San_Guad_JHM2/Qout_San_Guad_exp10.nc'
 rapd_file="tmp_run_$sim.txt"
 comp_file="tmp_run_comp_$sim.txt"
 sed -i -e "s|Qout_file          =.*|Qout_file          ='$Qout_file'|"         \
@@ -521,8 +521,8 @@ sim=$((sim+1))
 if (("$unt" >= "$fst")) && (("$unt" <= "$lst")) ; then
 ./tst_nml_tidy_San_Guad_JHM2.sh
 echo "Running simul. $sim/21"
-Qout_file='../../rapid/output/San_Guad_JHM2/Qout_San_Guad_DA_run11_n1_preonly_tst.nc'
-Qout_gold='../../rapid/output/San_Guad_JHM2/Qout_San_Guad_DA_run11.nc'
+Qout_file='../../rapid/output/San_Guad_JHM2/Qout_San_Guad_exp11_n1_preonly_tst.nc'
+Qout_gold='../../rapid/output/San_Guad_JHM2/Qout_San_Guad_exp11.nc'
 rapd_file="tmp_run_$sim.txt"
 comp_file="tmp_run_comp_$sim.txt"
 sed -i -e "s|Qout_file          =.*|Qout_file          ='$Qout_file'|"         \
@@ -550,8 +550,8 @@ sim=$((sim+1))
 if (("$unt" >= "$fst")) && (("$unt" <= "$lst")) ; then
 ./tst_nml_tidy_San_Guad_JHM2.sh
 echo "Running simul. $sim/21"
-Qout_file='../../rapid/output/San_Guad_JHM2/Qout_San_Guad_DA_run12_n1_preonly_tst.nc'
-Qout_gold='../../rapid/output/San_Guad_JHM2/Qout_San_Guad_DA_run12.nc'
+Qout_file='../../rapid/output/San_Guad_JHM2/Qout_San_Guad_exp12_n1_preonly_tst.nc'
+Qout_gold='../../rapid/output/San_Guad_JHM2/Qout_San_Guad_exp12.nc'
 rapd_file="tmp_run_$sim.txt"
 comp_file="tmp_run_comp_$sim.txt"
 sed -i -e "s|Qout_file          =.*|Qout_file          ='$Qout_file'|"         \
@@ -579,8 +579,8 @@ sim=$((sim+1))
 if (("$unt" >= "$fst")) && (("$unt" <= "$lst")) ; then
 ./tst_nml_tidy_San_Guad_JHM2.sh
 echo "Running simul. $sim/21"
-Qout_file='../../rapid/output/San_Guad_JHM2/Qout_San_Guad_DA_run13_n1_preonly_tst.nc'
-Qout_gold='../../rapid/output/San_Guad_JHM2/Qout_San_Guad_DA_run13.nc'
+Qout_file='../../rapid/output/San_Guad_JHM2/Qout_San_Guad_exp13_n1_preonly_tst.nc'
+Qout_gold='../../rapid/output/San_Guad_JHM2/Qout_San_Guad_exp13.nc'
 rapd_file="tmp_run_$sim.txt"
 comp_file="tmp_run_comp_$sim.txt"
 sed -i -e "s|Qout_file          =.*|Qout_file          ='$Qout_file'|"         \
@@ -608,8 +608,8 @@ sim=$((sim+1))
 if (("$unt" >= "$fst")) && (("$unt" <= "$lst")) ; then
 ./tst_nml_tidy_San_Guad_JHM2.sh
 echo "Running simul. $sim/21"
-Qout_file='../../rapid/output/San_Guad_JHM2/Qout_San_Guad_DA_run14_n1_preonly_tst.nc'
-Qout_gold='../../rapid/output/San_Guad_JHM2/Qout_San_Guad_DA_run14.nc'
+Qout_file='../../rapid/output/San_Guad_JHM2/Qout_San_Guad_exp14_n1_preonly_tst.nc'
+Qout_gold='../../rapid/output/San_Guad_JHM2/Qout_San_Guad_exp14.nc'
 rapd_file="tmp_run_$sim.txt"
 comp_file="tmp_run_comp_$sim.txt"
 sed -i -e "s|Qout_file          =.*|Qout_file          ='$Qout_file'|"         \
@@ -637,8 +637,8 @@ sim=$((sim+1))
 if (("$unt" >= "$fst")) && (("$unt" <= "$lst")) ; then
 ./tst_nml_tidy_San_Guad_JHM2.sh
 echo "Running simul. $sim/21"
-Qout_file='../../rapid/output/San_Guad_JHM2/Qout_San_Guad_DA_run15_n1_preonly_tst.nc'
-Qout_gold='../../rapid/output/San_Guad_JHM2/Qout_San_Guad_DA_run15.nc'
+Qout_file='../../rapid/output/San_Guad_JHM2/Qout_San_Guad_exp15_n1_preonly_tst.nc'
+Qout_gold='../../rapid/output/San_Guad_JHM2/Qout_San_Guad_exp15.nc'
 rapd_file="tmp_run_$sim.txt"
 comp_file="tmp_run_comp_$sim.txt"
 sed -i -e "s|Qout_file          =.*|Qout_file          ='$Qout_file'|"         \
@@ -666,8 +666,8 @@ sim=$((sim+1))
 if (("$unt" >= "$fst")) && (("$unt" <= "$lst")) ; then
 ./tst_nml_tidy_San_Guad_JHM2.sh
 echo "Running simul. $sim/21"
-Qout_file='../../rapid/output/San_Guad_JHM2/Qout_San_Guad_DA_run16_n1_preonly_tst.nc'
-Qout_gold='../../rapid/output/San_Guad_JHM2/Qout_San_Guad_DA_run16.nc'
+Qout_file='../../rapid/output/San_Guad_JHM2/Qout_San_Guad_exp16_n1_preonly_tst.nc'
+Qout_gold='../../rapid/output/San_Guad_JHM2/Qout_San_Guad_exp16.nc'
 rapd_file="tmp_run_$sim.txt"
 comp_file="tmp_run_comp_$sim.txt"
 sed -i -e "s|Qout_file          =.*|Qout_file          ='$Qout_file'|"         \
@@ -695,8 +695,8 @@ sim=$((sim+1))
 if (("$unt" >= "$fst")) && (("$unt" <= "$lst")) ; then
 ./tst_nml_tidy_San_Guad_JHM2.sh
 echo "Running simul. $sim/21"
-Qout_file='../../rapid/output/San_Guad_JHM2/Qout_San_Guad_DA_run17_n1_preonly_tst.nc'
-Qout_gold='../../rapid/output/San_Guad_JHM2/Qout_San_Guad_DA_run17.nc'
+Qout_file='../../rapid/output/San_Guad_JHM2/Qout_San_Guad_exp17_n1_preonly_tst.nc'
+Qout_gold='../../rapid/output/San_Guad_JHM2/Qout_San_Guad_exp17.nc'
 rapd_file="tmp_run_$sim.txt"
 comp_file="tmp_run_comp_$sim.txt"
 sed -i -e "s|Qout_file          =.*|Qout_file          ='$Qout_file'|"         \

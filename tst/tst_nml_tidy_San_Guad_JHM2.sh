@@ -42,7 +42,7 @@ sed -i -e "s|ZS_TauM            =.*|ZS_TauM            =126230400|"            \
 sed -i -e "s|IS_riv_tot         =.*|IS_riv_tot         =5175|"                 \
        -e "s|rapid_connect_file =.*|rapid_connect_file ='../../rapid/input/San_Guad_JHM2/rapid_connect_San_Guad.csv'|" \
        -e "s|IS_max_up          =.*|IS_max_up          =4|"                    \
-       -e "s|Vlat_file          =.*|Vlat_file          ='../../rapid/input/San_Guad_JHM2/m3_riv_NLDAS_VIC0125_3H_2010_2013_utc_err24H_R286.nc'|" \
+       -e "s|Vlat_file          =.*|Vlat_file          ='../../rapid/input/San_Guad_JHM2/m3_riv_NLDAS_VIC0125_3H_2010_2013_utc_R286_err_D.nc'|" \
           rapid_namelist_San_Guad_JHM2
 
 #*******************************************************************************

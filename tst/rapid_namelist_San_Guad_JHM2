@@ -71,7 +71,7 @@ ZS_dtF             =0
 IS_riv_tot         =5175
 rapid_connect_file ='../../rapid/input/San_Guad_JHM2/rapid_connect_San_Guad.csv'
 IS_max_up          =4
-Vlat_file          ='../../rapid/input/San_Guad_JHM2/m3_riv_NLDAS_VIC0125_3H_2010_2013_utc_err24H_R286.nc'
+Vlat_file          ='../../rapid/input/San_Guad_JHM2/m3_riv_NLDAS_VIC0125_3H_2010_2013_utc_R286_err_D.nc'
 
 !*******************************************************************************
 !Domain in which model runs
