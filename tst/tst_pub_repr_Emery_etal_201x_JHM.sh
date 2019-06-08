@@ -617,95 +617,87 @@ echo "********************"
 fi
 
 #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-#Simulations 19 - UQ daily
+#Simulation 19/21 UQ daily
 #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
 unt=$((unt+1))
 sim=$((sim+1))
-run=$((run+1))
 if (("$unt" >= "$fst")) && (("$unt" <= "$lst")) ; then
 ./tst_nml_tidy_San_Guad_JHM2.sh
 echo "Running simul. $sim/21"
 Qout_file="../../rapid/output/San_Guad_JHM2/Qout_San_Guad_DA_run00_UQ_24H_n1_preonly_tst.nc"
 Qout_gold="../../rapid/output/San_Guad_JHM2/Qout_San_Guad_DA_run00_UQ_24H.nc"
+Vlat_file="../../rapid/input/San_Guad_JHM2/m3_riv_NLDAS_VIC0125_3H_2010_2013_utc_err24H_R286.nc"
 rapd_file="tmp_run_$sim.txt"
 comp_file="tmp_run_comp_$sim.txt"
 sed -i -e "s|Qout_file          =.*|Qout_file          ='$Qout_file'|"         \
-       -e "s|IS_opt_run         =.*|IS_opt_run         =1|"                    \
        -e "s|BS_opt_uq          =.*|BS_opt_uq          =.true.|"               \
-       -e "s|Vlat_file          =.*|Vlat_file          ='../../rapid/input/San_Guad_JHM2/m3_riv_NLDAS_VIC0125_3H_2010_2013_utc_err24H_R286.nc'|" \
+       -e "s|Vlat_file          =.*|Vlat_file          ='$Vlat_file'|"         \
           rapid_namelist_San_Guad_JHM2
 sleep 3
 mpiexec -n 1 ./rapid -ksp_type preonly > $rapd_file
 echo "Comparing files"
 ./tst_run_comp $Qout_gold $Qout_file > $comp_file
 x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $comp_file" >&2 ; exit $x ; fi
-echo "Success Qout"
-rm $comp_file
+echo "Comparing UQ"
 ./tst_run_cerr $Qout_gold $Qout_file > $comp_file
 x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $comp_file" >&2 ; exit $x ; fi
 rm $Qout_file
 rm $rapd_file
 rm $comp_file
 ./tst_nml_tidy_San_Guad_JHM2.sh
-echo "Success Qerr"
+echo "Success"
 echo "********************"
 fi
 
 #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-#Simulations 20 - UQ daily rescaled
+#Simulation 20/21 UQ daily rescaled
 #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
 unt=$((unt+1))
 sim=$((sim+1))
-run=$((run+1))
 if (("$unt" >= "$fst")) && (("$unt" <= "$lst")) ; then
 ./tst_nml_tidy_San_Guad_JHM2.sh
 echo "Running simul. $sim/21"
 Qout_file="../../rapid/output/San_Guad_JHM2/Qout_San_Guad_DA_run00_UQ_24Hscaled_n1_preonly_tst.nc"
 Qout_gold="../../rapid/output/San_Guad_JHM2/Qout_San_Guad_DA_run00_UQ_24Hscaled.nc"
+Vlat_file="../../rapid/input/San_Guad_JHM2/m3_riv_NLDAS_VIC0125_3H_2010_2013_utc_scalederr24H_R286.nc"
 rapd_file="tmp_run_$sim.txt"
 comp_file="tmp_run_comp_$sim.txt"
 sed -i -e "s|Qout_file          =.*|Qout_file          ='$Qout_file'|"         \
-       -e "s|IS_opt_run         =.*|IS_opt_run         =1|"                    \
        -e "s|BS_opt_uq          =.*|BS_opt_uq          =.true.|"               \
-       -e "s|Vlat_file          =.*|Vlat_file          ='../../rapid/input/San_Guad_JHM2/m3_riv_NLDAS_VIC0125_3H_2010_2013_utc_scalederr24H_R286.nc'|" \
+       -e "s|Vlat_file          =.*|Vlat_file          ='$Vlat_file'|"         \
           rapid_namelist_San_Guad_JHM2
 sleep 3
 mpiexec -n 1 ./rapid -ksp_type preonly > $rapd_file
 echo "Comparing files"
 ./tst_run_comp $Qout_gold $Qout_file > $comp_file
 x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $comp_file" >&2 ; exit $x ; fi
-echo "Success Qout"
-rm $comp_file
+echo "Comparing UQ"
 ./tst_run_cerr $Qout_gold $Qout_file > $comp_file
 x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $comp_file" >&2 ; exit $x ; fi
 rm $Qout_file
 rm $rapd_file
 rm $comp_file
 ./tst_nml_tidy_San_Guad_JHM2.sh
-echo "Success Qerr"
+echo "Success"
 echo "********************"
 fi
 
 #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-#Simulations 21 - UQ monthly
+#Simulation 21/21 UQ monthly
 #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
 unt=$((unt+1))
 sim=$((sim+1))
-run=$((run+1))
 if (("$unt" >= "$fst")) && (("$unt" <= "$lst")) ; then
 ./tst_nml_tidy_San_Guad_JHM2.sh
 echo "Running simul. $sim/21"
 Qout_file="../../rapid/output/San_Guad_JHM2/Qout_San_Guad_DA_run00_UQ_M_n1_preonly_tst.nc"
 Qout_gold="../../rapid/output/San_Guad_JHM2/Qout_San_Guad_DA_run00_UQ_M.nc"
+Vlat_file="../../rapid/input/San_Guad_JHM2/m3_riv_NLDAS_VIC0125_3H_2010_2013_utc_errM_R286.nc"
 rapd_file="tmp_run_$sim.txt"
 comp_file="tmp_run_comp_$sim.txt"
 sed -i -e "s|Qout_file          =.*|Qout_file          ='$Qout_file'|"         \
-       -e "s|IS_opt_run         =.*|IS_opt_run         =1|"                    \
        -e "s|BS_opt_uq          =.*|BS_opt_uq          =.true.|"               \
-       -e "s|Vlat_file          =.*|Vlat_file          ='../../rapid/input/San_Guad_JHM2/m3_riv_NLDAS_VIC0125_3H_2010_2013_utc_errM_R286.nc'|" \
+       -e "s|Vlat_file          =.*|Vlat_file          ='$Vlat_file'|"         \
        -e "s|ZS_dtUQ            =.*|ZS_dtUQ            =2628028.8|"            \
           rapid_namelist_San_Guad_JHM2
 sleep 3
@@ -713,15 +705,14 @@ mpiexec -n 1 ./rapid -ksp_type preonly > $rapd_file
 echo "Comparing files"
 ./tst_run_comp $Qout_gold $Qout_file > $comp_file
 x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $comp_file" >&2 ; exit $x ; fi
-echo "Success Qout"
-rm $comp_file
+echo "Comparing UQ"
 ./tst_run_cerr $Qout_gold $Qout_file > $comp_file
 x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $comp_file" >&2 ; exit $x ; fi
 rm $Qout_file
 rm $rapd_file
 rm $comp_file
 ./tst_nml_tidy_San_Guad_JHM2.sh
-echo "Success Qerr"
+echo "Success"
 echo "********************"
 fi
 
