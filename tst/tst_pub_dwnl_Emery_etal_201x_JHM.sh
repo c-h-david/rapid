@@ -43,22 +43,24 @@ echo "********************"
 #*******************************************************************************
 #Location of the dataset
 #*******************************************************************************
-URL="http://rapid-hub.org/data/CI/San_Guad_JHM2/"
+URL="http://rapid-hub.org/data/CI/San_Guad_JHM2"
 
 
 #*******************************************************************************
 #Download all input files
 #*******************************************************************************
-folder="../input/San_Guad_DA_XXX"
-list="                                                                \
-      rapid_connect_San_Guad.csv                                      \
-      m3_riv_NLDAS_VIC0125_3H_2010_2013_utc_err_radius_infinity.nc    \
-      k_San_Guad_DA.csv                                               \
-      x_San_Guad_DA.csv                                               \
-      basin_id_San_Guad_hydroseq.csv                                  \
-      obs_tot_id_San_Guad_2010_2013_full.csv                          \
-      gage_id_San_Guad_2010_2013_subset.csv                           \
-      Qobs_San_Guad_2010_2013_full.csv                                \
+folder="../input/San_Guad_JHM2"
+list="                                                                         \
+      k_San_Guad_2004_1.csv                                                    \
+      m3_riv_NLDAS_VIC0125_3H_2010_2013_utc_R286_err_D_scl.nc                  \
+      m3_riv_NLDAS_VIC0125_3H_2010_2013_utc_R286_err_D.nc                      \
+      m3_riv_NLDAS_VIC0125_3H_2010_2013_utc_R286_err_M.nc                      \
+      obs_tot_id_San_Guad_2010_2013_full.csv                                   \
+      obs_use_id_San_Guad_2010_2013_23.csv                                     \
+      Qobs_San_Guad_2010_2013_full.csv                                         \
+      rapid_connect_San_Guad.csv                                               \
+      riv_bas_id_San_Guad_hydroseq.csv                                         \
+      x_San_Guad_2004_1.csv                                                    \
      "
 
 mkdir -p $folder
@@ -71,12 +73,29 @@ done
 #*******************************************************************************
 #Download all output files
 #*******************************************************************************
-folder="../output/San_Guad_DA_XXX"
-list="                                                                           \
-      Qout_San_Guad_Openloop_20100101_20100131.nc                                \
-      Qout_San_Guad_Analysis_20100101_20100131_tauR30_tauI1.00_tauTe-03.nc       \
-      Qout_San_Guad_Analysis_20100101_20100131_tauR30_tauI1.50_tauT0.nc          \
-      Qout_San_Guad_Analysis_20100101_20100131_tauR30_tauI1.50_tauTe-03.nc       \
+folder="../output/San_Guad_JHM2"
+list="                                                                         \
+      Qout_San_Guad_exp00_err_D_scl.nc                                         \
+      Qout_San_Guad_exp00_err_D.nc                                             \
+      Qout_San_Guad_exp00_err_M.nc                                             \
+      Qout_San_Guad_exp00.nc                                                   \
+      Qout_San_Guad_exp01.nc                                                   \
+      Qout_San_Guad_exp02.nc                                                   \
+      Qout_San_Guad_exp03.nc                                                   \
+      Qout_San_Guad_exp04.nc                                                   \
+      Qout_San_Guad_exp05.nc                                                   \
+      Qout_San_Guad_exp06.nc                                                   \
+      Qout_San_Guad_exp07.nc                                                   \
+      Qout_San_Guad_exp08.nc                                                   \
+      Qout_San_Guad_exp09.nc                                                   \
+      Qout_San_Guad_exp10.nc                                                   \
+      Qout_San_Guad_exp11.nc                                                   \
+      Qout_San_Guad_exp12.nc                                                   \
+      Qout_San_Guad_exp13.nc                                                   \
+      Qout_San_Guad_exp14.nc                                                   \
+      Qout_San_Guad_exp15.nc                                                   \
+      Qout_San_Guad_exp16.nc                                                   \
+      Qout_San_Guad_exp17.nc                                                   \
      "
 
 mkdir -p $folder
