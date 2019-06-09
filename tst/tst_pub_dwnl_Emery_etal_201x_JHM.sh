@@ -5,18 +5,24 @@
 
 #Purpose:
 #This script downloads all the files corresponding to:
-#Emery, Charlotte M., David Cedric H., Turmon Michael, Hobbs Jonathan, 
-#Andreadis Kostas, Reager John T., Famiglietti James, Beighley Edward R., 
-#Rodell Matthew
-#DOI:  
+#Emery, Charlotte M., Cedric H. David, Kostas M. Andreadis, Michael J. Turmon,
+#John T. Reager, Jonathan M. Hobbs, Ming Pan, James S. Famiglietti,
+#R. Edward Beighley, and Matthew Rodell (201x), Underlying Fundamentals of
+#Kalman Filtering for River Network Modeling,
+#DOI: xx.xxxx/xxxxxxxxxxxx
 #These files are available from:
-#DOI: 
+#Emery, Charlotte M., Cedric H. David, Kostas M. Andreadis, Michael J. Turmon,
+#John T. Reager, Jonathan M. Hobbs, Ming Pan, James S. Famiglietti,
+#R. Edward Beighley, and Matthew Rodell (201x), RRR/RAPID input and output files
+#for "Underlying Fundamentals of Kalman Filtering for River Network Modeling",
+#Zenodo.
+#DOI: xx.xxxx/xxxxxxxxxxxx
 #The script returns the following exit codes
 # - 0  if all downloads are successful 
 # - 22 if there was a conversion problem
 # - 44 if one download is not successful
 #Authors:
-#Charlotte M. Emery, Cedric H. David, 2015-2019.
+#Charlotte M. Emery, Cedric H. David, 2017-2019.
 
 #*******************************************************************************
 #Notes on tricks used here
@@ -28,8 +34,8 @@
 #Publication message
 #*******************************************************************************
 echo "********************"
-echo "Downloading files from:   "
-echo "which correspond to   :   "
+echo "Downloading files from:   http://dx.doi.org/xx.xxxx/xxxxxxxxxxxx"
+echo "which correspond to   :   http://dx.doi.org/xx.xxxx/xxxxxxxxxxxx"
 echo "These files are under a Creative Commons Attribution (CC BY) license."
 echo "Please cite these two DOIs if using these files for your publications."
 echo "********************"
@@ -37,7 +43,7 @@ echo "********************"
 #*******************************************************************************
 #Location of the dataset
 #*******************************************************************************
-URL=""
+URL="http://rapid-hub.org/data/CI/San_Guad_JHM2/"
 
 
 #*******************************************************************************
