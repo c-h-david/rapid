@@ -19,7 +19,7 @@ use rapid_var, only :                                                          &
                    JS_dam_tot,IS_dam_tot,                                      &
                    ZV_Qin_dam,ZV_Qout_dam,ZV_Qin_dam_prev,ZV_Qout_dam_prev,    &
                    ZV_k_dam,ZV_p_dam,ZV_S_dam,ZV_Smax_dam,ZV_Smin_dam,         &
-                   ZS_dtM
+                   ZS_TauR
 implicit none
 
 
@@ -95,23 +95,27 @@ call VecRestoreArrayF90(ZV_SeqZero,ZV_pointer,ierr)
 if (rank==0) then
 do JS_dam_tot=1,IS_dam_tot
 
-ZV_Qout_dam(JS_dam_tot)=(ZV_k_dam(JS_dam_tot)/ZS_dtM)                          &
+ZV_Qout_dam(JS_dam_tot)=(ZV_k_dam(JS_dam_tot)/ZS_TauR)                         &
                        *(ZV_S_dam(JS_dam_tot)-ZV_Smin_dam(JS_dam_tot))         &
                        *(                                                      &
                           (ZV_S_dam(JS_dam_tot)-ZV_Smin_dam(JS_dam_tot))       &
                          /(ZV_Smax_dam(JS_dam_tot)-ZV_Smin_dam(JS_dam_tot))    &
                                                          )**ZV_p_dam(JS_dam_tot)
+
 !Equation (6) in Doll et al (2003)
 
 ZV_S_dam(JS_dam_tot)=ZV_S_dam(JS_dam_tot)                                      &
-                    +(ZV_Qin_dam(JS_dam_tot)-ZV_Qout_dam(JS_dam_tot))*ZS_dtM
+                    +(ZV_Qin_dam_prev(JS_dam_tot)-ZV_Qout_dam(JS_dam_tot))     &
+                    *ZS_TauR
 !Update the storage value
 
 if (ZV_S_dam(JS_dam_tot) <= ZV_Smin_dam(JS_dam_tot)) then
    ZV_S_dam(JS_dam_tot)=ZV_Smin_dam(JS_dam_tot)
-   ZV_Qout_dam(JS_dam_tot)=ZV_Qin_dam(JS_dam_tot)                              &
-                          +(ZV_S_dam(JS_dam_tot)-ZV_Smin_dam(JS_dam_tot))/ZS_dtM
+   ZV_Qout_dam(JS_dam_tot)=ZV_Qin_dam_prev(JS_dam_tot)                         &
+                          +(ZV_S_dam(JS_dam_tot)-ZV_Smin_dam(JS_dam_tot))      &
+                          /ZS_TauR
 end if
+
 !Check storage value is not below minimum allowable
 
 end do
@@ -120,6 +124,12 @@ end if
 !*******************************************************************************
 !Optional - Write information in stdout 
 !*******************************************************************************
+!if (rank==0) print *, 'ZS_TauR =',     ',', ZS_TauR,                           &
+!                      'max storage =', ',', ZV_Smax_dam(1),                    &
+!                      'min storage =', ',', ZV_Smin_dam(1),                    &
+!                      'doll power =',  ',', ZV_p_dam(1)
+!if (rank==0) print *, 'Qin_dam  =',    ',', ZV_Qin_dam(1),                     &
+!                      'Qout_dam  =',   ',', ZV_Qout_dam(1)
 !if (rank==0) print *, 'Qin_dam_prev  =', ',', ZV_Qin_dam_prev
 !if (rank==0) print *, 'Qin_dam_prev  =', ',', ZV_Qin_dam_prev(1)
 !if (rank==0) print *, 'Qout_dam_prev =', ',', ZV_Qout_dam_prev
