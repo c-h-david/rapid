@@ -9,7 +9,7 @@ subroutine rapid_kf_cov_mat
 !ZM_HPbt = (ZM_Pb*ZM_H^(T))^(T)
 !ZM_HPbHt = ZM_H*ZM_Pb*ZM_H^(T)
 !Authors: 
-!Charlotte M. Emery, and Cedric H. David, 2018-2019.
+!Charlotte M. Emery, and Cedric H. David, 2018-2020.
 
 !*******************************************************************************
 !Declaration of variables

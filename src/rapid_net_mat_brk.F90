@@ -9,7 +9,7 @@ subroutine rapid_net_mat_brk
 !The connectivity is broken between each given river ID and its downstream 
 !river.
 !Author: 
-!Cedric H. David, 2013-2019.
+!Cedric H. David, 2013-2020.
 
 
 !*******************************************************************************

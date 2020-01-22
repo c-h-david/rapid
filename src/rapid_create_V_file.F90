@@ -6,7 +6,7 @@ subroutine rapid_create_V_file(V_file)
 !Purpose:
 !Create V_file from Fortran/netCDF.
 !Author: 
-!Cedric H. David, 2015-2019.
+!Cedric H. David, 2015-2020.
 
 
 !*******************************************************************************

@@ -13,7 +13,7 @@ program tst_run_conv_Qinit
 ! - 0  if the conversion is succesful
 ! - 22 if arguments are faulty (e.g. netCDF function crash) 
 !Author:
-!Cedric H. David, 2017-2019.
+!Cedric H. David, 2017-2020.
 
 
 !*******************************************************************************

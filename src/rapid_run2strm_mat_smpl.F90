@@ -10,7 +10,7 @@ subroutine rapid_run2strm_mat_smpl
 !This operator is used within the data assimilation as part of the
 !observations operator H in the Kalman gain
 !Authors: 
-!Charlotte M. Emery, and Cedric H. David, 2018-2019.
+!Charlotte M. Emery, and Cedric H. David, 2018-2020.
 
 use rapid_var, only :                                                          &
                 IS_riv_bas,JS_riv_bas,JS_riv_bas2,JS_up,                       &

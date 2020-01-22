@@ -22,7 +22,7 @@
 # - 22 if there was a conversion problem
 # - 44 if one download is not successful
 #Authors:
-#Charlotte M. Emery, Cedric H. David, 2017-2019.
+#Charlotte M. Emery, Cedric H. David, 2017-2020.
 
 #*******************************************************************************
 #Notes on tricks used here

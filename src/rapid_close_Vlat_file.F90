@@ -6,7 +6,7 @@ subroutine rapid_close_Vlat_file
 !Purpose:
 !Close Qobs_file from Fortran/netCDF.
 !Author: 
-!Cedric H. David, 2013-2019.
+!Cedric H. David, 2013-2020.
 
 
 !*******************************************************************************

@@ -27,7 +27,7 @@ subroutine rapid_init
 !     -Read kfac and Qobsbarrec
 !     -Set initial values for the vector pnorm
 !Author: 
-!Cedric H. David, 2012-2019.
+!Cedric H. David, 2012-2020.
 
 
 !*******************************************************************************

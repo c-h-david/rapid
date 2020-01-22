@@ -7,7 +7,7 @@ subroutine rapid_obs_mat
 !Creates a kronecker-type diagonal sparse matrix.  "1" is recorded at the row 
 !and column where observations are available.  
 !Author: 
-!Cedric H. David, 2008-2019.
+!Cedric H. David, 2008-2020.
 
 
 !*******************************************************************************
