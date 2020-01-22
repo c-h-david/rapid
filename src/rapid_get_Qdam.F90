@@ -5,8 +5,8 @@ subroutine rapid_get_Qdam
 
 !Purpose:
 !Communicate with a dam subroutine to exchange inflows and outflows.
-!Author: 
-!Cedric H. David, 2013-2019.
+!Authors:
+!Cedric H. David and Ahmad A. Tavakoly, 2013-2019.
 
 
 !*******************************************************************************
