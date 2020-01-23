@@ -4,8 +4,7 @@
 #*******************************************************************************
 
 #Purpose:
-#This shell script installs all prerequisites for running RAPID on Linux, Mac, 
-#or Cygwin.
+#This shell script installs all prerequisites for running RAPID on Linux.
 #Author:
 #Alan D. Snow and Cedric H. David, 2015-2020.
 
@@ -152,11 +151,7 @@ fi
 #Remove old netCDF directories if FORCE_INSTALL_NETCDF
 
 if [ ! -f netcdf-4.1.3.tar.gz ] && [ ! -d netcdf-4.1.3 ]; then
-    if [ "$(uname)" == "Darwin" ]; then
-        curl -o netcdf-4.1.3.tar.gz "http://www.unidata.ucar.edu/downloads/netcdf/ftp/netcdf-4.1.3.tar.gz"
-    else
-        wget -nc "http://www.unidata.ucar.edu/downloads/netcdf/ftp/netcdf-4.1.3.tar.gz"
-    fi
+    wget -nc "http://www.unidata.ucar.edu/downloads/netcdf/ftp/netcdf-4.1.3.tar.gz"
 fi
 #Download netCDF installation file if it does not exist
 
@@ -189,13 +184,7 @@ fi
 #Remove old PETSc directories if FORCE_INSTALL_PETSC
 
 if [ ! -d petsc-3.6.2.tar.gz ] && [ ! -d petsc-3.6.2 ]; then
-    if [ "$(uname)" == "Darwin" ]; then
-        curl -o petsc-3.6.2.tar.gz "http://ftp.mcs.anl.gov/pub/petsc/release-snapshots/petsc-3.6.2.tar.gz"
-        #Mac
-    else
-        wget "http://ftp.mcs.anl.gov/pub/petsc/release-snapshots/petsc-3.6.2.tar.gz"
-        #Linux/Cygwin
-    fi
+    wget "http://ftp.mcs.anl.gov/pub/petsc/release-snapshots/petsc-3.6.2.tar.gz"
 fi
 #Download PETSc installation file if it does not exist
 
