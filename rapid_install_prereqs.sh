@@ -180,9 +180,9 @@ if [ ! -d netcdf-install ]; then
     cd ..
     cd netcdf-fortran-4.5.2
     ./configure CC=gcc FC=gfortran                                             \
-                CPPFLAGS=-I/home/installz/netcdf-install/include               \
-                LDFLAGS=-L/home/installz/netcdf-install/lib                    \
-                --prefix=/home/installz/netcdf-install/
+                CPPFLAGS=-I$INSTALLZ_DIR/netcdf-install/include                \
+                LDFLAGS=-L$INSTALLZ_DIR/netcdf-install/lib                     \
+                --prefix=$INSTALLZ_DIR/netcdf-install/
     make check > check.log
     make install > install.log
     cd ..
