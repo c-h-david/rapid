@@ -55,7 +55,7 @@ RUN  mkdir $INSTALLZ_DIR && \
 #-------------------------------------------------------------------------------
 #Update environment (ENV variables are available in Docker images & containers)
 #-------------------------------------------------------------------------------
-ENV  TACC_NETCDF_DIR=$INSTALLZ_DIR/netcdf-4.1.3-install
+ENV  TACC_NETCDF_DIR=$INSTALLZ_DIR/netcdf-install
 ENV  TACC_NETCDF_LIB=$TACC_NETCDF_DIR/lib
 ENV  TACC_NETCDF_INC=$TACC_NETCDF_DIR/include
 ENV  LD_LIBRARY_PATH=$TACC_NETCDF_LIB
