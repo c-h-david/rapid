@@ -146,7 +146,7 @@ cd $INSTALLZ_DIR
 
 if $FORCE_INSTALL_NETCDF ; then 
     rm -rf netcdf-c-4.7.3
-    rm -rf netcdf-c-4.7.3-install
+    rm -rf netcdf-install
 fi
 #Remove old netCDF directories if FORCE_INSTALL_NETCDF
 
@@ -160,14 +160,14 @@ if [ ! -d netcdf-c-4.7.3 ]; then
 fi
 #Extract netCDF installation file if directory does not exist
 
-if [ ! -d netcdf-c-4.7.3-install ]; then
-    mkdir -p netcdf-c-4.7.3-install
+if [ ! -d netcdf-install ]; then
+    mkdir -p netcdf-install
     cd netcdf-c-4.7.3
-    ./configure CC=gcc CXX=g++ FC=gfortran --prefix=$INSTALLZ_DIR/netcdf-c-4.7.3-install --disable-dap
+    ./configure CC=gcc CXX=g++ FC=gfortran --prefix=$INSTALLZ_DIR/netcdf-install --disable-dap
     make check > check.log
     make install > install.log
 else
-    echo "- Skipped netCDF installation: netcdf-c-4.7.3-install directory"
+    echo "- Skipped netCDF installation: netcdf-install directory"
     echo "  already exists."
     echo "  To force installation, run with -nf or --netcdf_force."
 fi
