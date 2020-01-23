@@ -146,6 +146,7 @@ cd $INSTALLZ_DIR
 
 if $FORCE_INSTALL_NETCDF ; then 
     rm -rf netcdf-c-4.7.3
+    rm -rf netcdf-fortran-4.5.2
     rm -rf netcdf-install
 fi
 #Remove old netCDF directories if FORCE_INSTALL_NETCDF
@@ -160,12 +161,31 @@ if [ ! -d netcdf-c-4.7.3 ]; then
 fi
 #Extract netCDF installation file if directory does not exist
 
+if [ ! -f netcdf-fortran-4.5.2.tar.gz ] && [ ! -d netcdf-fortran-4.5.2 ]; then
+    wget -nc "http://www.unidata.ucar.edu/downloads/netcdf/ftp/netcdf-fortran-4.5.2.tar.gz"
+fi
+#Download netCDF installation file if it does not exist
+
+if [ ! -d netcdf-fortran-4.5.2 ]; then
+    tar -xzf netcdf-fortran-4.5.2.tar.gz
+fi
+#Extract netCDF installation file if directory does not exist
+
 if [ ! -d netcdf-install ]; then
     mkdir -p netcdf-install
     cd netcdf-c-4.7.3
     ./configure CC=gcc --prefix=$INSTALLZ_DIR/netcdf-install --disable-dap
     make check > check.log
     make install > install.log
+    cd ..
+    cd netcdf-fortran-4.5.2
+    ./configure CC=gcc FC=gfortran                                             \
+                CPPFLAGS=-I/home/installz/netcdf-install/include               \
+                LDFLAGS=-L/home/installz/netcdf-install/lib                    \
+                --prefix=/home/installz/netcdf-install/
+    make check > check.log
+    make install > install.log
+    cd ..
 else
     echo "- Skipped netCDF installation: netcdf-install directory"
     echo "  already exists."
