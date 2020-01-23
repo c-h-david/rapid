@@ -163,7 +163,7 @@ fi
 if [ ! -d netcdf-install ]; then
     mkdir -p netcdf-install
     cd netcdf-c-4.7.3
-    ./configure CC=gcc CXX=g++ FC=gfortran --prefix=$INSTALLZ_DIR/netcdf-install --disable-dap
+    ./configure CC=gcc --prefix=$INSTALLZ_DIR/netcdf-install --disable-dap
     make check > check.log
     make install > install.log
 else
