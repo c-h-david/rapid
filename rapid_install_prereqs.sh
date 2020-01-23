@@ -145,29 +145,29 @@ fi
 cd $INSTALLZ_DIR
 
 if $FORCE_INSTALL_NETCDF ; then 
-    rm -rf netcdf-4.1.3
-    rm -rf netcdf-4.1.3-install
+    rm -rf netcdf-c-4.7.3
+    rm -rf netcdf-c-4.7.3-install
 fi
 #Remove old netCDF directories if FORCE_INSTALL_NETCDF
 
-if [ ! -f netcdf-4.1.3.tar.gz ] && [ ! -d netcdf-4.1.3 ]; then
-    wget -nc "http://www.unidata.ucar.edu/downloads/netcdf/ftp/netcdf-4.1.3.tar.gz"
+if [ ! -f netcdf-c-4.7.3.tar.gz ] && [ ! -d netcdf-c-4.7.3 ]; then
+    wget -nc "http://www.unidata.ucar.edu/downloads/netcdf/ftp/netcdf-c-4.7.3.tar.gz"
 fi
 #Download netCDF installation file if it does not exist
 
-if [ ! -d netcdf-4.1.3 ]; then
-    tar -xzf netcdf-4.1.3.tar.gz
+if [ ! -d netcdf-c-4.7.3 ]; then
+    tar -xzf netcdf-c-4.7.3.tar.gz
 fi
 #Extract netCDF installation file if directory does not exist
 
-if [ ! -d netcdf-4.1.3-install ]; then
-    mkdir -p netcdf-4.1.3-install
-    cd netcdf-4.1.3
-    ./configure CC=gcc CXX=g++ FC=gfortran --prefix=$INSTALLZ_DIR/netcdf-4.1.3-install --disable-dap
+if [ ! -d netcdf-c-4.7.3-install ]; then
+    mkdir -p netcdf-c-4.7.3-install
+    cd netcdf-c-4.7.3
+    ./configure CC=gcc CXX=g++ FC=gfortran --prefix=$INSTALLZ_DIR/netcdf-c-4.7.3-install --disable-dap
     make check > check.log
     make install > install.log
 else
-    echo "- Skipped netCDF installation: netcdf-4.1.3-install directory" 
+    echo "- Skipped netCDF installation: netcdf-c-4.7.3-install directory"
     echo "  already exists."
     echo "  To force installation, run with -nf or --netcdf_force."
 fi
