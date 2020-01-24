@@ -183,6 +183,7 @@ if [ ! -d netcdf-install ]; then
     cd ..
     cd netcdf-fortran-4.5.2
     ./configure CC=gcc FC=gfortran                                             \
+                LD_LIBRARY_PATH=$INSTALLZ_DIR/netcdf-install/lib:$LD_LIBRARY_PATH \
                 CPPFLAGS=-I$INSTALLZ_DIR/netcdf-install/include                \
                 LDFLAGS=-L$INSTALLZ_DIR/netcdf-install/lib                     \
                 --prefix=$INSTALLZ_DIR/netcdf-install/

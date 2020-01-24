@@ -112,7 +112,7 @@ $ make check > check.log
 $ make install > install.log
 $ cd ..
 $ cd netcdf-fortran-4.5.2/
-$ ./configure CC=gcc FC=gfortran CPPFLAGS=-I$HOME/installz/netcdf-install/include LDFLAGS=-L$HOME/installz/netcdf-install/lib --prefix=$HOME/installz/netcdf-install/
+$ ./configure CC=gcc FC=gfortran LD_LIBRARY_PATH=$HOME/installz/netcdf-install/lib:$LD_LIBRARY_PATH CPPFLAGS=-I$HOME/installz/netcdf-install/include LDFLAGS=-L$HOME/installz/netcdf-install/lib --prefix=$HOME/installz/netcdf-install/
 $ make check > check.log
 $ make install > install.log
 $ cd ..
