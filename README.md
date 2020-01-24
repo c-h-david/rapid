@@ -116,7 +116,6 @@ $ ./configure CC=gcc FC=gfortran CPPFLAGS=-I$HOME/installz/netcdf-install/includ
 $ make check > check.log
 $ make install > install.log
 $ cd ..
-$ make install > install.log
 ```
 
 Then, the environment should be updated using:
