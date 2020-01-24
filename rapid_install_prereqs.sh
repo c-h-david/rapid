@@ -174,7 +174,10 @@ fi
 if [ ! -d netcdf-install ]; then
     mkdir -p netcdf-install
     cd netcdf-c-4.7.3
-    ./configure CC=gcc --prefix=$INSTALLZ_DIR/netcdf-install --disable-dap
+    ./configure CC=gcc                                                         \
+                CPPFLAGS=-I/usr/lib/x86_64-linux-gnu/hdf5/serial/include       \
+                LDFLAGS=-L/usr/lib/x86_64-linux-gnu/hdf5/serial/lib            \
+                --prefix=$INSTALLZ_DIR/netcdf-install --disable-dap
     make check > check.log
     make install > install.log
     cd ..

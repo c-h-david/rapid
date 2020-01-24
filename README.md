@@ -52,7 +52,7 @@ in
 
 ## Installation on Ubuntu
 This document was written and tested on a machine with a **clean** image of 
-[Ubuntu 14.04.0 Desktop 64-bit](http://old-releases.ubuntu.com/releases/14.04.0/ubuntu-14.04-desktop-amd64.iso)
+[Ubuntu 16.04.1 Desktop 64-bit](http://old-releases.ubuntu.com/releases/16.04.1/ubuntu-16.04.1-desktop-amd64.iso)
 installed, *i.e.* **no update** was performed, and **no upgrade** either. 
 
 Note that the experienced users may find more up-to-date installation 
@@ -107,7 +107,7 @@ $ wget "http://www.unidata.ucar.edu/downloads/netcdf/ftp/netcdf-fortran-4.5.2.ta
 $ tar -xzf netcdf-c-4.7.3.tar.gz
 $ tar -xzf netcdf-fortran-4.5.2.tar.gz
 $ cd netcdf-c-4.7.3/
-$ ./configure CC=gcc --prefix=$HOME/installz/netcdf-install/ --disable-dap
+$ ./configure CC=gcc CPPFLAGS=-I/usr/lib/x86_64-linux-gnu/hdf5/serial/include LDFLAGS=-L/usr/lib/x86_64-linux-gnu/hdf5/serial/lib --prefix=$INSTALLZ_DIR/netcdf-install --disable-dap
 $ make check > check.log
 $ make install > install.log
 $ cd ..
