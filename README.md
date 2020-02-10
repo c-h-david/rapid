@@ -63,7 +63,7 @@ instructions in
 First, make sure that `git` is installed: 
 
 ```
-$ sudo apt-get install -y git
+$ sudo apt-get install -y --no-install-recommends git
 ```
 
 Then download RAPID:
@@ -84,7 +84,7 @@ Software packages for the Advanced Packaging Tool (APT) are summarized in
 and can be installed with `apt-get`. All packages can be installed at once using:
 
 ```
-$ sudo apt-get install -y $(grep -v -E '(^#|^$)' requirements.apt)
+$ sudo apt-get install -y --no-install-recommends $(grep -v -E '(^#|^$)' requirements.apt)
 ```
 
 > Alternatively, one may install the APT packages listed in 
@@ -92,7 +92,7 @@ $ sudo apt-get install -y $(grep -v -E '(^#|^$)' requirements.apt)
 > one by one, for example:
 >
 > ```
-> $ sudo apt-get install -y gfortran
+> $ sudo apt-get install -y --no-install-recommends gfortran
 >```
 
 ### Install netCDF
