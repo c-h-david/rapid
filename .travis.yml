@@ -14,15 +14,11 @@
 #*******************************************************************************
 #System specifications for Travis CI
 #*******************************************************************************
-sudo: false        #Activates the new Travis CI container-based infrastructure
-language: c        #Sets the language to C
-addons:
-  apt:
-    packages:
-    - gfortran     #Add Fortran (gcc was installed by specifying "language: c")
-    - bc           #Add Basic Calculator (simple math from command line)
-    - nco          #netCDF Operators
-    - libhdf5-dev  #HDF5 library
+matrix:
+  include:
+    - os: linux
+      language: generic
+      sudo: required
 
 
 #*******************************************************************************
@@ -52,6 +48,18 @@ env:
 #Before installing RAPID
 #*******************************************************************************
 before_install:
+
+#-------------------------------------------------------------------------------
+#Install operating system dependencies
+#-------------------------------------------------------------------------------
+- sudo apt-get update
+- sudo apt-get install -y --no-install-recommends $(grep -v -E '(^#|^$)' requirements.apt)
+
+#-------------------------------------------------------------------------------
+#General environment details
+#-------------------------------------------------------------------------------
+- apt-get --version
+- apt list --installed
 
 #-------------------------------------------------------------------------------
 #Creating directory for installation of libraries used by RAPID
