@@ -50,7 +50,7 @@ fi
 #*******************************************************************************
 export TACC_NETCDF_LIB=$INSTALLZ_DIR/netcdf-install/lib
 export TACC_NETCDF_INC=$INSTALLZ_DIR/netcdf-install/include
-export PETSC_DIR=$INSTALLZ_DIR/petsc-3.6.2
+export PETSC_DIR=$INSTALLZ_DIR/petsc-3.6.4
 export PETSC_ARCH='linux-gcc-c'
 export LD_LIBRARY_PATH=$TACC_NETCDF_LIB
 

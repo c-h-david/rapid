@@ -198,27 +198,27 @@ fi
 #Install netCDF if directory does not exist
 
 #-------------------------------------------------------------------------------
-#Installing PETSc 3.6.2
+#Installing PETSc 3.6.4
 #-------------------------------------------------------------------------------
 cd $INSTALLZ_DIR
 
 if $FORCE_INSTALL_PETSC ; then 
-    rm -rf petsc-3.6.2
+    rm -rf petsc-3.6.4
 fi
 #Remove old PETSc directories if FORCE_INSTALL_PETSC
 
-if [ ! -d petsc-3.6.2.tar.gz ] && [ ! -d petsc-3.6.2 ]; then
-    wget "http://ftp.mcs.anl.gov/pub/petsc/release-snapshots/petsc-3.6.2.tar.gz"
+if [ ! -d petsc-3.6.4.tar.gz ] && [ ! -d petsc-3.6.4 ]; then
+    wget "http://ftp.mcs.anl.gov/pub/petsc/release-snapshots/petsc-3.6.4.tar.gz"
 fi
 #Download PETSc installation file if it does not exist
 
-if [ ! -d petsc-3.6.2 ]; then
-    tar -xzf petsc-3.6.2.tar.gz
+if [ ! -d petsc-3.6.4 ]; then
+    tar -xzf petsc-3.6.4.tar.gz
 fi
 #Extract PETSc installation file if directory does not exist
 
-if [ ! -d petsc-3.6.2/linux-gcc-c ]; then
-    cd petsc-3.6.2
+if [ ! -d petsc-3.6.4/linux-gcc-c ]; then
+    cd petsc-3.6.4
     if [ "$(expr substr $(uname -s) 1 9)" == "CYGWIN_NT" ]; then
         python2 './configure' 'PETSC_DIR='$PWD 'PETSC_ARCH=linux-gcc-c' '--download-fblaslapack=1' '--download-mpich=1' '--with-cc=gcc' '--with-fc=gfortran' '--with-clanguage=c' '--with-debugging=0' '--with-windows-graphics=0'
         #CYGWIN
@@ -229,7 +229,7 @@ if [ ! -d petsc-3.6.2/linux-gcc-c ]; then
     make PETSC_DIR=$PWD PETSC_ARCH=linux-gcc-c all
     make PETSC_DIR=$PWD PETSC_ARCH=linux-gcc-c test
 else
-    echo "- Skipped PETSc installation: petsc-3.6.2/linux-gcc-c directory" 
+    echo "- Skipped PETSc installation: petsc-3.6.4/linux-gcc-c directory"
     echo "  already exists."
     echo "  To force installation, run with -pf or --petsc_force."
 fi
