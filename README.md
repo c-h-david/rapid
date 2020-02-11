@@ -137,9 +137,9 @@ can be installed using:
 
 ```
 $ cd $HOME/installz
-$ wget "http://ftp.mcs.anl.gov/pub/petsc/release-snapshots/petsc-3.6.4.tar.gz"
-$ tar -xzf petsc-3.6.4.tar.gz
-$ cd petsc-3.6.4
+$ wget "http://ftp.mcs.anl.gov/pub/petsc/release-snapshots/petsc-3.7.7.tar.gz"
+$ tar -xzf petsc-3.7.7.tar.gz
+$ cd petsc-3.7.7
 $ ./configure PETSC_DIR=$PWD PETSC_ARCH=linux-gcc-c --download-fblaslapack=1 --download-mpich=1 --with-cc=gcc --with-cxx=g++ --with-fc=gfortran --with-clanguage=c --with-debugging=0
 $ make all > all.log
 $ make test > test.log
@@ -148,7 +148,7 @@ $ make test > test.log
 Then, the environment should be updated using:
 
 ```
-$ export PETSC_DIR=$HOME/installz/petsc-3.6.4
+$ export PETSC_DIR=$HOME/installz/petsc-3.7.7
 $ export PETSC_ARCH=linux-gcc-c
 $ export PATH=$PATH:$PETSC_DIR/$PETSC_ARCH/bin
 ```
