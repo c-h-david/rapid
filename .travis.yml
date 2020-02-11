@@ -14,11 +14,9 @@
 #*******************************************************************************
 #System specifications for Travis CI
 #*******************************************************************************
-jobs:
-  include:
-    - os: linux
-      language: miminal
-      sudo: required
+os: linux
+language: shell
+#This configuration can be validated at: https://config.travis-ci.com/explore
 
 
 #*******************************************************************************
