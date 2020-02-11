@@ -14,10 +14,10 @@
 #*******************************************************************************
 #System specifications for Travis CI
 #*******************************************************************************
-matrix:
+jobs:
   include:
     - os: linux
-      language: generic
+      language: miminal
       sudo: required
 
 
