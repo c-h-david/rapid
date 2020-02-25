@@ -25,7 +25,6 @@ use rapid_var, only :                                                          &
                    ZV_Vlat,                                                    &
                    ZV_QoutR,ZV_QoutinitR,ZV_QoutbarR,                          &
                    ZV_VR,ZV_VinitR,ZV_VbarR,                                   &
-                   ZS_phi,                                                     &
                    ierr,rank,stage,temp_char,temp_char2,                       &
                    ZS_one,                                                     &
                    IS_riv_tot,IS_riv_bas,IS_for_bas,IS_dam_bas,IS_hum_bas,     &

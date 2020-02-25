@@ -20,7 +20,7 @@ use rapid_var, only :                                                          &
                 IV_nz,IV_dnz,IV_onz,                                           &
                 IS_ownfirst,IS_ownlast,                                        &
                 ZM_M,ZV_C1,ZS_threshold,                                       &
-                ZS_val,IS_one,ZS_one,                                          &
+                ZS_val,IS_one,                                                 &
                 IS_opt_run,                                                    &
                 ierr,rank,temp_char,                                           &
                 IV_nbrows,IV_lastrow

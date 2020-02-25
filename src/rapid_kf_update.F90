@@ -16,13 +16,11 @@ subroutine rapid_kf_update
 
 
 use rapid_var, only :                                                          &
-                ierr,ksp2,rank,                                                &
+                ierr,ksp2,                                                     &
                 ZS_one,ZS_stdobs,                                              &
                 IS_obs_bas,                                                    &
                 ZV_dQeb,ZV_Qbmean,ZV_Qobs,                                     &
-                ZM_S,ZM_HPbt,ZM_HPbHt,                                         &
-                IS_one,ZS_val,                                                 &
-                JS_obs_bas
+                ZM_S,ZM_HPbt,ZM_HPbHt
                 
 implicit none
 

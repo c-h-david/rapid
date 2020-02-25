@@ -17,7 +17,7 @@ subroutine rapid_kf_obs_mat
 !*******************************************************************************
 
 use rapid_var, only :                                                          &
-                IV_riv_loc1,IS_riv_bas,JS_riv_bas,                             &
+                IS_riv_bas,                                                    &
                 IV_obs_loc1,IS_obs_bas,JS_obs_bas,                             &
                 ierr,rank,                                                     &
                 IS_one,ZS_one,                                                 &

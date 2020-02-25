@@ -22,7 +22,7 @@ use rapid_var, only :                                                          &
                 IV_riv_index, IV_nbup,IM_index_up,                             &
                 IV_nz,IV_dnz,IV_onz,                                           &
                 IS_ownfirst,IS_ownlast,                                        &
-                IS_one,ZS_one,                                                 &
+                IS_one,                                                        &
                 ierr,rank,                                                     &
                 !new variables added in rapid_var.F90
                 IS_radius,ZS_inflation,                                        &

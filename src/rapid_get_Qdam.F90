@@ -17,7 +17,7 @@ use rapid_var, only :                                                          &
                    ZM_Net,ZV_Qext,ZV_Qdam,ZV_QoutbarR,ZV_QinbarR,              &
                    IS_dam_bas,IV_dam_index,IV_dam_loc2,IV_dam_pos,             &
                    JS_dam_tot,IS_dam_tot,                                      &
-                   ZV_Qin_dam,ZV_Qout_dam,ZV_Qin_dam_prev,ZV_Qout_dam_prev,    &
+                   ZV_Qout_dam,ZV_Qin_dam_prev,ZV_Qout_dam_prev,               &
                    ZV_k_dam,ZV_p_dam,ZV_S_dam,ZV_Smax_dam,ZV_Smin_dam,         &
                    ZS_TauR
 implicit none

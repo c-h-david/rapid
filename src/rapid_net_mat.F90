@@ -21,7 +21,7 @@ use rapid_var, only :                                                          &
                    IS_riv_tot,IS_riv_bas,                                      &
                    JS_riv_tot,JS_riv_bas,JS_riv_bas2,                          &
                    IV_riv_bas_id,IV_riv_index,ZM_hsh_bas,                      &
-                   ZM_Net,ZM_A,ZM_T,ZM_TC1,BS_logical,IV_riv_tot_id,           &
+                   ZM_Net,ZM_A,ZM_T,ZM_TC1,IV_riv_tot_id,                      &
                    IV_down,IV_nbup,IM_up,JS_up,IM_index_up,                    &
                    ierr,rank,ZS_val,                                           &
                    IS_one,ZS_one,temp_char,IV_nz,IV_dnz,IV_onz,                &

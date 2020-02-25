@@ -15,7 +15,7 @@ subroutine rapid_uq
 !Declaration of variables
 !*******************************************************************************
 use rapid_var, only :                                                          &
-                   IS_riv_tot,JS_riv_tot,IS_riv_bas,JS_riv_bas,                &
+                   IS_riv_tot,IS_riv_bas,                                      &
                    IV_riv_index,IV_riv_loc1,                                   &
                    ZS_TauR,                                                    &
                    ZV_bQlat,ZV_vQlat,ZV_caQlat,ZV_bQout,ZV_sQout,ZV_rQout,     &
@@ -23,7 +23,7 @@ use rapid_var, only :                                                          &
                    ZV_riv_tot_bQlat,ZV_riv_tot_vQlat,ZV_riv_tot_caQlat,        &
                    ZV_riv_bas_bQout,ZV_riv_bas_sQout,ZV_riv_bas_rQout,         &
                    ZV_nbuptot,ZV_one,ZV_temp1,ZV_temp2,                        &
-                   ZV_SeqZero,ZV_pointer,ZS_one,temp_char,                     &
+                   ZV_SeqZero,ZV_pointer,ZS_one,                               &
                    ierr,rank,vecscat,ksp
 
 implicit none

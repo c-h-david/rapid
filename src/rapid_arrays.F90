@@ -101,7 +101,7 @@ use rapid_var, only :                                                          &
                    IS_obs_use,JS_obs_use,                                      &
                    IS_obs_bas,JS_obs_bas,                                      &
                    IV_obs_index,IV_obs_loc1,                                   &
-                   BS_logical,temp_char,rank,ierr,IS_one,ZS_val
+                   temp_char,rank,ierr,IS_one,ZS_val
 
 implicit none
 

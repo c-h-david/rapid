@@ -27,7 +27,7 @@ use rapid_var, only :                                                          &
                    IS_opt_routing,IS_opt_run,                                  &
                    BS_opt_Qfinal,BS_opt_influence,                             &
                    Qfinal_file,babsmax_file,QoutRabsmin_file,QoutRabsmax_file, &
-                   ksp,vecscat,ZV_babsmax,ZV_QoutR,ZV_SeqZero,ierr,            &
+                   ksp,vecscat,ZV_babsmax,ZV_SeqZero,ierr,                     &
                    ZV_pointer,rank,ZV_k,temp_char,                             &
                    ZV_QoutRabsmin,ZV_QoutRabsmax,                              &
                    temp_char2,ZM_A,pc,                                         &

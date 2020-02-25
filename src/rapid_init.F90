@@ -68,12 +68,12 @@ use rapid_var, only :                                                          &
                    Qobsbarrec_file,                                            &
                    ZS_Qout0,ZS_V0,                                             &
                    ZV_Qobsbarrec,dam_file,                                     &
-                   ZV_k,ZV_x,ZV_kfac,ZV_p,ZV_pnorm,ZV_pfac,                    &
+                   ZV_k,ZV_x,ZV_kfac,ZV_pnorm,                                 &
                    ZS_knorm_init,ZS_xnorm_init,ZS_kfac,ZS_xfac,                &
                    ZV_C1,ZV_C2,ZV_C3,ZM_A,                                     &
                    IV_now,YV_now,YV_version,                                   &
                    ZV_riv_tot_lon,ZV_riv_tot_lat,IV_time,IM_time_bnds,         &
-                   ierr,ksp,rank,ncore,IS_one,ZS_one,                          &
+                   ierr,ksp,rank,IS_one,ZS_one,                                &
                    IS_radius,ZV_riv_tot_cdownQlat,                             &
                    IV_nbrows,IV_lastrow
 
@@ -483,22 +483,13 @@ ZV_S_dam=ZV_Smin_dam
 end if
 
 !-------------------------------------------------------------------------------
-!Set pnorm, pfac and p
+!Set pnorm
 !-------------------------------------------------------------------------------
 call VecSetValues(ZV_pnorm,IS_one,IS_one-1,ZS_knorm_init,INSERT_VALUES,ierr)
 call VecSetValues(ZV_pnorm,IS_one,IS_one,ZS_xnorm_init,INSERT_VALUES,ierr)
 call VecAssemblyBegin(ZV_pnorm,ierr)
 call VecAssemblyEnd(ZV_pnorm,ierr)
 !set pnorm to pnorm=(knorm,xnorm)
-
-!call VecSetValues(ZV_pfac,IS_one,IS_one-1,ZS_kfac,INSERT_VALUES,ierr)
-!call VecSetValues(ZV_pfac,IS_one,IS_one,ZS_xfac,INSERT_VALUES,ierr)
-!call VecAssemblyBegin(ZV_pnorm,ierr)
-!call VecAssemblyEnd(ZV_pnorm,ierr)
-!!set pfac to pfac=(kfac,xfac)
-
-!call VecPointWiseMult(ZV_p,ZV_pfac,ZV_pnorm,ierr)
-!!set p to p=pfac.*pnorm
 
 !-------------------------------------------------------------------------------
 !End of OPTION 2

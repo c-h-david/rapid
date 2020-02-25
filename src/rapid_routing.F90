@@ -20,14 +20,10 @@ use rapid_var, only :                                                          &
                    ZS_dtR,IS_R,JS_R,                                           &
                    ZM_Net,ZM_TC1,ZM_M,                                         &
                    ZV_b,ZV_babsmax,ZV_bhat,                                    &
-                   ZV_QoutprevR,ZV_VprevR,ZV_QoutRabsmin,ZV_QoutRabsmax,       &
+                   ZV_QoutprevR,ZV_QoutRabsmin,ZV_QoutRabsmax,                 &
                    ZV_QoutRhat,                                                &
-                   ZV_VoutR,ZV_Vext,                                           &
                    ierr,ksp,                                                   &
                    ZS_one,IS_ksp_iter,IS_ksp_iter_max,                         &
-                   vecscat,ZV_SeqZero,ZV_pointer,rank,                         &
-                   IS_nc_status,IS_nc_id_fil_Qout,IS_nc_id_var_Qout,           &
-                   IV_nc_start,IV_nc_count2,                                   &
                    IS_riv_bas,JS_riv_bas,IM_index_up,                          &
                    IS_opt_routing,IV_nbup,IV_riv_index,                        &
                    BS_opt_influence
@@ -62,8 +58,8 @@ Vec, intent(in)    :: ZV_C1,ZV_C2,ZV_C3,ZV_Qext,                               &
 Vec, intent(out)   :: ZV_QoutR,ZV_QoutbarR
 
 PetscInt :: IS_localsize,JS_localsize
-PetscScalar, pointer :: ZV_QoutR_p(:),ZV_QoutprevR_p(:),ZV_QoutinitR_p(:),     &
-                        ZV_QoutbarR_p(:),ZV_Qext_p(:),ZV_C1_p(:),ZV_C2_p(:),   &
+PetscScalar, pointer :: ZV_QoutR_p(:),ZV_QoutprevR_p(:),                       &
+                        ZV_Qext_p(:),ZV_C1_p(:),ZV_C2_p(:),                    &
                         ZV_C3_p(:),ZV_b_p(:),                                  &
                         ZV_babsmax_p(:),ZV_QoutRabsmin_p(:),ZV_QoutRabsmax_p(:)
 

@@ -31,7 +31,7 @@ use rapid_var, only :                                                          &
                    ZV_Qobsbarrec,                                              &
                    ZV_bQlat,ZV_vQlat,ZV_caQlat,ZV_bQout,ZV_sQout,ZV_rQout,     &
                    ZV_nbuptot,                                                 &
-                   ierr,ksp,vecscat,ZV_SeqZero,ZS_one,ZV_one,IS_one,           &
+                   ierr,ksp,vecscat,ZV_SeqZero,ZV_one,                         &
                    tao,ZV_1stIndex,ZV_2ndIndex,                                &
                    ZM_Pb,ZM_L,ZM_H,ZM_S,ZM_HPbt,ZM_HPbHt,                      &
                    ZV_Qbmean,ZV_dQeb,ksp2,ZV_QoutinitR_save,                   &

@@ -17,7 +17,7 @@ use rapid_var, only :                                                          &
                 IM_index_up,IV_riv_index,IV_nbup,                              &
                 ZV_C3,ZV_k,                                                    &
                 ierr,rank,                                                     &
-                ZS_one,IS_one,ZS_val,                                          &
+                IS_one,ZS_val,                                                 &
                 IV_nz,IV_dnz,IV_onz,                                           &
                 IS_ownfirst,IS_ownlast,                                        &
                 IS_R,IS_RpM,                                                   &

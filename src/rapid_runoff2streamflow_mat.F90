@@ -54,7 +54,7 @@ implicit none
 !*******************************************************************************
 
 PetscInt :: JS_i, JS_j, JS_p
-PetscInt :: JS_last, JS_next_last
+PetscInt :: JS_next_last
 PetscInt :: found_nz, nb_intersection
 
 PetscScalar :: ZS_val2, ZS_factor
