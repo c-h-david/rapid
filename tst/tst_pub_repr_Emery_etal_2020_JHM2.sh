@@ -48,7 +48,7 @@ echo "********************"
 if [ "$#" = "0" ]; then
      fst=1
      lst=21
-     echo "Performing all unit tests: 1-20"
+     echo "Performing all unit tests: 1-25"
      echo "********************"
 fi
 #Perform all unit tests if no options are given
@@ -97,13 +97,13 @@ ln -s rapid_namelist_San_Guad_JHM2 rapid_namelist
 #-------------------------------------------------------------------------------
 
 #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-#Simulation 1/21 UQ daily
+#Simulation 1/25 UQ daily
 #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 unt=$((unt+1))
 sim=$((sim+1))
 if (("$unt" >= "$fst")) && (("$unt" <= "$lst")) ; then
 ./tst_nml_tidy_San_Guad_JHM2.sh
-echo "Running simul. $sim/21"
+echo "Running simul. $sim/25"
 Qout_file="../../rapid/output/San_Guad_JHM2/Qout_San_Guad_exp00_err_D_n1_preonly_tst.nc"
 Qout_gold="../../rapid/output/San_Guad_JHM2/Qout_San_Guad_exp00_err_D.nc"
 Vlat_file="../../rapid/input/San_Guad_JHM2/m3_riv_NLDAS_VIC0125_3H_2010_2013_utc_R286_err_D.nc"
@@ -130,13 +130,13 @@ echo "********************"
 fi
 
 #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-#Simulation 2/21 UQ daily rescaled
+#Simulation 2/25 UQ daily rescaled
 #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 unt=$((unt+1))
 sim=$((sim+1))
 if (("$unt" >= "$fst")) && (("$unt" <= "$lst")) ; then
 ./tst_nml_tidy_San_Guad_JHM2.sh
-echo "Running simul. $sim/21"
+echo "Running simul. $sim/25"
 Qout_file="../../rapid/output/San_Guad_JHM2/Qout_San_Guad_exp00_err_D_scl_n1_preonly_tst.nc"
 Qout_gold="../../rapid/output/San_Guad_JHM2/Qout_San_Guad_exp00_err_D_scl.nc"
 Vlat_file="../../rapid/input/San_Guad_JHM2/m3_riv_NLDAS_VIC0125_3H_2010_2013_utc_R286_err_D_scl.nc"
@@ -163,13 +163,13 @@ echo "********************"
 fi
 
 #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-#Simulation 3/21 UQ monthly
+#Simulation 3/25 UQ monthly
 #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 unt=$((unt+1))
 sim=$((sim+1))
 if (("$unt" >= "$fst")) && (("$unt" <= "$lst")) ; then
 ./tst_nml_tidy_San_Guad_JHM2.sh
-echo "Running simul. $sim/21"
+echo "Running simul. $sim/25"
 Qout_file="../../rapid/output/San_Guad_JHM2/Qout_San_Guad_exp00_err_M_n1_preonly_tst.nc"
 Qout_gold="../../rapid/output/San_Guad_JHM2/Qout_San_Guad_exp00_err_M.nc"
 Vlat_file="../../rapid/input/San_Guad_JHM2/m3_riv_NLDAS_VIC0125_3H_2010_2013_utc_R286_err_M.nc"
@@ -197,13 +197,13 @@ echo "********************"
 fi
 
 #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-#Simulation 4/21
+#Simulation 4/25
 #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 unt=$((unt+1))
 sim=$((sim+1))
 if (("$unt" >= "$fst")) && (("$unt" <= "$lst")) ; then
 ./tst_nml_tidy_San_Guad_JHM2.sh
-echo "Running simul. $sim/21"
+echo "Running simul. $sim/25"
 Qout_file='../../rapid/output/San_Guad_JHM2/Qout_San_Guad_exp00_n1_preonly_tst.nc'
 Qout_gold='../../rapid/output/San_Guad_JHM2/Qout_San_Guad_exp00.nc'
 rapd_file="tmp_run_$sim.txt"
@@ -224,13 +224,13 @@ echo "********************"
 fi
 
 #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-#Simulation 5/21
+#Simulation 5/25
 #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 unt=$((unt+1))
 sim=$((sim+1))
 if (("$unt" >= "$fst")) && (("$unt" <= "$lst")) ; then
 ./tst_nml_tidy_San_Guad_JHM2.sh
-echo "Running simul. $sim/21"
+echo "Running simul. $sim/25"
 Qout_file='../../rapid/output/San_Guad_JHM2/Qout_San_Guad_exp01_n1_preonly_tst.nc'
 Qout_gold='../../rapid/output/San_Guad_JHM2/Qout_San_Guad_exp01.nc'
 rapd_file="tmp_run_$sim.txt"
@@ -253,13 +253,13 @@ echo "********************"
 fi
 
 #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-#Simulation 6/21
+#Simulation 6/25
 #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 unt=$((unt+1))
 sim=$((sim+1))
 if (("$unt" >= "$fst")) && (("$unt" <= "$lst")) ; then
 ./tst_nml_tidy_San_Guad_JHM2.sh
-echo "Running simul. $sim/21"
+echo "Running simul. $sim/25"
 Qout_file='../../rapid/output/San_Guad_JHM2/Qout_San_Guad_exp02_n1_preonly_tst.nc'
 Qout_gold='../../rapid/output/San_Guad_JHM2/Qout_San_Guad_exp02.nc'
 rapd_file="tmp_run_$sim.txt"
@@ -282,13 +282,13 @@ echo "********************"
 fi
 
 #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-#Simulation 7/21
+#Simulation 7/25
 #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 unt=$((unt+1))
 sim=$((sim+1))
 if (("$unt" >= "$fst")) && (("$unt" <= "$lst")) ; then
 ./tst_nml_tidy_San_Guad_JHM2.sh
-echo "Running simul. $sim/21"
+echo "Running simul. $sim/25"
 Qout_file='../../rapid/output/San_Guad_JHM2/Qout_San_Guad_exp03_n1_preonly_tst.nc'
 Qout_gold='../../rapid/output/San_Guad_JHM2/Qout_San_Guad_exp03.nc'
 rapd_file="tmp_run_$sim.txt"
@@ -311,13 +311,13 @@ echo "********************"
 fi
 
 #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-#Simulation 8/21
+#Simulation 8/25
 #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 unt=$((unt+1))
 sim=$((sim+1))
 if (("$unt" >= "$fst")) && (("$unt" <= "$lst")) ; then
 ./tst_nml_tidy_San_Guad_JHM2.sh
-echo "Running simul. $sim/21"
+echo "Running simul. $sim/25"
 Qout_file='../../rapid/output/San_Guad_JHM2/Qout_San_Guad_exp04_n1_preonly_tst.nc'
 Qout_gold='../../rapid/output/San_Guad_JHM2/Qout_San_Guad_exp04.nc'
 rapd_file="tmp_run_$sim.txt"
@@ -340,13 +340,13 @@ echo "********************"
 fi
 
 #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-#Simulation 9/21
+#Simulation 9/25
 #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 unt=$((unt+1))
 sim=$((sim+1))
 if (("$unt" >= "$fst")) && (("$unt" <= "$lst")) ; then
 ./tst_nml_tidy_San_Guad_JHM2.sh
-echo "Running simul. $sim/21"
+echo "Running simul. $sim/25"
 Qout_file='../../rapid/output/San_Guad_JHM2/Qout_San_Guad_exp05_n1_preonly_tst.nc'
 Qout_gold='../../rapid/output/San_Guad_JHM2/Qout_San_Guad_exp05.nc'
 rapd_file="tmp_run_$sim.txt"
@@ -369,13 +369,13 @@ echo "********************"
 fi
 
 #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-#Simulation 10/21
+#Simulation 10/25
 #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 unt=$((unt+1))
 sim=$((sim+1))
 if (("$unt" >= "$fst")) && (("$unt" <= "$lst")) ; then
 ./tst_nml_tidy_San_Guad_JHM2.sh
-echo "Running simul. $sim/21"
+echo "Running simul. $sim/25"
 Qout_file='../../rapid/output/San_Guad_JHM2/Qout_San_Guad_exp06_n1_preonly_tst.nc'
 Qout_gold='../../rapid/output/San_Guad_JHM2/Qout_San_Guad_exp06.nc'
 rapd_file="tmp_run_$sim.txt"
@@ -398,13 +398,13 @@ echo "********************"
 fi
 
 #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-#Simulation 11/21
+#Simulation 11/25
 #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 unt=$((unt+1))
 sim=$((sim+1))
 if (("$unt" >= "$fst")) && (("$unt" <= "$lst")) ; then
 ./tst_nml_tidy_San_Guad_JHM2.sh
-echo "Running simul. $sim/21"
+echo "Running simul. $sim/25"
 Qout_file='../../rapid/output/San_Guad_JHM2/Qout_San_Guad_exp07_n1_preonly_tst.nc'
 Qout_gold='../../rapid/output/San_Guad_JHM2/Qout_San_Guad_exp07.nc'
 rapd_file="tmp_run_$sim.txt"
@@ -427,13 +427,13 @@ echo "********************"
 fi
 
 #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-#Simulation 12/21
+#Simulation 12/25
 #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 unt=$((unt+1))
 sim=$((sim+1))
 if (("$unt" >= "$fst")) && (("$unt" <= "$lst")) ; then
 ./tst_nml_tidy_San_Guad_JHM2.sh
-echo "Running simul. $sim/21"
+echo "Running simul. $sim/25"
 Qout_file='../../rapid/output/San_Guad_JHM2/Qout_San_Guad_exp08_n1_preonly_tst.nc'
 Qout_gold='../../rapid/output/San_Guad_JHM2/Qout_San_Guad_exp08.nc'
 rapd_file="tmp_run_$sim.txt"
@@ -456,13 +456,13 @@ echo "********************"
 fi
 
 #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-#Simulation 13/21
+#Simulation 13/25
 #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 unt=$((unt+1))
 sim=$((sim+1))
 if (("$unt" >= "$fst")) && (("$unt" <= "$lst")) ; then
 ./tst_nml_tidy_San_Guad_JHM2.sh
-echo "Running simul. $sim/21"
+echo "Running simul. $sim/25"
 Qout_file='../../rapid/output/San_Guad_JHM2/Qout_San_Guad_exp09_n1_preonly_tst.nc'
 Qout_gold='../../rapid/output/San_Guad_JHM2/Qout_San_Guad_exp09.nc'
 rapd_file="tmp_run_$sim.txt"
@@ -485,13 +485,13 @@ echo "********************"
 fi
 
 #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-#Simulation 14/21
+#Simulation 14/25
 #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 unt=$((unt+1))
 sim=$((sim+1))
 if (("$unt" >= "$fst")) && (("$unt" <= "$lst")) ; then
 ./tst_nml_tidy_San_Guad_JHM2.sh
-echo "Running simul. $sim/21"
+echo "Running simul. $sim/25"
 Qout_file='../../rapid/output/San_Guad_JHM2/Qout_San_Guad_exp10_n1_preonly_tst.nc'
 Qout_gold='../../rapid/output/San_Guad_JHM2/Qout_San_Guad_exp10.nc'
 rapd_file="tmp_run_$sim.txt"
@@ -514,13 +514,13 @@ echo "********************"
 fi
 
 #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-#Simulation 15/21
+#Simulation 15/25
 #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 unt=$((unt+1))
 sim=$((sim+1))
 if (("$unt" >= "$fst")) && (("$unt" <= "$lst")) ; then
 ./tst_nml_tidy_San_Guad_JHM2.sh
-echo "Running simul. $sim/21"
+echo "Running simul. $sim/25"
 Qout_file='../../rapid/output/San_Guad_JHM2/Qout_San_Guad_exp11_n1_preonly_tst.nc'
 Qout_gold='../../rapid/output/San_Guad_JHM2/Qout_San_Guad_exp11.nc'
 rapd_file="tmp_run_$sim.txt"
@@ -543,13 +543,13 @@ echo "********************"
 fi
 
 #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-#Simulation 16/21
+#Simulation 16/25
 #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 unt=$((unt+1))
 sim=$((sim+1))
 if (("$unt" >= "$fst")) && (("$unt" <= "$lst")) ; then
 ./tst_nml_tidy_San_Guad_JHM2.sh
-echo "Running simul. $sim/21"
+echo "Running simul. $sim/25"
 Qout_file='../../rapid/output/San_Guad_JHM2/Qout_San_Guad_exp12_n1_preonly_tst.nc'
 Qout_gold='../../rapid/output/San_Guad_JHM2/Qout_San_Guad_exp12.nc'
 rapd_file="tmp_run_$sim.txt"
@@ -572,13 +572,13 @@ echo "********************"
 fi
 
 #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-#Simulation 17/21
+#Simulation 17/25
 #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 unt=$((unt+1))
 sim=$((sim+1))
 if (("$unt" >= "$fst")) && (("$unt" <= "$lst")) ; then
 ./tst_nml_tidy_San_Guad_JHM2.sh
-echo "Running simul. $sim/21"
+echo "Running simul. $sim/25"
 Qout_file='../../rapid/output/San_Guad_JHM2/Qout_San_Guad_exp13_n1_preonly_tst.nc'
 Qout_gold='../../rapid/output/San_Guad_JHM2/Qout_San_Guad_exp13.nc'
 rapd_file="tmp_run_$sim.txt"
@@ -601,13 +601,13 @@ echo "********************"
 fi
 
 #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-#Simulation 18/21
+#Simulation 18/25
 #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 unt=$((unt+1))
 sim=$((sim+1))
 if (("$unt" >= "$fst")) && (("$unt" <= "$lst")) ; then
 ./tst_nml_tidy_San_Guad_JHM2.sh
-echo "Running simul. $sim/21"
+echo "Running simul. $sim/25"
 Qout_file='../../rapid/output/San_Guad_JHM2/Qout_San_Guad_exp14_n1_preonly_tst.nc'
 Qout_gold='../../rapid/output/San_Guad_JHM2/Qout_San_Guad_exp14.nc'
 rapd_file="tmp_run_$sim.txt"
@@ -630,13 +630,13 @@ echo "********************"
 fi
 
 #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-#Simulation 19/21
+#Simulation 19/25
 #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 unt=$((unt+1))
 sim=$((sim+1))
 if (("$unt" >= "$fst")) && (("$unt" <= "$lst")) ; then
 ./tst_nml_tidy_San_Guad_JHM2.sh
-echo "Running simul. $sim/21"
+echo "Running simul. $sim/25"
 Qout_file='../../rapid/output/San_Guad_JHM2/Qout_San_Guad_exp15_n1_preonly_tst.nc'
 Qout_gold='../../rapid/output/San_Guad_JHM2/Qout_San_Guad_exp15.nc'
 rapd_file="tmp_run_$sim.txt"
@@ -659,13 +659,13 @@ echo "********************"
 fi
 
 #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-#Simulation 20/21
+#Simulation 20/25
 #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 unt=$((unt+1))
 sim=$((sim+1))
 if (("$unt" >= "$fst")) && (("$unt" <= "$lst")) ; then
 ./tst_nml_tidy_San_Guad_JHM2.sh
-echo "Running simul. $sim/21"
+echo "Running simul. $sim/25"
 Qout_file='../../rapid/output/San_Guad_JHM2/Qout_San_Guad_exp16_n1_preonly_tst.nc'
 Qout_gold='../../rapid/output/San_Guad_JHM2/Qout_San_Guad_exp16.nc'
 rapd_file="tmp_run_$sim.txt"
@@ -688,13 +688,13 @@ echo "********************"
 fi
 
 #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-#Simulation 21/21
+#Simulation 21/25
 #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 unt=$((unt+1))
 sim=$((sim+1))
 if (("$unt" >= "$fst")) && (("$unt" <= "$lst")) ; then
 ./tst_nml_tidy_San_Guad_JHM2.sh
-echo "Running simul. $sim/21"
+echo "Running simul. $sim/25"
 Qout_file='../../rapid/output/San_Guad_JHM2/Qout_San_Guad_exp17_n1_preonly_tst.nc'
 Qout_gold='../../rapid/output/San_Guad_JHM2/Qout_San_Guad_exp17.nc'
 rapd_file="tmp_run_$sim.txt"
