@@ -96,6 +96,10 @@ list="                                                                         \
       Qout_San_Guad_exp15.nc                                                   \
       Qout_San_Guad_exp16.nc                                                   \
       Qout_San_Guad_exp17.nc                                                   \
+      Qout_San_Guad_exp18.nc                                                   \
+      Qout_San_Guad_exp19.nc                                                   \
+      Qout_San_Guad_exp20.nc                                                   \
+      Qout_San_Guad_exp21.nc                                                   \
      "
 
 mkdir -p $folder
