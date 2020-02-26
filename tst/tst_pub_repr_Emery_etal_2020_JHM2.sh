@@ -716,6 +716,130 @@ echo "Success"
 echo "********************"
 fi
 
+#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+#Simulation 22/25
+#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+unt=$((unt+1))
+sim=$((sim+1))
+if (("$unt" >= "$fst")) && (("$unt" <= "$lst")) ; then
+./tst_nml_tidy_San_Guad_JHM2.sh
+echo "Running simul. $sim/25"
+Qout_file='../../rapid/output/San_Guad_JHM2/Qout_San_Guad_exp18_n1_preonly_tst.nc'
+Qout_gold='../../rapid/output/San_Guad_JHM2/Qout_San_Guad_exp18.nc'
+rapd_file="tmp_run_$sim.txt"
+comp_file="tmp_run_comp_$sim.txt"
+sed -i -e "s|Qout_file          =.*|Qout_file          ='$Qout_file'|"         \
+       -e "s|IS_opt_run         =.*|IS_opt_run         =3|"                    \
+       -e "s|IS_radius          =.*|IS_radius          =30|"                   \
+       -e "s|IS_obs_use         =.*|IS_obs_use         =36|"                   \
+       -e "s|obs_use_id_file    =.*|obs_use_id_file    ='../../rapid/input/San_Guad_JHM2/obs_tot_id_San_Guad_2010_2013_full.csv'|" \
+          rapid_namelist_San_Guad_JHM2
+sleep 3
+mpiexec -n 1 ./rapid -ksp_type preonly > $rapd_file
+echo "Comparing files"
+./tst_run_comp $Qout_gold $Qout_file > $comp_file
+x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $comp_file" >&2 ; exit $x ; fi
+rm $Qout_file
+rm $rapd_file
+rm $comp_file
+./tst_nml_tidy_San_Guad_JHM2.sh
+echo "Success"
+echo "********************"
+fi
+
+#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+#Simulation 23/25
+#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+unt=$((unt+1))
+sim=$((sim+1))
+if (("$unt" >= "$fst")) && (("$unt" <= "$lst")) ; then
+./tst_nml_tidy_San_Guad_JHM2.sh
+echo "Running simul. $sim/25"
+Qout_file='../../rapid/output/San_Guad_JHM2/Qout_San_Guad_exp19_n1_preonly_tst.nc'
+Qout_gold='../../rapid/output/San_Guad_JHM2/Qout_San_Guad_exp19.nc'
+rapd_file="tmp_run_$sim.txt"
+comp_file="tmp_run_comp_$sim.txt"
+sed -i -e "s|Qout_file          =.*|Qout_file          ='$Qout_file'|"         \
+       -e "s|IS_opt_run         =.*|IS_opt_run         =3|"                    \
+       -e "s|IS_radius          =.*|IS_radius          =20|"                   \
+       -e "s|IS_obs_use         =.*|IS_obs_use         =36|"                   \
+       -e "s|obs_use_id_file    =.*|obs_use_id_file    ='../../rapid/input/San_Guad_JHM2/obs_tot_id_San_Guad_2010_2013_full.csv'|" \
+          rapid_namelist_San_Guad_JHM2
+sleep 3
+mpiexec -n 1 ./rapid -ksp_type preonly > $rapd_file
+echo "Comparing files"
+./tst_run_comp $Qout_gold $Qout_file > $comp_file
+x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $comp_file" >&2 ; exit $x ; fi
+rm $Qout_file
+rm $rapd_file
+rm $comp_file
+./tst_nml_tidy_San_Guad_JHM2.sh
+echo "Success"
+echo "********************"
+fi
+
+#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+#Simulation 24/25
+#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+unt=$((unt+1))
+sim=$((sim+1))
+if (("$unt" >= "$fst")) && (("$unt" <= "$lst")) ; then
+./tst_nml_tidy_San_Guad_JHM2.sh
+echo "Running simul. $sim/25"
+Qout_file='../../rapid/output/San_Guad_JHM2/Qout_San_Guad_exp20_n1_preonly_tst.nc'
+Qout_gold='../../rapid/output/San_Guad_JHM2/Qout_San_Guad_exp20.nc'
+rapd_file="tmp_run_$sim.txt"
+comp_file="tmp_run_comp_$sim.txt"
+sed -i -e "s|Qout_file          =.*|Qout_file          ='$Qout_file'|"         \
+       -e "s|IS_opt_run         =.*|IS_opt_run         =3|"                    \
+       -e "s|IS_radius          =.*|IS_radius          =10|"                   \
+       -e "s|IS_obs_use         =.*|IS_obs_use         =36|"                   \
+       -e "s|obs_use_id_file    =.*|obs_use_id_file    ='../../rapid/input/San_Guad_JHM2/obs_tot_id_San_Guad_2010_2013_full.csv'|" \
+          rapid_namelist_San_Guad_JHM2
+sleep 3
+mpiexec -n 1 ./rapid -ksp_type preonly > $rapd_file
+echo "Comparing files"
+./tst_run_comp $Qout_gold $Qout_file > $comp_file
+x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $comp_file" >&2 ; exit $x ; fi
+rm $Qout_file
+rm $rapd_file
+rm $comp_file
+./tst_nml_tidy_San_Guad_JHM2.sh
+echo "Success"
+echo "********************"
+fi
+
+#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+#Simulation 25/25
+#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+unt=$((unt+1))
+sim=$((sim+1))
+if (("$unt" >= "$fst")) && (("$unt" <= "$lst")) ; then
+./tst_nml_tidy_San_Guad_JHM2.sh
+echo "Running simul. $sim/25"
+Qout_file='../../rapid/output/San_Guad_JHM2/Qout_San_Guad_exp21_n1_preonly_tst.nc'
+Qout_gold='../../rapid/output/San_Guad_JHM2/Qout_San_Guad_exp21.nc'
+rapd_file="tmp_run_$sim.txt"
+comp_file="tmp_run_comp_$sim.txt"
+sed -i -e "s|Qout_file          =.*|Qout_file          ='$Qout_file'|"         \
+       -e "s|IS_opt_run         =.*|IS_opt_run         =3|"                    \
+       -e "s|IS_radius          =.*|IS_radius          =0|"                    \
+       -e "s|IS_obs_use         =.*|IS_obs_use         =36|"                   \
+       -e "s|obs_use_id_file    =.*|obs_use_id_file    ='../../rapid/input/San_Guad_JHM2/obs_tot_id_San_Guad_2010_2013_full.csv'|" \
+          rapid_namelist_San_Guad_JHM2
+sleep 3
+mpiexec -n 1 ./rapid -ksp_type preonly > $rapd_file
+echo "Comparing files"
+./tst_run_comp $Qout_gold $Qout_file > $comp_file
+x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $comp_file" >&2 ; exit $x ; fi
+rm $Qout_file
+rm $rapd_file
+rm $comp_file
+./tst_nml_tidy_San_Guad_JHM2.sh
+echo "Success"
+echo "********************"
+fi
+
 #-------------------------------------------------------------------------------
 #Remove symbolic list to default namelist
 #-------------------------------------------------------------------------------
