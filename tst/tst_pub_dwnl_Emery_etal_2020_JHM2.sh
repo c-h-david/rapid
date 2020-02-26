@@ -1,19 +1,19 @@
 #!/bin/bash
 #*******************************************************************************
-#tst_pub_dwnl_Emery_etal_201x_JHM2.sh
+#tst_pub_dwnl_Emery_etal_2020_JHM2.sh
 #*******************************************************************************
 
 #Purpose:
 #This script downloads all the files corresponding to:
 #Emery, Charlotte M., Cedric H. David, Kostas M. Andreadis, Michael J. Turmon,
 #John T. Reager, Jonathan M. Hobbs, Ming Pan, James S. Famiglietti,
-#R. Edward Beighley, and Matthew Rodell (201x), Underlying Fundamentals of
+#R. Edward Beighley, and Matthew Rodell (2020), Underlying Fundamentals of
 #Kalman Filtering for River Network Modeling,
-#DOI: xx.xxxx/xxxxxxxxxxxx
+#DOI: 10.1175/JHM-D-19-0084.1
 #These files are available from:
 #Emery, Charlotte M., Cedric H. David, Kostas M. Andreadis, Michael J. Turmon,
 #John T. Reager, Jonathan M. Hobbs, Ming Pan, James S. Famiglietti,
-#R. Edward Beighley, and Matthew Rodell (201x), RRR/RAPID input and output files
+#R. Edward Beighley, and Matthew Rodell (2020), RRR/RAPID input and output files
 #for "Underlying Fundamentals of Kalman Filtering for River Network Modeling",
 #Zenodo.
 #DOI: xx.xxxx/xxxxxxxxxxxx
@@ -35,7 +35,7 @@
 #*******************************************************************************
 echo "********************"
 echo "Downloading files from:   http://dx.doi.org/xx.xxxx/xxxxxxxxxxxx"
-echo "which correspond to   :   http://dx.doi.org/xx.xxxx/xxxxxxxxxxxx"
+echo "which correspond to   :   http://dx.doi.org/10.1175/JHM-D-19-0084.1"
 echo "These files are under a Creative Commons Attribution (CC BY) license."
 echo "Please cite these two DOIs if using these files for your publications."
 echo "********************"

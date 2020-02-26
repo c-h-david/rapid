@@ -1,19 +1,19 @@
 #!/bin/bash
 #*******************************************************************************
-#tst_pub_repr_Emery_etal_201x_JHM2.sh
+#tst_pub_repr_Emery_etal_2020_JHM2.sh
 #*******************************************************************************
 
 #Purpose:
 #This script reproduces all RAPID simulations that were used in the writing of:
 #Emery, Charlotte M., Cedric H. David, Kostas M. Andreadis, Michael J. Turmon,
 #John T. Reager, Jonathan M. Hobbs, Ming Pan, James S. Famiglietti,
-#R. Edward Beighley, and Matthew Rodell (201x), Underlying Fundamentals of
+#R. Edward Beighley, and Matthew Rodell (2020), Underlying Fundamentals of
 #Kalman Filtering for River Network Modeling,
-#DOI: xx.xxxx/xxxxxxxxxxxx
+#DOI: 10.1175/JHM-D-19-0084.1
 #The files used are available from:
 #Emery, Charlotte M., Cedric H. David, Kostas M. Andreadis, Michael J. Turmon,
 #John T. Reager, Jonathan M. Hobbs, Ming Pan, James S. Famiglietti,
-#R. Edward Beighley, and Matthew Rodell (201x), RRR/RAPID input and output files
+#R. Edward Beighley, and Matthew Rodell (2020), RRR/RAPID input and output files
 #for "Underlying Fundamentals of Kalman Filtering for River Network Modeling",
 #Zenodo.
 #DOI: xx.xxxx/xxxxxxxxxxxx
@@ -38,7 +38,7 @@
 #Publication message
 #*******************************************************************************
 echo "********************"
-echo "Reproducing results of:   http://dx.doi.org/xx.xxxx/xxxxxxxxxxxx"
+echo "Reproducing results of:   http://dx.doi.org/10.1175/JHM-D-19-0084.1"
 echo "********************"
 
 
