@@ -12,8 +12,8 @@ subroutine rapid_read_Qhum_file
 !!*******************************************************************************
 !Fortran includes, modules, and implicity
 !*******************************************************************************
-#include <petsc/finclude/petscxxx.h>
-use petscxxx
+#include <petsc/finclude/petscvec.h>
+use petscvec
 use rapid_var, only :                                                          &
                    rank,ierr,ZV_read_hum_tot,                                  &
                    ZV_Qhum,IS_hum_bas,IV_hum_loc1,IV_hum_index,ZV_read_hum_tot

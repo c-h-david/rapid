@@ -14,8 +14,8 @@ subroutine rapid_kf_cov_mat
 !*******************************************************************************
 !Fortran includes, modules, and implicity
 !*******************************************************************************
-#include <petsc/finclude/petscxxx.h>
-use petscxxx
+#include <petsc/finclude/petscmat.h>
+use petscmat
 use rapid_var, only :                                                          &
                 ZM_Pb,ZM_H,ZM_HPbt,ZM_HPbHt,ierr
 implicit none

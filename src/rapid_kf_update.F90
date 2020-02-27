@@ -12,8 +12,8 @@ subroutine rapid_kf_update
 !*******************************************************************************
 !Fortran includes, modules, and implicity
 !*******************************************************************************
-#include <petsc/finclude/petscxxx.h>
-use petscxxx
+#include <petsc/finclude/petscksp.h>
+use petscksp
 use rapid_var, only :                                                          &
                 ierr,ksp2,                                                     &
                 ZS_one,ZS_stdobs,                                              &

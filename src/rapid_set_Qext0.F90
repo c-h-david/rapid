@@ -21,8 +21,8 @@ subroutine rapid_set_Qext0
 !*******************************************************************************
 !Fortran includes, modules, and implicity
 !*******************************************************************************
-#include <petsc/finclude/petscxxx.h>
-use petscxxx
+#include <petsc/finclude/petscvec.h>
+use petscvec
 use rapid_var, only:                                                           &
                    rank,ierr,IS_one,ZS_one,                                    &
                    ZV_Qdam,ZV_Qext,                                            &

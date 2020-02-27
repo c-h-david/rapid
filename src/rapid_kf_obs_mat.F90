@@ -16,8 +16,8 @@ subroutine rapid_kf_obs_mat
 !*******************************************************************************
 !Fortran includes, modules, and implicity
 !*******************************************************************************
-#include <petsc/finclude/petscxxx.h>
-use petscxxx
+#include <petsc/finclude/petscmat.h>
+use petscmat
 use rapid_var, only :                                                          &
                 IS_riv_bas,                                                    &
                 IV_obs_loc1,IS_obs_bas,JS_obs_bas,                             &

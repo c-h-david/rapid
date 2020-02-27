@@ -15,8 +15,8 @@ subroutine rapid_net_mat_brk
 !*******************************************************************************
 !Fortran includes, modules, and implicity
 !*******************************************************************************
-#include <petsc/finclude/petscxxx.h>
-use petscxxx
+#include <petsc/finclude/petscmat.h>
+use petscmat
 use rapid_var, only :                                                          &
                    IS_riv_bas,JS_riv_bas,JS_riv_bas2,                          &
                    IV_riv_bas_id,IV_riv_index,                                 &

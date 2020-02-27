@@ -12,8 +12,8 @@ module rapid_var
 !*******************************************************************************
 !Fortran includes, modules, and implicity
 !*******************************************************************************
-#include <petsc/finclude/petscxxx.h>
-use petscxxx
+#include <petsc/finclude/petsctao.h>
+use petsctao
 implicit none
 
 

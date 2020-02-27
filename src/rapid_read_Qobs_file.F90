@@ -12,8 +12,8 @@ subroutine rapid_read_Qobs_file
 !*******************************************************************************
 !Fortran includes, modules, and implicity
 !*******************************************************************************
-#include <petsc/finclude/petscxxx.h>
-use petscxxx
+#include <petsc/finclude/petscvec.h>
+use petscvec
 use rapid_var, only :                                                          &
                    rank,ierr,                                                  &
                    ZV_Qobs,IS_obs_bas,IV_obs_loc1,IV_obs_index,ZV_read_obs_tot

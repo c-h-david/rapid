@@ -12,8 +12,8 @@ subroutine rapid_read_Qinit_file
 !*******************************************************************************
 !Fortran includes, modules, and implicity
 !*******************************************************************************
-#include <petsc/finclude/petscxxx.h>
-use petscxxx
+#include <petsc/finclude/petscvec.h>
+use petscvec
 use netcdf
 use rapid_var, only :                                                          &
                    rank,ierr,                                                  &

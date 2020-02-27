@@ -14,8 +14,8 @@ subroutine rapid_uq
 !*******************************************************************************
 !Fortran includes, modules, and implicity
 !*******************************************************************************
-#include <petsc/finclude/petscxxx.h>
-use petscxxx
+#include <petsc/finclude/petscksp.h>
+use petscksp
 use rapid_var, only :                                                          &
                    IS_riv_tot,IS_riv_bas,                                      &
                    IV_riv_index,IV_riv_loc1,                                   &

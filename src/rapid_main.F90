@@ -13,8 +13,8 @@ program rapid_main
 !*******************************************************************************
 !Fortran includes, modules, and implicity
 !*******************************************************************************
-#include <petsc/finclude/petscxxx.h>
-use petscxxx
+#include <petsc/finclude/petsctao.h>
+use petsctao
 use rapid_var, only :                                                          &
                    namelist_file,                                              &
                    Vlat_file,Qfor_file,Qhum_file,                              &

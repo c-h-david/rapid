@@ -12,8 +12,8 @@ subroutine rapid_write_Qfinal_file
 !*******************************************************************************
 !Fortran includes, modules, and implicity
 !*******************************************************************************
-#include <petsc/finclude/petscxxx.h>
-use petscxxx
+#include <petsc/finclude/petscvec.h>
+use petscvec
 use netcdf
 use rapid_var, only :                                                          &
                    rank,ierr,vecscat,ZV_SeqZero,ZV_pointer,                    &

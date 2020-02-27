@@ -33,8 +33,8 @@ subroutine rapid_init
 !*******************************************************************************
 !Fortran includes, modules, and implicity
 !*******************************************************************************
-#include <petsc/finclude/petscxxx.h>
-use petscxxx
+#include <petsc/finclude/petscksp.h>
+use petscksp
 use rapid_var, only :                                                          &
                    IS_riv_tot,IS_riv_bas,                                      &
                    IV_riv_bas_id,IV_riv_index,IV_riv_loc1,IV_riv_tot_id,       &

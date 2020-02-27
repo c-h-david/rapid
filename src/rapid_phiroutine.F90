@@ -14,8 +14,8 @@ subroutine rapid_phiroutine(tao,ZV_pnorm,ZS_phi,IS_dummy,ierr)
 !*******************************************************************************
 !Fortran includes, modules, and implicity
 !*******************************************************************************
-#include <petsc/finclude/petscxxx.h>
-use petscxxx
+#include <petsc/finclude/petsctao.h>
+use petsctao
 use rapid_var, only :                                                          &
                    Vlat_file,Qobs_file,Qfor_file,Qhum_file,                    &
                    JS_O,IS_O,JS_RpO,IS_RpO,ZS_TauR,IS_RpF,IS_RpH,              &

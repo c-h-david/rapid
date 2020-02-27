@@ -13,8 +13,8 @@ subroutine rapid_obs_mat
 !*******************************************************************************
 !Fortran includes, modules, and implicity
 !*******************************************************************************
-#include <petsc/finclude/petscxxx.h>
-use petscxxx
+#include <petsc/finclude/petscmat.h>
+use petscmat
 use rapid_var, only :                                                          &
                    IS_riv_bas,JS_riv_bas,                                      &
                    IS_obs_bas,JS_obs_bas,                                      &

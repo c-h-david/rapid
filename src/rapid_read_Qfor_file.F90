@@ -12,8 +12,8 @@ subroutine rapid_read_Qfor_file
 !*******************************************************************************
 !Fortran includes, modules, and implicity
 !*******************************************************************************
-#include <petsc/finclude/petscxxx.h>
-use petscxxx
+#include <petsc/finclude/petscvec.h>
+use petscvec
 use rapid_var, only :                                                          &
                    rank,ierr,ZV_read_for_tot,                                  &
                    ZV_Qfor,IS_for_bas,IV_for_loc2,IV_for_index,ZV_read_for_tot

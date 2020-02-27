@@ -12,8 +12,8 @@ subroutine rapid_get_Qdam
 !*******************************************************************************
 !Fortran includes, modules, and implicity
 !*******************************************************************************
-#include <petsc/finclude/petscxxx.h>
-use petscxxx
+#include <petsc/finclude/petscmat.h>
+use petscmat
 use rapid_var, only :                                                          &
                    rank,ierr,vecscat,ZV_pointer,ZV_SeqZero,ZS_one,             &
                    ZM_Net,ZV_Qext,ZV_Qdam,ZV_QoutbarR,ZV_QinbarR,              &

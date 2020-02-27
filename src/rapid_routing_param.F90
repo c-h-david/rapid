@@ -14,8 +14,8 @@ subroutine rapid_routing_param(ZV_k,ZV_x,                                      &
 !*******************************************************************************
 !Fortran includes, modules, and implicity
 !*******************************************************************************
-#include <petsc/finclude/petscxxx.h>
-use petscxxx
+#include <petsc/finclude/petscmat.h>
+use petscmat
 use rapid_var, only :                                                          &
                    ZM_Net,ZM_T,ZM_TC1,                                         &
                    ZV_Cdenom,ZS_dtR,                                           &

@@ -22,8 +22,8 @@ subroutine rapid_final
 !*******************************************************************************
 !Fortran includes, modules, and implicity
 !*******************************************************************************
-#include <petsc/finclude/petscxxx.h>
-use petscxxx
+#include <petsc/finclude/petscksp.h>
+use petscksp
 use rapid_var, only :                                                          &
                    IS_riv_bas,JS_riv_bas,                                      &
                    IS_opt_routing,IS_opt_run,                                  &

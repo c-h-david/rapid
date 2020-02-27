@@ -57,8 +57,8 @@ subroutine rapid_arrays
 !*******************************************************************************
 !Fortran includes, modules, and implicity
 !*******************************************************************************
-#include <petsc/finclude/petscxxx.h>
-use petscxxx
+#include <petsc/finclude/petscmat.h>
+use petscmat
 use rapid_var, only :                                                          &
                    rapid_connect_file,                                         &
                    IS_riv_tot,JS_riv_tot,JS_up,                                &
