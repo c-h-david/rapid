@@ -50,7 +50,6 @@ external rapid_phiroutine
 #include "petsc/finclude/petscsys.h"       
 !base PETSc routines
 #include "petsc/finclude/petscvec.h"  
-#include "petsc/finclude/petscvec.h90"
 !vectors, and vectors in Fortran90 
 #include "petsc/finclude/petscmat.h"    
 !matrices

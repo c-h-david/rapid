@@ -17,7 +17,6 @@ implicit none
 #include "petsc/finclude/petscsys.h"       
 !base PETSc routines
 #include "petsc/finclude/petscvec.h"  
-#include "petsc/finclude/petscvec.h90"
 !vectors, and Fortran90-specific vectors 
 #include "petsc/finclude/petscmat.h"    
 !matrices
