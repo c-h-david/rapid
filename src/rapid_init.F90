@@ -31,8 +31,10 @@ subroutine rapid_init
 
 
 !*******************************************************************************
-!Declaration of variables
+!Fortran includes, modules, and implicity
 !*******************************************************************************
+#include <petsc/finclude/petscxxx.h>
+use petscxxx
 use rapid_var, only :                                                          &
                    IS_riv_tot,IS_riv_bas,                                      &
                    IV_riv_bas_id,IV_riv_index,IV_riv_loc1,IV_riv_tot_id,       &
@@ -76,8 +78,6 @@ use rapid_var, only :                                                          &
                    ierr,ksp,rank,IS_one,ZS_one,                                &
                    IS_radius,ZV_riv_tot_cdownQlat,                             &
                    IV_nbrows,IV_lastrow
-
-
 implicit none
 
 

@@ -10,13 +10,11 @@ subroutine rapid_close_Qout_file
 
 
 !*******************************************************************************
-!Global variables
+!Fortran includes, modules, and implicity
 !*******************************************************************************
 use netcdf
 use rapid_var, only :                                                          &
                    rank,IS_nc_status,IS_nc_id_fil_Qout
-
-
 implicit none
 
 

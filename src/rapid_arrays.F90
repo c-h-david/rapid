@@ -55,8 +55,10 @@ subroutine rapid_arrays
 
 
 !*******************************************************************************
-!Global variables
+!Fortran includes, modules, and implicity
 !*******************************************************************************
+#include <petsc/finclude/petscxxx.h>
+use petscxxx
 use rapid_var, only :                                                          &
                    rapid_connect_file,                                         &
                    IS_riv_tot,JS_riv_tot,JS_up,                                &
@@ -102,7 +104,6 @@ use rapid_var, only :                                                          &
                    IS_obs_bas,JS_obs_bas,                                      &
                    IV_obs_index,IV_obs_loc1,                                   &
                    temp_char,rank,ierr,IS_one,ZS_val
-
 implicit none
 
 

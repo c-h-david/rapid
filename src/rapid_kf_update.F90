@@ -10,18 +10,16 @@ subroutine rapid_kf_update
 !Charlotte M. Emery, and Cedric H. David, 2018-2020.
 
 !*******************************************************************************
-!Declaration of variables
+!Fortran includes, modules, and implicity
 !*******************************************************************************
-
-
-
+#include <petsc/finclude/petscxxx.h>
+use petscxxx
 use rapid_var, only :                                                          &
                 ierr,ksp2,                                                     &
                 ZS_one,ZS_stdobs,                                              &
                 IS_obs_bas,                                                    &
                 ZV_dQeb,ZV_Qbmean,ZV_Qobs,                                     &
-                ZM_S,ZM_HPbt,ZM_HPbHt
-                
+                ZM_S,ZM_HPbt,ZM_HPbHt    
 implicit none
 
 

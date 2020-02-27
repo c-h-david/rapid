@@ -3,7 +3,6 @@
 !*******************************************************************************
 subroutine rapid_kf_cov_mat
 
-
 !Purpose:
 !Compute runoff error covariance matrices in Kalman gain
 !ZM_HPbt = (ZM_Pb*ZM_H^(T))^(T)
@@ -11,15 +10,14 @@ subroutine rapid_kf_cov_mat
 !Authors: 
 !Charlotte M. Emery, and Cedric H. David, 2018-2020.
 
+
 !*******************************************************************************
-!Declaration of variables
+!Fortran includes, modules, and implicity
 !*******************************************************************************
-
-
-
+#include <petsc/finclude/petscxxx.h>
+use petscxxx
 use rapid_var, only :                                                          &
                 ZM_Pb,ZM_H,ZM_HPbt,ZM_HPbHt,ierr
-                
 implicit none
 
 

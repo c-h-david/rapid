@@ -11,8 +11,10 @@ subroutine rapid_obs_mat
 
 
 !*******************************************************************************
-!Declaration of variables
+!Fortran includes, modules, and implicity
 !*******************************************************************************
+#include <petsc/finclude/petscxxx.h>
+use petscxxx
 use rapid_var, only :                                                          &
                    IS_riv_bas,JS_riv_bas,                                      &
                    IS_obs_bas,JS_obs_bas,                                      &
@@ -21,8 +23,6 @@ use rapid_var, only :                                                          &
                    ZM_Obs,ZS_norm,                                             &
                    ierr,                                                       &
                    IS_one,ZS_one,temp_char   
-
-
 implicit none
 
 

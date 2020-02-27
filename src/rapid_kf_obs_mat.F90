@@ -12,18 +12,20 @@ subroutine rapid_kf_obs_mat
 !Authors: 
 !Charlotte M. Emery, and Cedric H. David, 2018-2020.
 
-!*******************************************************************************
-!Declaration of variables
-!*******************************************************************************
 
+!*******************************************************************************
+!Fortran includes, modules, and implicity
+!*******************************************************************************
+#include <petsc/finclude/petscxxx.h>
+use petscxxx
 use rapid_var, only :                                                          &
                 IS_riv_bas,                                                    &
                 IV_obs_loc1,IS_obs_bas,JS_obs_bas,                             &
                 ierr,rank,                                                     &
                 IS_one,ZS_one,                                                 &
                 ZM_L,ZM_S,ZM_H
-
 implicit none
+
 
 !*******************************************************************************
 !Intent (in/out), and local variables 

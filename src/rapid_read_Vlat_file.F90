@@ -10,15 +10,16 @@ subroutine rapid_read_Vlat_file
 
 
 !*******************************************************************************
-!Global variables
+!Fortran includes, modules, and implicity
 !*******************************************************************************
+#include <petsc/finclude/petscxxx.h>
+use petscxxx
 use netcdf
 use rapid_var, only :                                                          &
                    rank,ierr,                                                  &
                    IS_nc_status,IS_nc_id_fil_Vlat,IS_nc_id_var_Vlat,           &
                    IV_nc_start,IV_nc_count,                                    &
                    IS_riv_bas,IV_riv_loc1,IV_riv_index,ZV_read_riv_tot,ZV_Vlat
-
 implicit none
 
 

@@ -11,8 +11,10 @@ program rapid_main
 
 
 !*******************************************************************************
-!Declaration of variables
+!Fortran includes, modules, and implicity
 !*******************************************************************************
+#include <petsc/finclude/petscxxx.h>
+use petscxxx
 use rapid_var, only :                                                          &
                    namelist_file,                                              &
                    Vlat_file,Qfor_file,Qhum_file,                              &
@@ -36,10 +38,7 @@ use rapid_var, only :                                                          &
                    Qobs_file,ZV_Qobs,                                          &
                    ZV_Qbmean,ZV_dQeb,ZS_val,                                   &
                    ZV_QoutinitR_save
-
 implicit none
-
-
 external rapid_phiroutine
 !because the subroutine is called by a function
 

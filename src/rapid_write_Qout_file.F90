@@ -10,8 +10,10 @@ subroutine rapid_write_Qout_file
 
 
 !*******************************************************************************
-!Global variables
+!Fortran includes, modules, and implicity
 !*******************************************************************************
+#include <petsc/finclude/petscxxx.h>
+use petscxxx
 use netcdf
 use rapid_var, only :                                                          &
                    rank,ierr,vecscat,ZV_SeqZero,ZV_pointer,                    &
@@ -20,7 +22,6 @@ use rapid_var, only :                                                          &
                    IS_nc_id_var_time,IS_nc_id_var_time_bnds,                   &
                    IV_time,IM_time_bnds,                                       &
                    ZV_QoutbarR
-
 implicit none
 
 

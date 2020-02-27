@@ -13,8 +13,10 @@ subroutine rapid_routing(ZV_C1,ZV_C2,ZV_C3,ZV_Qext,                            &
 
 
 !*******************************************************************************
-!Declaration of variables
+!Fortran includes, modules, and implicity
 !*******************************************************************************
+#include <petsc/finclude/petscxxx.h>
+use petscxxx
 use netcdf
 use rapid_var, only :                                                          &
                    ZS_dtR,IS_R,JS_R,                                           &
@@ -27,8 +29,6 @@ use rapid_var, only :                                                          &
                    IS_riv_bas,JS_riv_bas,IM_index_up,                          &
                    IS_opt_routing,IV_nbup,IV_riv_index,                        &
                    BS_opt_influence
-
-
 implicit none
 
 

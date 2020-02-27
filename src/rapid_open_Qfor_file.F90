@@ -10,11 +10,10 @@ subroutine rapid_open_Qfor_file(Qfor_file)
 
 
 !*******************************************************************************
-!Global variables
+!Fortran includes, modules, and implicity
 !*******************************************************************************
 use rapid_var, only :                                                          &
                    rank
-
 implicit none
 
 

@@ -10,15 +10,16 @@ subroutine rapid_read_Qinit_file
 
 
 !*******************************************************************************
-!Global variables
+!Fortran includes, modules, and implicity
 !*******************************************************************************
+#include <petsc/finclude/petscxxx.h>
+use petscxxx
 use netcdf
 use rapid_var, only :                                                          &
                    rank,ierr,                                                  &
                    IS_nc_status,IS_nc_id_fil_Qinit,IS_nc_id_var_Qinit,         &
                    IS_riv_bas,IV_riv_loc1,IV_riv_index,ZV_read_riv_tot,        &
                    IS_riv_tot,ZV_QoutinitM
-
 implicit none
 
 

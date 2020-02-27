@@ -10,11 +10,10 @@ subroutine rapid_open_Qobs_file(Qobs_file)
 
 
 !*******************************************************************************
-!Global variables
+!Fortran includes, modules, and implicity
 !*******************************************************************************
 use rapid_var, only :                                                          &
                    rank
-
 implicit none
 
 

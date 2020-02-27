@@ -11,8 +11,10 @@ subroutine rapid_mus_mat
 
 
 !*******************************************************************************
-!Declaration of variables
+!Fortran includes, modules, and implicity
 !*******************************************************************************
+#include <petsc/finclude/petscxxx.h>
+use petscxxx
 use rapid_var, only :                                                          &
                 IS_riv_bas,                                                    &
                 JS_riv_bas,JS_riv_bas2,JS_up,                                  & 
@@ -24,8 +26,6 @@ use rapid_var, only :                                                          &
                 IS_opt_run,                                                    &
                 ierr,rank,temp_char,                                           &
                 IV_nbrows,IV_lastrow
-
-
 implicit none
 
 

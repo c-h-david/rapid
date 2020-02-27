@@ -10,14 +10,13 @@ subroutine rapid_open_Vlat_file(Vlat_file)
 
 
 !*******************************************************************************
-!Global variables
+!Fortran includes, modules, and implicity
 !*******************************************************************************
 use netcdf
 use rapid_var, only :                                                          &
                    rank,IS_nc_status,IS_nc_id_fil_Vlat,IS_nc_id_var_Vlat,      &
                    IS_nc_id_var_time,IS_nc_id_var_time_bnds,IS_nc_id_var_crs,  &
                    IS_nc_id_var_lon,IS_nc_id_var_lat, IS_nc_id_var_Vlat_err
-
 implicit none
 
 

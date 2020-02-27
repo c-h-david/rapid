@@ -20,8 +20,10 @@ subroutine rapid_final
 
 
 !*******************************************************************************
-!Declaration of variables
+!Fortran includes, modules, and implicity
 !*******************************************************************************
+#include <petsc/finclude/petscxxx.h>
+use petscxxx
 use rapid_var, only :                                                          &
                    IS_riv_bas,JS_riv_bas,                                      &
                    IS_opt_routing,IS_opt_run,                                  &
@@ -32,8 +34,6 @@ use rapid_var, only :                                                          &
                    ZV_QoutRabsmin,ZV_QoutRabsmax,                              &
                    temp_char2,ZM_A,pc,                                         &
                    IS_ksp_iter_max
-
-
 implicit none
 
 

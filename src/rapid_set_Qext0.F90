@@ -19,18 +19,16 @@ subroutine rapid_set_Qext0
 
 
 !*******************************************************************************
-!Declaration of variables
+!Fortran includes, modules, and implicity
 !*******************************************************************************
+#include <petsc/finclude/petscxxx.h>
+use petscxxx
 use rapid_var, only:                                                           &
                    rank,ierr,IS_one,ZS_one,                                    &
                    ZV_Qdam,ZV_Qext,                                            &
-                   IS_dam_tot,JS_dam_tot,IV_dam_pos 
-
-use rapid_var, only:                                                           &
+                   IS_dam_tot,JS_dam_tot,IV_dam_pos,                           & 
                    ZV_Qin_dam0,                                                &
                    ZV_Qout_dam_prev,ZV_Qout_dam0
-
-
 implicit none
 
 

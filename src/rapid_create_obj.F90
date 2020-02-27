@@ -11,8 +11,10 @@ subroutine rapid_create_obj
 
 
 !*******************************************************************************
-!Declaration of variables
+!Fortran includes, modules, and implicity
 !*******************************************************************************
+#include <petsc/finclude/petscxxx.h>
+use petscxxx
 use rapid_var, only :                                                          &
                    IS_riv_bas,                                                 &
                    ZM_hsh_tot,ZM_hsh_bas,IS_riv_id_max,                        &
@@ -33,7 +35,6 @@ use rapid_var, only :                                                          &
                    ierr,ksp,vecscat,ZV_SeqZero,ZS_one,ZV_one,IS_one,ncore,rank,&
                    tao,ZV_1stIndex,ZV_2ndIndex,                                &
                    ZM_Pb,ZM_L,ZV_Qbmean,ZV_dQeb,ZV_QoutinitR_save,ksp2
-
 implicit none
 
 

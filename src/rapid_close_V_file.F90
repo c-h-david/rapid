@@ -10,13 +10,11 @@ subroutine rapid_close_V_file
 
 
 !*******************************************************************************
-!Global variables
+!Fortran includes, modules, and implicity
 !*******************************************************************************
 use netcdf
 use rapid_var, only :                                                          &
                    rank,IS_nc_status,IS_nc_id_fil_V
-
-
 implicit none
 
 

@@ -10,7 +10,7 @@ subroutine rapid_meta_Vlat_file(Vlat_file)
 
 
 !*******************************************************************************
-!Global variables
+!Fortran includes, modules, and implicity
 !*******************************************************************************
 use netcdf
 use rapid_var, only :                                                          &
@@ -23,7 +23,6 @@ use rapid_var, only :                                                          &
                    ZV_riv_tot_lon,ZV_riv_tot_lat,IV_time,IM_time_bnds,         &
                    ZV_riv_tot_bQlat,ZV_riv_tot_vQlat,ZV_riv_tot_caQlat,ZS_dtUQ,&
                    ZV_riv_tot_cdownQlat,IS_radius
-
 implicit none
 
 

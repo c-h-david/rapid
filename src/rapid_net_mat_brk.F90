@@ -13,8 +13,10 @@ subroutine rapid_net_mat_brk
 
 
 !*******************************************************************************
-!Declaration of variables
+!Fortran includes, modules, and implicity
 !*******************************************************************************
+#include <petsc/finclude/petscxxx.h>
+use petscxxx
 use rapid_var, only :                                                          &
                    IS_riv_bas,JS_riv_bas,JS_riv_bas2,                          &
                    IV_riv_bas_id,IV_riv_index,                                 &
@@ -25,7 +27,6 @@ use rapid_var, only :                                                          &
                    IS_one,ZS_one,temp_char,                                    &
                    IS_ownfirst,IS_ownlast,                                     &
                    BS_opt_for,BS_opt_dam,IS_opt_routing
-
 implicit none
 
 

@@ -12,8 +12,10 @@ subroutine rapid_phiroutine(tao,ZV_pnorm,ZS_phi,IS_dummy,ierr)
 
 
 !*******************************************************************************
-!Declaration of variables
+!Fortran includes, modules, and implicity
 !*******************************************************************************
+#include <petsc/finclude/petscxxx.h>
+use petscxxx
 use rapid_var, only :                                                          &
                    Vlat_file,Qobs_file,Qfor_file,Qhum_file,                    &
                    JS_O,IS_O,JS_RpO,IS_RpO,ZS_TauR,IS_RpF,IS_RpH,              &
@@ -33,8 +35,6 @@ use rapid_var, only :                                                          &
                    IV_nc_start,IV_nc_count,                                    &
                    IS_opt_phi,BS_opt_for,IS_strt_opt,IS_opt_routing,           &
                    BS_opt_dam,IS_dam_bas,ZV_Qdam,BS_opt_hum,ZV_Qhum
-
-
 implicit none
 
 

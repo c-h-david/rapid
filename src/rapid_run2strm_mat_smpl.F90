@@ -3,7 +3,6 @@
 !*******************************************************************************
 subroutine rapid_run2strm_mat_smpl
 
-
 !Purpose:
 !Compute the full-network observation operator - simplified/optimized algorithm
 !This operator turns daily-averaged runoff into daily-averaged discharge
@@ -12,6 +11,12 @@ subroutine rapid_run2strm_mat_smpl
 !Authors: 
 !Charlotte M. Emery, and Cedric H. David, 2018-2020.
 
+
+!*******************************************************************************
+!Fortran includes, modules, and implicity
+!*******************************************************************************
+#include <petsc/finclude/petscxxx.h>
+use petscxxx
 use rapid_var, only :                                                          &
                 IS_riv_bas,JS_riv_bas,JS_riv_bas2,JS_up,                       &
                 IM_index_up,IV_riv_index,IV_nbup,                              &
@@ -22,8 +27,8 @@ use rapid_var, only :                                                          &
                 IS_ownfirst,IS_ownlast,                                        &
                 IS_R,IS_RpM,                                                   &
                 ZM_L
-
 implicit none
+
 
 !*******************************************************************************
 !Intent (in/out), and local variables 

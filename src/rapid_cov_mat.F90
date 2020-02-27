@@ -3,7 +3,6 @@
 !*******************************************************************************
 subroutine rapid_cov_mat
 
-
 !Purpose:
 !Compute runoff error covariance matrix ZM_Pb for data assimilation
 !Authors: 
@@ -11,11 +10,10 @@ subroutine rapid_cov_mat
 
 
 !*******************************************************************************
-!Declaration of variables
+!Fortran includes, modules, and implicity
 !*******************************************************************************
-
-
-
+#include <petsc/finclude/petscxxx.h>
+use petscxxx
 use rapid_var, only :                                                          &
                 IS_riv_bas,                                                    &
                 JS_riv_bas,JS_riv_bas2,JS_up,                                  &
@@ -28,9 +26,6 @@ use rapid_var, only :                                                          &
                 IS_radius,ZS_inflation,                                        &
                 ZM_Pb,                                                         &
                 ZV_riv_tot_vQlat,ZV_riv_tot_cdownQlat 
-                
-
-
 implicit none
 
 

@@ -3,7 +3,6 @@
 !*******************************************************************************
 subroutine rapid_runoff2streamflow_mat
 
-
 !Purpose:
 !Compute operator that turns runoff into streamflow over a day of run
 !This operator is used within the data assimilation as part of the
@@ -13,9 +12,10 @@ subroutine rapid_runoff2streamflow_mat
 
 
 !*******************************************************************************
-!Declaration of variables
+!Fortran includes, modules, and implicity
 !*******************************************************************************
-
+#include <petsc/finclude/petscxxx.h>
+use petscxxx
 use rapid_var, only :                                                          &
                 IS_riv_bas,JS_riv_bas,JS_riv_bas2,JS_up,                       &
                 IM_index_up,IV_riv_index,IV_nbup,                              &
@@ -29,8 +29,8 @@ use rapid_var, only :                                                          &
                 IS_R,IS_RpM,                                                   &
     !New variables to add in rapid_var+rapid_mus_mat when linking the code
                 ZM_L,IV_lastrow,IV_nbrows
-
 implicit none
+
 
 !*******************************************************************************
 !Intent (in/out), and local variables 

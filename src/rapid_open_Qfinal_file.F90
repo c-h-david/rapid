@@ -10,12 +10,11 @@ subroutine rapid_open_Qfinal_file(Qfinal_file)
 
 
 !*******************************************************************************
-!Global variables
+!Fortran includes, modules, and implicity
 !*******************************************************************************
 use netcdf
 use rapid_var, only :                                                          &
                    rank,IS_nc_status,IS_nc_id_fil_Qfinal,IS_nc_id_var_Qfinal
-
 implicit none
 
 

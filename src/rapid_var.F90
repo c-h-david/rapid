@@ -8,6 +8,12 @@ module rapid_var
 !Author: 
 !Cedric H. David, 2008-2020.
 
+
+!*******************************************************************************
+!Fortran includes, modules, and implicity
+!*******************************************************************************
+#include <petsc/finclude/petscxxx.h>
+use petscxxx
 implicit none
 
 

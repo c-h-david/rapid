@@ -21,8 +21,10 @@ subroutine rapid_hsh_mat
 
 
 !*******************************************************************************
-!Declaration of variables
+!Fortran includes, modules, and implicity
 !*******************************************************************************
+#include <petsc/finclude/petscxxx.h>
+use petscxxx
 use rapid_var, only :                                                          &
                    IS_riv_tot,IS_riv_bas,                                      &
                    JS_riv_tot,JS_riv_bas,                                      &
@@ -31,7 +33,6 @@ use rapid_var, only :                                                          &
                    ZM_hsh_tot,ZM_hsh_bas,                                      &
                    IS_ownfirst,IS_ownlast,                                     &
                    IS_one,ZS_one,temp_char,temp_char2,ierr,rank,ncore
-
 implicit none
 
 

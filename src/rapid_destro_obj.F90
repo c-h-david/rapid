@@ -12,8 +12,10 @@ subroutine rapid_destro_obj
 
 
 !*******************************************************************************
-!Declaration of variables
+!Fortran includes, modules, and implicity
 !*******************************************************************************
+#include <petsc/finclude/petscxxx.h>
+use petscxxx
 use rapid_var, only :                                                          &
                    IS_riv_bas,                                                 &
                    ZM_hsh_tot,ZM_hsh_bas,                                      &
@@ -36,7 +38,6 @@ use rapid_var, only :                                                          &
                    ZM_Pb,ZM_L,ZM_H,ZM_S,ZM_HPbt,ZM_HPbHt,                      &
                    ZV_Qbmean,ZV_dQeb,ksp2,ZV_QoutinitR_save,                   &
                    IS_opt_run
-
 implicit none
 
 
