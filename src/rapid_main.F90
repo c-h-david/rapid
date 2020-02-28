@@ -248,7 +248,7 @@ if (IS_opt_run==2) then
 !-------------------------------------------------------------------------------
 call PetscLogStageRegister('Optimization   ',stage,ierr)
 call PetscLogStagePush(stage,ierr)
-call TaoSetObjectiveRoutine(tao,rapid_phiroutine,PETSC_NULL_OBJECT,ierr)
+call TaoSetObjectiveRoutine(tao,rapid_phiroutine,PETSC_NULL_INTEGER,ierr)
 call TaoSetInitialVector(tao,ZV_pnorm,ierr)
 call TaoSolve(tao,ierr)
 
