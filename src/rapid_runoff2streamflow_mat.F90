@@ -646,7 +646,7 @@ call VecCopy(ZV_C1,ZV_temp1,ierr)
 call VecAXPY(ZV_temp1,ZS_one,ZV_C2,ierr)
 !ZV_temp1 = ZV_C1+ZV_C2
 
-call MatDiagonalScale(ZM_temp,PETSC_NULL_OBJECT,ZV_temp1,ierr)
+call MatDiagonalScale(ZM_temp,PETSC_NULL_VEC,ZV_temp1,ierr)
 !ZM_temp = !ZM_temp*diag(C1+C2)
 
 call MatCopy(ZM_temp,ZM_L,DIFFERENT_NONZERO_PATTERN,ierr)
