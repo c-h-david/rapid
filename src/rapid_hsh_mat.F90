@@ -107,11 +107,11 @@ do JS_riv_tot=1,IS_riv_tot
      IS_onz=IS_nz-IS_dnz
 end do
 
-call MatSeqAIJSetPreallocation(ZM_hsh_tot,PETSC_NULL_INTEGER,IS_nz,ierr)
+call MatSeqAIJSetPreallocation(ZM_hsh_tot,PETSC_DEFAULT_INTEGER,IS_nz,ierr)
 call MatMPIAIJSetPreallocation(ZM_hsh_tot,                                     &
-                               PETSC_NULL_INTEGER,                             &
+                               PETSC_DEFAULT_INTEGER,                          &
                                IS_dnz,                                         &
-                               PETSC_NULL_INTEGER,                             &
+                               PETSC_DEFAULT_INTEGER,                          &
                                IS_onz,ierr)
 !print *, 'rank', rank, 'IS_ownfirst', IS_ownfirst, 'IS_ownlast', IS_ownlast,   &
 !         'IS_nz', IS_nz, 'IS_dnz', IS_dnz, 'IS_onz', IS_onz
@@ -132,11 +132,11 @@ do JS_riv_bas=1,IS_riv_bas
      IS_onz=IS_nz-IS_dnz
 end do
 
-call MatSeqAIJSetPreallocation(ZM_hsh_bas,PETSC_NULL_INTEGER,IS_nz,ierr)
+call MatSeqAIJSetPreallocation(ZM_hsh_bas,PETSC_DEFAULT_INTEGER,IS_nz,ierr)
 call MatMPIAIJSetPreallocation(ZM_hsh_bas,                                     &
-                               PETSC_NULL_INTEGER,                             &
+                               PETSC_DEFAULT_INTEGER,                          &
                                IS_dnz,                                         &
-                               PETSC_NULL_INTEGER,                             &
+                               PETSC_DEFAULT_INTEGER,                          &
                                IS_onz,ierr)
 !print *, 'rank', rank, 'IS_ownfirst', IS_ownfirst, 'IS_ownlast', IS_ownlast,   &
 !         'IS_nz', IS_nz, 'IS_dnz', IS_dnz, 'IS_onz', IS_onz

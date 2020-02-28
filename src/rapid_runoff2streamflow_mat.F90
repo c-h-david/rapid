@@ -216,11 +216,11 @@ deallocate(IV_ind_rows)
 !Matrix preallocation of temporary matrix ZM_temp=(I-C1*N)^(-1)*(C3+C2*N)
 !-------------------------------------------------------------------------------
 
-call MatSeqAIJSetPreallocation(ZM_temp,PETSC_NULL_INTEGER,IV_nz,ierr)
+call MatSeqAIJSetPreallocation(ZM_temp,PETSC_DEFAULT_INTEGER,IV_nz,ierr)
 call MatMPIAIJSetPreallocation(ZM_temp,                                        &
-                               PETSC_NULL_INTEGER,                             &
+                               PETSC_DEFAULT_INTEGER,                          &
                                IV_dnz(IS_ownfirst+1:IS_ownlast),               &
-                               PETSC_NULL_INTEGER,                             &
+                               PETSC_DEFAULT_INTEGER,                          &
                                IV_onz(IS_ownfirst+1:IS_ownlast),ierr)
 
 !-------------------------------------------------------------------------------
@@ -267,11 +267,11 @@ end do
 !Matrix preallocation (ZM_L)
 !*******************************************************************************
 
-call MatSeqAIJSetPreallocation(ZM_L,PETSC_NULL_INTEGER,IV_nz,ierr)
+call MatSeqAIJSetPreallocation(ZM_L,PETSC_DEFAULT_INTEGER,IV_nz,ierr)
 call MatMPIAIJSetPreallocation(ZM_L,                                           &
-                               PETSC_NULL_INTEGER,                             &
+                               PETSC_DEFAULT_INTEGER,                          &
                                IV_dnz(IS_ownfirst+1:IS_ownlast),               &
-                               PETSC_NULL_INTEGER,                             &
+                               PETSC_DEFAULT_INTEGER,                          &
                                IV_onz(IS_ownfirst+1:IS_ownlast),ierr)
 
 call PetscSynchronizedPrintf(PETSC_COMM_WORLD,'ZM_L pre-allocated'//char(10),ierr)

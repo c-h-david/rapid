@@ -105,11 +105,11 @@ end do
 !Selection operator preallocation
 !*******************************************************************************
 
-call MatSeqAIJSetPreallocation(ZM_S,PETSC_NULL_INTEGER,IVobs_nz,ierr)
+call MatSeqAIJSetPreallocation(ZM_S,PETSC_DEFAULT_INTEGER,IVobs_nz,ierr)
 call MatMPIAIJSetPreallocation(ZM_S,                                           &
-                               PETSC_NULL_INTEGER,                             &
+                               PETSC_DEFAULT_INTEGER,                          &
                                IVobs_dnz(ISobs_ownfirst+1:ISobs_ownlast),      &
-                               PETSC_NULL_INTEGER,                             &
+                               PETSC_DEFAULT_INTEGER,                          &
                                IVobs_onz(ISobs_ownfirst+1:ISobs_ownlast),ierr)
 
 !*******************************************************************************

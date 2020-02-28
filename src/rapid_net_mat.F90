@@ -82,44 +82,44 @@ end do
 !*******************************************************************************
 !Matrix preallocation
 !*******************************************************************************
-!call MatSeqAIJSetPreallocation(ZM_Net,3*IS_one,PETSC_NULL_INTEGER,ierr)
-!call MatMPIAIJSetPreallocation(ZM_Net,3*IS_one,PETSC_NULL_INTEGER,2*IS_one,    &
-!                               PETSC_NULL_INTEGER,ierr)
-!call MatSeqAIJSetPreallocation(ZM_A,4*IS_one,PETSC_NULL_INTEGER,ierr)
-!call MatMPIAIJSetPreallocation(ZM_A,4*IS_one,PETSC_NULL_INTEGER,2*IS_one,      &
-!                               PETSC_NULL_INTEGER,ierr)
-!call MatSeqAIJSetPreallocation(ZM_T,4*IS_one,PETSC_NULL_INTEGER,ierr)
-!call MatMPIAIJSetPreallocation(ZM_T,4*IS_one,PETSC_NULL_INTEGER,2*IS_one,      &
-!                               PETSC_NULL_INTEGER,ierr)
-!call MatSeqAIJSetPreallocation(ZM_TC1,4*IS_one,PETSC_NULL_INTEGER,ierr)
-!call MatMPIAIJSetPreallocation(ZM_TC1,4*IS_one,PETSC_NULL_INTEGER,2*IS_one,    &
-!                               PETSC_NULL_INTEGER,ierr)
+!call MatSeqAIJSetPreallocation(ZM_Net,3*IS_one,PETSC_DEFAULT_INTEGER,ierr)
+!call MatMPIAIJSetPreallocation(ZM_Net,3*IS_one,PETSC_DEFAULT_INTEGER,2*IS_one, &
+!                               PETSC_DEFAULT_INTEGER,ierr)
+!call MatSeqAIJSetPreallocation(ZM_A,4*IS_one,PETSC_DEFAULT_INTEGER,ierr)
+!call MatMPIAIJSetPreallocation(ZM_A,4*IS_one,PETSC_DEFAULT_INTEGER,2*IS_one,   &
+!                               PETSC_DEFAULT_INTEGER,ierr)
+!call MatSeqAIJSetPreallocation(ZM_T,4*IS_one,PETSC_DEFAULT_INTEGER,ierr)
+!call MatMPIAIJSetPreallocation(ZM_T,4*IS_one,PETSC_DEFAULT_INTEGER,2*IS_one,   &
+!                               PETSC_DEFAULT_INTEGER,ierr)
+!call MatSeqAIJSetPreallocation(ZM_TC1,4*IS_one,PETSC_DEFAULT_INTEGER,ierr)
+!call MatMPIAIJSetPreallocation(ZM_TC1,4*IS_one,PETSC_DEFAULT_INTEGER,2*IS_one, &
+!                               PETSC_DEFAULT_INTEGER,ierr)
 !Very basic preallocation assuming no more than 3 upstream elements anywhere
 !Not used here because proper preallocation is done below
 
-call MatSeqAIJSetPreallocation(ZM_Net,PETSC_NULL_INTEGER,IV_nz,ierr)
+call MatSeqAIJSetPreallocation(ZM_Net,PETSC_DEFAULT_INTEGER,IV_nz,ierr)
 call MatMPIAIJSetPreallocation(ZM_Net,                                         &
-                               PETSC_NULL_INTEGER,                             &
+                               PETSC_DEFAULT_INTEGER,                          &
                                IV_dnz(IS_ownfirst+1:IS_ownlast),               &
-                               PETSC_NULL_INTEGER,                             &
+                               PETSC_DEFAULT_INTEGER,                          &
                                IV_onz(IS_ownfirst+1:IS_ownlast),ierr)
-call MatSeqAIJSetPreallocation(ZM_A,PETSC_NULL_INTEGER,IV_nz+1,ierr)
+call MatSeqAIJSetPreallocation(ZM_A,PETSC_DEFAULT_INTEGER,IV_nz+1,ierr)
 call MatMPIAIJSetPreallocation(ZM_A,                                           &
-                               PETSC_NULL_INTEGER,                             &
+                               PETSC_DEFAULT_INTEGER,                          &
                                IV_dnz(IS_ownfirst+1:IS_ownlast)+1,             &
-                               PETSC_NULL_INTEGER,                             &
+                               PETSC_DEFAULT_INTEGER,                          &
                                IV_onz(IS_ownfirst+1:IS_ownlast),ierr)
-call MatSeqAIJSetPreallocation(ZM_T,PETSC_NULL_INTEGER,0*IV_nz,ierr)
+call MatSeqAIJSetPreallocation(ZM_T,PETSC_DEFAULT_INTEGER,0*IV_nz,ierr)
 call MatMPIAIJSetPreallocation(ZM_T,                                           &
-                               PETSC_NULL_INTEGER,                             &
+                               PETSC_DEFAULT_INTEGER,                          &
                                0*IV_dnz(IS_ownfirst+1:IS_ownlast),             &
-                               PETSC_NULL_INTEGER,                             &
+                               PETSC_DEFAULT_INTEGER,                          &
                                IV_onz(IS_ownfirst+1:IS_ownlast),ierr)
-call MatSeqAIJSetPreallocation(ZM_TC1,PETSC_NULL_INTEGER,0*IV_nz,ierr)
+call MatSeqAIJSetPreallocation(ZM_TC1,PETSC_DEFAULT_INTEGER,0*IV_nz,ierr)
 call MatMPIAIJSetPreallocation(ZM_TC1,                                         &
-                               PETSC_NULL_INTEGER,                             &
+                               PETSC_DEFAULT_INTEGER,                          &
                                0*IV_dnz(IS_ownfirst+1:IS_ownlast),             &
-                               PETSC_NULL_INTEGER,                             &
+                               PETSC_DEFAULT_INTEGER,                          &
                                IV_onz(IS_ownfirst+1:IS_ownlast),ierr)
 call PetscPrintf(PETSC_COMM_WORLD,'Network matrix preallocated'//char(10),ierr)
 
