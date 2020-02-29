@@ -43,8 +43,8 @@ implicit none
 !*******************************************************************************
 Vec, intent(in) :: ZV_pnorm
 Tao, intent(inout)  :: tao
-PetscErrorCode, intent(out) :: ierr
-PetscScalar, intent(out):: ZS_phi
+PetscErrorCode, intent(inout) :: ierr
+PetscScalar, intent(inout):: ZS_phi
 PetscInt, intent (in) :: IS_dummy
 
 

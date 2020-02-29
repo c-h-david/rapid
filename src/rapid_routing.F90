@@ -37,7 +37,7 @@ implicit none
 !*******************************************************************************
 Vec, intent(in)    :: ZV_C1,ZV_C2,ZV_C3,ZV_Qext,                               &
                       ZV_QoutinitR 
-Vec, intent(out)   :: ZV_QoutR,ZV_QoutbarR
+Vec, intent(inout) :: ZV_QoutR,ZV_QoutbarR
 
 PetscInt :: IS_localsize,JS_localsize
 PetscScalar, pointer :: ZV_QoutR_p(:),ZV_QoutprevR_p(:),                       &

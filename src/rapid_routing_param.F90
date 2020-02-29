@@ -27,8 +27,8 @@ implicit none
 !Intent (in/out), and local variables 
 !*******************************************************************************
 Vec, intent(in)    :: ZV_k,ZV_x
-Vec, intent(out)   :: ZV_C1,ZV_C2,ZV_C3
-Mat, intent(out)   :: ZM_A
+Vec, intent(inout) :: ZV_C1,ZV_C2,ZV_C3
+Mat, intent(inout) :: ZM_A
 
 
 !*******************************************************************************

@@ -25,7 +25,7 @@ implicit none
 !*******************************************************************************
 Vec, intent(in)    :: ZV_QoutbarR,ZV_Qext,                                     &
                       ZV_k,ZV_x 
-Vec, intent(out)   :: ZV_VbarR
+Vec, intent(inout) :: ZV_VbarR
 
 PetscInt :: IS_localsize,JS_localsize
 
