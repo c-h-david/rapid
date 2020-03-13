@@ -58,6 +58,12 @@ before_install:
 #-------------------------------------------------------------------------------
 - apt-get --version
 - apt list --installed
+- dpkg -l | grep "llvm" | awk '{print $2}'
+- find /usr/ -name "*dsymutil*"
+- ll `find /usr/ -name "*dsymutil*"`
+- sudo apt-get autoremove -y llvm*
+- dpkg -l | grep "llvm" | awk '{print $2}'
+- find /usr/ -name "*dsymutil*"
 
 #-------------------------------------------------------------------------------
 #Creating directory for installation of libraries used by RAPID
