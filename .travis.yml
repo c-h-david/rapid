@@ -60,7 +60,7 @@ before_install:
 - apt list --installed
 - dpkg -l | grep "llvm" | awk '{print $2}'
 - find /usr/ -name "*dsymutil*"
-- ll `find /usr/ -name "*dsymutil*"`
+- ls -l `find /usr/ -name "*dsymutil*"`
 - sudo apt-get autoremove -y llvm*
 - dpkg -l | grep "llvm" | awk '{print $2}'
 - find /usr/ -name "*dsymutil*"
