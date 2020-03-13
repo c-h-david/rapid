@@ -62,6 +62,7 @@ before_install:
 - find /usr/ -name "*dsymutil*"
 - ls -l `find /usr/ -name "*dsymutil*"`
 - sudo apt-get autoremove -y llvm*
+- sudo rm /usr/local/clang-7.0.0/bin/dsymutil
 - dpkg -l | grep "llvm" | awk '{print $2}'
 - find /usr/ -name "*dsymutil*"
 
