@@ -52,9 +52,9 @@ URL="http://rapid-hub.org/data/CI/San_Guad_JHM2"
 folder="../input/San_Guad_JHM2"
 list="                                                                         \
       k_San_Guad_2004_1.csv                                                    \
-      m3_riv_NLDAS_VIC0125_3H_2010_2013_utc_R286_err_D_scl.nc                  \
-      m3_riv_NLDAS_VIC0125_3H_2010_2013_utc_R286_err_D.nc                      \
-      m3_riv_NLDAS_VIC0125_3H_2010_2013_utc_R286_err_M.nc                      \
+      m3_riv_San_Guad_20100101_20131231_VIC0125_3H_utc_err_R286_D_scl.nc       \
+      m3_riv_San_Guad_20100101_20131231_VIC0125_3H_utc_err_R286_D.nc           \
+      m3_riv_San_Guad_20100101_20131231_VIC0125_3H_utc_err_R286_M.nc           \
       obs_tot_id_San_Guad_2010_2013_full.csv                                   \
       obs_use_id_San_Guad_2010_2013_23.csv                                     \
       Qobs_San_Guad_2010_2013_full.csv                                         \

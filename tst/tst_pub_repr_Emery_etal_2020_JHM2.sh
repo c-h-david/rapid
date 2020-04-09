@@ -106,7 +106,7 @@ if (("$unt" >= "$fst")) && (("$unt" <= "$lst")) ; then
 echo "Running simul. $sim/25"
 Qout_file="../../rapid/output/San_Guad_JHM2/Qout_San_Guad_exp00_err_D_n1_preonly_tst.nc"
 Qout_gold="../../rapid/output/San_Guad_JHM2/Qout_San_Guad_exp00_err_D.nc"
-Vlat_file="../../rapid/input/San_Guad_JHM2/m3_riv_NLDAS_VIC0125_3H_2010_2013_utc_R286_err_D.nc"
+Vlat_file="../../rapid/input/San_Guad_JHM2/m3_riv_San_Guad_20100101_20131231_VIC0125_3H_utc_err_R286_D.nc"
 rapd_file="tmp_run_$sim.txt"
 comp_file="tmp_run_comp_$sim.txt"
 sed -i -e "s|Qout_file          =.*|Qout_file          ='$Qout_file'|"         \
@@ -139,7 +139,7 @@ if (("$unt" >= "$fst")) && (("$unt" <= "$lst")) ; then
 echo "Running simul. $sim/25"
 Qout_file="../../rapid/output/San_Guad_JHM2/Qout_San_Guad_exp00_err_D_scl_n1_preonly_tst.nc"
 Qout_gold="../../rapid/output/San_Guad_JHM2/Qout_San_Guad_exp00_err_D_scl.nc"
-Vlat_file="../../rapid/input/San_Guad_JHM2/m3_riv_NLDAS_VIC0125_3H_2010_2013_utc_R286_err_D_scl.nc"
+Vlat_file="../../rapid/input/San_Guad_JHM2/m3_riv_San_Guad_20100101_20131231_VIC0125_3H_utc_err_R286_D_scl.nc"
 rapd_file="tmp_run_$sim.txt"
 comp_file="tmp_run_comp_$sim.txt"
 sed -i -e "s|Qout_file          =.*|Qout_file          ='$Qout_file'|"         \
@@ -172,7 +172,7 @@ if (("$unt" >= "$fst")) && (("$unt" <= "$lst")) ; then
 echo "Running simul. $sim/25"
 Qout_file="../../rapid/output/San_Guad_JHM2/Qout_San_Guad_exp00_err_M_n1_preonly_tst.nc"
 Qout_gold="../../rapid/output/San_Guad_JHM2/Qout_San_Guad_exp00_err_M.nc"
-Vlat_file="../../rapid/input/San_Guad_JHM2/m3_riv_NLDAS_VIC0125_3H_2010_2013_utc_R286_err_M.nc"
+Vlat_file="../../rapid/input/San_Guad_JHM2/m3_riv_San_Guad_20100101_20131231_VIC0125_3H_utc_err_R286_M.nc"
 rapd_file="tmp_run_$sim.txt"
 comp_file="tmp_run_comp_$sim.txt"
 sed -i -e "s|Qout_file          =.*|Qout_file          ='$Qout_file'|"         \
