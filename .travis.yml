@@ -58,9 +58,6 @@ before_install:
 #-------------------------------------------------------------------------------
 - apt-get --version
 - apt list --installed
-- find /usr/ -name "*dsymutil*"
-- sudo rm /usr/local/clang-7.0.0/bin/dsymutil
-- find /usr/ -name "*dsymutil*"
 
 #-------------------------------------------------------------------------------
 #Creating directory for installation of libraries used by RAPID
