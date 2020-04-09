@@ -12,8 +12,10 @@ subroutine rapid_uq
 
 
 !*******************************************************************************
-!Declaration of variables
+!Fortran includes, modules, and implicity
 !*******************************************************************************
+#include <petsc/finclude/petscksp.h>
+use petscksp
 use rapid_var, only :                                                          &
                    IS_riv_tot,IS_riv_bas,                                      &
                    IV_riv_index,IV_riv_loc1,                                   &
@@ -25,26 +27,7 @@ use rapid_var, only :                                                          &
                    ZV_nbuptot,ZV_one,ZV_temp1,ZV_temp2,                        &
                    ZV_SeqZero,ZV_pointer,ZS_one,                               &
                    ierr,rank,vecscat,ksp
-
 implicit none
-
-
-!*******************************************************************************
-!Includes
-!*******************************************************************************
-#include "petsc/finclude/petscsys.h"       
-!base PETSc routines
-#include "petsc/finclude/petscvec.h"  
-#include "petsc/finclude/petscvec.h90"
-!vectors, and vectors in Fortran90 
-#include "petsc/finclude/petscmat.h"    
-!matrices
-#include "petsc/finclude/petscksp.h"    
-!Krylov subspace methods
-#include "petsc/finclude/petscpc.h"     
-!preconditioners
-#include "petsc/finclude/petscviewer.h"
-!viewers (allows writing results in file for example)
 
 
 !*******************************************************************************

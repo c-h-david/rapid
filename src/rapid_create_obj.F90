@@ -11,8 +11,10 @@ subroutine rapid_create_obj
 
 
 !*******************************************************************************
-!Declaration of variables
+!Fortran includes, modules, and implicity
 !*******************************************************************************
+#include <petsc/finclude/petsctao.h>
+use petsctao
 use rapid_var, only :                                                          &
                    IS_riv_bas,                                                 &
                    ZM_hsh_tot,ZM_hsh_bas,IS_riv_id_max,                        &
@@ -33,28 +35,7 @@ use rapid_var, only :                                                          &
                    ierr,ksp,vecscat,ZV_SeqZero,ZS_one,ZV_one,IS_one,ncore,rank,&
                    tao,ZV_1stIndex,ZV_2ndIndex,                                &
                    ZM_Pb,ZM_L,ZV_Qbmean,ZV_dQeb,ZV_QoutinitR_save,ksp2
-
 implicit none
-
-
-!*******************************************************************************
-!Includes
-!*******************************************************************************
-#include "petsc/finclude/petscsys.h"       
-!base PETSc routines
-#include "petsc/finclude/petscvec.h"  
-#include "petsc/finclude/petscvec.h90"
-!vectors, and vectors in Fortran90 
-#include "petsc/finclude/petscmat.h"    
-!matrices
-#include "petsc/finclude/petscksp.h"    
-!Krylov subspace methods
-#include "petsc/finclude/petscpc.h"     
-!preconditioners
-#include "petsc/finclude/petscviewer.h"
-!viewers (allows writing results in file for example)
-#include "petsc/finclude/petsctao.h" 
-!TAO solver
 
 
 !*******************************************************************************

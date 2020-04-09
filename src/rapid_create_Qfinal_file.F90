@@ -10,7 +10,7 @@ subroutine rapid_create_Qfinal_file(Qfinal_file)
 
 
 !*******************************************************************************
-!Global variables
+!Fortran includes, modules, and implicity
 !*******************************************************************************
 use netcdf
 use rapid_var, only :                                                          &
@@ -26,13 +26,7 @@ use rapid_var, only :                                                          &
                    YV_title,YV_institution,YV_comment,                         &
                    YV_time_units,ZS_crs_sma,ZS_crs_iflat,                      &
                    ZV_riv_tot_lon,ZV_riv_tot_lat
-
 implicit none
-
-
-!*******************************************************************************
-!Includes
-!*******************************************************************************
 
 
 !*******************************************************************************

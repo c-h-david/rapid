@@ -10,37 +10,18 @@ subroutine rapid_kf_update
 !Charlotte M. Emery, and Cedric H. David, 2018-2020.
 
 !*******************************************************************************
-!Declaration of variables
+!Fortran includes, modules, and implicity
 !*******************************************************************************
-
-
-
+#include <petsc/finclude/petscksp.h>
+use petscksp
 use rapid_var, only :                                                          &
                 ierr,ksp2,                                                     &
                 ZS_one,ZS_stdobs,                                              &
                 IS_obs_bas,                                                    &
                 ZV_dQeb,ZV_Qbmean,ZV_Qobs,                                     &
-                ZM_S,ZM_HPbt,ZM_HPbHt
-                
+                ZM_S,ZM_HPbt,ZM_HPbHt    
 implicit none
 
-
-!*******************************************************************************
-!Includes
-!*******************************************************************************
-#include "petsc/finclude/petscsys.h"
-!base PETSc routines
-#include "petsc/finclude/petscvec.h"
-#include "petsc/finclude/petscvec.h90"
-!vectors, and vectors in Fortran90
-#include "petsc/finclude/petscmat.h"
-!matrices
-#include "petsc/finclude/petscksp.h"
-!Krylov subspace methods
-#include "petsc/finclude/petscpc.h"
-!preconditioners
-#include "petsc/finclude/petscviewer.h"
-!viewers (allows writing results in file for example)
 
 !*******************************************************************************
 !Local variables

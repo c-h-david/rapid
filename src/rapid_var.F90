@@ -8,29 +8,13 @@ module rapid_var
 !Author: 
 !Cedric H. David, 2008-2020.
 
+
+!*******************************************************************************
+!Fortran includes, modules, and implicity
+!*******************************************************************************
+#include <petsc/finclude/petsctao.h>
+use petsctao
 implicit none
-
-
-!*******************************************************************************
-!Includes
-!*******************************************************************************
-#include "petsc/finclude/petscsys.h"       
-!base PETSc routines
-#include "petsc/finclude/petscvec.h"  
-#include "petsc/finclude/petscvec.h90"
-!vectors, and Fortran90-specific vectors 
-#include "petsc/finclude/petscmat.h"    
-!matrices
-#include "petsc/finclude/petscksp.h"    
-!Krylov subspace methods
-#include "petsc/finclude/petscpc.h"     
-!preconditioners
-#include "petsc/finclude/petscviewer.h"
-!viewers (allows writing results in file for example)
-!#include "petsc/finclude/petsclog.h" 
-!Profiling log
-#include "petsc/finclude/petsctao.h" 
-!!TAO solver
 
 
 !*******************************************************************************

@@ -3,7 +3,6 @@
 !*******************************************************************************
 subroutine rapid_run2strm_mat_smpl
 
-
 !Purpose:
 !Compute the full-network observation operator - simplified/optimized algorithm
 !This operator turns daily-averaged runoff into daily-averaged discharge
@@ -12,6 +11,12 @@ subroutine rapid_run2strm_mat_smpl
 !Authors: 
 !Charlotte M. Emery, and Cedric H. David, 2018-2020.
 
+
+!*******************************************************************************
+!Fortran includes, modules, and implicity
+!*******************************************************************************
+#include <petsc/finclude/petscmat.h>
+use petscmat
 use rapid_var, only :                                                          &
                 IS_riv_bas,JS_riv_bas,JS_riv_bas2,JS_up,                       &
                 IM_index_up,IV_riv_index,IV_nbup,                              &
@@ -22,25 +27,8 @@ use rapid_var, only :                                                          &
                 IS_ownfirst,IS_ownlast,                                        &
                 IS_R,IS_RpM,                                                   &
                 ZM_L
-
 implicit none
 
-!*******************************************************************************
-!Includes
-!*******************************************************************************
-#include "petsc/finclude/petscsys.h"
-!base PETSc routines
-#include "petsc/finclude/petscvec.h"
-#include "petsc/finclude/petscvec.h90"
-!vectors, and vectors in Fortran90
-#include "petsc/finclude/petscmat.h"
-!matrices
-#include "petsc/finclude/petscksp.h"
-!Krylov subspace methods
-#include "petsc/finclude/petscpc.h"
-!preconditioners
-#include "petsc/finclude/petscviewer.h"
-!viewers (allows writing results in file for example)
 
 !*******************************************************************************
 !Intent (in/out), and local variables 
@@ -183,11 +171,11 @@ end do
 !Matrix preallocation (ZM_L)
 !*******************************************************************************
 
-call MatSeqAIJSetPreallocation(ZM_L,PETSC_NULL_INTEGER,IV_nz,ierr)
+call MatSeqAIJSetPreallocation(ZM_L,PETSC_DEFAULT_INTEGER,IV_nz,ierr)
 call MatMPIAIJSetPreallocation(ZM_L,                                           &
-                               PETSC_NULL_INTEGER,                             &
+                               PETSC_DEFAULT_INTEGER,                          &
                                IV_dnz(IS_ownfirst+1:IS_ownlast),               &
-                               PETSC_NULL_INTEGER,                             &
+                               PETSC_DEFAULT_INTEGER,                          &
                                IV_onz(IS_ownfirst+1:IS_ownlast),ierr)
 
 call PetscSynchronizedPrintf(PETSC_COMM_WORLD,'ZM_L pre-allocated'//char(10),ierr)

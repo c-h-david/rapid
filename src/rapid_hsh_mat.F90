@@ -21,8 +21,10 @@ subroutine rapid_hsh_mat
 
 
 !*******************************************************************************
-!Declaration of variables
+!Fortran includes, modules, and implicity
 !*******************************************************************************
+#include <petsc/finclude/petscmat.h>
+use petscmat
 use rapid_var, only :                                                          &
                    IS_riv_tot,IS_riv_bas,                                      &
                    JS_riv_tot,JS_riv_bas,                                      &
@@ -31,26 +33,7 @@ use rapid_var, only :                                                          &
                    ZM_hsh_tot,ZM_hsh_bas,                                      &
                    IS_ownfirst,IS_ownlast,                                     &
                    IS_one,ZS_one,temp_char,temp_char2,ierr,rank,ncore
-
 implicit none
-
-
-!*******************************************************************************
-!Includes
-!*******************************************************************************
-#include "petsc/finclude/petscsys.h"       
-!base PETSc routines
-#include "petsc/finclude/petscvec.h"  
-#include "petsc/finclude/petscvec.h90"
-!vectors, and vectors in Fortran90 
-#include "petsc/finclude/petscmat.h"    
-!matrices
-#include "petsc/finclude/petscksp.h"    
-!Krylov subspace methods
-#include "petsc/finclude/petscpc.h"     
-!preconditioners
-#include "petsc/finclude/petscviewer.h"
-!viewers (allows writing results in file for example)
 
 
 !*******************************************************************************
@@ -124,11 +107,11 @@ do JS_riv_tot=1,IS_riv_tot
      IS_onz=IS_nz-IS_dnz
 end do
 
-call MatSeqAIJSetPreallocation(ZM_hsh_tot,PETSC_NULL_INTEGER,IS_nz,ierr)
+call MatSeqAIJSetPreallocation(ZM_hsh_tot,PETSC_DEFAULT_INTEGER,IS_nz,ierr)
 call MatMPIAIJSetPreallocation(ZM_hsh_tot,                                     &
-                               PETSC_NULL_INTEGER,                             &
+                               PETSC_DEFAULT_INTEGER,                          &
                                IS_dnz,                                         &
-                               PETSC_NULL_INTEGER,                             &
+                               PETSC_DEFAULT_INTEGER,                          &
                                IS_onz,ierr)
 !print *, 'rank', rank, 'IS_ownfirst', IS_ownfirst, 'IS_ownlast', IS_ownlast,   &
 !         'IS_nz', IS_nz, 'IS_dnz', IS_dnz, 'IS_onz', IS_onz
@@ -149,11 +132,11 @@ do JS_riv_bas=1,IS_riv_bas
      IS_onz=IS_nz-IS_dnz
 end do
 
-call MatSeqAIJSetPreallocation(ZM_hsh_bas,PETSC_NULL_INTEGER,IS_nz,ierr)
+call MatSeqAIJSetPreallocation(ZM_hsh_bas,PETSC_DEFAULT_INTEGER,IS_nz,ierr)
 call MatMPIAIJSetPreallocation(ZM_hsh_bas,                                     &
-                               PETSC_NULL_INTEGER,                             &
+                               PETSC_DEFAULT_INTEGER,                          &
                                IS_dnz,                                         &
-                               PETSC_NULL_INTEGER,                             &
+                               PETSC_DEFAULT_INTEGER,                          &
                                IS_onz,ierr)
 !print *, 'rank', rank, 'IS_ownfirst', IS_ownfirst, 'IS_ownlast', IS_ownlast,   &
 !         'IS_nz', IS_nz, 'IS_dnz', IS_dnz, 'IS_onz', IS_onz

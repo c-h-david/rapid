@@ -10,8 +10,10 @@ subroutine rapid_get_Qdam
 
 
 !*******************************************************************************
-!Global variables
+!Fortran includes, modules, and implicity
 !*******************************************************************************
+#include <petsc/finclude/petscmat.h>
+use petscmat
 use rapid_var, only :                                                          &
                    rank,ierr,vecscat,ZV_pointer,ZV_SeqZero,ZS_one,             &
                    ZM_Net,ZV_Qext,ZV_Qdam,ZV_QoutbarR,ZV_QinbarR,              &
@@ -21,26 +23,6 @@ use rapid_var, only :                                                          &
                    ZV_k_dam,ZV_p_dam,ZV_S_dam,ZV_Smax_dam,ZV_Smin_dam,         &
                    ZS_TauR
 implicit none
-
-
-!*******************************************************************************
-!Includes
-!*******************************************************************************
-#include "petsc/finclude/petscsys.h"       
-!base PETSc routines
-#include "petsc/finclude/petscvec.h"  
-#include "petsc/finclude/petscvec.h90"
-!vectors, and vectors in Fortran90 
-#include "petsc/finclude/petscmat.h"    
-!matrices
-#include "petsc/finclude/petscksp.h"    
-!Krylov subspace methods
-#include "petsc/finclude/petscpc.h"     
-!preconditioners
-#include "petsc/finclude/petscviewer.h"
-!viewers (allows writing results in file for example)
-#include "petsc/finclude/petsclog.h" 
-!PETSc log
 
 
 !*******************************************************************************

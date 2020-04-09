@@ -11,8 +11,10 @@ subroutine rapid_mus_mat
 
 
 !*******************************************************************************
-!Declaration of variables
+!Fortran includes, modules, and implicity
 !*******************************************************************************
+#include <petsc/finclude/petscmat.h>
+use petscmat
 use rapid_var, only :                                                          &
                 IS_riv_bas,                                                    &
                 JS_riv_bas,JS_riv_bas2,JS_up,                                  & 
@@ -24,27 +26,7 @@ use rapid_var, only :                                                          &
                 IS_opt_run,                                                    &
                 ierr,rank,temp_char,                                           &
                 IV_nbrows,IV_lastrow
-
-
 implicit none
-
-
-!*******************************************************************************
-!Includes
-!*******************************************************************************
-#include "petsc/finclude/petscsys.h"
-!base PETSc routines
-#include "petsc/finclude/petscvec.h"
-#include "petsc/finclude/petscvec.h90"
-!vectors, and vectors in Fortran90
-#include "petsc/finclude/petscmat.h"
-!matrices
-#include "petsc/finclude/petscksp.h"
-!Krylov subspace methods
-#include "petsc/finclude/petscpc.h"
-!preconditioners
-#include "petsc/finclude/petscviewer.h"
-!viewers (allows writing results in file for example)
 
 
 !*******************************************************************************
@@ -199,11 +181,11 @@ end if
 !*******************************************************************************
 !Matrix preallocation (ZM_MC)
 !*******************************************************************************
-call MatSeqAIJSetPreallocation(ZM_MC,PETSC_NULL_INTEGER,IV_nz,ierr)
+call MatSeqAIJSetPreallocation(ZM_MC,PETSC_DEFAULT_INTEGER,IV_nz,ierr)
 call MatMPIAIJSetPreallocation(ZM_MC,                                          &
-                               PETSC_NULL_INTEGER,                             &
+                               PETSC_DEFAULT_INTEGER,                          &
                                IV_dnz(IS_ownfirst+1:IS_ownlast),               &
-                               PETSC_NULL_INTEGER,                             &
+                               PETSC_DEFAULT_INTEGER,                          &
                                IV_onz(IS_ownfirst+1:IS_ownlast),ierr)
 
 
@@ -335,11 +317,11 @@ enddo
 !*******************************************************************************
 !Matrix preallocation (ZM_M)
 !*******************************************************************************
-call MatSeqAIJSetPreallocation(ZM_M,PETSC_NULL_INTEGER,IV_nz,ierr)
+call MatSeqAIJSetPreallocation(ZM_M,PETSC_DEFAULT_INTEGER,IV_nz,ierr)
 call MatMPIAIJSetPreallocation(ZM_M,                                           &
-                               PETSC_NULL_INTEGER,                             &
+                               PETSC_DEFAULT_INTEGER,                          &
                                IV_dnz(IS_ownfirst+1:IS_ownlast),               &
-                               PETSC_NULL_INTEGER,                             &
+                               PETSC_DEFAULT_INTEGER,                          &
                                IV_onz(IS_ownfirst+1:IS_ownlast),ierr)
 if (IS_opt_run/=2) call PetscPrintf(PETSC_COMM_WORLD,'Muskingum matrix '       &
                                                 //'preallocated'//char(10),ierr)

@@ -11,8 +11,10 @@ program rapid_main
 
 
 !*******************************************************************************
-!Declaration of variables
+!Fortran includes, modules, and implicity
 !*******************************************************************************
+#include <petsc/finclude/petsctao.h>
+use petsctao
 use rapid_var, only :                                                          &
                    namelist_file,                                              &
                    Vlat_file,Qfor_file,Qhum_file,                              &
@@ -36,34 +38,9 @@ use rapid_var, only :                                                          &
                    Qobs_file,ZV_Qobs,                                          &
                    ZV_Qbmean,ZV_dQeb,ZS_val,                                   &
                    ZV_QoutinitR_save
-
 implicit none
-
-
 external rapid_phiroutine
 !because the subroutine is called by a function
-
-
-!*******************************************************************************
-!Includes
-!*******************************************************************************
-#include "petsc/finclude/petscsys.h"       
-!base PETSc routines
-#include "petsc/finclude/petscvec.h"  
-#include "petsc/finclude/petscvec.h90"
-!vectors, and vectors in Fortran90 
-#include "petsc/finclude/petscmat.h"    
-!matrices
-#include "petsc/finclude/petscksp.h"    
-!Krylov subspace methods
-#include "petsc/finclude/petscpc.h"     
-!preconditioners
-#include "petsc/finclude/petscviewer.h"
-!viewers (allows writing results in file for example)
-#include "petsc/finclude/petsclog.h" 
-!PETSc log
-#include "petsc/finclude/petsctao.h" 
-!TAO solver
 
 
 !*******************************************************************************
@@ -271,7 +248,7 @@ if (IS_opt_run==2) then
 !-------------------------------------------------------------------------------
 call PetscLogStageRegister('Optimization   ',stage,ierr)
 call PetscLogStagePush(stage,ierr)
-call TaoSetObjectiveRoutine(tao,rapid_phiroutine,PETSC_NULL_OBJECT,ierr)
+call TaoSetObjectiveRoutine(tao,rapid_phiroutine,PETSC_NULL_INTEGER,ierr)
 call TaoSetInitialVector(tao,ZV_pnorm,ierr)
 call TaoSolve(tao,ierr)
 

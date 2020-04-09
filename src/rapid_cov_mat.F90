@@ -3,7 +3,6 @@
 !*******************************************************************************
 subroutine rapid_cov_mat
 
-
 !Purpose:
 !Compute runoff error covariance matrix ZM_Pb for data assimilation
 !Authors: 
@@ -11,11 +10,10 @@ subroutine rapid_cov_mat
 
 
 !*******************************************************************************
-!Declaration of variables
+!Fortran includes, modules, and implicity
 !*******************************************************************************
-
-
-
+#include <petsc/finclude/petscmat.h>
+use petscmat
 use rapid_var, only :                                                          &
                 IS_riv_bas,                                                    &
                 JS_riv_bas,JS_riv_bas2,JS_up,                                  &
@@ -28,28 +26,7 @@ use rapid_var, only :                                                          &
                 IS_radius,ZS_inflation,                                        &
                 ZM_Pb,                                                         &
                 ZV_riv_tot_vQlat,ZV_riv_tot_cdownQlat 
-                
-
-
 implicit none
-
-
-!*******************************************************************************
-!Includes
-!*******************************************************************************
-#include "petsc/finclude/petscsys.h"
-!base PETSc routines
-#include "petsc/finclude/petscvec.h"
-#include "petsc/finclude/petscvec.h90"
-!vectors, and vectors in Fortran90
-#include "petsc/finclude/petscmat.h"
-!matrices
-#include "petsc/finclude/petscksp.h"
-!Krylov subspace methods
-#include "petsc/finclude/petscpc.h"
-!preconditioners
-#include "petsc/finclude/petscviewer.h"
-!viewers (allows writing results in file for example)
 
 
 !*******************************************************************************
@@ -150,10 +127,10 @@ end do
 !Matrix preallocation (ZM_Pb)
 !*******************************************************************************
 
-call MatSeqAIJSetPreallocation(ZM_Pb,PETSC_NULL_INTEGER,IV_nz,ierr)
-call MatMPIAIJSetPreallocation(ZM_Pb,PETSC_NULL_INTEGER, &
+call MatSeqAIJSetPreallocation(ZM_Pb,PETSC_DEFAULT_INTEGER,IV_nz,ierr)
+call MatMPIAIJSetPreallocation(ZM_Pb,PETSC_DEFAULT_INTEGER, &
                                      IV_dnz(IS_ownfirst+1:IS_ownlast),   &
-                                     PETSC_NULL_INTEGER,  &
+                                     PETSC_DEFAULT_INTEGER,  &
                                      IV_onz(IS_ownfirst+1:IS_ownlast),   &
                                      ierr)
 

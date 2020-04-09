@@ -11,8 +11,10 @@ subroutine rapid_obs_mat
 
 
 !*******************************************************************************
-!Declaration of variables
+!Fortran includes, modules, and implicity
 !*******************************************************************************
+#include <petsc/finclude/petscmat.h>
+use petscmat
 use rapid_var, only :                                                          &
                    IS_riv_bas,JS_riv_bas,                                      &
                    IS_obs_bas,JS_obs_bas,                                      &
@@ -21,27 +23,7 @@ use rapid_var, only :                                                          &
                    ZM_Obs,ZS_norm,                                             &
                    ierr,                                                       &
                    IS_one,ZS_one,temp_char   
-
-
 implicit none
-
-
-!*******************************************************************************
-!Includes
-!*******************************************************************************
-#include "petsc/finclude/petscsys.h"       
-!base PETSc routines
-#include "petsc/finclude/petscvec.h"  
-#include "petsc/finclude/petscvec.h90"
-!vectors, and vectors in Fortran90 
-#include "petsc/finclude/petscmat.h"    
-!matrices
-#include "petsc/finclude/petscksp.h"    
-!Krylov subspace methods
-#include "petsc/finclude/petscpc.h"     
-!preconditioners
-#include "petsc/finclude/petscviewer.h"
-!viewers (allows writing results in file for example)
 
 
 !*******************************************************************************

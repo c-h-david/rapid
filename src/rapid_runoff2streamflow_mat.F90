@@ -3,7 +3,6 @@
 !*******************************************************************************
 subroutine rapid_runoff2streamflow_mat
 
-
 !Purpose:
 !Compute operator that turns runoff into streamflow over a day of run
 !This operator is used within the data assimilation as part of the
@@ -13,9 +12,10 @@ subroutine rapid_runoff2streamflow_mat
 
 
 !*******************************************************************************
-!Declaration of variables
+!Fortran includes, modules, and implicity
 !*******************************************************************************
-
+#include <petsc/finclude/petscmat.h>
+use petscmat
 use rapid_var, only :                                                          &
                 IS_riv_bas,JS_riv_bas,JS_riv_bas2,JS_up,                       &
                 IM_index_up,IV_riv_index,IV_nbup,                              &
@@ -29,25 +29,8 @@ use rapid_var, only :                                                          &
                 IS_R,IS_RpM,                                                   &
     !New variables to add in rapid_var+rapid_mus_mat when linking the code
                 ZM_L,IV_lastrow,IV_nbrows
-
 implicit none
 
-!*******************************************************************************
-!Includes
-!*******************************************************************************
-#include "petsc/finclude/petscsys.h"
-!base PETSc routines
-#include "petsc/finclude/petscvec.h"
-#include "petsc/finclude/petscvec.h90"
-!vectors, and vectors in Fortran90
-#include "petsc/finclude/petscmat.h"
-!matrices
-#include "petsc/finclude/petscksp.h"
-!Krylov subspace methods
-#include "petsc/finclude/petscpc.h"
-!preconditioners
-#include "petsc/finclude/petscviewer.h"
-!viewers (allows writing results in file for example)
 
 !*******************************************************************************
 !Intent (in/out), and local variables 
@@ -233,11 +216,11 @@ deallocate(IV_ind_rows)
 !Matrix preallocation of temporary matrix ZM_temp=(I-C1*N)^(-1)*(C3+C2*N)
 !-------------------------------------------------------------------------------
 
-call MatSeqAIJSetPreallocation(ZM_temp,PETSC_NULL_INTEGER,IV_nz,ierr)
+call MatSeqAIJSetPreallocation(ZM_temp,PETSC_DEFAULT_INTEGER,IV_nz,ierr)
 call MatMPIAIJSetPreallocation(ZM_temp,                                        &
-                               PETSC_NULL_INTEGER,                             &
+                               PETSC_DEFAULT_INTEGER,                          &
                                IV_dnz(IS_ownfirst+1:IS_ownlast),               &
-                               PETSC_NULL_INTEGER,                             &
+                               PETSC_DEFAULT_INTEGER,                          &
                                IV_onz(IS_ownfirst+1:IS_ownlast),ierr)
 
 !-------------------------------------------------------------------------------
@@ -284,11 +267,11 @@ end do
 !Matrix preallocation (ZM_L)
 !*******************************************************************************
 
-call MatSeqAIJSetPreallocation(ZM_L,PETSC_NULL_INTEGER,IV_nz,ierr)
+call MatSeqAIJSetPreallocation(ZM_L,PETSC_DEFAULT_INTEGER,IV_nz,ierr)
 call MatMPIAIJSetPreallocation(ZM_L,                                           &
-                               PETSC_NULL_INTEGER,                             &
+                               PETSC_DEFAULT_INTEGER,                          &
                                IV_dnz(IS_ownfirst+1:IS_ownlast),               &
-                               PETSC_NULL_INTEGER,                             &
+                               PETSC_DEFAULT_INTEGER,                          &
                                IV_onz(IS_ownfirst+1:IS_ownlast),ierr)
 
 call PetscSynchronizedPrintf(PETSC_COMM_WORLD,'ZM_L pre-allocated'//char(10),ierr)
@@ -663,7 +646,7 @@ call VecCopy(ZV_C1,ZV_temp1,ierr)
 call VecAXPY(ZV_temp1,ZS_one,ZV_C2,ierr)
 !ZV_temp1 = ZV_C1+ZV_C2
 
-call MatDiagonalScale(ZM_temp,PETSC_NULL_OBJECT,ZV_temp1,ierr)
+call MatDiagonalScale(ZM_temp,PETSC_NULL_VEC,ZV_temp1,ierr)
 !ZM_temp = !ZM_temp*diag(C1+C2)
 
 call MatCopy(ZM_temp,ZM_L,DIFFERENT_NONZERO_PATTERN,ierr)

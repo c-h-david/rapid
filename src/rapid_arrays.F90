@@ -55,8 +55,10 @@ subroutine rapid_arrays
 
 
 !*******************************************************************************
-!Global variables
+!Fortran includes, modules, and implicity
 !*******************************************************************************
+#include <petsc/finclude/petscmat.h>
+use petscmat
 use rapid_var, only :                                                          &
                    rapid_connect_file,                                         &
                    IS_riv_tot,JS_riv_tot,JS_up,                                &
@@ -102,28 +104,7 @@ use rapid_var, only :                                                          &
                    IS_obs_bas,JS_obs_bas,                                      &
                    IV_obs_index,IV_obs_loc1,                                   &
                    temp_char,rank,ierr,IS_one,ZS_val
-
 implicit none
-
-
-!*******************************************************************************
-!Includes
-!*******************************************************************************
-#include "petsc/finclude/petscsys.h"       
-!base PETSc routines
-#include "petsc/finclude/petscvec.h"  
-#include "petsc/finclude/petscvec.h90"
-!vectors, and vectors in Fortran90 
-#include "petsc/finclude/petscmat.h"    
-!matrices
-#include "petsc/finclude/petscksp.h"    
-!Krylov subspace methods
-#include "petsc/finclude/petscpc.h"     
-!preconditioners
-#include "petsc/finclude/petscviewer.h"
-!viewers (allows writing results in file for example)
-#include "petsc/finclude/petsclog.h" 
-!PETSc log
 
 
 !*******************************************************************************

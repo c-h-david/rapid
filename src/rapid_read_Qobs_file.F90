@@ -10,33 +10,14 @@ subroutine rapid_read_Qobs_file
 
 
 !*******************************************************************************
-!Global variables
+!Fortran includes, modules, and implicity
 !*******************************************************************************
+#include <petsc/finclude/petscvec.h>
+use petscvec
 use rapid_var, only :                                                          &
                    rank,ierr,                                                  &
                    ZV_Qobs,IS_obs_bas,IV_obs_loc1,IV_obs_index,ZV_read_obs_tot
-
 implicit none
-
-
-!*******************************************************************************
-!Includes
-!*******************************************************************************
-#include "petsc/finclude/petscsys.h"       
-!base PETSc routines
-#include "petsc/finclude/petscvec.h"  
-#include "petsc/finclude/petscvec.h90"
-!vectors, and vectors in Fortran90 
-#include "petsc/finclude/petscmat.h"    
-!matrices
-#include "petsc/finclude/petscksp.h"    
-!Krylov subspace methods
-#include "petsc/finclude/petscpc.h"     
-!preconditioners
-#include "petsc/finclude/petscviewer.h"
-!viewers (allows writing results in file for example)
-#include "petsc/finclude/petsclog.h" 
-!PETSc log
 
 
 !*******************************************************************************

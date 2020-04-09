@@ -11,31 +11,13 @@ subroutine rapid_QtoV(ZV_k,ZV_x,ZV_QoutbarR,ZV_Qext,ZV_VbarR)
 
 
 !*******************************************************************************
-!Declaration of variables
+!Fortran includes, modules, and implicity
 !*******************************************************************************
+#include <petsc/finclude/petscmat.h>
+use petscmat
 use rapid_var, only :                                                          &
                    ZM_Net,ierr
-
-
 implicit none
-
-
-!*******************************************************************************
-!Includes
-!*******************************************************************************
-#include "petsc/finclude/petscsys.h"       
-!base PETSc routines
-#include "petsc/finclude/petscvec.h"  
-#include "petsc/finclude/petscvec.h90"
-!vectors, and vectors in Fortran90 
-#include "petsc/finclude/petscmat.h"    
-!matrices
-#include "petsc/finclude/petscksp.h"    
-!Krylov subspace methods
-#include "petsc/finclude/petscpc.h"     
-!preconditioners
-#include "petsc/finclude/petscviewer.h"
-!viewers (allows writing results in file for example)
 
 
 !*******************************************************************************
@@ -43,7 +25,7 @@ implicit none
 !*******************************************************************************
 Vec, intent(in)    :: ZV_QoutbarR,ZV_Qext,                                     &
                       ZV_k,ZV_x 
-Vec, intent(out)   :: ZV_VbarR
+Vec, intent(inout) :: ZV_VbarR
 
 PetscInt :: IS_localsize,JS_localsize
 

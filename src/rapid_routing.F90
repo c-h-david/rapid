@@ -13,8 +13,10 @@ subroutine rapid_routing(ZV_C1,ZV_C2,ZV_C3,ZV_Qext,                            &
 
 
 !*******************************************************************************
-!Declaration of variables
+!Fortran includes, modules, and implicity
 !*******************************************************************************
+#include <petsc/finclude/petscksp.h>
+use petscksp
 use netcdf
 use rapid_var, only :                                                          &
                    ZS_dtR,IS_R,JS_R,                                           &
@@ -27,27 +29,7 @@ use rapid_var, only :                                                          &
                    IS_riv_bas,JS_riv_bas,IM_index_up,                          &
                    IS_opt_routing,IV_nbup,IV_riv_index,                        &
                    BS_opt_influence
-
-
 implicit none
-
-
-!*******************************************************************************
-!Includes
-!*******************************************************************************
-#include "petsc/finclude/petscsys.h"       
-!base PETSc routines
-#include "petsc/finclude/petscvec.h"  
-#include "petsc/finclude/petscvec.h90"
-!vectors, and vectors in Fortran90 
-#include "petsc/finclude/petscmat.h"    
-!matrices
-#include "petsc/finclude/petscksp.h"    
-!Krylov subspace methods
-#include "petsc/finclude/petscpc.h"     
-!preconditioners
-#include "petsc/finclude/petscviewer.h"
-!viewers (allows writing results in file for example)
 
 
 !*******************************************************************************
@@ -55,7 +37,7 @@ implicit none
 !*******************************************************************************
 Vec, intent(in)    :: ZV_C1,ZV_C2,ZV_C3,ZV_Qext,                               &
                       ZV_QoutinitR 
-Vec, intent(out)   :: ZV_QoutR,ZV_QoutbarR
+Vec, intent(inout) :: ZV_QoutR,ZV_QoutbarR
 
 PetscInt :: IS_localsize,JS_localsize
 PetscScalar, pointer :: ZV_QoutR_p(:),ZV_QoutprevR_p(:),                       &

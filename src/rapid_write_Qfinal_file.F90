@@ -10,8 +10,10 @@ subroutine rapid_write_Qfinal_file
 
 
 !*******************************************************************************
-!Global variables
+!Fortran includes, modules, and implicity
 !*******************************************************************************
+#include <petsc/finclude/petscvec.h>
+use petscvec
 use netcdf
 use rapid_var, only :                                                          &
                    rank,ierr,vecscat,ZV_SeqZero,ZV_pointer,                    &
@@ -20,28 +22,7 @@ use rapid_var, only :                                                          &
                    IV_time,IS_time,ZS_TauR,                                    &
                    IS_riv_tot,ZV_read_riv_tot,IV_riv_index,                    &
                    ZV_QoutR
-
 implicit none
-
-
-!*******************************************************************************
-!Includes
-!*******************************************************************************
-#include "petsc/finclude/petscsys.h"       
-!base PETSc routines
-#include "petsc/finclude/petscvec.h"  
-#include "petsc/finclude/petscvec.h90"
-!vectors, and vectors in Fortran90 
-#include "petsc/finclude/petscmat.h"    
-!matrices
-#include "petsc/finclude/petscksp.h"    
-!Krylov subspace methods
-#include "petsc/finclude/petscpc.h"     
-!preconditioners
-#include "petsc/finclude/petscviewer.h"
-!viewers (allows writing results in file for example)
-#include "petsc/finclude/petsclog.h" 
-!PETSc log
 
 
 !*******************************************************************************

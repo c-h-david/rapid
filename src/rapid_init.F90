@@ -31,8 +31,10 @@ subroutine rapid_init
 
 
 !*******************************************************************************
-!Declaration of variables
+!Fortran includes, modules, and implicity
 !*******************************************************************************
+#include <petsc/finclude/petscksp.h>
+use petscksp
 use rapid_var, only :                                                          &
                    IS_riv_tot,IS_riv_bas,                                      &
                    IV_riv_bas_id,IV_riv_index,IV_riv_loc1,IV_riv_tot_id,       &
@@ -76,29 +78,7 @@ use rapid_var, only :                                                          &
                    ierr,ksp,rank,IS_one,ZS_one,                                &
                    IS_radius,ZV_riv_tot_cdownQlat,                             &
                    IV_nbrows,IV_lastrow
-
-
 implicit none
-
-
-!*******************************************************************************
-!Includes
-!*******************************************************************************
-#include "petsc/finclude/petscsys.h"       
-!base PETSc routines
-#include "petsc/finclude/petscvec.h"  
-#include "petsc/finclude/petscvec.h90"
-!vectors, and vectors in Fortran90 
-#include "petsc/finclude/petscmat.h"    
-!matrices
-#include "petsc/finclude/petscksp.h"    
-!Krylov subspace methods
-#include "petsc/finclude/petscpc.h"     
-!preconditioners
-#include "petsc/finclude/petscviewer.h"
-!viewers (allows writing results in file for example)
-#include "petsc/finclude/petsclog.h" 
-!PETSc log
 
 
 !*******************************************************************************

@@ -12,8 +12,10 @@ subroutine rapid_phiroutine(tao,ZV_pnorm,ZS_phi,IS_dummy,ierr)
 
 
 !*******************************************************************************
-!Declaration of variables
+!Fortran includes, modules, and implicity
 !*******************************************************************************
+#include <petsc/finclude/petsctao.h>
+use petsctao
 use rapid_var, only :                                                          &
                    Vlat_file,Qobs_file,Qfor_file,Qhum_file,                    &
                    JS_O,IS_O,JS_RpO,IS_RpO,ZS_TauR,IS_RpF,IS_RpH,              &
@@ -33,29 +35,7 @@ use rapid_var, only :                                                          &
                    IV_nc_start,IV_nc_count,                                    &
                    IS_opt_phi,BS_opt_for,IS_strt_opt,IS_opt_routing,           &
                    BS_opt_dam,IS_dam_bas,ZV_Qdam,BS_opt_hum,ZV_Qhum
-
-
 implicit none
-
-
-!*******************************************************************************
-!Includes
-!*******************************************************************************
-#include "petsc/finclude/petscsys.h"       
-!base PETSc routines
-#include "petsc/finclude/petscvec.h"  
-#include "petsc/finclude/petscvec.h90"
-!vectors, and vectors in Fortran90 
-#include "petsc/finclude/petscmat.h"    
-!matrices
-#include "petsc/finclude/petscksp.h"    
-!Krylov subspace methods
-#include "petsc/finclude/petscpc.h"     
-!preconditioners
-#include "petsc/finclude/petscviewer.h"
-!viewers (allows writing results in file for example)
-#include "petsc/finclude/petsctao.h" 
-!TAO solver
 
 
 !*******************************************************************************
@@ -63,8 +43,8 @@ implicit none
 !*******************************************************************************
 Vec, intent(in) :: ZV_pnorm
 Tao, intent(inout)  :: tao
-PetscErrorCode, intent(out) :: ierr
-PetscScalar, intent(out):: ZS_phi
+PetscErrorCode, intent(inout) :: ierr
+PetscScalar, intent(inout):: ZS_phi
 PetscInt, intent (in) :: IS_dummy
 
 

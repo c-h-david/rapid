@@ -19,39 +19,17 @@ subroutine rapid_set_Qext0
 
 
 !*******************************************************************************
-!Declaration of variables
+!Fortran includes, modules, and implicity
 !*******************************************************************************
+#include <petsc/finclude/petscvec.h>
+use petscvec
 use rapid_var, only:                                                           &
                    rank,ierr,IS_one,ZS_one,                                    &
                    ZV_Qdam,ZV_Qext,                                            &
-                   IS_dam_tot,JS_dam_tot,IV_dam_pos 
-
-use rapid_var, only:                                                           &
+                   IS_dam_tot,JS_dam_tot,IV_dam_pos,                           & 
                    ZV_Qin_dam0,                                                &
                    ZV_Qout_dam_prev,ZV_Qout_dam0
-
-
 implicit none
-
-
-!*******************************************************************************
-!Includes
-!*******************************************************************************
-#include "petsc/finclude/petscsys.h"       
-!base PETSc routines
-#include "petsc/finclude/petscvec.h"  
-#include "petsc/finclude/petscvec.h90"
-!vectors, and vectors in Fortran90 
-#include "petsc/finclude/petscmat.h"    
-!matrices
-#include "petsc/finclude/petscksp.h"    
-!Krylov subspace methods
-#include "petsc/finclude/petscpc.h"     
-!preconditioners
-#include "petsc/finclude/petscviewer.h"
-!viewers (allows writing results in file for example)
-#include "petsc/finclude/petsclog.h" 
-!PETSc log
 
 
 !*******************************************************************************

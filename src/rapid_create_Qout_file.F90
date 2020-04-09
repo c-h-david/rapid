@@ -10,7 +10,7 @@ subroutine rapid_create_Qout_file(Qout_file)
 
 
 !*******************************************************************************
-!Global variables
+!Fortran includes, modules, and implicity
 !*******************************************************************************
 use netcdf
 use rapid_var, only :                                                          &
@@ -29,13 +29,7 @@ use rapid_var, only :                                                          &
                    YV_time_units,ZS_crs_sma,ZS_crs_iflat,                      &
                    ZV_riv_tot_lon,ZV_riv_tot_lat,IV_riv_index,                 &
                    ZV_riv_bas_bQout,ZV_riv_bas_sQout,ZV_riv_bas_rQout
-
 implicit none
-
-
-!*******************************************************************************
-!Includes
-!*******************************************************************************
 
 
 !*******************************************************************************

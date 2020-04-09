@@ -12,8 +12,10 @@ subroutine rapid_destro_obj
 
 
 !*******************************************************************************
-!Declaration of variables
+!Fortran includes, modules, and implicity
 !*******************************************************************************
+#include <petsc/finclude/petsctao.h>
+use petsctao
 use rapid_var, only :                                                          &
                    IS_riv_bas,                                                 &
                    ZM_hsh_tot,ZM_hsh_bas,                                      &
@@ -36,28 +38,7 @@ use rapid_var, only :                                                          &
                    ZM_Pb,ZM_L,ZM_H,ZM_S,ZM_HPbt,ZM_HPbHt,                      &
                    ZV_Qbmean,ZV_dQeb,ksp2,ZV_QoutinitR_save,                   &
                    IS_opt_run
-
 implicit none
-
-
-!*******************************************************************************
-!Includes
-!*******************************************************************************
-#include "petsc/finclude/petscsys.h"       
-!base PETSc routines
-#include "petsc/finclude/petscvec.h"  
-#include "petsc/finclude/petscvec.h90"
-!vectors, and vectors in Fortran90 
-#include "petsc/finclude/petscmat.h"    
-!matrices
-#include "petsc/finclude/petscksp.h"    
-!Krylov subspace methods
-#include "petsc/finclude/petscpc.h"     
-!preconditioners
-#include "petsc/finclude/petscviewer.h"
-!viewers (allows writing results in file for example)
-#include "petsc/finclude/petsctao.h" 
-!TAO solver
 
 
 !*******************************************************************************

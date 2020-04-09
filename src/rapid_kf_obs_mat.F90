@@ -12,35 +12,20 @@ subroutine rapid_kf_obs_mat
 !Authors: 
 !Charlotte M. Emery, and Cedric H. David, 2018-2020.
 
-!*******************************************************************************
-!Declaration of variables
-!*******************************************************************************
 
+!*******************************************************************************
+!Fortran includes, modules, and implicity
+!*******************************************************************************
+#include <petsc/finclude/petscmat.h>
+use petscmat
 use rapid_var, only :                                                          &
                 IS_riv_bas,                                                    &
                 IV_obs_loc1,IS_obs_bas,JS_obs_bas,                             &
                 ierr,rank,                                                     &
                 IS_one,ZS_one,                                                 &
                 ZM_L,ZM_S,ZM_H
-
 implicit none
 
-!*******************************************************************************
-!Includes
-!*******************************************************************************
-#include "petsc/finclude/petscsys.h"
-!base PETSc routines
-#include "petsc/finclude/petscvec.h"
-#include "petsc/finclude/petscvec.h90"
-!vectors, and vectors in Fortran90
-#include "petsc/finclude/petscmat.h"
-!matrices
-#include "petsc/finclude/petscksp.h"
-!Krylov subspace methods
-#include "petsc/finclude/petscpc.h"
-!preconditioners
-#include "petsc/finclude/petscviewer.h"
-!viewers (allows writing results in file for example)
 
 !*******************************************************************************
 !Intent (in/out), and local variables 
@@ -120,11 +105,11 @@ end do
 !Selection operator preallocation
 !*******************************************************************************
 
-call MatSeqAIJSetPreallocation(ZM_S,PETSC_NULL_INTEGER,IVobs_nz,ierr)
+call MatSeqAIJSetPreallocation(ZM_S,PETSC_DEFAULT_INTEGER,IVobs_nz,ierr)
 call MatMPIAIJSetPreallocation(ZM_S,                                           &
-                               PETSC_NULL_INTEGER,                             &
+                               PETSC_DEFAULT_INTEGER,                          &
                                IVobs_dnz(ISobs_ownfirst+1:ISobs_ownlast),      &
-                               PETSC_NULL_INTEGER,                             &
+                               PETSC_DEFAULT_INTEGER,                          &
                                IVobs_onz(ISobs_ownfirst+1:ISobs_ownlast),ierr)
 
 !*******************************************************************************
