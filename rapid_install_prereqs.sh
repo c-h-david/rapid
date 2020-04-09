@@ -227,7 +227,7 @@ if [ ! -d petsc-3.13.0/linux-gcc-c ]; then
         #Linux/Mac
     fi
     make PETSC_DIR=$PWD PETSC_ARCH=linux-gcc-c all
-    make PETSC_DIR=$PWD PETSC_ARCH=linux-gcc-c test
+    make PETSC_DIR=$PWD PETSC_ARCH=linux-gcc-c check
 else
     echo "- Skipped PETSc installation: petsc-3.13.0/linux-gcc-c directory"
     echo "  already exists."
