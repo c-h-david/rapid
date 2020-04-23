@@ -40,6 +40,7 @@ env:
 - TST_PUB_DWNL='./tst_pub_dwnl_David_etal_2011_HP.sh opt' TST_PUB_REPR='./tst_pub_repr_David_etal_2011_HP.sh 23 82'
 - TST_PUB_DWNL='./tst_pub_dwnl_David_etal_2011_HP.sh opt' TST_PUB_REPR='./tst_pub_repr_David_etal_2011_HP.sh 83 115'
 - TST_PUB_DWNL='./tst_pub_dwnl_David_etal_2011_JHM.sh' TST_PUB_REPR='./tst_pub_xtra_David_etal_2011_JHM.sh'
+- TST_PUB_DWNL='./tst_pub_dwnl_Emery_etal_2020_JHM2.sh' TST_PUB_REPR='./tst_pub_repr_Emery_etal_2020_JHM2.sh'
 
 
 #*******************************************************************************
