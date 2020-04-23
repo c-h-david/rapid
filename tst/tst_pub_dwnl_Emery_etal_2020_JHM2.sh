@@ -8,7 +8,8 @@
 #Emery, Charlotte M., Cedric H. David, Kostas M. Andreadis, Michael J. Turmon,
 #John T. Reager, Jonathan M. Hobbs, Ming Pan, James S. Famiglietti,
 #R. Edward Beighley, and Matthew Rodell (2020), Underlying Fundamentals of
-#Kalman Filtering for River Network Modeling,
+#Kalman Filtering for River Network Modeling, Journal of Hydrometeorology, 21,
+#453-474
 #DOI: 10.1175/JHM-D-19-0084.1
 #These files are available from:
 #Emery, Charlotte M., Cedric H. David, Kostas M. Andreadis, Michael J. Turmon,
@@ -16,7 +17,7 @@
 #R. Edward Beighley, and Matthew Rodell (2020), RRR/RAPID input and output files
 #for "Underlying Fundamentals of Kalman Filtering for River Network Modeling",
 #Zenodo.
-#DOI: xx.xxxx/xxxxxxxxxxxx
+#DOI: 10.5281/zenodo.3688691
 #The script returns the following exit codes
 # - 0  if all downloads are successful 
 # - 22 if there was a conversion problem
@@ -34,8 +35,8 @@
 #Publication message
 #*******************************************************************************
 echo "********************"
-echo "Downloading files from:   http://dx.doi.org/xx.xxxx/xxxxxxxxxxxx"
-echo "which correspond to   :   http://dx.doi.org/10.1175/JHM-D-19-0084.1"
+echo "Downloading files from:   https://dx.doi.org/10.5281/zenodo.3688691"
+echo "which correspond to   :   https://dx.doi.org/10.1175/JHM-D-19-0084.1"
 echo "These files are under a Creative Commons Attribution (CC BY) license."
 echo "Please cite these two DOIs if using these files for your publications."
 echo "********************"
@@ -43,7 +44,7 @@ echo "********************"
 #*******************************************************************************
 #Location of the dataset
 #*******************************************************************************
-URL="http://rapid-hub.org/data/CI/San_Guad_JHM2"
+URL="https://zenodo.org/record/3688691"
 
 
 #*******************************************************************************
