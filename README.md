@@ -107,7 +107,7 @@ $ wget "http://www.unidata.ucar.edu/downloads/netcdf/ftp/netcdf-fortran-4.5.2.ta
 $ tar -xzf netcdf-c-4.7.3.tar.gz
 $ tar -xzf netcdf-fortran-4.5.2.tar.gz
 $ cd netcdf-c-4.7.3/
-$ ./configure CC=gcc CPPFLAGS=-I/usr/lib/x86_64-linux-gnu/hdf5/serial/include LDFLAGS=-L/usr/lib/x86_64-linux-gnu/hdf5/serial/lib --prefix=$INSTALLZ_DIR/netcdf-install --disable-dap
+$ ./configure CC=gcc CPPFLAGS=-I/usr/lib/x86_64-linux-gnu/hdf5/serial/include LDFLAGS=-L/usr/lib/x86_64-linux-gnu/hdf5/serial/lib --prefix=$HOME/installz/netcdf-install --disable-dap
 $ make check > check.log
 $ make install > install.log
 $ cd ..
