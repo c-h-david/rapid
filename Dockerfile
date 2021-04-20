@@ -6,7 +6,7 @@
 #This file describes the operating system prerequisites for RAPID, and is used
 #by the Docker software.
 #Author:
-#Cedric H. David, 2018-2020.
+#Cedric H. David, 2018-2021.
 
 
 #*******************************************************************************

@@ -6,7 +6,7 @@ subroutine rapid_open_Qfinal_file(Qfinal_file)
 !Purpose:
 !Open Qfinal_file from Fortran/netCDF.
 !Author: 
-!Cedric H. David, 2017-2020.
+!Cedric H. David, 2017-2021.
 
 
 !*******************************************************************************

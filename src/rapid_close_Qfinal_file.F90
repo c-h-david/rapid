@@ -6,7 +6,7 @@ subroutine rapid_close_Qfinal_file
 !Purpose:
 !Close Qfinal_file from Fortran/netCDF.
 !Author: 
-!Cedric H. David, 2017-2020.
+!Cedric H. David, 2017-2021.
 
 
 !*******************************************************************************

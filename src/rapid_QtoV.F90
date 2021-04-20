@@ -7,7 +7,7 @@ subroutine rapid_QtoV(ZV_k,ZV_x,ZV_QoutbarR,ZV_Qext,ZV_VbarR)
 !Computes the volume of water in each river reach from the flows based on the 
 !Muskingum method (McCarthy 1938). 
 !Author: 
-!Cedric H. David, 2015-2020.
+!Cedric H. David, 2015-2021.
 
 
 !*******************************************************************************

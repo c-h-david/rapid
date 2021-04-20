@@ -7,7 +7,7 @@ subroutine rapid_kf_update
 !Compute the Kalman filter update:
 ! dQeb = Pb*H^(T)*( H*Pb*H^(T) + R )^(-1)(Qobs-HQeb)
 !Authors: 
-!Charlotte M. Emery, and Cedric H. David, 2018-2020.
+!Charlotte M. Emery, and Cedric H. David, 2018-2021.
 
 !*******************************************************************************
 !Fortran includes, modules, and implicity

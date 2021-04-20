@@ -16,7 +16,7 @@ program tst_run_cerr
 ! - 22 if netCDF fonctions crash (arguments are faulty) 
 ! - 99 if one of the comparisons failed 
 !Author:
-!Cedric H. David, 2019-2020.
+!Cedric H. David, 2019-2021.
 
 
 !*******************************************************************************
