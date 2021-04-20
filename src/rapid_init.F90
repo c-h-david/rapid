@@ -351,6 +351,20 @@ call VecSet(ZV_QoutRabsmin,ZS_one*999999999,ierr)
 call VecSet(ZV_QoutRabsmax,ZS_one*0        ,ierr)
 end if
 
+!-------------------------------------------------------------------------------
+!Read dam_file with storage information and parameters
+!-------------------------------------------------------------------------------
+if (BS_opt_dam) then
+open(24,file=dam_file,status='old')
+do JS_dam_tot=1,IS_dam_tot
+     read(24,*) ZV_Smax_dam(JS_dam_tot),ZV_Smin_dam(JS_dam_tot),               &
+                ZV_p_dam(JS_dam_tot),ZV_k_dam(JS_dam_tot)
+end do
+close(24)
+
+ZV_S_dam=ZV_Smin_dam
+!Initialize all dam storage to the minimum storage
+end if
 
 !*******************************************************************************
 !Initialization procedure for OPTION 1
@@ -445,21 +459,6 @@ call VecSetValues(ZV_Qobsbarrec,IS_obs_bas,IV_obs_loc1,                        &
 call VecAssemblyBegin(ZV_Qobsbarrec,ierr)
 call VecAssemblyEnd(ZV_Qobsbarrec,ierr)  
 !reads Qobsbarrec and assigns to ZV_Qobsbarrec
-end if
-
-!-------------------------------------------------------------------------------
-!Read dam_file with storage information and parameters
-!-------------------------------------------------------------------------------
-if (BS_opt_dam) then
-open(24,file=dam_file,status='old')
-do JS_dam_tot=1,IS_dam_tot
-     read(24,*) ZV_Smax_dam(JS_dam_tot),ZV_Smin_dam(JS_dam_tot),               &
-                ZV_p_dam(JS_dam_tot),ZV_k_dam(JS_dam_tot)
-end do
-close(24)
-
-ZV_S_dam=ZV_Smin_dam
-!Initialize all dam storage to the minimum storage
 end if
 
 !-------------------------------------------------------------------------------
