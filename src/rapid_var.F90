@@ -623,6 +623,7 @@ namelist /NL_namelist/                                                         &
 character(len=200) :: namelist_file
 !unit 88 - Namelist
 
+character(len=32) :: args
 
 !*******************************************************************************
 !End module
