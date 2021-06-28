@@ -43,6 +43,8 @@ dummy:
 #-------------------------------------------------------------------------------
 rapid:	rapid_main.o \
 	rapid_init.o \
+	rapid_version.o \
+	rapid_clihelp.o \
 	rapid_read_namelist.o \
 	rapid_arrays.o \
 	rapid_create_obj.o \
@@ -99,6 +101,8 @@ rapid:	rapid_main.o \
 	rapid \
 	rapid_main.o \
 	rapid_init.o \
+	rapid_version.o \
+	rapid_clihelp.o \
 	rapid_read_namelist.o \
 	rapid_arrays.o \
 	rapid_create_obj.o \
@@ -160,6 +164,12 @@ rapid:	rapid_main.o \
 #-------------------------------------------------------------------------------
 rapid_main.o: 			rapid_main.F90 rapid_var.mod 
 	${FLINKER} -c rapid_main.F90 ${PETSC_FC_INCLUDES}
+
+rapid_version.o:                rapid_version.F90 rapid_var.mod
+	${FLINKER} -c rapid_version.F90 ${PETSC_FC_INCLUDES}
+
+rapid_clihelp.o:                rapid_clihelp.F90
+	${FLINKER} -c rapid_clihelp.F90 ${PETSC_FC_INCLUDES}
 
 rapid_final.o:			rapid_final.F90 rapid_var.mod
 	${FLINKER} -c rapid_final.F90 ${PETSC_FC_INCLUDES}
