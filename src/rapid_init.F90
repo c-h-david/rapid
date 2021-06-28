@@ -102,17 +102,6 @@ end if
 !Using the ISO 8601 international standard: 2016-01-31T16:45:46+00:00
 
 !-------------------------------------------------------------------------------
-!Get the version of RAPID determined during build
-!-------------------------------------------------------------------------------
-#ifdef RAPID_VERSION
-     YV_version=RAPID_VERSION
-#else
-     YV_version='unknown'
-#endif
-!Compilation examples: -D RAPID_VERSION="'v1.4.0'"  
-!                      -D RAPID_VERSION="'20131114'" 
-
-!-------------------------------------------------------------------------------
 !Read name list
 !-------------------------------------------------------------------------------
 call rapid_read_namelist
