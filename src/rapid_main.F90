@@ -16,7 +16,7 @@ program rapid_main
 #include <petsc/finclude/petsctao.h>
 use petsctao
 use rapid_var, only :                                                          &
-                   namelist_file,                                              &
+                   namelist_file,YV_version,args,                              &
                    Vlat_file,Qfor_file,Qhum_file,                              &
                    Qout_file,V_file,                                           &
                    IS_M,JS_M,JS_RpM,IS_RpM,IS_RpF,IS_RpH,                      &
@@ -42,11 +42,30 @@ implicit none
 external rapid_phiroutine
 !because the subroutine is called by a function
 
+call rapid_version
 
 !*******************************************************************************
 !Initialize
 !*******************************************************************************
-namelist_file='./rapid_namelist' 
+!namelist_file='./rapid_namelist'
+
+call get_command_argument(1, args)
+select case (args)
+case('-nl','--namelist')
+    call get_command_argument(2,namelist_file)
+case('-v','--version')
+    print *, 'RAPID version: ', YV_version
+    stop
+case('-h','--help')
+    call rapid_clihelp
+    stop
+case default
+    print *, 'Unrecognized command-line option: ', args
+    print *, 'See following usage information:'
+    call rapid_clihelp 
+    stop
+end select
+
 call rapid_init
 
 
@@ -87,7 +106,7 @@ if (BS_opt_hum) call rapid_open_Qhum_file(Qhum_file)
 !-------------------------------------------------------------------------------
 !Make sure the vectors potentially used for inflow to dams are initially null
 !-------------------------------------------------------------------------------
-call VecSet(ZV_Qext,0*ZS_one,ierr)                         !Qext=0
+call VecSet(ZV_Qext,0*ZS_one,ierr)            !             !Qext=0
 call VecSet(ZV_QoutbarR,0*ZS_one,ierr)                     !QoutbarR=0
 !This should be done by PETSc but just to be safe
 
