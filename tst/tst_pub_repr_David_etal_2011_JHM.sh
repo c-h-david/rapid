@@ -245,7 +245,7 @@ sed -i -e "s|k_file             =.*|k_file             ='$k_file'   |"         \
        -e "s|IS_opt_routing     =.*|IS_opt_routing     =2|"                    \
         rapid_namelist_San_Guad_JHM
 sleep 3
-mpiexec -n 1 ./rapid > $rapd_file
+mpiexec -n 1 ./rapid -nl rapid_namelist_San_Guad_JHM > $rapd_file
 echo "Comparing files"
 ./tst_run_comp $Qout_gold $Qout_file > $comp_file
 x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $comp_file" >&2 ; exit $x ; fi
@@ -527,7 +527,7 @@ sed -i -e "s|Qout_file          =.*|Qout_file          ='$Qout_file'|"         \
        -e "s|IS_opt_routing     =.*|IS_opt_routing     =2|"                    \
         rapid_namelist_Reg07_JHM
 sleep 3
-mpiexec -n 1 ./rapid > $rapd_file
+mpiexec -n 1 ./rapid -nl rapid_namelist_San_Guad_JHM > $rapd_file
 echo "Comparing files"
 ./tst_run_comp $Qout_gold $Qout_file > $comp_file
 x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $comp_file" >&2 ; exit $x ; fi
