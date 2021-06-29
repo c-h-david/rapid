@@ -5,20 +5,20 @@
 
 #Purpose:
 #This script reproduces all RAPID simulations that were used in the writing of:
-#David, Cédric H., Florence Habets, David R. Maidment and Zong-Liang Yang 
-#(2011), RAPID Applied to the SIM-France model, Hydrological Processes, 25(22), 
-#3412-3425. 
-#DOI: 10.1002/hyp.8070. 
+#David, Cédric H., Florence Habets, David R. Maidment and Zong-Liang Yang
+#(2011), RAPID Applied to the SIM-France model, Hydrological Processes, 25(22),
+#3412-3425.
+#DOI: 10.1002/hyp.8070.
 #The files used are available from:
-#David, Cédric H., Florence Habets, David R. Maidment and Zong-Liang Yang 
-#(2011), RAPID input and output files corresponding to "RAPID Applied to the 
+#David, Cédric H., Florence Habets, David R. Maidment and Zong-Liang Yang
+#(2011), RAPID input and output files corresponding to "RAPID Applied to the
 #SIM-France model", Zenodo.
 #DOI: 10.5281/zenodo.30228
 #The script returns the following exit codes
-# - 0  if all experiments are successful 
-# - 22 if some arguments are faulty 
-# - 33 if a search failed 
-# - 99 if a comparison failed 
+# - 0  if all experiments are successful
+# - 22 if some arguments are faulty
+# - 33 if a search failed
+# - 99 if a comparison failed
 #Author:
 #Cedric H. David, 2015-2021.
 
@@ -44,30 +44,30 @@ if [ "$#" = "0" ]; then
      lst=115
      echo "Performing all unit tests: 1-115"
      echo "********************"
-fi 
-#Perform all unit tests if no options are given 
+fi
+#Perform all unit tests if no options are given
 
 if [ "$#" = "1" ]; then
      fst=$1
      lst=$1
      echo "Performing one unit test: $1"
      echo "********************"
-fi 
-#Perform one single unit test if one option is given 
+fi
+#Perform one single unit test if one option is given
 
 if [ "$#" = "2" ]; then
      fst=$1
      lst=$2
      echo "Performing unit tests: $1-$2"
      echo "********************"
-fi 
-#Perform all unit tests between first and second option given (both included) 
+fi
+#Perform all unit tests between first and second option given (both included)
 
 if [ "$#" -gt "2" ]; then
      echo "A maximum of two options can be used" 1>&2
      exit 22
-fi 
-#Exit if more than two options are given 
+fi
+#Exit if more than two options are given
 
 
 #*******************************************************************************
@@ -85,8 +85,8 @@ unt=0
 #-------------------------------------------------------------------------------
 #Create symbolic list to default namelist
 #-------------------------------------------------------------------------------
-rm -f rapid_namelist
-ln -s rapid_namelist_France_HP rapid_namelist
+# rm -f rapid_namelist
+# ln -s rapid_namelist_France_HP rapid_namelist
 
 #-------------------------------------------------------------------------------
 #Run simulations and compare output files (single core, 3653 days, no forcing)
@@ -96,7 +96,7 @@ ln -s rapid_namelist_France_HP rapid_namelist
 #Make sure RAPID is in regular run mode
 #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 sed -i -e "s|IS_opt_run         =.*|IS_opt_run         =1|"                    \
-          rapid_namelist_France_HP  
+          rapid_namelist_France_HP
 
 #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 #Simulation 1/10
@@ -115,11 +115,11 @@ comp_file="tmp_run_comp_$sim.txt"
 sed -i -e "s|k_file             =.*|k_file             ='$k_file'   |"         \
        -e "s|x_file             =.*|x_file             ='$x_file'   |"         \
        -e "s|Qout_file          =.*|Qout_file          ='$Qout_file'|"         \
-          rapid_namelist_France_HP  
+          rapid_namelist_France_HP
 sleep 3
-mpiexec -n 1 ./rapid -ksp_type preonly > $rapd_file
+mpiexec -n 1 ./rapid -nl rapid_namelist_France_HP -ksp_type preonly > $rapd_file
 echo "Comparing files"
-./tst_run_comp $Qout_gold $Qout_file 1e-40 1e-37 > $comp_file 
+./tst_run_comp $Qout_gold $Qout_file 1e-40 1e-37 > $comp_file
 x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $comp_file" >&2 ; exit $x ; fi
 rm $Qout_file
 rm $rapd_file
@@ -146,11 +146,11 @@ comp_file="tmp_run_comp_$sim.txt"
 sed -i -e "s|k_file             =.*|k_file             ='$k_file'   |"         \
        -e "s|x_file             =.*|x_file             ='$x_file'   |"         \
        -e "s|Qout_file          =.*|Qout_file          ='$Qout_file'|"         \
-          rapid_namelist_France_HP  
+          rapid_namelist_France_HP
 sleep 3
-mpiexec -n 1 ./rapid -ksp_type preonly > $rapd_file
+mpiexec -n 1 ./rapid -nl rapid_namelist_France_HP -ksp_type preonly > $rapd_file
 echo "Comparing files"
-./tst_run_comp $Qout_gold $Qout_file 1e-40 1e-37 > $comp_file 
+./tst_run_comp $Qout_gold $Qout_file 1e-40 1e-37 > $comp_file
 x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $comp_file" >&2 ; exit $x ; fi
 rm $Qout_file
 rm $rapd_file
@@ -177,11 +177,11 @@ comp_file="tmp_run_comp_$sim.txt"
 sed -i -e "s|k_file             =.*|k_file             ='$k_file'   |"         \
        -e "s|x_file             =.*|x_file             ='$x_file'   |"         \
        -e "s|Qout_file          =.*|Qout_file          ='$Qout_file'|"         \
-          rapid_namelist_France_HP  
+          rapid_namelist_France_HP
 sleep 3
-mpiexec -n 1 ./rapid -ksp_type preonly > $rapd_file
+mpiexec -n 1 ./rapid -nl rapid_namelist_France_HP -ksp_type preonly > $rapd_file
 echo "Comparing files"
-./tst_run_comp $Qout_gold $Qout_file 1e-40 1e-37 > $comp_file 
+./tst_run_comp $Qout_gold $Qout_file 1e-40 1e-37 > $comp_file
 x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $comp_file" >&2 ; exit $x ; fi
 rm $Qout_file
 rm $rapd_file
@@ -208,11 +208,11 @@ comp_file="tmp_run_comp_$sim.txt"
 sed -i -e "s|k_file             =.*|k_file             ='$k_file'   |"         \
        -e "s|x_file             =.*|x_file             ='$x_file'   |"         \
        -e "s|Qout_file          =.*|Qout_file          ='$Qout_file'|"         \
-          rapid_namelist_France_HP  
+          rapid_namelist_France_HP
 sleep 3
-mpiexec -n 1 ./rapid -ksp_type preonly > $rapd_file
+mpiexec -n 1 ./rapid -nl rapid_namelist_France_HP -ksp_type preonly > $rapd_file
 echo "Comparing files"
-./tst_run_comp $Qout_gold $Qout_file 1e-40 1e-37 > $comp_file 
+./tst_run_comp $Qout_gold $Qout_file 1e-40 1e-37 > $comp_file
 x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $comp_file" >&2 ; exit $x ; fi
 rm $Qout_file
 rm $rapd_file
@@ -239,11 +239,11 @@ comp_file="tmp_run_comp_$sim.txt"
 sed -i -e "s|k_file             =.*|k_file             ='$k_file'   |"         \
        -e "s|x_file             =.*|x_file             ='$x_file'   |"         \
        -e "s|Qout_file          =.*|Qout_file          ='$Qout_file'|"         \
-          rapid_namelist_France_HP  
+          rapid_namelist_France_HP
 sleep 3
-mpiexec -n 1 ./rapid -ksp_type preonly > $rapd_file
+mpiexec -n 1 ./rapid -nl rapid_namelist_France_HP -ksp_type preonly > $rapd_file
 echo "Comparing files"
-./tst_run_comp $Qout_gold $Qout_file 1e-40 1e-37 > $comp_file 
+./tst_run_comp $Qout_gold $Qout_file 1e-40 1e-37 > $comp_file
 x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $comp_file" >&2 ; exit $x ; fi
 rm $Qout_file
 rm $rapd_file
@@ -270,11 +270,11 @@ comp_file="tmp_run_comp_$sim.txt"
 sed -i -e "s|k_file             =.*|k_file             ='$k_file'   |"         \
        -e "s|x_file             =.*|x_file             ='$x_file'   |"         \
        -e "s|Qout_file          =.*|Qout_file          ='$Qout_file'|"         \
-          rapid_namelist_France_HP  
+          rapid_namelist_France_HP
 sleep 3
-mpiexec -n 1 ./rapid -ksp_type preonly > $rapd_file
+mpiexec -n 1 ./rapid -nl rapid_namelist_France_HP -ksp_type preonly > $rapd_file
 echo "Comparing files"
-./tst_run_comp $Qout_gold $Qout_file 1e-40 1e-37 > $comp_file 
+./tst_run_comp $Qout_gold $Qout_file 1e-40 1e-37 > $comp_file
 x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $comp_file" >&2 ; exit $x ; fi
 rm $Qout_file
 rm $rapd_file
@@ -301,11 +301,11 @@ comp_file="tmp_run_comp_$sim.txt"
 sed -i -e "s|k_file             =.*|k_file             ='$k_file'   |"         \
        -e "s|x_file             =.*|x_file             ='$x_file'   |"         \
        -e "s|Qout_file          =.*|Qout_file          ='$Qout_file'|"         \
-          rapid_namelist_France_HP  
+          rapid_namelist_France_HP
 sleep 3
-mpiexec -n 1 ./rapid -ksp_type preonly > $rapd_file
+mpiexec -n 1 ./rapid -nl rapid_namelist_France_HP -ksp_type preonly > $rapd_file
 echo "Comparing files"
-./tst_run_comp $Qout_gold $Qout_file 1e-40 1e-37 > $comp_file 
+./tst_run_comp $Qout_gold $Qout_file 1e-40 1e-37 > $comp_file
 x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $comp_file" >&2 ; exit $x ; fi
 rm $Qout_file
 rm $rapd_file
@@ -338,11 +338,11 @@ sed -i -e "s|k_file             =.*|k_file             ='$k_file'   |"         \
        -e "s|x_file             =.*|x_file             ='$x_file'   |"         \
        -e "s|Qout_file          =.*|Qout_file          ='$Qout_file'|"         \
        -e "s|ZS_TauM            =.*|ZS_TauM            =$ZS_TauM|"             \
-          rapid_namelist_France_HP  
+          rapid_namelist_France_HP
 sleep 3
-mpiexec -n 1 ./rapid -ksp_type preonly > $rapd_file
+mpiexec -n 1 ./rapid -nl rapid_namelist_France_HP -ksp_type preonly > $rapd_file
 echo "Comparing files"
-./tst_run_comp $Qout_gold $Qout_file 1e-40 1e-37 > $comp_file 
+./tst_run_comp $Qout_gold $Qout_file 1e-40 1e-37 > $comp_file
 x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $comp_file" >&2 ; exit $x ; fi
 rm $Qout_file
 rm $rapd_file
@@ -371,11 +371,11 @@ sed -i -e "s|k_file             =.*|k_file             ='$k_file'   |"         \
        -e "s|x_file             =.*|x_file             ='$x_file'   |"         \
        -e "s|Qout_file          =.*|Qout_file          ='$Qout_file'|"         \
        -e "s|ZS_TauM            =.*|ZS_TauM            =$ZS_TauM|"             \
-          rapid_namelist_France_HP  
+          rapid_namelist_France_HP
 sleep 3
-mpiexec -n 1 ./rapid -ksp_type preonly > $rapd_file
+mpiexec -n 1 ./rapid -nl rapid_namelist_France_HP -ksp_type preonly > $rapd_file
 echo "Comparing files"
-./tst_run_comp $Qout_gold $Qout_file 1e-40 1e-37 > $comp_file 
+./tst_run_comp $Qout_gold $Qout_file 1e-40 1e-37 > $comp_file
 x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $comp_file" >&2 ; exit $x ; fi
 rm $Qout_file
 rm $rapd_file
@@ -406,11 +406,11 @@ sed -i -e "s|k_file             =.*|k_file             ='$k_file'   |"         \
        -e "s|Qout_file          =.*|Qout_file          ='$Qout_file'|"         \
        -e "s|BS_opt_for         =.*|BS_opt_for         =$BS_opt_for|"          \
        -e "s|ZS_TauM            =.*|ZS_TauM            =$ZS_TauM|"             \
-          rapid_namelist_France_HP  
+          rapid_namelist_France_HP
 sleep 3
-mpiexec -n 1 ./rapid -ksp_type preonly > $rapd_file
+mpiexec -n 1 ./rapid -nl rapid_namelist_France_HP -ksp_type preonly > $rapd_file
 echo "Comparing files"
-./tst_run_comp $Qout_gold $Qout_file 1e-40 1e-37 > $comp_file 
+./tst_run_comp $Qout_gold $Qout_file 1e-40 1e-37 > $comp_file
 x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $comp_file" >&2 ; exit $x ; fi
 rm $Qout_file
 rm $rapd_file
@@ -453,11 +453,11 @@ sed -i -e "s|IS_opt_run         =.*|IS_opt_run         =2|"                    \
        -e "s|IS_riv_bas         =.*|IS_riv_bas         =$IS_riv_bas|"          \
        -e "s|ZS_knorm_init      =.*|ZS_knorm_init      =${ZS_knorm_inits[ii]}|"\
        -e "s|ZS_xnorm_init      =.*|ZS_xnorm_init      =${ZS_xnorm_inits[ii]}|"\
-          rapid_namelist_France_HP  
+          rapid_namelist_France_HP
 sleep 3
-mpiexec -n 1 ./rapid -ksp_type preonly -tao_gatol 0.01 -tao_grtol 0.00092 > $rapd_file
+mpiexec -n 1 ./rapid -nl rapid_namelist_France_HP -ksp_type preonly -tao_gatol 0.01 -tao_grtol 0.00092 > $rapd_file
 ./tst_opt_find.sh $rapd_file | cat > $find_file
-./tst_opt_comp.sh $find_file ${ZS_knorm_finals[ii]} ${ZS_xnorm_finals[ii]} ${ZS_phi_finals[ii]} 
+./tst_opt_comp.sh $find_file ${ZS_knorm_finals[ii]} ${ZS_xnorm_finals[ii]} ${ZS_phi_finals[ii]}
 x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $find_file" >&2 ; exit $x ; fi
 ./tst_nml_tidy_France_HP.sh
 fi
@@ -502,11 +502,11 @@ sed -i -e "s|IS_opt_run         =.*|IS_opt_run         =2|"                    \
        -e "s|IS_riv_bas         =.*|IS_riv_bas         =$IS_riv_bas|"          \
        -e "s|ZS_knorm_init      =.*|ZS_knorm_init      =${ZS_knorm_inits[ii]}|"\
        -e "s|ZS_xnorm_init      =.*|ZS_xnorm_init      =${ZS_xnorm_inits[ii]}|"\
-          rapid_namelist_France_HP  
+          rapid_namelist_France_HP
 sleep 3
-mpiexec -n 1 ./rapid -ksp_type preonly -tao_gatol 0.01 -tao_grtol 0.000050 > $rapd_file
+mpiexec -n 1 ./rapid -nl rapid_namelist_France_HP -ksp_type preonly -tao_gatol 0.01 -tao_grtol 0.000050 > $rapd_file
 ./tst_opt_find.sh $rapd_file | cat > $find_file
-./tst_opt_comp.sh $find_file ${ZS_knorm_finals[ii]} ${ZS_xnorm_finals[ii]} ${ZS_phi_finals[ii]} 
+./tst_opt_comp.sh $find_file ${ZS_knorm_finals[ii]} ${ZS_xnorm_finals[ii]} ${ZS_phi_finals[ii]}
 x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $find_file" >&2 ; exit $x ; fi
 ./tst_nml_tidy_France_HP.sh
 fi
@@ -551,11 +551,11 @@ sed -i -e "s|IS_opt_run         =.*|IS_opt_run         =2|"                    \
        -e "s|IS_riv_bas         =.*|IS_riv_bas         =$IS_riv_bas|"          \
        -e "s|ZS_knorm_init      =.*|ZS_knorm_init      =${ZS_knorm_inits[ii]}|"\
        -e "s|ZS_xnorm_init      =.*|ZS_xnorm_init      =${ZS_xnorm_inits[ii]}|"\
-          rapid_namelist_France_HP  
+          rapid_namelist_France_HP
 sleep 3
-mpiexec -n 1 ./rapid -ksp_type preonly -tao_gatol 0.01 -tao_grtol 0.00091 > $rapd_file
+mpiexec -n 1 ./rapid -nl rapid_namelist_France_HP -ksp_type preonly -tao_gatol 0.01 -tao_grtol 0.00091 > $rapd_file
 ./tst_opt_find.sh $rapd_file | cat > $find_file
-./tst_opt_comp.sh $find_file ${ZS_knorm_finals[ii]} ${ZS_xnorm_finals[ii]} ${ZS_phi_finals[ii]} 
+./tst_opt_comp.sh $find_file ${ZS_knorm_finals[ii]} ${ZS_xnorm_finals[ii]} ${ZS_phi_finals[ii]}
 x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $find_file" >&2 ; exit $x ; fi
 ./tst_nml_tidy_France_HP.sh
 fi
@@ -564,7 +564,7 @@ if (("$unt-2" >= "$fst")) && (("$unt" <= "$lst")) ; then
 echo "Comparing best values"
 pick_file="tmp_opt_pick_$opt.txt"
 ./tst_opt_pick.sh tmp_opt_find_$opt*.txt | cat > $pick_file
-./tst_opt_comp.sh $pick_file 1.25 0.375 119.829 
+./tst_opt_comp.sh $pick_file 1.25 0.375 119.829
 x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $pick_file" >&2 ; exit $x ; fi
 echo "Success"
 echo "********************"
@@ -600,11 +600,11 @@ sed -i -e "s|IS_opt_run         =.*|IS_opt_run         =2|"                    \
        -e "s|IS_riv_bas         =.*|IS_riv_bas         =$IS_riv_bas|"          \
        -e "s|ZS_knorm_init      =.*|ZS_knorm_init      =${ZS_knorm_inits[ii]}|"\
        -e "s|ZS_xnorm_init      =.*|ZS_xnorm_init      =${ZS_xnorm_inits[ii]}|"\
-          rapid_namelist_France_HP  
+          rapid_namelist_France_HP
 sleep 3
-mpiexec -n 1 ./rapid -ksp_type preonly -tao_gatol 0.01 -tao_grtol 0.000050 > $rapd_file
+mpiexec -n 1 ./rapid -nl rapid_namelist_France_HP -ksp_type preonly -tao_gatol 0.01 -tao_grtol 0.000050 > $rapd_file
 ./tst_opt_find.sh $rapd_file | cat > $find_file
-./tst_opt_comp.sh $find_file ${ZS_knorm_finals[ii]} ${ZS_xnorm_finals[ii]} ${ZS_phi_finals[ii]} 
+./tst_opt_comp.sh $find_file ${ZS_knorm_finals[ii]} ${ZS_xnorm_finals[ii]} ${ZS_phi_finals[ii]}
 x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $find_file" >&2 ; exit $x ; fi
 ./tst_nml_tidy_France_HP.sh
 fi
@@ -613,7 +613,7 @@ if (("$unt-2" >= "$fst")) && (("$unt" <= "$lst")) ; then
 echo "Comparing best values"
 pick_file="tmp_opt_pick_$opt.txt"
 ./tst_opt_pick.sh tmp_opt_find_$opt*.txt | cat > $pick_file
-./tst_opt_comp.sh $pick_file 2 0 40257.926 
+./tst_opt_comp.sh $pick_file 2 0 40257.926
 x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $pick_file" >&2 ; exit $x ; fi
 echo "Success"
 echo "********************"
@@ -649,11 +649,11 @@ sed -i -e "s|IS_opt_run         =.*|IS_opt_run         =2|"                    \
        -e "s|IS_riv_bas         =.*|IS_riv_bas         =$IS_riv_bas|"          \
        -e "s|ZS_knorm_init      =.*|ZS_knorm_init      =${ZS_knorm_inits[ii]}|"\
        -e "s|ZS_xnorm_init      =.*|ZS_xnorm_init      =${ZS_xnorm_inits[ii]}|"\
-          rapid_namelist_France_HP  
+          rapid_namelist_France_HP
 sleep 3
-mpiexec -n 1 ./rapid -ksp_type preonly -tao_gatol 0.01 -tao_grtol 0.00026 > $rapd_file
+mpiexec -n 1 ./rapid -nl rapid_namelist_France_HP -ksp_type preonly -tao_gatol 0.01 -tao_grtol 0.00026 > $rapd_file
 ./tst_opt_find.sh $rapd_file | cat > $find_file
-./tst_opt_comp.sh $find_file ${ZS_knorm_finals[ii]} ${ZS_xnorm_finals[ii]} ${ZS_phi_finals[ii]} 
+./tst_opt_comp.sh $find_file ${ZS_knorm_finals[ii]} ${ZS_xnorm_finals[ii]} ${ZS_phi_finals[ii]}
 x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $find_file" >&2 ; exit $x ; fi
 ./tst_nml_tidy_France_HP.sh
 fi
@@ -662,7 +662,7 @@ if (("$unt-2" >= "$fst")) && (("$unt" <= "$lst")) ; then
 echo "Comparing best values"
 pick_file="tmp_opt_pick_$opt.txt"
 ./tst_opt_pick.sh tmp_opt_find_$opt*.txt | cat > $pick_file
-./tst_opt_comp.sh $pick_file 0.375 0.3125 1452.146 
+./tst_opt_comp.sh $pick_file 0.375 0.3125 1452.146
 x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $pick_file" >&2 ; exit $x ; fi
 echo "Success"
 echo "********************"
@@ -698,11 +698,11 @@ sed -i -e "s|IS_opt_run         =.*|IS_opt_run         =2|"                    \
        -e "s|IS_riv_bas         =.*|IS_riv_bas         =$IS_riv_bas|"          \
        -e "s|ZS_knorm_init      =.*|ZS_knorm_init      =${ZS_knorm_inits[ii]}|"\
        -e "s|ZS_xnorm_init      =.*|ZS_xnorm_init      =${ZS_xnorm_inits[ii]}|"\
-          rapid_namelist_France_HP  
+          rapid_namelist_France_HP
 sleep 3
-mpiexec -n 1 ./rapid -ksp_type preonly -tao_gatol 0.01 -tao_grtol 0.00012 > $rapd_file
+mpiexec -n 1 ./rapid -nl rapid_namelist_France_HP -ksp_type preonly -tao_gatol 0.01 -tao_grtol 0.00012 > $rapd_file
 ./tst_opt_find.sh $rapd_file | cat > $find_file
-./tst_opt_comp.sh $find_file ${ZS_knorm_finals[ii]} ${ZS_xnorm_finals[ii]} ${ZS_phi_finals[ii]} 
+./tst_opt_comp.sh $find_file ${ZS_knorm_finals[ii]} ${ZS_xnorm_finals[ii]} ${ZS_phi_finals[ii]}
 x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $find_file" >&2 ; exit $x ; fi
 ./tst_nml_tidy_France_HP.sh
 fi
@@ -747,11 +747,11 @@ sed -i -e "s|IS_opt_run         =.*|IS_opt_run         =2|"                    \
        -e "s|IS_riv_bas         =.*|IS_riv_bas         =$IS_riv_bas|"          \
        -e "s|ZS_knorm_init      =.*|ZS_knorm_init      =${ZS_knorm_inits[ii]}|"\
        -e "s|ZS_xnorm_init      =.*|ZS_xnorm_init      =${ZS_xnorm_inits[ii]}|"\
-          rapid_namelist_France_HP  
+          rapid_namelist_France_HP
 sleep 3
-mpiexec -n 1 ./rapid -ksp_type preonly -tao_gatol 0.01 -tao_grtol 0.000094 > $rapd_file
+mpiexec -n 1 ./rapid -nl rapid_namelist_France_HP -ksp_type preonly -tao_gatol 0.01 -tao_grtol 0.000094 > $rapd_file
 ./tst_opt_find.sh $rapd_file | cat > $find_file
-./tst_opt_comp.sh $find_file ${ZS_knorm_finals[ii]} ${ZS_xnorm_finals[ii]} ${ZS_phi_finals[ii]} 
+./tst_opt_comp.sh $find_file ${ZS_knorm_finals[ii]} ${ZS_xnorm_finals[ii]} ${ZS_phi_finals[ii]}
 x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $find_file" >&2 ; exit $x ; fi
 ./tst_nml_tidy_France_HP.sh
 fi
@@ -796,11 +796,11 @@ sed -i -e "s|IS_opt_run         =.*|IS_opt_run         =2|"                    \
        -e "s|IS_riv_bas         =.*|IS_riv_bas         =$IS_riv_bas|"          \
        -e "s|ZS_knorm_init      =.*|ZS_knorm_init      =${ZS_knorm_inits[ii]}|"\
        -e "s|ZS_xnorm_init      =.*|ZS_xnorm_init      =${ZS_xnorm_inits[ii]}|"\
-          rapid_namelist_France_HP  
+          rapid_namelist_France_HP
 sleep 3
-mpiexec -n 1 ./rapid -ksp_type preonly -tao_gatol 0.01 -tao_grtol 0.00016 > $rapd_file
+mpiexec -n 1 ./rapid -nl rapid_namelist_France_HP -ksp_type preonly -tao_gatol 0.01 -tao_grtol 0.00016 > $rapd_file
 ./tst_opt_find.sh $rapd_file | cat > $find_file
-./tst_opt_comp.sh $find_file ${ZS_knorm_finals[ii]} ${ZS_xnorm_finals[ii]} ${ZS_phi_finals[ii]} 
+./tst_opt_comp.sh $find_file ${ZS_knorm_finals[ii]} ${ZS_xnorm_finals[ii]} ${ZS_phi_finals[ii]}
 x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $find_file" >&2 ; exit $x ; fi
 ./tst_nml_tidy_France_HP.sh
 fi
@@ -845,11 +845,11 @@ sed -i -e "s|IS_opt_run         =.*|IS_opt_run         =2|"                    \
        -e "s|IS_riv_bas         =.*|IS_riv_bas         =$IS_riv_bas|"          \
        -e "s|ZS_knorm_init      =.*|ZS_knorm_init      =${ZS_knorm_inits[ii]}|"\
        -e "s|ZS_xnorm_init      =.*|ZS_xnorm_init      =${ZS_xnorm_inits[ii]}|"\
-          rapid_namelist_France_HP  
+          rapid_namelist_France_HP
 sleep 3
-mpiexec -n 1 ./rapid -ksp_type preonly -tao_gatol 0.01 -tao_grtol 0.00012 > $rapd_file
+mpiexec -n 1 ./rapid -nl rapid_namelist_France_HP -ksp_type preonly -tao_gatol 0.01 -tao_grtol 0.00012 > $rapd_file
 ./tst_opt_find.sh $rapd_file | cat > $find_file
-./tst_opt_comp.sh $find_file ${ZS_knorm_finals[ii]} ${ZS_xnorm_finals[ii]} ${ZS_phi_finals[ii]} 
+./tst_opt_comp.sh $find_file ${ZS_knorm_finals[ii]} ${ZS_xnorm_finals[ii]} ${ZS_phi_finals[ii]}
 x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $find_file" >&2 ; exit $x ; fi
 ./tst_nml_tidy_France_HP.sh
 fi
@@ -894,11 +894,11 @@ sed -i -e "s|IS_opt_run         =.*|IS_opt_run         =2|"                    \
        -e "s|IS_riv_bas         =.*|IS_riv_bas         =$IS_riv_bas|"          \
        -e "s|ZS_knorm_init      =.*|ZS_knorm_init      =${ZS_knorm_inits[ii]}|"\
        -e "s|ZS_xnorm_init      =.*|ZS_xnorm_init      =${ZS_xnorm_inits[ii]}|"\
-          rapid_namelist_France_HP  
+          rapid_namelist_France_HP
 sleep 3
-mpiexec -n 1 ./rapid -ksp_type preonly -tao_gatol 0.01 -tao_grtol 0.00070 > $rapd_file
+mpiexec -n 1 ./rapid -nl rapid_namelist_France_HP -ksp_type preonly -tao_gatol 0.01 -tao_grtol 0.00070 > $rapd_file
 ./tst_opt_find.sh $rapd_file | cat > $find_file
-./tst_opt_comp.sh $find_file ${ZS_knorm_finals[ii]} ${ZS_xnorm_finals[ii]} ${ZS_phi_finals[ii]} 
+./tst_opt_comp.sh $find_file ${ZS_knorm_finals[ii]} ${ZS_xnorm_finals[ii]} ${ZS_phi_finals[ii]}
 x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $find_file" >&2 ; exit $x ; fi
 ./tst_nml_tidy_France_HP.sh
 fi
@@ -943,11 +943,11 @@ sed -i -e "s|IS_opt_run         =.*|IS_opt_run         =2|"                    \
        -e "s|IS_riv_bas         =.*|IS_riv_bas         =$IS_riv_bas|"          \
        -e "s|ZS_knorm_init      =.*|ZS_knorm_init      =${ZS_knorm_inits[ii]}|"\
        -e "s|ZS_xnorm_init      =.*|ZS_xnorm_init      =${ZS_xnorm_inits[ii]}|"\
-          rapid_namelist_France_HP  
+          rapid_namelist_France_HP
 sleep 3
-mpiexec -n 1 ./rapid -ksp_type preonly -tao_gatol 0.01 -tao_grtol 0.00044 > $rapd_file
+mpiexec -n 1 ./rapid -nl rapid_namelist_France_HP -ksp_type preonly -tao_gatol 0.01 -tao_grtol 0.00044 > $rapd_file
 ./tst_opt_find.sh $rapd_file | cat > $find_file
-./tst_opt_comp.sh $find_file ${ZS_knorm_finals[ii]} ${ZS_xnorm_finals[ii]} ${ZS_phi_finals[ii]} 
+./tst_opt_comp.sh $find_file ${ZS_knorm_finals[ii]} ${ZS_xnorm_finals[ii]} ${ZS_phi_finals[ii]}
 x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $find_file" >&2 ; exit $x ; fi
 ./tst_nml_tidy_France_HP.sh
 fi
@@ -992,11 +992,11 @@ sed -i -e "s|IS_opt_run         =.*|IS_opt_run         =2|"                    \
        -e "s|IS_riv_bas         =.*|IS_riv_bas         =$IS_riv_bas|"          \
        -e "s|ZS_knorm_init      =.*|ZS_knorm_init      =${ZS_knorm_inits[ii]}|"\
        -e "s|ZS_xnorm_init      =.*|ZS_xnorm_init      =${ZS_xnorm_inits[ii]}|"\
-          rapid_namelist_France_HP  
+          rapid_namelist_France_HP
 sleep 3
-mpiexec -n 1 ./rapid -ksp_type preonly -tao_gatol 0.01 -tao_grtol 0.00053 > $rapd_file
+mpiexec -n 1 ./rapid -nl rapid_namelist_France_HP -ksp_type preonly -tao_gatol 0.01 -tao_grtol 0.00053 > $rapd_file
 ./tst_opt_find.sh $rapd_file | cat > $find_file
-./tst_opt_comp.sh $find_file ${ZS_knorm_finals[ii]} ${ZS_xnorm_finals[ii]} ${ZS_phi_finals[ii]} 
+./tst_opt_comp.sh $find_file ${ZS_knorm_finals[ii]} ${ZS_xnorm_finals[ii]} ${ZS_phi_finals[ii]}
 x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $find_file" >&2 ; exit $x ; fi
 ./tst_nml_tidy_France_HP.sh
 fi
@@ -1041,11 +1041,11 @@ sed -i -e "s|IS_opt_run         =.*|IS_opt_run         =2|"                    \
        -e "s|IS_riv_bas         =.*|IS_riv_bas         =$IS_riv_bas|"          \
        -e "s|ZS_knorm_init      =.*|ZS_knorm_init      =${ZS_knorm_inits[ii]}|"\
        -e "s|ZS_xnorm_init      =.*|ZS_xnorm_init      =${ZS_xnorm_inits[ii]}|"\
-          rapid_namelist_France_HP  
+          rapid_namelist_France_HP
 sleep 3
-mpiexec -n 1 ./rapid -ksp_type preonly -tao_gatol 0.01 -tao_grtol 0.00035 > $rapd_file
+mpiexec -n 1 ./rapid -nl rapid_namelist_France_HP -ksp_type preonly -tao_gatol 0.01 -tao_grtol 0.00035 > $rapd_file
 ./tst_opt_find.sh $rapd_file | cat > $find_file
-./tst_opt_comp.sh $find_file ${ZS_knorm_finals[ii]} ${ZS_xnorm_finals[ii]} ${ZS_phi_finals[ii]} 
+./tst_opt_comp.sh $find_file ${ZS_knorm_finals[ii]} ${ZS_xnorm_finals[ii]} ${ZS_phi_finals[ii]}
 x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $find_file" >&2 ; exit $x ; fi
 ./tst_nml_tidy_France_HP.sh
 fi
@@ -1090,11 +1090,11 @@ sed -i -e "s|IS_opt_run         =.*|IS_opt_run         =2|"                    \
        -e "s|IS_riv_bas         =.*|IS_riv_bas         =$IS_riv_bas|"          \
        -e "s|ZS_knorm_init      =.*|ZS_knorm_init      =${ZS_knorm_inits[ii]}|"\
        -e "s|ZS_xnorm_init      =.*|ZS_xnorm_init      =${ZS_xnorm_inits[ii]}|"\
-          rapid_namelist_France_HP  
+          rapid_namelist_France_HP
 sleep 3
-mpiexec -n 1 ./rapid -ksp_type preonly -tao_gatol 0.01 -tao_grtol 0.00028 > $rapd_file
+mpiexec -n 1 ./rapid -nl rapid_namelist_France_HP -ksp_type preonly -tao_gatol 0.01 -tao_grtol 0.00028 > $rapd_file
 ./tst_opt_find.sh $rapd_file | cat > $find_file
-./tst_opt_comp.sh $find_file ${ZS_knorm_finals[ii]} ${ZS_xnorm_finals[ii]} ${ZS_phi_finals[ii]} 
+./tst_opt_comp.sh $find_file ${ZS_knorm_finals[ii]} ${ZS_xnorm_finals[ii]} ${ZS_phi_finals[ii]}
 x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $find_file" >&2 ; exit $x ; fi
 ./tst_nml_tidy_France_HP.sh
 fi
@@ -1139,11 +1139,11 @@ sed -i -e "s|IS_opt_run         =.*|IS_opt_run         =2|"                    \
        -e "s|IS_riv_bas         =.*|IS_riv_bas         =$IS_riv_bas|"          \
        -e "s|ZS_knorm_init      =.*|ZS_knorm_init      =${ZS_knorm_inits[ii]}|"\
        -e "s|ZS_xnorm_init      =.*|ZS_xnorm_init      =${ZS_xnorm_inits[ii]}|"\
-          rapid_namelist_France_HP  
+          rapid_namelist_France_HP
 sleep 3
-mpiexec -n 1 ./rapid -ksp_type preonly -tao_gatol 0.01 -tao_grtol 0.00027 > $rapd_file
+mpiexec -n 1 ./rapid -nl rapid_namelist_France_HP -ksp_type preonly -tao_gatol 0.01 -tao_grtol 0.00027 > $rapd_file
 ./tst_opt_find.sh $rapd_file | cat > $find_file
-./tst_opt_comp.sh $find_file ${ZS_knorm_finals[ii]} ${ZS_xnorm_finals[ii]} ${ZS_phi_finals[ii]} 
+./tst_opt_comp.sh $find_file ${ZS_knorm_finals[ii]} ${ZS_xnorm_finals[ii]} ${ZS_phi_finals[ii]}
 x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $find_file" >&2 ; exit $x ; fi
 ./tst_nml_tidy_France_HP.sh
 fi
@@ -1188,11 +1188,11 @@ sed -i -e "s|IS_opt_run         =.*|IS_opt_run         =2|"                    \
        -e "s|IS_riv_bas         =.*|IS_riv_bas         =$IS_riv_bas|"          \
        -e "s|ZS_knorm_init      =.*|ZS_knorm_init      =${ZS_knorm_inits[ii]}|"\
        -e "s|ZS_xnorm_init      =.*|ZS_xnorm_init      =${ZS_xnorm_inits[ii]}|"\
-          rapid_namelist_France_HP  
+          rapid_namelist_France_HP
 sleep 3
-mpiexec -n 1 ./rapid -ksp_type preonly -tao_gatol 0.01 -tao_grtol 0.00019 > $rapd_file
+mpiexec -n 1 ./rapid -nl rapid_namelist_France_HP -ksp_type preonly -tao_gatol 0.01 -tao_grtol 0.00019 > $rapd_file
 ./tst_opt_find.sh $rapd_file | cat > $find_file
-./tst_opt_comp.sh $find_file ${ZS_knorm_finals[ii]} ${ZS_xnorm_finals[ii]} ${ZS_phi_finals[ii]} 
+./tst_opt_comp.sh $find_file ${ZS_knorm_finals[ii]} ${ZS_xnorm_finals[ii]} ${ZS_phi_finals[ii]}
 x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $find_file" >&2 ; exit $x ; fi
 ./tst_nml_tidy_France_HP.sh
 fi
@@ -1237,11 +1237,11 @@ sed -i -e "s|IS_opt_run         =.*|IS_opt_run         =2|"                    \
        -e "s|IS_riv_bas         =.*|IS_riv_bas         =$IS_riv_bas|"          \
        -e "s|ZS_knorm_init      =.*|ZS_knorm_init      =${ZS_knorm_inits[ii]}|"\
        -e "s|ZS_xnorm_init      =.*|ZS_xnorm_init      =${ZS_xnorm_inits[ii]}|"\
-          rapid_namelist_France_HP  
+          rapid_namelist_France_HP
 sleep 3
-mpiexec -n 1 ./rapid -ksp_type preonly -tao_gatol 0.01 -tao_grtol 0.00028 > $rapd_file
+mpiexec -n 1 ./rapid -nl rapid_namelist_France_HP -ksp_type preonly -tao_gatol 0.01 -tao_grtol 0.00028 > $rapd_file
 ./tst_opt_find.sh $rapd_file | cat > $find_file
-./tst_opt_comp.sh $find_file ${ZS_knorm_finals[ii]} ${ZS_xnorm_finals[ii]} ${ZS_phi_finals[ii]} 
+./tst_opt_comp.sh $find_file ${ZS_knorm_finals[ii]} ${ZS_xnorm_finals[ii]} ${ZS_phi_finals[ii]}
 x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $find_file" >&2 ; exit $x ; fi
 ./tst_nml_tidy_France_HP.sh
 fi
@@ -1286,11 +1286,11 @@ sed -i -e "s|IS_opt_run         =.*|IS_opt_run         =2|"                    \
        -e "s|IS_riv_bas         =.*|IS_riv_bas         =$IS_riv_bas|"          \
        -e "s|ZS_knorm_init      =.*|ZS_knorm_init      =${ZS_knorm_inits[ii]}|"\
        -e "s|ZS_xnorm_init      =.*|ZS_xnorm_init      =${ZS_xnorm_inits[ii]}|"\
-          rapid_namelist_France_HP  
+          rapid_namelist_France_HP
 sleep 3
-mpiexec -n 1 ./rapid -ksp_type preonly -tao_gatol 0.01 -tao_grtol 0.00032 > $rapd_file
+mpiexec -n 1 ./rapid -nl rapid_namelist_France_HP -ksp_type preonly -tao_gatol 0.01 -tao_grtol 0.00032 > $rapd_file
 ./tst_opt_find.sh $rapd_file | cat > $find_file
-./tst_opt_comp.sh $find_file ${ZS_knorm_finals[ii]} ${ZS_xnorm_finals[ii]} ${ZS_phi_finals[ii]} 
+./tst_opt_comp.sh $find_file ${ZS_knorm_finals[ii]} ${ZS_xnorm_finals[ii]} ${ZS_phi_finals[ii]}
 x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $find_file" >&2 ; exit $x ; fi
 ./tst_nml_tidy_France_HP.sh
 fi
@@ -1335,11 +1335,11 @@ sed -i -e "s|IS_opt_run         =.*|IS_opt_run         =2|"                    \
        -e "s|IS_riv_bas         =.*|IS_riv_bas         =$IS_riv_bas|"          \
        -e "s|ZS_knorm_init      =.*|ZS_knorm_init      =${ZS_knorm_inits[ii]}|"\
        -e "s|ZS_xnorm_init      =.*|ZS_xnorm_init      =${ZS_xnorm_inits[ii]}|"\
-          rapid_namelist_France_HP  
+          rapid_namelist_France_HP
 sleep 3
-mpiexec -n 1 ./rapid -ksp_type preonly -tao_gatol 0.01 -tao_grtol 0.00019 > $rapd_file
+mpiexec -n 1 ./rapid -nl rapid_namelist_France_HP -ksp_type preonly -tao_gatol 0.01 -tao_grtol 0.00019 > $rapd_file
 ./tst_opt_find.sh $rapd_file | cat > $find_file
-./tst_opt_comp.sh $find_file ${ZS_knorm_finals[ii]} ${ZS_xnorm_finals[ii]} ${ZS_phi_finals[ii]} 
+./tst_opt_comp.sh $find_file ${ZS_knorm_finals[ii]} ${ZS_xnorm_finals[ii]} ${ZS_phi_finals[ii]}
 x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $find_file" >&2 ; exit $x ; fi
 ./tst_nml_tidy_France_HP.sh
 fi
@@ -1384,11 +1384,11 @@ sed -i -e "s|IS_opt_run         =.*|IS_opt_run         =2|"                    \
        -e "s|IS_riv_bas         =.*|IS_riv_bas         =$IS_riv_bas|"          \
        -e "s|ZS_knorm_init      =.*|ZS_knorm_init      =${ZS_knorm_inits[ii]}|"\
        -e "s|ZS_xnorm_init      =.*|ZS_xnorm_init      =${ZS_xnorm_inits[ii]}|"\
-          rapid_namelist_France_HP  
+          rapid_namelist_France_HP
 sleep 3
-mpiexec -n 1 ./rapid -ksp_type preonly -tao_gatol 0.01 -tao_grtol 0.00018 > $rapd_file
+mpiexec -n 1 ./rapid -nl rapid_namelist_France_HP -ksp_type preonly -tao_gatol 0.01 -tao_grtol 0.00018 > $rapd_file
 ./tst_opt_find.sh $rapd_file | cat > $find_file
-./tst_opt_comp.sh $find_file ${ZS_knorm_finals[ii]} ${ZS_xnorm_finals[ii]} ${ZS_phi_finals[ii]} 
+./tst_opt_comp.sh $find_file ${ZS_knorm_finals[ii]} ${ZS_xnorm_finals[ii]} ${ZS_phi_finals[ii]}
 x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $find_file" >&2 ; exit $x ; fi
 ./tst_nml_tidy_France_HP.sh
 fi
@@ -1433,11 +1433,11 @@ sed -i -e "s|IS_opt_run         =.*|IS_opt_run         =2|"                    \
        -e "s|IS_riv_bas         =.*|IS_riv_bas         =$IS_riv_bas|"          \
        -e "s|ZS_knorm_init      =.*|ZS_knorm_init      =${ZS_knorm_inits[ii]}|"\
        -e "s|ZS_xnorm_init      =.*|ZS_xnorm_init      =${ZS_xnorm_inits[ii]}|"\
-          rapid_namelist_France_HP  
+          rapid_namelist_France_HP
 sleep 3
-mpiexec -n 1 ./rapid -ksp_type preonly -tao_gatol 0.01 -tao_grtol 0.00031 > $rapd_file
+mpiexec -n 1 ./rapid -nl rapid_namelist_France_HP -ksp_type preonly -tao_gatol 0.01 -tao_grtol 0.00031 > $rapd_file
 ./tst_opt_find.sh $rapd_file | cat > $find_file
-./tst_opt_comp.sh $find_file ${ZS_knorm_finals[ii]} ${ZS_xnorm_finals[ii]} ${ZS_phi_finals[ii]} 
+./tst_opt_comp.sh $find_file ${ZS_knorm_finals[ii]} ${ZS_xnorm_finals[ii]} ${ZS_phi_finals[ii]}
 x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $find_file" >&2 ; exit $x ; fi
 ./tst_nml_tidy_France_HP.sh
 fi
@@ -1482,11 +1482,11 @@ sed -i -e "s|IS_opt_run         =.*|IS_opt_run         =2|"                    \
        -e "s|IS_riv_bas         =.*|IS_riv_bas         =$IS_riv_bas|"          \
        -e "s|ZS_knorm_init      =.*|ZS_knorm_init      =${ZS_knorm_inits[ii]}|"\
        -e "s|ZS_xnorm_init      =.*|ZS_xnorm_init      =${ZS_xnorm_inits[ii]}|"\
-          rapid_namelist_France_HP  
+          rapid_namelist_France_HP
 sleep 3
-mpiexec -n 1 ./rapid -ksp_type preonly -tao_gatol 0.01 -tao_grtol 0.00015 > $rapd_file
+mpiexec -n 1 ./rapid -nl rapid_namelist_France_HP -ksp_type preonly -tao_gatol 0.01 -tao_grtol 0.00015 > $rapd_file
 ./tst_opt_find.sh $rapd_file | cat > $find_file
-./tst_opt_comp.sh $find_file ${ZS_knorm_finals[ii]} ${ZS_xnorm_finals[ii]} ${ZS_phi_finals[ii]} 
+./tst_opt_comp.sh $find_file ${ZS_knorm_finals[ii]} ${ZS_xnorm_finals[ii]} ${ZS_phi_finals[ii]}
 x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $find_file" >&2 ; exit $x ; fi
 ./tst_nml_tidy_France_HP.sh
 fi
@@ -1531,11 +1531,11 @@ sed -i -e "s|IS_opt_run         =.*|IS_opt_run         =2|"                    \
        -e "s|IS_riv_bas         =.*|IS_riv_bas         =$IS_riv_bas|"          \
        -e "s|ZS_knorm_init      =.*|ZS_knorm_init      =${ZS_knorm_inits[ii]}|"\
        -e "s|ZS_xnorm_init      =.*|ZS_xnorm_init      =${ZS_xnorm_inits[ii]}|"\
-          rapid_namelist_France_HP  
+          rapid_namelist_France_HP
 sleep 3
-mpiexec -n 1 ./rapid -ksp_type richardson -tao_gatol 0.01 -tao_grtol 0.00059 > $rapd_file ######
+mpiexec -n 1 ./rapid -nl rapid_namelist_France_HP -ksp_type richardson -tao_gatol 0.01 -tao_grtol 0.00059 > $rapd_file ######
 ./tst_opt_find.sh $rapd_file | cat > $find_file
-./tst_opt_comp.sh $find_file ${ZS_knorm_finals[ii]} ${ZS_xnorm_finals[ii]} ${ZS_phi_finals[ii]} 
+./tst_opt_comp.sh $find_file ${ZS_knorm_finals[ii]} ${ZS_xnorm_finals[ii]} ${ZS_phi_finals[ii]}
 x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $find_file" >&2 ; exit $x ; fi
 ./tst_nml_tidy_France_HP.sh
 fi
@@ -1580,11 +1580,11 @@ sed -i -e "s|IS_opt_run         =.*|IS_opt_run         =2|"                    \
        -e "s|IS_riv_bas         =.*|IS_riv_bas         =$IS_riv_bas|"          \
        -e "s|ZS_knorm_init      =.*|ZS_knorm_init      =${ZS_knorm_inits[ii]}|"\
        -e "s|ZS_xnorm_init      =.*|ZS_xnorm_init      =${ZS_xnorm_inits[ii]}|"\
-          rapid_namelist_France_HP  
+          rapid_namelist_France_HP
 sleep 3
-mpiexec -n 1 ./rapid -ksp_type preonly -tao_gatol 0.01 -tao_grtol 0.0042 > $rapd_file
+mpiexec -n 1 ./rapid -nl rapid_namelist_France_HP -ksp_type preonly -tao_gatol 0.01 -tao_grtol 0.0042 > $rapd_file
 ./tst_opt_find.sh $rapd_file | cat > $find_file
-./tst_opt_comp.sh $find_file ${ZS_knorm_finals[ii]} ${ZS_xnorm_finals[ii]} ${ZS_phi_finals[ii]} 
+./tst_opt_comp.sh $find_file ${ZS_knorm_finals[ii]} ${ZS_xnorm_finals[ii]} ${ZS_phi_finals[ii]}
 x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $find_file" >&2 ; exit $x ; fi
 ./tst_nml_tidy_France_HP.sh
 fi
@@ -1629,11 +1629,11 @@ sed -i -e "s|IS_opt_run         =.*|IS_opt_run         =2|"                    \
        -e "s|IS_riv_bas         =.*|IS_riv_bas         =$IS_riv_bas|"          \
        -e "s|ZS_knorm_init      =.*|ZS_knorm_init      =${ZS_knorm_inits[ii]}|"\
        -e "s|ZS_xnorm_init      =.*|ZS_xnorm_init      =${ZS_xnorm_inits[ii]}|"\
-          rapid_namelist_France_HP  
+          rapid_namelist_France_HP
 sleep 3
-mpiexec -n 1 ./rapid -ksp_type preonly -tao_gatol 0.01 -tao_grtol 0.00027 > $rapd_file
+mpiexec -n 1 ./rapid -nl rapid_namelist_France_HP -ksp_type preonly -tao_gatol 0.01 -tao_grtol 0.00027 > $rapd_file
 ./tst_opt_find.sh $rapd_file | cat > $find_file
-./tst_opt_comp.sh $find_file ${ZS_knorm_finals[ii]} ${ZS_xnorm_finals[ii]} ${ZS_phi_finals[ii]} 
+./tst_opt_comp.sh $find_file ${ZS_knorm_finals[ii]} ${ZS_xnorm_finals[ii]} ${ZS_phi_finals[ii]}
 x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $find_file" >&2 ; exit $x ; fi
 ./tst_nml_tidy_France_HP.sh
 fi
@@ -1678,11 +1678,11 @@ sed -i -e "s|IS_opt_run         =.*|IS_opt_run         =2|"                    \
        -e "s|IS_riv_bas         =.*|IS_riv_bas         =$IS_riv_bas|"          \
        -e "s|ZS_knorm_init      =.*|ZS_knorm_init      =${ZS_knorm_inits[ii]}|"\
        -e "s|ZS_xnorm_init      =.*|ZS_xnorm_init      =${ZS_xnorm_inits[ii]}|"\
-          rapid_namelist_France_HP  
+          rapid_namelist_France_HP
 sleep 3
-mpiexec -n 1 ./rapid -ksp_type preonly -tao_gatol 0.01 -tao_grtol 0.00012 > $rapd_file
+mpiexec -n 1 ./rapid -nl rapid_namelist_France_HP -ksp_type preonly -tao_gatol 0.01 -tao_grtol 0.00012 > $rapd_file
 ./tst_opt_find.sh $rapd_file | cat > $find_file
-./tst_opt_comp.sh $find_file ${ZS_knorm_finals[ii]} ${ZS_xnorm_finals[ii]} ${ZS_phi_finals[ii]} 
+./tst_opt_comp.sh $find_file ${ZS_knorm_finals[ii]} ${ZS_xnorm_finals[ii]} ${ZS_phi_finals[ii]}
 x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $find_file" >&2 ; exit $x ; fi
 ./tst_nml_tidy_France_HP.sh
 fi
@@ -1727,11 +1727,11 @@ sed -i -e "s|IS_opt_run         =.*|IS_opt_run         =2|"                    \
        -e "s|IS_riv_bas         =.*|IS_riv_bas         =$IS_riv_bas|"          \
        -e "s|ZS_knorm_init      =.*|ZS_knorm_init      =${ZS_knorm_inits[ii]}|"\
        -e "s|ZS_xnorm_init      =.*|ZS_xnorm_init      =${ZS_xnorm_inits[ii]}|"\
-          rapid_namelist_France_HP  
+          rapid_namelist_France_HP
 sleep 3
-mpiexec -n 1 ./rapid -ksp_type preonly -tao_gatol 0.01 -tao_grtol 0.000095 > $rapd_file
+mpiexec -n 1 ./rapid -nl rapid_namelist_France_HP -ksp_type preonly -tao_gatol 0.01 -tao_grtol 0.000095 > $rapd_file
 ./tst_opt_find.sh $rapd_file | cat > $find_file
-./tst_opt_comp.sh $find_file ${ZS_knorm_finals[ii]} ${ZS_xnorm_finals[ii]} ${ZS_phi_finals[ii]} 
+./tst_opt_comp.sh $find_file ${ZS_knorm_finals[ii]} ${ZS_xnorm_finals[ii]} ${ZS_phi_finals[ii]}
 x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $find_file" >&2 ; exit $x ; fi
 ./tst_nml_tidy_France_HP.sh
 fi
@@ -1776,11 +1776,11 @@ sed -i -e "s|IS_opt_run         =.*|IS_opt_run         =2|"                    \
        -e "s|IS_riv_bas         =.*|IS_riv_bas         =$IS_riv_bas|"          \
        -e "s|ZS_knorm_init      =.*|ZS_knorm_init      =${ZS_knorm_inits[ii]}|"\
        -e "s|ZS_xnorm_init      =.*|ZS_xnorm_init      =${ZS_xnorm_inits[ii]}|"\
-          rapid_namelist_France_HP  
+          rapid_namelist_France_HP
 sleep 3
-mpiexec -n 1 ./rapid -ksp_type preonly -tao_gatol 0.01 -tao_grtol 0.00016 > $rapd_file
+mpiexec -n 1 ./rapid -nl rapid_namelist_France_HP -ksp_type preonly -tao_gatol 0.01 -tao_grtol 0.00016 > $rapd_file
 ./tst_opt_find.sh $rapd_file | cat > $find_file
-./tst_opt_comp.sh $find_file ${ZS_knorm_finals[ii]} ${ZS_xnorm_finals[ii]} ${ZS_phi_finals[ii]} 
+./tst_opt_comp.sh $find_file ${ZS_knorm_finals[ii]} ${ZS_xnorm_finals[ii]} ${ZS_phi_finals[ii]}
 x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $find_file" >&2 ; exit $x ; fi
 ./tst_nml_tidy_France_HP.sh
 fi
@@ -1825,11 +1825,11 @@ sed -i -e "s|IS_opt_run         =.*|IS_opt_run         =2|"                    \
        -e "s|IS_riv_bas         =.*|IS_riv_bas         =$IS_riv_bas|"          \
        -e "s|ZS_knorm_init      =.*|ZS_knorm_init      =${ZS_knorm_inits[ii]}|"\
        -e "s|ZS_xnorm_init      =.*|ZS_xnorm_init      =${ZS_xnorm_inits[ii]}|"\
-          rapid_namelist_France_HP  
+          rapid_namelist_France_HP
 sleep 3
-mpiexec -n 1 ./rapid -ksp_type preonly -tao_gatol 0.01 -tao_grtol 0.00012 > $rapd_file
+mpiexec -n 1 ./rapid -nl rapid_namelist_France_HP -ksp_type preonly -tao_gatol 0.01 -tao_grtol 0.00012 > $rapd_file
 ./tst_opt_find.sh $rapd_file | cat > $find_file
-./tst_opt_comp.sh $find_file ${ZS_knorm_finals[ii]} ${ZS_xnorm_finals[ii]} ${ZS_phi_finals[ii]} 
+./tst_opt_comp.sh $find_file ${ZS_knorm_finals[ii]} ${ZS_xnorm_finals[ii]} ${ZS_phi_finals[ii]}
 x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $find_file" >&2 ; exit $x ; fi
 ./tst_nml_tidy_France_HP.sh
 fi
@@ -1874,11 +1874,11 @@ sed -i -e "s|IS_opt_run         =.*|IS_opt_run         =2|"                    \
        -e "s|IS_riv_bas         =.*|IS_riv_bas         =$IS_riv_bas|"          \
        -e "s|ZS_knorm_init      =.*|ZS_knorm_init      =${ZS_knorm_inits[ii]}|"\
        -e "s|ZS_xnorm_init      =.*|ZS_xnorm_init      =${ZS_xnorm_inits[ii]}|"\
-          rapid_namelist_France_HP  
+          rapid_namelist_France_HP
 sleep 3
-mpiexec -n 1 ./rapid -ksp_type preonly -tao_gatol 0.01 -tao_grtol 0.00068 > $rapd_file
+mpiexec -n 1 ./rapid -nl rapid_namelist_France_HP -ksp_type preonly -tao_gatol 0.01 -tao_grtol 0.00068 > $rapd_file
 ./tst_opt_find.sh $rapd_file | cat > $find_file
-./tst_opt_comp.sh $find_file ${ZS_knorm_finals[ii]} ${ZS_xnorm_finals[ii]} ${ZS_phi_finals[ii]} 
+./tst_opt_comp.sh $find_file ${ZS_knorm_finals[ii]} ${ZS_xnorm_finals[ii]} ${ZS_phi_finals[ii]}
 x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $find_file" >&2 ; exit $x ; fi
 ./tst_nml_tidy_France_HP.sh
 fi
@@ -1923,11 +1923,11 @@ sed -i -e "s|IS_opt_run         =.*|IS_opt_run         =2|"                    \
        -e "s|IS_riv_bas         =.*|IS_riv_bas         =$IS_riv_bas|"          \
        -e "s|ZS_knorm_init      =.*|ZS_knorm_init      =${ZS_knorm_inits[ii]}|"\
        -e "s|ZS_xnorm_init      =.*|ZS_xnorm_init      =${ZS_xnorm_inits[ii]}|"\
-          rapid_namelist_France_HP  
+          rapid_namelist_France_HP
 sleep 3
-mpiexec -n 1 ./rapid -ksp_type preonly -tao_gatol 0.01 -tao_grtol 0.00044 > $rapd_file
+mpiexec -n 1 ./rapid -nl rapid_namelist_France_HP -ksp_type preonly -tao_gatol 0.01 -tao_grtol 0.00044 > $rapd_file
 ./tst_opt_find.sh $rapd_file | cat > $find_file
-./tst_opt_comp.sh $find_file ${ZS_knorm_finals[ii]} ${ZS_xnorm_finals[ii]} ${ZS_phi_finals[ii]} 
+./tst_opt_comp.sh $find_file ${ZS_knorm_finals[ii]} ${ZS_xnorm_finals[ii]} ${ZS_phi_finals[ii]}
 x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $find_file" >&2 ; exit $x ; fi
 ./tst_nml_tidy_France_HP.sh
 fi
@@ -1980,11 +1980,11 @@ sed -i -e "s|IS_opt_run         =.*|IS_opt_run         =2|"                    \
        -e "s|IS_for_use         =.*|IS_for_use         =$IS_for_use|"          \
        -e "s|ZS_knorm_init      =.*|ZS_knorm_init      =${ZS_knorm_inits[ii]}|"\
        -e "s|ZS_xnorm_init      =.*|ZS_xnorm_init      =${ZS_xnorm_inits[ii]}|"\
-          rapid_namelist_France_HP  
+          rapid_namelist_France_HP
 sleep 3
-mpiexec -n 1 ./rapid -ksp_type preonly -tao_max_funcs 100 -tao_gatol 0.01 -tao_grtol 0.00019 > $rapd_file ######
+mpiexec -n 1 ./rapid -nl rapid_namelist_France_HP -ksp_type preonly -tao_max_funcs 100 -tao_gatol 0.01 -tao_grtol 0.00019 > $rapd_file ######
 ./tst_opt_find.sh $rapd_file | cat > $find_file
-./tst_opt_comp.sh $find_file ${ZS_knorm_finals[ii]} ${ZS_xnorm_finals[ii]} ${ZS_phi_finals[ii]} 
+./tst_opt_comp.sh $find_file ${ZS_knorm_finals[ii]} ${ZS_xnorm_finals[ii]} ${ZS_phi_finals[ii]}
 x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $find_file" >&2 ; exit $x ; fi
 ./tst_nml_tidy_France_HP.sh
 fi
@@ -2037,11 +2037,11 @@ sed -i -e "s|IS_opt_run         =.*|IS_opt_run         =2|"                    \
        -e "s|IS_for_use         =.*|IS_for_use         =$IS_for_use|"          \
        -e "s|ZS_knorm_init      =.*|ZS_knorm_init      =${ZS_knorm_inits[ii]}|"\
        -e "s|ZS_xnorm_init      =.*|ZS_xnorm_init      =${ZS_xnorm_inits[ii]}|"\
-          rapid_namelist_France_HP  
+          rapid_namelist_France_HP
 sleep 3
-mpiexec -n 1 ./rapid -ksp_type preonly -tao_gatol 0.01 -tao_grtol 0.00017 > $rapd_file
+mpiexec -n 1 ./rapid -nl rapid_namelist_France_HP -ksp_type preonly -tao_gatol 0.01 -tao_grtol 0.00017 > $rapd_file
 ./tst_opt_find.sh $rapd_file | cat > $find_file
-./tst_opt_comp.sh $find_file ${ZS_knorm_finals[ii]} ${ZS_xnorm_finals[ii]} ${ZS_phi_finals[ii]} 
+./tst_opt_comp.sh $find_file ${ZS_knorm_finals[ii]} ${ZS_xnorm_finals[ii]} ${ZS_phi_finals[ii]}
 x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $find_file" >&2 ; exit $x ; fi
 ./tst_nml_tidy_France_HP.sh
 fi
@@ -2094,11 +2094,11 @@ sed -i -e "s|IS_opt_run         =.*|IS_opt_run         =2|"                    \
        -e "s|IS_for_use         =.*|IS_for_use         =$IS_for_use|"          \
        -e "s|ZS_knorm_init      =.*|ZS_knorm_init      =${ZS_knorm_inits[ii]}|"\
        -e "s|ZS_xnorm_init      =.*|ZS_xnorm_init      =${ZS_xnorm_inits[ii]}|"\
-          rapid_namelist_France_HP  
+          rapid_namelist_France_HP
 sleep 3
-mpiexec -n 1 ./rapid -ksp_type preonly -tao_gatol 0.01 -tao_grtol 0.0031 > $rapd_file
+mpiexec -n 1 ./rapid -nl rapid_namelist_France_HP -ksp_type preonly -tao_gatol 0.01 -tao_grtol 0.0031 > $rapd_file
 ./tst_opt_find.sh $rapd_file | cat > $find_file
-./tst_opt_comp.sh $find_file ${ZS_knorm_finals[ii]} ${ZS_xnorm_finals[ii]} ${ZS_phi_finals[ii]} 
+./tst_opt_comp.sh $find_file ${ZS_knorm_finals[ii]} ${ZS_xnorm_finals[ii]} ${ZS_phi_finals[ii]}
 x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $find_file" >&2 ; exit $x ; fi
 ./tst_nml_tidy_France_HP.sh
 fi
@@ -2107,7 +2107,7 @@ if (("$unt-2" >= "$fst")) && (("$unt" <= "$lst")) ; then
 echo "Comparing best values"
 pick_file="tmp_opt_pick_$opt.txt"
 ./tst_opt_pick.sh tmp_opt_find_$opt*.txt | cat > $pick_file
-./tst_opt_comp.sh $pick_file 0.03125 4.98438 1.01198 
+./tst_opt_comp.sh $pick_file 0.03125 4.98438 1.01198
 x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $pick_file" >&2 ; exit $x ; fi
 echo "Success"
 echo "********************"
@@ -2151,11 +2151,11 @@ sed -i -e "s|IS_opt_run         =.*|IS_opt_run         =2|"                    \
        -e "s|IS_for_use         =.*|IS_for_use         =$IS_for_use|"          \
        -e "s|ZS_knorm_init      =.*|ZS_knorm_init      =${ZS_knorm_inits[ii]}|"\
        -e "s|ZS_xnorm_init      =.*|ZS_xnorm_init      =${ZS_xnorm_inits[ii]}|"\
-          rapid_namelist_France_HP  
+          rapid_namelist_France_HP
 sleep 3
-mpiexec -n 1 ./rapid -ksp_type preonly -tao_gatol 0.01 -tao_grtol 0.00023 > $rapd_file
+mpiexec -n 1 ./rapid -nl rapid_namelist_France_HP -ksp_type preonly -tao_gatol 0.01 -tao_grtol 0.00023 > $rapd_file
 ./tst_opt_find.sh $rapd_file | cat > $find_file
-./tst_opt_comp.sh $find_file ${ZS_knorm_finals[ii]} ${ZS_xnorm_finals[ii]} ${ZS_phi_finals[ii]} 
+./tst_opt_comp.sh $find_file ${ZS_knorm_finals[ii]} ${ZS_xnorm_finals[ii]} ${ZS_phi_finals[ii]}
 x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $find_file" >&2 ; exit $x ; fi
 ./tst_nml_tidy_France_HP.sh
 fi
@@ -2164,7 +2164,7 @@ if (("$unt-2" >= "$fst")) && (("$unt" <= "$lst")) ; then
 echo "Comparing best values"
 pick_file="tmp_opt_pick_$opt.txt"
 ./tst_opt_pick.sh tmp_opt_find_$opt*.txt | cat > $pick_file
-./tst_opt_comp.sh $pick_file 0.390686 0.184753 1854.941 
+./tst_opt_comp.sh $pick_file 0.390686 0.184753 1854.941
 x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $pick_file" >&2 ; exit $x ; fi
 echo "Success"
 echo "********************"
