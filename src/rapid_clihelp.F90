@@ -3,7 +3,7 @@
 !*******************************************************************************
 
 subroutine rapid_clihelp
-    print '(a)', 'usage: ./rapid [-v | -o | -nl <namelist_file>]'
+    print '(a)', 'usage: ./rapid [-v | -h | -nl <namelist_file>]'
     print '(a)', ''
     print '(a)', 'rapid options:'
     print '(a)', ''
