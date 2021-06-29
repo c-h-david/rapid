@@ -4,15 +4,15 @@
 #*******************************************************************************
 
 #Purpose:
-#This script performs extra tests based on RAPID simulations that were used in 
+#This script performs extra tests based on RAPID simulations that were used in
 #the writing of:
-#David, Cédric H., David R. Maidment, Guo-Yue Niu, Zong- Liang Yang, Florence 
-#Habets and Victor Eijkhout (2011), River network routing on the NHDPlus 
-#dataset, Journal of Hydrometeorology, 12(5), 913-934. 
-#DOI: 10.1175/2011JHM1345.1 
+#David, Cédric H., David R. Maidment, Guo-Yue Niu, Zong- Liang Yang, Florence
+#Habets and Victor Eijkhout (2011), River network routing on the NHDPlus
+#dataset, Journal of Hydrometeorology, 12(5), 913-934.
+#DOI: 10.1175/2011JHM1345.1
 #The files used are available from:
-#David, Cédric H., David R. Maidment, Guo-Yue Niu, Zong- Liang Yang, Florence 
-#Habets and Victor Eijkhout (2011), RAPID input and output files corresponding 
+#David, Cédric H., David R. Maidment, Guo-Yue Niu, Zong- Liang Yang, Florence
+#Habets and Victor Eijkhout (2011), RAPID input and output files corresponding
 #to "River Network Routing on the NHDPlus Dataset", Zenodo.
 #DOI: 10.5281/zenodo.16565
 #The following are the possible arguments:
@@ -20,10 +20,10 @@
 # - One unique unit test number: this test is run
 # - Two unit test numbers: all tests between those (included) are run
 #The script returns the following exit codes
-# - 0  if all experiments are successful 
-# - 22 if some arguments are faulty 
-# - 33 if a search failed 
-# - 99 if a comparison failed 
+# - 0  if all experiments are successful
+# - 22 if some arguments are faulty
+# - 33 if a search failed
+# - 99 if a comparison failed
 #Author:
 #Cedric H. David, 2017-2021.
 
@@ -49,30 +49,30 @@ if [ "$#" = "0" ]; then
      lst=99
      echo "Performing all unit tests: 1-99"
      echo "********************"
-fi 
-#Perform all unit tests if no options are given 
+fi
+#Perform all unit tests if no options are given
 
 if [ "$#" = "1" ]; then
      fst=$1
      lst=$1
      echo "Performing one unit test: $1"
      echo "********************"
-fi 
-#Perform one single unit test if one option is given 
+fi
+#Perform one single unit test if one option is given
 
 if [ "$#" = "2" ]; then
      fst=$1
      lst=$2
      echo "Performing unit tests: $1-$2"
      echo "********************"
-fi 
-#Perform all unit tests between first and second option given (both included) 
+fi
+#Perform all unit tests between first and second option given (both included)
 
 if [ "$#" -gt "2" ]; then
      echo "A maximum of two options can be used" 1>&2
      exit 22
-fi 
-#Exit if more than two options are given 
+fi
+#Exit if more than two options are given
 
 
 #*******************************************************************************
@@ -82,12 +82,9 @@ unt=0
 
 
 #*******************************************************************************
-#Clean namelist and create symbolic list to default namelist
+#Clean namelist
 #*******************************************************************************
 ./tst_nml_tidy_San_Guad_JHM.sh
-rm -f rapid_namelist
-ln -s rapid_namelist_San_Guad_JHM rapid_namelist
-
 
 #*******************************************************************************
 #Test restart capability
@@ -130,7 +127,7 @@ cmp                                                                            \
      > $comp_file
 x=$? && if [ $x -gt 0 ] ; then echo "Failed comparison: $comp_file" >&2 ; exit $x ; fi
 
-#m3_riv has 11686 time steps. The first two years have (366+365)*8=5848 time 
+#m3_riv has 11686 time steps. The first two years have (366+365)*8=5848 time
 #steps. There remains 11686-5848=5838 time steps for the last (almost) two years
 #which corresponds to (365+365)*8-2=5838. The '-2' is because two 3-hourly time
 #steps are removed in the conversion from UTC to CST.
@@ -154,9 +151,9 @@ sed -i -e "s|Vlat_file          =.*|Vlat_file          ='$Vlat_file'|"         \
        -e "s|BS_opt_Qfinal      =.*|BS_opt_Qfinal      =$BS_opt_Qfinal|"       \
        -e "s|Qfinal_file        =.*|Qfinal_file        ='$Qfinal_file'|"       \
        -e "s|Qout_file          =.*|Qout_file          ='$Qout_file'|"         \
-          rapid_namelist_San_Guad_JHM  
+          rapid_namelist_San_Guad_JHM
 sleep 3
-mpiexec -n 1 ./rapid -ksp_type preonly > $test_file
+mpiexec -n 1 ./rapid -nl rapid_namelist_San_Guad_JHM -ksp_type preonly > $test_file
 x=$? && if [ $x -gt 0 ] ; then echo "Failed simulation: $test_file" >&2 ; exit $x ; fi
 
 echo "Running simulation"
@@ -174,9 +171,9 @@ sed -i -e "s|Vlat_file          =.*|Vlat_file          ='$Vlat_file'|"         \
        -e "s|BS_opt_Qfinal      =.*|BS_opt_Qfinal      =$BS_opt_Qfinal|"       \
        -e "s|Qfinal_file        =.*|Qfinal_file        ='$Qfinal_file'|"       \
        -e "s|Qout_file          =.*|Qout_file          ='$Qout_file'|"         \
-          rapid_namelist_San_Guad_JHM  
+          rapid_namelist_San_Guad_JHM
 sleep 3
-mpiexec -n 1 ./rapid -ksp_type preonly > $test_file
+mpiexec -n 1 ./rapid -nl rapid_namelist_San_Guad_JHM -ksp_type preonly > $test_file
 x=$? && if [ $x -gt 0 ] ; then echo "Failed simulation: $test_file" >&2 ; exit $x ; fi
 
 echo "Concatenating files"
@@ -231,11 +228,11 @@ sed -i -e "s|k_file             =.*|k_file             ='$k_file'   |"         \
        -e "s|IS_opt_routing     =.*|IS_opt_routing     =$IS_opt_routing|"      \
        -e "s|ZS_threshold       =.*|ZS_threshold       =$ZS_threshold|"        \
        -e "s|Qout_file          =.*|Qout_file          ='$Qout_file'|"         \
-          rapid_namelist_San_Guad_JHM  
+          rapid_namelist_San_Guad_JHM
 sleep 3
-mpiexec -n 1 ./rapid > $test_file
+mpiexec -n 1 ./rapid -nl rapid_namelist_San_Guad_JHM > $test_file
 echo "Comparing files"
-./tst_run_comp $Qout_gold $Qout_file > $comp_file 
+./tst_run_comp $Qout_gold $Qout_file > $comp_file
 x=$? && if [ $x -gt 0 ] ; then echo "Failed comparison: $comp_file" >&2 ; exit $x ; fi
 rm $Qout_file
 rm $test_file
@@ -266,11 +263,11 @@ sed -i -e "s|k_file             =.*|k_file             ='$k_file'   |"         \
        -e "s|IS_opt_routing     =.*|IS_opt_routing     =$IS_opt_routing|"      \
        -e "s|ZS_threshold       =.*|ZS_threshold       =$ZS_threshold|"        \
        -e "s|Qout_file          =.*|Qout_file          ='$Qout_file'|"         \
-          rapid_namelist_San_Guad_JHM  
+          rapid_namelist_San_Guad_JHM
 sleep 3
-mpiexec -n 1 ./rapid > $test_file
+mpiexec -n 1 ./rapid -nl rapid_namelist_San_Guad_JHM > $test_file
 echo "Comparing files"
-./tst_run_comp $Qout_gold $Qout_file 1e-1 1 > $comp_file 
+./tst_run_comp $Qout_gold $Qout_file 1e-1 1 > $comp_file
 x=$? && if [ $x -gt 0 ] ; then echo "Failed comparison: $comp_file" >&2 ; exit $x ; fi
 rm $Qout_file
 rm $test_file
@@ -301,11 +298,11 @@ sed -i -e "s|k_file             =.*|k_file             ='$k_file'   |"         \
        -e "s|IS_opt_routing     =.*|IS_opt_routing     =$IS_opt_routing|"      \
        -e "s|ZS_threshold       =.*|ZS_threshold       =$ZS_threshold|"        \
        -e "s|Qout_file          =.*|Qout_file          ='$Qout_file'|"         \
-          rapid_namelist_San_Guad_JHM  
+          rapid_namelist_San_Guad_JHM
 sleep 3
-mpiexec -n 2 ./rapid > $test_file
+mpiexec -n 2 ./rapid -nl rapid_namelist_San_Guad_JHM > $test_file
 echo "Comparing files"
-./tst_run_comp $Qout_gold $Qout_file > $comp_file 
+./tst_run_comp $Qout_gold $Qout_file > $comp_file
 x=$? && if [ $x -gt 0 ] ; then echo "Failed comparison: $comp_file" >&2 ; exit $x ; fi
 rm $Qout_file
 rm $test_file
@@ -336,12 +333,12 @@ sed -i -e "s|IS_opt_run         =.*|IS_opt_run         =2|"                    \
        -e "s|ZS_knorm_init      =.*|ZS_knorm_init      =$ZS_knorm_init|"       \
        -e "s|ZS_xnorm_init      =.*|ZS_xnorm_init      =$ZS_xnorm_init|"       \
        -e "s|kfac_file          =.*|kfac_file          ='$kfac_file'|"         \
-          rapid_namelist_San_Guad_JHM  
+          rapid_namelist_San_Guad_JHM
 
 sleep 3
-mpiexec -n 1 ./rapid -tao_gatol 0.01 -tao_grtol 0.0040 > $test_file
+mpiexec -n 1 ./rapid -nl rapid_namelist_San_Guad_JHM -tao_gatol 0.01 -tao_grtol 0.0040 > $test_file
 ./tst_opt_find.sh $test_file | cat > $find_file
-./tst_opt_comp.sh $find_file 0.1875 3.90625 6.33277 
+./tst_opt_comp.sh $find_file 0.1875 3.90625 6.33277
 x=$? && if [ $x -gt 0 ] ; then echo "Failed comparison: $find_file" >&2 ; exit $x ; fi
 rm $test_file
 rm $find_file
@@ -371,12 +368,12 @@ sed -i -e "s|IS_opt_run         =.*|IS_opt_run         =2|"                    \
        -e "s|ZS_knorm_init      =.*|ZS_knorm_init      =$ZS_knorm_init|"       \
        -e "s|ZS_xnorm_init      =.*|ZS_xnorm_init      =$ZS_xnorm_init|"       \
        -e "s|kfac_file          =.*|kfac_file          ='$kfac_file'|"         \
-          rapid_namelist_San_Guad_JHM  
+          rapid_namelist_San_Guad_JHM
 
 sleep 3
-mpiexec -n 2 ./rapid -tao_gatol 0.01 -tao_grtol 0.0040 > $test_file
+mpiexec -n 2 ./rapid -nl rapid_namelist_San_Guad_JHM -tao_gatol 0.01 -tao_grtol 0.0040 > $test_file
 ./tst_opt_find.sh $test_file | cat > $find_file
-./tst_opt_comp.sh $find_file 0.1875 3.90625 6.33277 
+./tst_opt_comp.sh $find_file 0.1875 3.90625 6.33277
 x=$? && if [ $x -gt 0 ] ; then echo "Failed comparison: $find_file" >&2 ; exit $x ; fi
 rm $test_file
 rm $find_file
@@ -401,10 +398,10 @@ sed -i -e "s|ZS_TauM            =.*|ZS_TauM            =0|"                    \
        -e "s|IS_opt_routing     =.*|IS_opt_routing     =1|"                    \
           rapid_namelist_San_Guad_JHM
 sleep 1
-mpiexec -n 1 ./rapid -info > $test_file
+mpiexec -n 1 ./rapid -nl rapid_namelist_San_Guad_JHM -info > $test_file
 ./tst_mem_chck.sh $test_file > $memo_file
 x=$? && if [ $x -gt 0 ] ; then echo "Failed memory: $memo_file" >&2 ; exit $x ; fi
-mpiexec -n 2 ./rapid -info > $test_file
+mpiexec -n 2 ./rapid -nl rapid_namelist_San_Guad_JHM -info > $test_file
 ./tst_mem_chck.sh $test_file > $memo_file
 x=$? && if [ $x -gt 0 ] ; then echo "Failed memory: $memo_file" >&2 ; exit $x ; fi
 
@@ -413,10 +410,10 @@ sed -i -e "s|ZS_TauM            =.*|ZS_TauM            =0|"                    \
        -e "s|IS_opt_routing     =.*|IS_opt_routing     =2|"                    \
           rapid_namelist_San_Guad_JHM
 sleep 1
-mpiexec -n 1 ./rapid -info > $test_file
+mpiexec -n 1 ./rapid -nl rapid_namelist_San_Guad_JHM -info > $test_file
 ./tst_mem_chck.sh $test_file > $memo_file
 x=$? && if [ $x -gt 0 ] ; then echo "Failed memory: $memo_file" >&2 ; exit $x ; fi
-mpiexec -n 2 ./rapid -info > $test_file
+mpiexec -n 2 ./rapid -nl rapid_namelist_San_Guad_JHM -info > $test_file
 ./tst_mem_chck.sh $test_file > $memo_file
 x=$? && if [ $x -gt 0 ] ; then echo "Failed memory: $memo_file" >&2 ; exit $x ; fi
 
@@ -425,10 +422,10 @@ sed -i -e "s|ZS_TauM            =.*|ZS_TauM            =0|"                    \
        -e "s|IS_opt_routing     =.*|IS_opt_routing     =3|"                    \
           rapid_namelist_San_Guad_JHM
 sleep 1
-mpiexec -n 1 ./rapid -info > $test_file
+mpiexec -n 1 ./rapid -nl rapid_namelist_San_Guad_JHM -info > $test_file
 ./tst_mem_chck.sh $test_file > $memo_file
 x=$? && if [ $x -gt 0 ] ; then echo "Failed memory: $memo_file" >&2 ; exit $x ; fi
-mpiexec -n 2 ./rapid -info > $test_file
+mpiexec -n 2 ./rapid -nl rapid_namelist_San_Guad_JHM -info > $test_file
 ./tst_mem_chck.sh $test_file > $memo_file
 x=$? && if [ $x -gt 0 ] ; then echo "Failed memory: $memo_file" >&2 ; exit $x ; fi
 
@@ -441,9 +438,8 @@ fi
 
 
 #*******************************************************************************
-#Remove symbolic list to default namelist and clean namelist
+# clean namelist
 #*******************************************************************************
-rm -f rapid_namelist
 ./tst_nml_tidy_San_Guad_JHM.sh
 
 
