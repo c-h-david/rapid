@@ -5,13 +5,13 @@
 
 #Purpose:
 #This script reproduces all RAPID simulations that were used in the writing of:
-#David, Cédric H., David R. Maidment, Guo-Yue Niu, Zong- Liang Yang, Florence 
-#Habets and Victor Eijkhout (2011), River network routing on the NHDPlus 
-#dataset, Journal of Hydrometeorology, 12(5), 913-934. 
-#DOI: 10.1175/2011JHM1345.1 
+#David, Cédric H., David R. Maidment, Guo-Yue Niu, Zong- Liang Yang, Florence
+#Habets and Victor Eijkhout (2011), River network routing on the NHDPlus
+#dataset, Journal of Hydrometeorology, 12(5), 913-934.
+#DOI: 10.1175/2011JHM1345.1
 #The files used are available from:
-#David, Cédric H., David R. Maidment, Guo-Yue Niu, Zong- Liang Yang, Florence 
-#Habets and Victor Eijkhout (2011), RAPID input and output files corresponding 
+#David, Cédric H., David R. Maidment, Guo-Yue Niu, Zong- Liang Yang, Florence
+#Habets and Victor Eijkhout (2011), RAPID input and output files corresponding
 #to "River Network Routing on the NHDPlus Dataset", Zenodo.
 #DOI: 10.5281/zenodo.16565
 #The following are the possible arguments:
@@ -19,10 +19,10 @@
 # - One unique unit test number: this test is run
 # - Two unit test numbers: all tests between those (included) are run
 #The script returns the following exit codes
-# - 0  if all experiments are successful 
-# - 22 if some arguments are faulty 
-# - 33 if a search failed 
-# - 99 if a comparison failed 
+# - 0  if all experiments are successful
+# - 22 if some arguments are faulty
+# - 33 if a search failed
+# - 99 if a comparison failed
 #Author:
 #Cedric H. David, 2015-2021.
 
@@ -48,30 +48,30 @@ if [ "$#" = "0" ]; then
      lst=23
      echo "Performing all unit tests: 1-23"
      echo "********************"
-fi 
-#Perform all unit tests if no options are given 
+fi
+#Perform all unit tests if no options are given
 
 if [ "$#" = "1" ]; then
      fst=$1
      lst=$1
      echo "Performing one unit test: $1"
      echo "********************"
-fi 
-#Perform one single unit test if one option is given 
+fi
+#Perform one single unit test if one option is given
 
 if [ "$#" = "2" ]; then
      fst=$1
      lst=$2
      echo "Performing unit tests: $1-$2"
      echo "********************"
-fi 
-#Perform all unit tests between first and second option given (both included) 
+fi
+#Perform all unit tests between first and second option given (both included)
 
 if [ "$#" -gt "2" ]; then
      echo "A maximum of two options can be used" 1>&2
      exit 22
-fi 
-#Exit if more than two options are given 
+fi
+#Exit if more than two options are given
 
 
 #*******************************************************************************
@@ -83,14 +83,14 @@ unt=0
 
 
 #*******************************************************************************
-#Run all simulations for San Antonio and Guadalupe Basins 
+#Run all simulations for San Antonio and Guadalupe Basins
 #*******************************************************************************
 
 #-------------------------------------------------------------------------------
 #Create symbolic list to default namelist
 #-------------------------------------------------------------------------------
-rm -f rapid_namelist
-ln -s rapid_namelist_San_Guad_JHM rapid_namelist
+# rm -f rapid_namelist
+# ln -s rapid_namelist_San_Guad_JHM rapid_namelist
 
 #-------------------------------------------------------------------------------
 #Run simulations and compare output files (single core)
@@ -113,11 +113,11 @@ comp_file="tmp_run_comp_$sim.txt"
 sed -i -e "s|k_file             =.*|k_file             ='$k_file'   |"         \
        -e "s|x_file             =.*|x_file             ='$x_file'   |"         \
        -e "s|Qout_file          =.*|Qout_file          ='$Qout_file'|"         \
-          rapid_namelist_San_Guad_JHM  
+          rapid_namelist_San_Guad_JHM
 sleep 3
-mpiexec -n 1 ./rapid -ksp_type preonly > $rapd_file
+mpiexec -n 1 ./rapid -nl rapid_namelist_San_Guad_JHM preonly > $rapd_file
 echo "Comparing files"
-./tst_run_comp $Qout_gold $Qout_file > $comp_file 
+./tst_run_comp $Qout_gold $Qout_file > $comp_file
 x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $comp_file" >&2 ; exit $x ; fi
 rm $Qout_file
 rm $rapd_file
@@ -144,11 +144,11 @@ comp_file="tmp_run_comp_$sim.txt"
 sed -i -e "s|k_file             =.*|k_file             ='$k_file'   |"         \
        -e "s|x_file             =.*|x_file             ='$x_file'   |"         \
        -e "s|Qout_file          =.*|Qout_file          ='$Qout_file'|"         \
-          rapid_namelist_San_Guad_JHM  
+          rapid_namelist_San_Guad_JHM
 sleep 3
-mpiexec -n 1 ./rapid -ksp_type preonly > $rapd_file
+mpiexec -n 1 ./rapid -nl rapid_namelist_San_Guad_JHM preonly > $rapd_file
 echo "Comparing files"
-./tst_run_comp $Qout_gold $Qout_file > $comp_file 
+./tst_run_comp $Qout_gold $Qout_file > $comp_file
 x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $comp_file" >&2 ; exit $x ; fi
 rm $Qout_file
 rm $rapd_file
@@ -175,11 +175,11 @@ comp_file="tmp_run_comp_$sim.txt"
 sed -i -e "s|k_file             =.*|k_file             ='$k_file'   |"         \
        -e "s|x_file             =.*|x_file             ='$x_file'   |"         \
        -e "s|Qout_file          =.*|Qout_file          ='$Qout_file'|"         \
-          rapid_namelist_San_Guad_JHM  
+          rapid_namelist_San_Guad_JHM
 sleep 3
-mpiexec -n 1 ./rapid -ksp_type preonly > $rapd_file
+mpiexec -n 1 ./rapid -nl rapid_namelist_San_Guad_JHM preonly > $rapd_file
 echo "Comparing files"
-./tst_run_comp $Qout_gold $Qout_file > $comp_file 
+./tst_run_comp $Qout_gold $Qout_file > $comp_file
 x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $comp_file" >&2 ; exit $x ; fi
 rm $Qout_file
 rm $rapd_file
@@ -206,12 +206,12 @@ comp_file="tmp_run_comp_$sim.txt"
 sed -i -e "s|k_file             =.*|k_file             ='$k_file'   |"         \
        -e "s|x_file             =.*|x_file             ='$x_file'   |"         \
        -e "s|Qout_file          =.*|Qout_file          ='$Qout_file'|"         \
-          rapid_namelist_San_Guad_JHM  
+          rapid_namelist_San_Guad_JHM
 
 sleep 3
-mpiexec -n 1 ./rapid -ksp_type preonly > $rapd_file
+mpiexec -n 1 ./rapid -nl rapid_namelist_San_Guad_JHM preonly > $rapd_file
 echo "Comparing files"
-./tst_run_comp $Qout_gold $Qout_file > $comp_file 
+./tst_run_comp $Qout_gold $Qout_file > $comp_file
 x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $comp_file" >&2 ; exit $x ; fi
 rm $Qout_file
 rm $rapd_file
@@ -247,7 +247,7 @@ sed -i -e "s|k_file             =.*|k_file             ='$k_file'   |"         \
 sleep 3
 mpiexec -n 1 ./rapid > $rapd_file
 echo "Comparing files"
-./tst_run_comp $Qout_gold $Qout_file > $comp_file 
+./tst_run_comp $Qout_gold $Qout_file > $comp_file
 x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $comp_file" >&2 ; exit $x ; fi
 rm $Qout_file
 rm $rapd_file
@@ -282,9 +282,9 @@ sed -i -e "s|k_file             =.*|k_file             ='$k_file'   |"         \
        -e "s|Qout_file          =.*|Qout_file          ='$Qout_file'|"         \
         rapid_namelist_San_Guad_JHM
 sleep 3
-mpiexec -n $proc ./rapid -ksp_type richardson > $rapd_file
+mpiexec -n $proc ./rapid -nl rapid_namelist_San_Guad_JHM richardson > $rapd_file
 echo "Comparing files"
-./tst_run_comp $Qout_gold $Qout_file > $comp_file 
+./tst_run_comp $Qout_gold $Qout_file > $comp_file
 x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $comp_file" >&2 ; exit $x ; fi
 rm $Qout_file
 rm $rapd_file
@@ -305,9 +305,9 @@ done
 #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 opt=$((opt+1))
 
-#  -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   - 
+#  -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -
 #1st set of initial parameters
-#  -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   - 
+#  -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -
 unt=$((unt+1))
 if (("$unt" >= "$fst")) && (("$unt" <= "$lst")) ; then
 ./tst_nml_tidy_San_Guad_JHM.sh
@@ -321,19 +321,19 @@ sed -i -e "s|IS_opt_run         =.*|IS_opt_run         =2|"                    \
        -e "s|ZS_knorm_init      =.*|ZS_knorm_init      =$ZS_knorm_init|"       \
        -e "s|ZS_xnorm_init      =.*|ZS_xnorm_init      =$ZS_xnorm_init|"       \
        -e "s|kfac_file          =.*|kfac_file          ='$kfac_file'|"         \
-          rapid_namelist_San_Guad_JHM  
+          rapid_namelist_San_Guad_JHM
 
 sleep 3
-mpiexec -n 1 ./rapid -ksp_type preonly -tao_gatol 0.01 -tao_grtol 0.0040 > $rapd_file
+mpiexec -n 1 ./rapid -nl rapid_namelist_San_Guad_JHM preonly -tao_gatol 0.01 -tao_grtol 0.0040 > $rapd_file
 ./tst_opt_find.sh $rapd_file | cat > $find_file
-./tst_opt_comp.sh $find_file 0.1875 3.90625 6.33277 
+./tst_opt_comp.sh $find_file 0.1875 3.90625 6.33277
 x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $find_file" >&2 ; exit $x ; fi
 ./tst_nml_tidy_San_Guad_JHM.sh
 fi
 
-#  -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   - 
+#  -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -
 #2nd set of initial parameters
-#  -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   - 
+#  -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -
 unt=$((unt+1))
 if (("$unt" >= "$fst")) && (("$unt" <= "$lst")) ; then
 ./tst_nml_tidy_San_Guad_JHM.sh
@@ -347,19 +347,19 @@ sed -i -e "s|IS_opt_run         =.*|IS_opt_run         =2|"                    \
        -e "s|ZS_knorm_init      =.*|ZS_knorm_init      =$ZS_knorm_init|"       \
        -e "s|ZS_xnorm_init      =.*|ZS_xnorm_init      =$ZS_xnorm_init|"       \
        -e "s|kfac_file          =.*|kfac_file          ='$kfac_file'|"         \
-          rapid_namelist_San_Guad_JHM  
+          rapid_namelist_San_Guad_JHM
 
 sleep 3
-mpiexec -n 1 ./rapid -ksp_type preonly -tao_gatol 0.01 -tao_grtol 0.0040 > $rapd_file
+mpiexec -n 1 ./rapid -nl rapid_namelist_San_Guad_JHM preonly -tao_gatol 0.01 -tao_grtol 0.0040 > $rapd_file
 ./tst_opt_find.sh $rapd_file | cat > $find_file
 ./tst_opt_comp.sh $find_file 0.131042 2.58128 6.32834
 x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $find_file" >&2 ; exit $x ; fi
 ./tst_nml_tidy_San_Guad_JHM.sh
 fi
 
-#  -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   - 
+#  -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -
 #3rd set of initial parameters
-#  -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   - 
+#  -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -
 unt=$((unt+1))
 if (("$unt" >= "$fst")) && (("$unt" <= "$lst")) ; then
 ./tst_nml_tidy_San_Guad_JHM.sh
@@ -373,23 +373,23 @@ sed -i -e "s|IS_opt_run         =.*|IS_opt_run         =2|"                    \
        -e "s|ZS_knorm_init      =.*|ZS_knorm_init      =$ZS_knorm_init|"       \
        -e "s|ZS_xnorm_init      =.*|ZS_xnorm_init      =$ZS_xnorm_init|"       \
        -e "s|kfac_file          =.*|kfac_file          ='$kfac_file'|"         \
-          rapid_namelist_San_Guad_JHM  
+          rapid_namelist_San_Guad_JHM
 sleep 3
-mpiexec -n 1 ./rapid -ksp_type preonly -tao_gatol 0.01 -tao_grtol 0.0040 > $rapd_file
+mpiexec -n 1 ./rapid -nl rapid_namelist_San_Guad_JHM preonly -tao_gatol 0.01 -tao_grtol 0.0040 > $rapd_file
 ./tst_opt_find.sh $rapd_file | cat > $find_file
 ./tst_opt_comp.sh $find_file 0.125 0.9375 6.3315
 x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $find_file" >&2 ; exit $x ; fi
 ./tst_nml_tidy_San_Guad_JHM.sh
 fi
 
-#  -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   - 
+#  -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -
 #Compare results
-#  -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   - 
+#  -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -
 if (("10" >= "$fst")) && (("12" <= "$lst")) ; then
 echo "Comparing best values"
 pick_file='tmp_opt_pick_1.txt'
 ./tst_opt_pick.sh tmp_opt_find_1*.txt | cat > $pick_file
-./tst_opt_comp.sh $pick_file 0.131042 2.58128 6.32834  
+./tst_opt_comp.sh $pick_file 0.131042 2.58128 6.32834
 x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $pick_file" >&2 ; exit $x ; fi
 echo "Success"
 echo "********************"
@@ -401,9 +401,9 @@ rm -f tmp_opt_*1*.txt
 #-------------------------------------------------------------------------------
 opt=$((opt+1))
 
-#  -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   - 
+#  -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -
 #1st set of initial parameters
-#  -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   - 
+#  -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -
 unt=$((unt+1))
 if (("$unt" >= "$fst")) && (("$unt" <= "$lst")) ; then
 ./tst_nml_tidy_San_Guad_JHM.sh
@@ -417,19 +417,19 @@ sed -i -e "s|IS_opt_run         =.*|IS_opt_run         =2|"                    \
        -e "s|ZS_knorm_init      =.*|ZS_knorm_init      =$ZS_knorm_init|"       \
        -e "s|ZS_xnorm_init      =.*|ZS_xnorm_init      =$ZS_xnorm_init|"       \
        -e "s|kfac_file          =.*|kfac_file          ='$kfac_file'|"         \
-          rapid_namelist_San_Guad_JHM  
+          rapid_namelist_San_Guad_JHM
 
 sleep 3
-mpiexec -n 1 ./rapid -ksp_type preonly -tao_gatol 0.01 -tao_grtol 0.0040 > $rapd_file
+mpiexec -n 1 ./rapid -nl rapid_namelist_San_Guad_JHM preonly -tao_gatol 0.01 -tao_grtol 0.0040 > $rapd_file
 ./tst_opt_find.sh $rapd_file | cat > $find_file
 ./tst_opt_comp.sh $find_file 0.5 3.75 6.33895
 x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $find_file" >&2 ; exit $x ; fi
 ./tst_nml_tidy_San_Guad_JHM.sh
 fi
 
-#  -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   - 
+#  -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -
 #2nd set of initial parameters
-#  -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   - 
+#  -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -
 unt=$((unt+1))
 if (("$unt" >= "$fst")) && (("$unt" <= "$lst")) ; then
 ./tst_nml_tidy_San_Guad_JHM.sh
@@ -443,18 +443,18 @@ sed -i -e "s|IS_opt_run         =.*|IS_opt_run         =2|"                    \
        -e "s|ZS_knorm_init      =.*|ZS_knorm_init      =$ZS_knorm_init|"       \
        -e "s|ZS_xnorm_init      =.*|ZS_xnorm_init      =$ZS_xnorm_init|"       \
        -e "s|kfac_file          =.*|kfac_file          ='$kfac_file'|"         \
-          rapid_namelist_San_Guad_JHM  
+          rapid_namelist_San_Guad_JHM
 sleep 3
-mpiexec -n 1 ./rapid -ksp_type preonly -tao_gatol 0.01 -tao_grtol 0.0040 > $rapd_file
+mpiexec -n 1 ./rapid -nl rapid_namelist_San_Guad_JHM preonly -tao_gatol 0.01 -tao_grtol 0.0040 > $rapd_file
 ./tst_opt_find.sh $rapd_file | cat > $find_file
 ./tst_opt_comp.sh $find_file 0.617188 1.95898 6.32206
 x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $find_file" >&2 ; exit $x ; fi
 ./tst_nml_tidy_San_Guad_JHM.sh
 fi
 
-#  -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   - 
+#  -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -
 #3rd set of initial parameters
-#  -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   - 
+#  -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -
 unt=$((unt+1))
 if (("$unt" >= "$fst")) && (("$unt" <= "$lst")) ; then
 ./tst_nml_tidy_San_Guad_JHM.sh
@@ -468,18 +468,18 @@ sed -i -e "s|IS_opt_run         =.*|IS_opt_run         =2|"                    \
        -e "s|ZS_knorm_init      =.*|ZS_knorm_init      =$ZS_knorm_init|"       \
        -e "s|ZS_xnorm_init      =.*|ZS_xnorm_init      =$ZS_xnorm_init|"       \
        -e "s|kfac_file          =.*|kfac_file          ='$kfac_file'|"         \
-          rapid_namelist_San_Guad_JHM  
+          rapid_namelist_San_Guad_JHM
 sleep 3
-mpiexec -n 1 ./rapid -ksp_type preonly -tao_gatol 0.01 -tao_grtol 0.0040 > $rapd_file
+mpiexec -n 1 ./rapid -nl rapid_namelist_San_Guad_JHM preonly -tao_gatol 0.01 -tao_grtol 0.0040 > $rapd_file
 ./tst_opt_find.sh $rapd_file | cat > $find_file
 ./tst_opt_comp.sh $find_file 0.5 1.75 6.33788
 x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $find_file" >&2 ; exit $x ; fi
 ./tst_nml_tidy_San_Guad_JHM.sh
 fi
 
-#  -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   - 
+#  -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -
 #Compare results
-#  -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   - 
+#  -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -
 if (("13" >= "$fst")) && (("15" <= "$lst")) ; then
 echo "Comparing best values"
 pick_file='tmp_opt_pick_2.txt'
@@ -498,7 +498,7 @@ rm -f rapid_namelist
 
 
 #*******************************************************************************
-#Run all simulations for Upper Mississippi Basin 
+#Run all simulations for Upper Mississippi Basin
 #*******************************************************************************
 
 #-------------------------------------------------------------------------------
@@ -529,7 +529,7 @@ sed -i -e "s|Qout_file          =.*|Qout_file          ='$Qout_file'|"         \
 sleep 3
 mpiexec -n 1 ./rapid > $rapd_file
 echo "Comparing files"
-./tst_run_comp $Qout_gold $Qout_file > $comp_file 
+./tst_run_comp $Qout_gold $Qout_file > $comp_file
 x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $comp_file" >&2 ; exit $x ; fi
 rm $Qout_file
 rm $rapd_file
@@ -555,9 +555,9 @@ sed -i -e "s|Qout_file          =.*|Qout_file          ='$Qout_file'|"         \
        -e "s|IS_opt_routing     =.*|IS_opt_routing     =1|"                    \
         rapid_namelist_Reg07_JHM
 sleep 3
-mpiexec -n 1 ./rapid -ksp_type preonly > $rapd_file
+mpiexec -n 1 ./rapid -nl rapid_namelist_San_Guad_JHM preonly > $rapd_file
 echo "Comparing files"
-./tst_run_comp $Qout_gold $Qout_file > $comp_file 
+./tst_run_comp $Qout_gold $Qout_file > $comp_file
 x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $comp_file" >&2 ; exit $x ; fi
 rm $Qout_file
 rm $rapd_file
@@ -585,9 +585,9 @@ echo "Running simul. $sim/17"
 sed -i -e "s|Qout_file          =.*|Qout_file          ='$Qout_file'|"         \
         rapid_namelist_Reg07_JHM
 sleep 3
-mpiexec -n $proc ./rapid -ksp_type richardson > $rapd_file
+mpiexec -n $proc ./rapid -nl rapid_namelist_San_Guad_JHM richardson > $rapd_file
 echo "Comparing files"
-./tst_run_comp $Qout_gold $Qout_file > $comp_file 
+./tst_run_comp $Qout_gold $Qout_file > $comp_file
 x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $comp_file" >&2 ; exit $x ; fi
 rm $Qout_file
 rm $rapd_file
