@@ -17,9 +17,9 @@
 #Discharge Uncertainty through a Large River Network", Zenodo.
 #DOI: 10.5281/zenodo.2665084
 #The script returns the following exit codes
-# - 0  if all experiments are successful 
-# - 22 if some arguments are faulty 
-# - 99 if a comparison failed 
+# - 0  if all experiments are successful
+# - 22 if some arguments are faulty
+# - 99 if a comparison failed
 #Author:
 #Cedric H. David, 2015-2021.
 
@@ -45,30 +45,30 @@ if [ "$#" = "0" ]; then
      lst=99
      echo "Performing all unit tests: 1-2"
      echo "********************"
-fi 
-#Perform all unit tests if no options are given 
+fi
+#Perform all unit tests if no options are given
 
 if [ "$#" = "1" ]; then
      fst=$1
      lst=$1
      echo "Performing one unit test: $1"
      echo "********************"
-fi 
-#Perform one single unit test if one option is given 
+fi
+#Perform one single unit test if one option is given
 
 if [ "$#" = "2" ]; then
      fst=$1
      lst=$2
      echo "Performing unit tests: $1-$2"
      echo "********************"
-fi 
-#Perform all unit tests between first and second option given (both included) 
+fi
+#Perform all unit tests between first and second option given (both included)
 
 if [ "$#" -gt "2" ]; then
      echo "A maximum of two options can be used" 1>&2
      exit 22
-fi 
-#Exit if more than two options are given 
+fi
+#Exit if more than two options are given
 
 
 #*******************************************************************************
@@ -81,12 +81,6 @@ unt=0
 #*******************************************************************************
 #Run all simulations
 #*******************************************************************************
-
-#-------------------------------------------------------------------------------
-#Create symbolic list to default namelist
-#-------------------------------------------------------------------------------
-rm -f rapid_namelist
-ln -s rapid_namelist_WSWM_GRL rapid_namelist
 
 #-------------------------------------------------------------------------------
 #Run simulations and compare output files (single core, 729 days)
@@ -124,12 +118,12 @@ sed -i -e "s|BS_opt_Qinit       =.*|BS_opt_Qinit       =$BS_opt_Qinit|"        \
        -e "s|Qout_file          =.*|Qout_file          ='$Qout_file'|"         \
           rapid_namelist_WSWM_GRL
 sleep 3
-mpiexec -n 1 ./rapid -ksp_type preonly > $rapd_file
+mpiexec -n 1 ./rapid -nl rapid_namelist_WSWM_GRL -ksp_type preonly > $rapd_file
 echo "Comparing files"
-./tst_run_comp $Qout_gold $Qout_file 1e-40 1e-37 > $comp_file 
+./tst_run_comp $Qout_gold $Qout_file 1e-40 1e-37 > $comp_file
 x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $comp_file" >&2 ; exit $x ; fi
 echo "Comparing files"
-./tst_run_comp $Qfinal_gold $Qfinal_file 1e-40 1e-37 > $comp_file 
+./tst_run_comp $Qfinal_gold $Qfinal_file 1e-40 1e-37 > $comp_file
 x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $comp_file" >&2 ; exit $x ; fi
 rm $Qout_file
 rm $Qfinal_file
@@ -166,7 +160,7 @@ sed -i -e "s|BS_opt_Qinit       =.*|BS_opt_Qinit       =$BS_opt_Qinit|"        \
        -e "s|Qout_file          =.*|Qout_file          ='$Qout_file'|"         \
           rapid_namelist_WSWM_GRL
 sleep 3
-mpiexec -n 1 ./rapid -ksp_type preonly > $rapd_file
+mpiexec -n 1 ./rapid -nl rapid_namelist_WSWM_GRL -ksp_type preonly > $rapd_file
 echo "Comparing files"
 ./tst_run_comp $Qout_gold $Qout_file 1e-40 1e-37 > $comp_file
 x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $comp_file" >&2 ; exit $x ; fi
@@ -180,11 +174,6 @@ rm $comp_file
 echo "Success"
 echo "********************"
 fi
-
-#-------------------------------------------------------------------------------
-#Remove symbolic list to default namelist
-#-------------------------------------------------------------------------------
-rm -f rapid_namelist
 
 
 #*******************************************************************************
