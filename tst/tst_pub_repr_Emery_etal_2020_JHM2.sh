@@ -88,12 +88,6 @@ unt=0
 #*******************************************************************************
 
 #-------------------------------------------------------------------------------
-#Create symbolic list to default namelist
-#-------------------------------------------------------------------------------
-rm -f rapid_namelist
-ln -s rapid_namelist_San_Guad_JHM2 rapid_namelist
-
-#-------------------------------------------------------------------------------
 #Run simulations and compare output files (single core)
 #-------------------------------------------------------------------------------
 
@@ -115,7 +109,7 @@ sed -i -e "s|Qout_file          =.*|Qout_file          ='$Qout_file'|"         \
        -e "s|Vlat_file          =.*|Vlat_file          ='$Vlat_file'|"         \
           rapid_namelist_San_Guad_JHM2
 sleep 3
-mpiexec -n 1 ./rapid -ksp_type preonly > $rapd_file
+mpiexec -n 1 ./rapid -nl rapid_namelist_San_Guad_JHM2 -ksp_type preonly > $rapd_file
 echo "Comparing files"
 ./tst_run_comp $Qout_gold $Qout_file > $comp_file
 x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $comp_file" >&2 ; exit $x ; fi
@@ -148,7 +142,7 @@ sed -i -e "s|Qout_file          =.*|Qout_file          ='$Qout_file'|"         \
        -e "s|Vlat_file          =.*|Vlat_file          ='$Vlat_file'|"         \
           rapid_namelist_San_Guad_JHM2
 sleep 3
-mpiexec -n 1 ./rapid -ksp_type preonly > $rapd_file
+mpiexec -n 1 ./rapid -nl rapid_namelist_San_Guad_JHM2 -ksp_type preonly > $rapd_file
 echo "Comparing files"
 ./tst_run_comp $Qout_gold $Qout_file > $comp_file
 x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $comp_file" >&2 ; exit $x ; fi
@@ -182,7 +176,7 @@ sed -i -e "s|Qout_file          =.*|Qout_file          ='$Qout_file'|"         \
        -e "s|ZS_dtUQ            =.*|ZS_dtUQ            =2628028.8|"            \
           rapid_namelist_San_Guad_JHM2
 sleep 3
-mpiexec -n 1 ./rapid -ksp_type preonly > $rapd_file
+mpiexec -n 1 ./rapid -nl rapid_namelist_San_Guad_JHM2 -ksp_type preonly > $rapd_file
 echo "Comparing files"
 ./tst_run_comp $Qout_gold $Qout_file > $comp_file
 x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $comp_file" >&2 ; exit $x ; fi
@@ -212,7 +206,7 @@ comp_file="tmp_run_comp_$sim.txt"
 sed -i -e "s|Qout_file          =.*|Qout_file          ='$Qout_file'|"         \
           rapid_namelist_San_Guad_JHM2
 sleep 3
-mpiexec -n 1 ./rapid -ksp_type preonly > $rapd_file
+mpiexec -n 1 ./rapid -nl rapid_namelist_San_Guad_JHM2 -ksp_type preonly > $rapd_file
 echo "Comparing files"
 ./tst_run_comp $Qout_gold $Qout_file > $comp_file
 x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $comp_file" >&2 ; exit $x ; fi
@@ -241,7 +235,7 @@ sed -i -e "s|Qout_file          =.*|Qout_file          ='$Qout_file'|"         \
        -e "s|IS_radius          =.*|IS_radius          =40|"                   \
           rapid_namelist_San_Guad_JHM2
 sleep 3
-mpiexec -n 1 ./rapid -ksp_type preonly > $rapd_file
+mpiexec -n 1 ./rapid -nl rapid_namelist_San_Guad_JHM2 -ksp_type preonly > $rapd_file
 echo "Comparing files"
 ./tst_run_comp $Qout_gold $Qout_file > $comp_file
 x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $comp_file" >&2 ; exit $x ; fi
@@ -270,7 +264,7 @@ sed -i -e "s|Qout_file          =.*|Qout_file          ='$Qout_file'|"         \
        -e "s|IS_radius          =.*|IS_radius          =30|"                   \
           rapid_namelist_San_Guad_JHM2
 sleep 3
-mpiexec -n 1 ./rapid -ksp_type preonly > $rapd_file
+mpiexec -n 1 ./rapid -nl rapid_namelist_San_Guad_JHM2 -ksp_type preonly > $rapd_file
 echo "Comparing files"
 ./tst_run_comp $Qout_gold $Qout_file > $comp_file
 x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $comp_file" >&2 ; exit $x ; fi
@@ -299,7 +293,7 @@ sed -i -e "s|Qout_file          =.*|Qout_file          ='$Qout_file'|"         \
        -e "s|IS_radius          =.*|IS_radius          =25|"                   \
           rapid_namelist_San_Guad_JHM2
 sleep 3
-mpiexec -n 1 ./rapid -ksp_type preonly > $rapd_file
+mpiexec -n 1 ./rapid -nl rapid_namelist_San_Guad_JHM2 -ksp_type preonly > $rapd_file
 echo "Comparing files"
 ./tst_run_comp $Qout_gold $Qout_file > $comp_file
 x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $comp_file" >&2 ; exit $x ; fi
@@ -328,7 +322,7 @@ sed -i -e "s|Qout_file          =.*|Qout_file          ='$Qout_file'|"         \
        -e "s|IS_radius          =.*|IS_radius          =20|"                   \
           rapid_namelist_San_Guad_JHM2
 sleep 3
-mpiexec -n 1 ./rapid -ksp_type preonly > $rapd_file
+mpiexec -n 1 ./rapid -nl rapid_namelist_San_Guad_JHM2 -ksp_type preonly > $rapd_file
 echo "Comparing files"
 ./tst_run_comp $Qout_gold $Qout_file > $comp_file
 x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $comp_file" >&2 ; exit $x ; fi
@@ -357,7 +351,7 @@ sed -i -e "s|Qout_file          =.*|Qout_file          ='$Qout_file'|"         \
        -e "s|IS_radius          =.*|IS_radius          =15|"                   \
           rapid_namelist_San_Guad_JHM2
 sleep 3
-mpiexec -n 1 ./rapid -ksp_type preonly > $rapd_file
+mpiexec -n 1 ./rapid -nl rapid_namelist_San_Guad_JHM2 -ksp_type preonly > $rapd_file
 echo "Comparing files"
 ./tst_run_comp $Qout_gold $Qout_file > $comp_file
 x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $comp_file" >&2 ; exit $x ; fi
@@ -386,7 +380,7 @@ sed -i -e "s|Qout_file          =.*|Qout_file          ='$Qout_file'|"         \
        -e "s|IS_radius          =.*|IS_radius          =10|"                   \
           rapid_namelist_San_Guad_JHM2
 sleep 3
-mpiexec -n 1 ./rapid -ksp_type preonly > $rapd_file
+mpiexec -n 1 ./rapid -nl rapid_namelist_San_Guad_JHM2 -ksp_type preonly > $rapd_file
 echo "Comparing files"
 ./tst_run_comp $Qout_gold $Qout_file > $comp_file
 x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $comp_file" >&2 ; exit $x ; fi
@@ -415,7 +409,7 @@ sed -i -e "s|Qout_file          =.*|Qout_file          ='$Qout_file'|"         \
        -e "s|IS_radius          =.*|IS_radius          =5|"                    \
           rapid_namelist_San_Guad_JHM2
 sleep 3
-mpiexec -n 1 ./rapid -ksp_type preonly > $rapd_file
+mpiexec -n 1 ./rapid -nl rapid_namelist_San_Guad_JHM2 -ksp_type preonly > $rapd_file
 echo "Comparing files"
 ./tst_run_comp $Qout_gold $Qout_file > $comp_file
 x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $comp_file" >&2 ; exit $x ; fi
@@ -444,7 +438,7 @@ sed -i -e "s|Qout_file          =.*|Qout_file          ='$Qout_file'|"         \
        -e "s|IS_radius          =.*|IS_radius          =0|"                    \
           rapid_namelist_San_Guad_JHM2
 sleep 3
-mpiexec -n 1 ./rapid -ksp_type preonly > $rapd_file
+mpiexec -n 1 ./rapid -nl rapid_namelist_San_Guad_JHM2 -ksp_type preonly > $rapd_file
 echo "Comparing files"
 ./tst_run_comp $Qout_gold $Qout_file > $comp_file
 x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $comp_file" >&2 ; exit $x ; fi
@@ -473,7 +467,7 @@ sed -i -e "s|Qout_file          =.*|Qout_file          ='$Qout_file'|"         \
        -e "s|ZS_inflation       =.*|ZS_inflation       =1.00|"                 \
           rapid_namelist_San_Guad_JHM2
 sleep 3
-mpiexec -n 1 ./rapid -ksp_type preonly > $rapd_file
+mpiexec -n 1 ./rapid -nl rapid_namelist_San_Guad_JHM2 -ksp_type preonly > $rapd_file
 echo "Comparing files"
 ./tst_run_comp $Qout_gold $Qout_file > $comp_file
 x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $comp_file" >&2 ; exit $x ; fi
@@ -502,7 +496,7 @@ sed -i -e "s|Qout_file          =.*|Qout_file          ='$Qout_file'|"         \
        -e "s|ZS_inflation       =.*|ZS_inflation       =2.58|"                 \
           rapid_namelist_San_Guad_JHM2
 sleep 3
-mpiexec -n 1 ./rapid -ksp_type preonly > $rapd_file
+mpiexec -n 1 ./rapid -nl rapid_namelist_San_Guad_JHM2 -ksp_type preonly > $rapd_file
 echo "Comparing files"
 ./tst_run_comp $Qout_gold $Qout_file > $comp_file
 x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $comp_file" >&2 ; exit $x ; fi
@@ -531,7 +525,7 @@ sed -i -e "s|Qout_file          =.*|Qout_file          ='$Qout_file'|"         \
        -e "s|ZS_inflation       =.*|ZS_inflation       =3.00|"                 \
           rapid_namelist_San_Guad_JHM2
 sleep 3
-mpiexec -n 1 ./rapid -ksp_type preonly > $rapd_file
+mpiexec -n 1 ./rapid -nl rapid_namelist_San_Guad_JHM2 -ksp_type preonly > $rapd_file
 echo "Comparing files"
 ./tst_run_comp $Qout_gold $Qout_file > $comp_file
 x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $comp_file" >&2 ; exit $x ; fi
@@ -560,7 +554,7 @@ sed -i -e "s|Qout_file          =.*|Qout_file          ='$Qout_file'|"         \
        -e "s|ZS_inflation       =.*|ZS_inflation       =5.00|"                 \
           rapid_namelist_San_Guad_JHM2
 sleep 3
-mpiexec -n 1 ./rapid -ksp_type preonly > $rapd_file
+mpiexec -n 1 ./rapid -nl rapid_namelist_San_Guad_JHM2 -ksp_type preonly > $rapd_file
 echo "Comparing files"
 ./tst_run_comp $Qout_gold $Qout_file > $comp_file
 x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $comp_file" >&2 ; exit $x ; fi
@@ -589,7 +583,7 @@ sed -i -e "s|Qout_file          =.*|Qout_file          ='$Qout_file'|"         \
        -e "s|ZS_threshold       =.*|ZS_threshold       =1e-5|"                 \
           rapid_namelist_San_Guad_JHM2
 sleep 3
-mpiexec -n 1 ./rapid -ksp_type preonly > $rapd_file
+mpiexec -n 1 ./rapid -nl rapid_namelist_San_Guad_JHM2 -ksp_type preonly > $rapd_file
 echo "Comparing files"
 ./tst_run_comp $Qout_gold $Qout_file > $comp_file
 x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $comp_file" >&2 ; exit $x ; fi
@@ -618,7 +612,7 @@ sed -i -e "s|Qout_file          =.*|Qout_file          ='$Qout_file'|"         \
        -e "s|ZS_threshold       =.*|ZS_threshold       =1e-4|"                 \
           rapid_namelist_San_Guad_JHM2
 sleep 3
-mpiexec -n 1 ./rapid -ksp_type preonly > $rapd_file
+mpiexec -n 1 ./rapid -nl rapid_namelist_San_Guad_JHM2 -ksp_type preonly > $rapd_file
 echo "Comparing files"
 ./tst_run_comp $Qout_gold $Qout_file > $comp_file
 x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $comp_file" >&2 ; exit $x ; fi
@@ -647,7 +641,7 @@ sed -i -e "s|Qout_file          =.*|Qout_file          ='$Qout_file'|"         \
        -e "s|ZS_threshold       =.*|ZS_threshold       =1e-3|"                 \
           rapid_namelist_San_Guad_JHM2
 sleep 3
-mpiexec -n 1 ./rapid -ksp_type preonly > $rapd_file
+mpiexec -n 1 ./rapid -nl rapid_namelist_San_Guad_JHM2 -ksp_type preonly > $rapd_file
 echo "Comparing files"
 ./tst_run_comp $Qout_gold $Qout_file > $comp_file
 x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $comp_file" >&2 ; exit $x ; fi
@@ -676,7 +670,7 @@ sed -i -e "s|Qout_file          =.*|Qout_file          ='$Qout_file'|"         \
        -e "s|ZS_threshold       =.*|ZS_threshold       =1e-2|"                 \
           rapid_namelist_San_Guad_JHM2
 sleep 3
-mpiexec -n 1 ./rapid -ksp_type preonly > $rapd_file
+mpiexec -n 1 ./rapid -nl rapid_namelist_San_Guad_JHM2 -ksp_type preonly > $rapd_file
 echo "Comparing files"
 ./tst_run_comp $Qout_gold $Qout_file > $comp_file
 x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $comp_file" >&2 ; exit $x ; fi
@@ -705,7 +699,7 @@ sed -i -e "s|Qout_file          =.*|Qout_file          ='$Qout_file'|"         \
        -e "s|ZS_threshold       =.*|ZS_threshold       =1e-1|"                 \
           rapid_namelist_San_Guad_JHM2
 sleep 3
-mpiexec -n 1 ./rapid -ksp_type preonly > $rapd_file
+mpiexec -n 1 ./rapid -nl rapid_namelist_San_Guad_JHM2 -ksp_type preonly > $rapd_file
 echo "Comparing files"
 ./tst_run_comp $Qout_gold $Qout_file > $comp_file
 x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $comp_file" >&2 ; exit $x ; fi
@@ -736,7 +730,7 @@ sed -i -e "s|Qout_file          =.*|Qout_file          ='$Qout_file'|"         \
        -e "s|obs_use_id_file    =.*|obs_use_id_file    ='../../rapid/input/San_Guad_JHM2/obs_tot_id_San_Guad_2010_2013_full.csv'|" \
           rapid_namelist_San_Guad_JHM2
 sleep 3
-mpiexec -n 1 ./rapid -ksp_type preonly > $rapd_file
+mpiexec -n 1 ./rapid -nl rapid_namelist_San_Guad_JHM2 -ksp_type preonly > $rapd_file
 echo "Comparing files"
 ./tst_run_comp $Qout_gold $Qout_file > $comp_file
 x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $comp_file" >&2 ; exit $x ; fi
@@ -767,7 +761,7 @@ sed -i -e "s|Qout_file          =.*|Qout_file          ='$Qout_file'|"         \
        -e "s|obs_use_id_file    =.*|obs_use_id_file    ='../../rapid/input/San_Guad_JHM2/obs_tot_id_San_Guad_2010_2013_full.csv'|" \
           rapid_namelist_San_Guad_JHM2
 sleep 3
-mpiexec -n 1 ./rapid -ksp_type preonly > $rapd_file
+mpiexec -n 1 ./rapid -nl rapid_namelist_San_Guad_JHM2 -ksp_type preonly > $rapd_file
 echo "Comparing files"
 ./tst_run_comp $Qout_gold $Qout_file > $comp_file
 x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $comp_file" >&2 ; exit $x ; fi
@@ -798,7 +792,7 @@ sed -i -e "s|Qout_file          =.*|Qout_file          ='$Qout_file'|"         \
        -e "s|obs_use_id_file    =.*|obs_use_id_file    ='../../rapid/input/San_Guad_JHM2/obs_tot_id_San_Guad_2010_2013_full.csv'|" \
           rapid_namelist_San_Guad_JHM2
 sleep 3
-mpiexec -n 1 ./rapid -ksp_type preonly > $rapd_file
+mpiexec -n 1 ./rapid -nl rapid_namelist_San_Guad_JHM2 -ksp_type preonly > $rapd_file
 echo "Comparing files"
 ./tst_run_comp $Qout_gold $Qout_file > $comp_file
 x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $comp_file" >&2 ; exit $x ; fi
@@ -829,7 +823,7 @@ sed -i -e "s|Qout_file          =.*|Qout_file          ='$Qout_file'|"         \
        -e "s|obs_use_id_file    =.*|obs_use_id_file    ='../../rapid/input/San_Guad_JHM2/obs_tot_id_San_Guad_2010_2013_full.csv'|" \
           rapid_namelist_San_Guad_JHM2
 sleep 3
-mpiexec -n 1 ./rapid -ksp_type preonly > $rapd_file
+mpiexec -n 1 ./rapid -nl rapid_namelist_San_Guad_JHM2 -ksp_type preonly > $rapd_file
 echo "Comparing files"
 ./tst_run_comp $Qout_gold $Qout_file > $comp_file
 x=$? && if [ $x -gt 0 ] ; then  echo "Failed comparison: $comp_file" >&2 ; exit $x ; fi
