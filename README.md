@@ -7,6 +7,8 @@
 
 [![Docker Build](https://img.shields.io/docker/cloud/build/chdavid/rapid.svg)](https://hub.docker.com/r/chdavid/rapid/tags)
 
+[![GitHub CI Status](https://github.com/c-h-david/rapid/actions/workflows/github_actions_CI.yml/badge.svg)](https://github.com/c-h-david/rapid/actions)
+
 The Routing Application for Parallel computatIon of Discharge (RAPID) is a river
 network routing model. Given surface and groundwater inflow to rivers, this 
 model can compute flow and volume of water everywhere in river networks made out 
