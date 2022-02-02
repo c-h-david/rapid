@@ -1,5 +1,5 @@
 #*******************************************************************************
-#rapid_github_actions.yml
+#github_actions_CI.yml
 #*******************************************************************************
 
 #Purpose:
@@ -14,7 +14,7 @@
 #*******************************************************************************
 #Name and specification of triggers
 #*******************************************************************************
-name: RAPID GitHub Actions
+name: GitHub Actions CI
 on:
    push:
    pull_request:
@@ -64,8 +64,9 @@ jobs:
       #Install OS requirements
       #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
          - name: Install OS requirements
-           run: sudo apt-get update
-         - run: sudo apt-get install -y --no-install-recommends gcc
+           run: |
+              sudo apt-get update
+              sudo apt-get install -y --no-install-recommends gcc
 
       #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       #Run tests
