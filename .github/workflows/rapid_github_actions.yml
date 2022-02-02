@@ -56,13 +56,16 @@ jobs:
               echo "This job is running on a ${{ runner.os }} server at GitHub!"
               echo "The name of the repository is ${{ github.repository }}."
               echo "The name of the branch is ${{ github.ref }}."
+              echo "The current working directory is $PWD"
+              echo "The GitHub workspace is ${{ github.workspace }}"
               echo "The shell used is $SHELL"
-              echo "pwd"
-              pwd
-              echo "ls"
-              ls
-              echo "ls ${{ github.workspace }}"
-              ls ${{ github.workspace }}
+
+      #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      #Install OS requirements
+      #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+         - name: Install OS requirements
+           run: sudo apt-get update
+         - run: sudo apt-get install -y --no-install-recommends gcc
 
       #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       #Run tests
