@@ -66,7 +66,29 @@ jobs:
          - name: Install OS requirements
            run: |
               sudo apt-get update
-              sudo apt-get install -y --no-install-recommends gcc
+              sudo apt-get install -y --no-install-recommends $(grep -v -E '(^#|^$)' requirements.apt)
+
+      #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      #Install required scientific libraries
+      #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+         - name: Install required scientific libraries
+           run: |
+              cd $GITHUB_WORKSPACE
+              mkdir ../installz
+              cd ../installz
+              export INSTALLZ_DIR=$PWD
+              cd $GITHUB_WORKSPACE
+              ./rapid_install_prereqs.sh -i=$INSTALLZ_DIR
+              source ./rapid_specify_varpath.sh $INSTALLZ_DIR
+
+      #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      #Build RAPID
+      #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+         - name: Build RAPID
+           run: |
+              cd $GITHUB_WORKSPACE
+              cd ./src/
+              make rapid
 
       #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       #Run tests
@@ -76,8 +98,13 @@ jobs:
               TST_PUB_DWNL: ${{matrix.dwnl}}
               TST_PUB_REPR: ${{matrix.repr}}
            run: |
-              echo $TST_PUB_DWNL
-              echo $TST_PUB_REPR
+              cd $GITHUB_WORKSPACE
+              cd ./tst/
+              gfortran -o tst_run_comp tst_run_comp.f90 -I $TACC_NETCDF_INC -L $TACC_NETCDF_LIB -lnetcdff
+              gfortran -o tst_run_cerr tst_run_cerr.f90 -I $TACC_NETCDF_INC -L $TACC_NETCDF_LIB -lnetcdff
+              gfortran -o tst_run_conv_Qinit tst_run_conv_Qinit.f90 -I $TACC_NETCDF_INC -L $TACC_NETCDF_LIB -lnetcdff
+              echo $TST_PUB_DWNL && $TST_PUB_DWNL
+              echo $TST_PUB_REPR && $TST_PUB_REPR
 
 
 #*******************************************************************************
