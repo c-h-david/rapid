@@ -80,6 +80,7 @@ jobs:
               cd $GITHUB_WORKSPACE
               ./rapid_install_prereqs.sh -i=$INSTALLZ_DIR
               source ./rapid_specify_varpath.sh $INSTALLZ_DIR
+              echo "The PETSc directory is: $PETSC_DIR"
 
       #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       #Build RAPID
@@ -87,6 +88,7 @@ jobs:
          - name: Build RAPID
            run: |
               cd $GITHUB_WORKSPACE
+              echo "The PETSc directory is: $PETSC_DIR"
               cd ./src/
               make rapid
 
