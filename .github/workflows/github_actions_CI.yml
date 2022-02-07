@@ -81,6 +81,14 @@ jobs:
               ./rapid_install_prereqs.sh -i=$INSTALLZ_DIR
               source ./rapid_specify_varpath.sh $INSTALLZ_DIR
               echo "The PETSc directory is: $PETSC_DIR"
+              echo "INSTALLZ_DIR=$INSTALLZ_DIR" >> $GITHUB_ENV
+              echo "TACC_NETCDF_LIB=$TACC_NETCDF_LIB" >> $GITHUB_ENV
+              echo "TACC_NETCDF_INC=$TACC_NETCDF_INC" >> $GITHUB_ENV
+              echo "PETSC_DIR=$PETSC_DIR" >> $GITHUB_ENV
+              echo "PETSC_ARCH=$PETSC_ARCH" >> $GITHUB_ENV
+              echo "LD_LIBRARY_PATH=$TACC_NETCDF_LIB" >> $GITHUB_ENV
+              echo "$PETSC_DIR/$PETSC_ARCH/bin" >> $GITHUB_PATH
+              echo "$INSTALLZ_DIR/netcdf-install/bin" >> $GITHUB_PATH
 
       #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       #Build RAPID
