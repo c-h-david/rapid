@@ -37,8 +37,44 @@ jobs:
                  repr: "./tst_pub_repr_David_etal_2011_JHM.sh 1 15"
                - dwnl: "./tst_pub_dwnl_David_etal_2011_JHM.sh"
                  repr: "./tst_pub_repr_David_etal_2011_JHM.sh 16 23"
+               - dwnl: "./tst_pub_dwnl_David_etal_2011_JHM.sh"
+                 repr: "./tst_pub_xtra_David_etal_2011_JHM.sh"
+               - dwnl: "./tst_pub_dwnl_David_etal_2011_HP.sh sim1"
+                 repr: "./tst_pub_repr_David_etal_2011_HP.sh 1"
+               - dwnl: "./tst_pub_dwnl_David_etal_2011_HP.sh sim2"
+                 repr: "./tst_pub_repr_David_etal_2011_HP.sh 2"
+               - dwnl: "./tst_pub_dwnl_David_etal_2011_HP.sh sim3"
+                 repr: "./tst_pub_repr_David_etal_2011_HP.sh 3"
+               - dwnl: "./tst_pub_dwnl_David_etal_2011_HP.sh sim4"
+                 repr: "./tst_pub_repr_David_etal_2011_HP.sh 4"
+               - dwnl: "./tst_pub_dwnl_David_etal_2011_HP.sh sim5"
+                 repr: "./tst_pub_repr_David_etal_2011_HP.sh 5"
+               - dwnl: "./tst_pub_dwnl_David_etal_2011_HP.sh sim6"
+                 repr: "./tst_pub_repr_David_etal_2011_HP.sh 6"
+               - dwnl: "./tst_pub_dwnl_David_etal_2011_HP.sh sim7"
+                 repr: "./tst_pub_repr_David_etal_2011_HP.sh 7"
+               - dwnl: "./tst_pub_dwnl_David_etal_2011_HP.sh sim8"
+                 repr: "./tst_pub_repr_David_etal_2011_HP.sh 8"
+               - dwnl: "./tst_pub_dwnl_David_etal_2011_HP.sh sim9"
+                 repr: "./tst_pub_repr_David_etal_2011_HP.sh 9"
+               - dwnl: "./tst_pub_dwnl_David_etal_2011_HP.sh sim10"
+                 repr: "./tst_pub_repr_David_etal_2011_HP.sh 10"
+               - dwnl: "./tst_pub_dwnl_David_etal_2011_HP.sh opt"
+                 repr: "./tst_pub_repr_David_etal_2011_HP.sh 11 16"
+               - dwnl: "./tst_pub_dwnl_David_etal_2011_HP.sh opt"
+                 repr: "./tst_pub_repr_David_etal_2011_HP.sh 17 22"
+               - dwnl: "./tst_pub_dwnl_David_etal_2011_HP.sh opt"
+                 repr: "./tst_pub_repr_David_etal_2011_HP.sh 23 52"
+               - dwnl: "./tst_pub_dwnl_David_etal_2011_HP.sh opt"
+                 repr: "./tst_pub_repr_David_etal_2011_HP.sh 53 82"
+               - dwnl: "./tst_pub_dwnl_David_etal_2011_HP.sh opt"
+                 repr: "./tst_pub_repr_David_etal_2011_HP.sh 83 115"
                - dwnl: "./tst_pub_dwnl_Emery_etal_2020_JHM2.sh"
                  repr: "./tst_pub_repr_Emery_etal_2020_JHM2.sh"
+
+
+
+
       steps:
 
       #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -80,7 +116,7 @@ jobs:
               cd $GITHUB_WORKSPACE
               ./rapid_install_prereqs.sh -i=$INSTALLZ_DIR
               source ./rapid_specify_varpath.sh $INSTALLZ_DIR
-              echo "The PETSc directory is: $PETSC_DIR"
+              #The _ENV/_PATH steps below store environment variables for later
               echo "INSTALLZ_DIR=$INSTALLZ_DIR" >> $GITHUB_ENV
               echo "TACC_NETCDF_LIB=$TACC_NETCDF_LIB" >> $GITHUB_ENV
               echo "TACC_NETCDF_INC=$TACC_NETCDF_INC" >> $GITHUB_ENV
@@ -96,7 +132,6 @@ jobs:
          - name: Build RAPID
            run: |
               cd $GITHUB_WORKSPACE
-              echo "The PETSc directory is: $PETSC_DIR"
               cd ./src/
               make rapid
 
