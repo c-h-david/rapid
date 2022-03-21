@@ -3,8 +3,6 @@
 
 [![License (3-Clause BSD)](https://img.shields.io/badge/license-BSD%203--Clause-yellow.svg)](https://github.com/c-h-david/rapid/blob/master/LICENSE)
 
-[![Build Status](https://travis-ci.org/c-h-david/rapid.svg?branch=master)](https://travis-ci.org/c-h-david/rapid)
-
 [![Docker Build](https://img.shields.io/docker/cloud/build/chdavid/rapid.svg)](https://hub.docker.com/r/chdavid/rapid/tags)
 
 [![GitHub CI Status](https://github.com/c-h-david/rapid/actions/workflows/github_actions_CI.yml/badge.svg)](https://github.com/c-h-david/rapid/actions)
