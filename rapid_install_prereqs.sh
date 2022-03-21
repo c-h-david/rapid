@@ -152,7 +152,7 @@ fi
 #Remove old netCDF directories if FORCE_INSTALL_NETCDF
 
 if [ ! -f netcdf-c-4.7.3.tar.gz ] && [ ! -d netcdf-c-4.7.3 ]; then
-    wget -nc "http://www.unidata.ucar.edu/downloads/netcdf/ftp/netcdf-c-4.7.3.tar.gz"
+    wget -nc -O netcdf-c-4.7.3.tar.gz https://github.com/Unidata/netcdf-c/archive/refs/tags/v4.7.3.tar.gz
 fi
 #Download netCDF installation file if it does not exist
 
@@ -162,7 +162,7 @@ fi
 #Extract netCDF installation file if directory does not exist
 
 if [ ! -f netcdf-fortran-4.5.2.tar.gz ] && [ ! -d netcdf-fortran-4.5.2 ]; then
-    wget -nc "http://www.unidata.ucar.edu/downloads/netcdf/ftp/netcdf-fortran-4.5.2.tar.gz"
+    wget -nc -O netcdf-fortran-4.5.2.tar.gz https://github.com/Unidata/netcdf-fortran/archive/refs/tags/v4.5.2.tar.gz
 fi
 #Download netCDF installation file if it does not exist
 

@@ -102,8 +102,8 @@ The Network Common Data Form (NetCDF) can be installed using:
 $ mkdir $HOME/installz
 $ cd $HOME/installz
 $ mkdir netcdf-install
-$ wget "http://www.unidata.ucar.edu/downloads/netcdf/ftp/netcdf-c-4.7.3.tar.gz"
-$ wget "http://www.unidata.ucar.edu/downloads/netcdf/ftp/netcdf-fortran-4.5.2.tar.gz"
+$ wget -O netcdf-c-4.7.3.tar.gz https://github.com/Unidata/netcdf-c/archive/refs/tags/v4.7.3.tar.gz
+$ wget -O netcdf-fortran-4.5.2.tar.gz https://github.com/Unidata/netcdf-fortran/archive/refs/tags/v4.5.2.tar.gz
 $ tar -xzf netcdf-c-4.7.3.tar.gz
 $ tar -xzf netcdf-fortran-4.5.2.tar.gz
 $ cd netcdf-c-4.7.3/
