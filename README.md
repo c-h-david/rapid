@@ -57,7 +57,7 @@ installed, *i.e.* **no update** was performed, and **no upgrade** either.
 
 Note that the experienced users may find more up-to-date installation 
 instructions in
-[.travis.yml](https://github.com/c-h-david/rapid/blob/master/.travis.yml).
+[github\_actions\_CI.yml](https://github.com/c-h-david/rapid/blob/master/.github/workflows/github_actions_CI.yml).
 
 ### Download RAPID
 First, make sure that `git` is installed: 
@@ -178,4 +178,4 @@ $ gfortran -o tst_run_conv_Qinit tst_run_conv_Qinit.f90 -I $TACC_NETCDF_INC -L $
 
 Note that the experienced users may find more up-to-date testing instructions 
 in
-[.travis.yml](https://github.com/c-h-david/rapid/blob/master/.travis.yml).
+[github\_actions\_CI.yml](https://github.com/c-h-david/rapid/blob/master/.github/workflows/github_actions_CI.yml).
