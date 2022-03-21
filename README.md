@@ -52,7 +52,7 @@ in
 
 ## Installation on Ubuntu
 This document was written and tested on a machine with a **clean** image of 
-[Ubuntu 16.04.1 Desktop 64-bit](http://old-releases.ubuntu.com/releases/16.04.1/ubuntu-16.04.1-desktop-amd64.iso)
+[Ubuntu 18.04.6 Desktop 64-bit](https://releases.ubuntu.com/18.04/ubuntu-18.04.6-desktop-amd64.iso)
 installed, *i.e.* **no update** was performed, and **no upgrade** either. 
 
 Note that the experienced users may find more up-to-date installation 
