@@ -131,18 +131,6 @@ jobs:
       #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
          - name: Build RAPID
            run: |
-              echo "$INSTALLZ_DIR"
-              ls $INSTALLZ_DIR
-              echo "/home/runner/work/rapid/installz/netcdf-install/"
-              ls /home/runner/work/rapid/installz/netcdf-install/
-              echo "$TACC_NETCDF_LIB"
-              ls $TACC_NETCDF_LIB
-              echo "$TACC_NETCDF_INC"
-              ls $TACC_NETCDF_INC
-              echo "$PETSC_DIR"
-              ls $PETSC_DIR
-              echo "$PETSC_ARCH"
-              echo "$LD_LIBRARY_PATH"
               cd $GITHUB_WORKSPACE
               cd ./src/
               make rapid
