@@ -65,7 +65,7 @@ body:
     attributes:
       label: Anything else you'd like us to know?
       description: >
-      Feel free to share!
+        Feel free to share!
       placeholder: Additional thoughts are welcome!
     validations:
       required: false
