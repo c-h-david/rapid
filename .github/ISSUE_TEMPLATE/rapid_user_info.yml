@@ -1,0 +1,69 @@
+name: RAPID user info
+description: Tell us about your use of RAPID.
+title: "[user]: "
+labels: ["user"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to tell us about your use of RAPID!
+  - type: input
+    attributes:
+      label: Your Name
+      description: What are your first name and your last name?
+      placeholder: ex. Jane Doe
+    validations:
+      required: true
+  - type: input
+    attributes:
+      label: Your Institution
+      description: Where do you work?
+      placeholder: ex. Jet Propulsion Laboratory
+    validations:
+      required: true
+  - type: input
+    attributes:
+      label: Your Location
+      description: Where are you located?
+      placeholder: ex. Pasadena, California, United States
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Your Use Case
+      description: > 
+        Please describe what you're using RAPID for. You can include such
+        information as geographical domain, type of river network you're using
+        (NHDPlus, HydroSHEDS, other?), where your runoff data comes from
+        (self-produced, obtained from NLDAS, GLDAS, or others), as well as what
+        you’re hoping to accomplish.
+      placeholder: Tell us as much as you can!
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Why RAPID?
+      description: > 
+        Please tell us why you chose RAPID. Perhaps because it is open source,
+        is dockerized, uses mapped rivers as its computational elements, has 
+        parallel computing capabilities, etc.
+      placeholder: This may give us ideas for what to keep supporting.
+    validations:
+      required: true
+  - type: checkboxes
+    attributes:
+      label: Are you aware of our philosphy for open source?
+      description: >
+        RAPID has been open source since inception, and we have spend some time
+        reflecting on what it took to build it and keep it open to all. The 
+        outcome of this reflection is [David et al., 2016]
+        (https://doi.org/10.1002/2015EA000142). We don't expect you to read it
+        all, but we please ask that you read just one paragraph.
+      options:
+        - label: >
+            I have read the last paragraph of Section 6.3 in
+            [David et al., 2016]
+            (https://doi.org/10.1002/2015EA000142) (the one starting with
+             "Finally, and contrary to common belief, open source software does
+            not mean...")
+          required: true
