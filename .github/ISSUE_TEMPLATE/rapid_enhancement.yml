@@ -1,0 +1,32 @@
+name: Proposed Enhancement for RAPID
+description: If you would like to suggest an enhancement to RAPID.
+title: "[enhancement]: "
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to make a suggestion for RAPID!
+  - type: textarea
+    attributes:
+      label: What would you like to suggest?
+      description: >
+      We cannot promise anything, but we love suggestions for improvement.
+      placeholder: 
+    validations:
+      required: false
+  - type: checkboxes
+    attributes:
+      label: Let us ensure open source development is sustainable!
+      description: >
+        We care about open source, and we would like for our interactions to be
+        a productive collaboration!
+     options:
+        - label: >
+            I have read the last paragraph of Section 6.3 in
+            [David et al., 2016](https://doi.org/10.1002/2015EA000142).
+          required: true
+        - label: >
+            I have looked at previous GitHub issues and this enhancement has not
+            yet been proposed.
+          required: true
