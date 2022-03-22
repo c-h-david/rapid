@@ -55,9 +55,9 @@ body:
     attributes:
       label: How do you use RAPID?
       description: >
-      Do you use our Docker images?  Do you install RAPID yourself? If so, what
-      operating system do you use? Are you on a local machine, a high
-      performance computer, the compute cloud (which one)?
+        Do you use our Docker images?  Do you install RAPID yourself? If so,
+        what operating system do you use? Are you on a local machine, a high
+        performance computer, the compute cloud (which one)?
       placeholder: We like knowing these details to best support you.
     validations:
       required: true

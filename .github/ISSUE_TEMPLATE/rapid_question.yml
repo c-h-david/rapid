@@ -11,8 +11,8 @@ body:
     attributes:
       label: What would you like to ask?
       description: >
-      All questions are good questions!
-      placeholder: Can you please tell me...?
+        All questions are good questions!
+      placeholder: Can you please tell us...?
     validations:
       required: false
   - type: checkboxes

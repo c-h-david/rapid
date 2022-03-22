@@ -11,7 +11,7 @@ body:
     attributes:
       label: What would you like to suggest?
       description: >
-      We cannot promise anything, but we love suggestions for improvement.
+        We cannot promise anything, but we love suggestions for improvement.
       placeholder: 
     validations:
       required: false
