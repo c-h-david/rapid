@@ -208,7 +208,7 @@ fi
 #Remove old PETSc directories if FORCE_INSTALL_PETSC
 
 if [ ! -d petsc-3.13.0.tar.gz ] && [ ! -d petsc-3.13.0 ]; then
-    wget "http://ftp.mcs.anl.gov/pub/petsc/release-snapshots/petsc-3.13.0.tar.gz"
+    wget "https://ftp.mcs.anl.gov/pub/petsc/release-snapshots/petsc-3.13.0.tar.gz"
 fi
 #Download PETSc installation file if it does not exist
 
