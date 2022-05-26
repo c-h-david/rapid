@@ -140,7 +140,7 @@ $ cd $HOME/installz
 $ wget "https://ftp.mcs.anl.gov/pub/petsc/release-snapshots/petsc-3.13.0.tar.gz"
 $ tar -xzf petsc-3.13.0.tar.gz
 $ cd petsc-3.13.0
-$ ./configure PETSC_DIR=$PWD PETSC_ARCH=linux-gcc-c --download-fblaslapack=1 --download-mpich=1 --with-cc=gcc --with-cxx=g++ --with-fc=gfortran --with-clanguage=c --with-debugging=0
+$ ./configure PETSC_DIR=$PWD PETSC_ARCH=linux-gcc-c --download-fblaslapack=1 --download-mpich=1 --with-cc=gcc --with-fc=gfortran --with-clanguage=c --with-debugging=0
 $ make PETSC_DIR=$PWD PETSC_ARCH=linux-gcc-c all > all.log
 $ make PETSC_DIR=$PWD PETSC_ARCH=linux-gcc-c check > check.log
 ```

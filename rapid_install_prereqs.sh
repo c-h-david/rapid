@@ -15,17 +15,16 @@
 #Make sure this file has execute privileges.
 # $ chmod u+x rapid_install_prereqs.sh
 #
-#Compilers for C, C++ and FORTRAN are needed in order to install the libraries
-#used by RAPID. Here we use the GNU Compiler Collection (GCC). One can make sure
-#that all necessary compilers are installed by executing:
+#Compilers for C and FORTRAN are needed in order to install the libraries used
+#by RAPID. Here we use the GNU Compiler Collection (GCC). One can make sure that
+#all necessary compilers are installed by executing:
 # $ which gcc
-# $ which g++
 # $ which gfortran
 #
 #If one or more of the compilers is missing, execute:
-# $ yum install gcc g++ gfortran (Red Hat)
-# $ apt-get install gcc g++ gfortran (Debian)
-# $ brew install gcc --enable-cxx (Mac)
+# $ yum install gcc gfortran (Red Hat)
+# $ apt-get install gcc gfortran (Debian)
+# $ brew install gcc (Mac)
 
 
 #*******************************************************************************
