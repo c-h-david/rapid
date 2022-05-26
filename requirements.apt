@@ -23,27 +23,40 @@
 #-------------------------------------------------------------------------------
 #Code management
 #-------------------------------------------------------------------------------
-git                          #version control system
-vim                          #text editor
+git
+#version control system
+vim
+#text editor
 
 #-------------------------------------------------------------------------------
 #Code building
 #-------------------------------------------------------------------------------
-gcc                          #compiler for C
-gfortran                     #compiler for Fortran
-python3                      #interpreter for Python
-make                         #compilation orchestration
-m4                           #needed for netCDF-C
-libhdf5-dev                  #needed for netCDF-C
-python3-distutils            #needed for PETSc
+gcc
+#compiler for C
+gfortran
+#compiler for Fortran
+python3
+#interpreter for Python
+make
+#compilation orchestration
+m4
+#needed for netCDF-C
+libhdf5-dev
+#needed for netCDF-C
+python3-distutils
+#needed for PETSc
 
 #-------------------------------------------------------------------------------
 #Code testing
 #-------------------------------------------------------------------------------
-wget                         #download utility
-ca-certificates              #certificate authority
-bc                           #basic calculator
-nco                          #netCDF operators
+wget
+#download utility
+ca-certificates
+#certificate authority
+bc
+#basic calculator
+nco
+#netCDF operators
 
 
 #*******************************************************************************
