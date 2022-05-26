@@ -13,6 +13,7 @@
 #Usage
 #*******************************************************************************
 #sudo apt-get install -y $(grep -v -E '(^#|^$)' requirements.apt)
+#can also use the '--no-install-recommends' flag
 
 
 #*******************************************************************************
@@ -22,26 +23,27 @@
 #-------------------------------------------------------------------------------
 #Code management
 #-------------------------------------------------------------------------------
-git
-vim
+git                          #version control system
+vim                          #text editor
 
 #-------------------------------------------------------------------------------
 #Code building
 #-------------------------------------------------------------------------------
-gcc
-gfortran
-python3
-make
-libhdf5-dev
-m4
+gcc                          #compiler for C
+gfortran                     #compiler for Fortran
+python3                      #interpreter for Python
+make                         #compilation orchestration
+m4                           #needed for netCDF-C
+libhdf5-dev                  #needed for netCDF-C
+python3-distutils            #needed for PETSc
 
 #-------------------------------------------------------------------------------
 #Code testing
 #-------------------------------------------------------------------------------
-wget
-ca-certificates
-bc
-nco
+wget                         #download utility
+ca-certificates              #certificate authority
+bc                           #basic calculator
+nco                          #netCDF operators
 
 
 #*******************************************************************************
