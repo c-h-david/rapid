@@ -1,0 +1,74 @@
+#*******************************************************************************
+#github_actions_CD.yml
+#*******************************************************************************
+
+#Purpose:
+#GitHub Actions is a continuous integration and continuous delivery (CI/CD)
+#platform that allows to automate the build, test, and deployment pipeline. The
+#The purpose of this file is to give instructions to GitHub on how to do the
+#image deployment to Docker Hub.
+#Author:
+#Cedric H. David, 2022-2022.
+
+
+#*******************************************************************************
+#Name and specification of triggers
+#*******************************************************************************
+name: GitHub Actions CD
+on:
+   push:
+   pull_request:
+on:
+   push:
+      branches:
+         - 'main'
+      tags:
+         - 'v*'
+         - '20*'
+
+
+#*******************************************************************************
+#Jobs
+#*******************************************************************************
+jobs:
+
+   #----------------------------------------------------------------------------
+   #Ubuntu
+   #----------------------------------------------------------------------------
+   ubuntu:
+      runs-on: ubuntu-18.04
+
+      steps:
+
+      #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      #Checkout RAPID code
+      #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+         - name: Checkout RAPID code
+           uses: actions/checkout@v2
+
+      #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      #Display GitHub Action-related information
+      #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+         - name: Display GitHub Action-related information
+           run: |
+              echo "This job was triggered by a ${{ github.event_name }} event."
+              echo "This job is running on a ${{ runner.os }} server at GitHub!"
+              echo "The name of the repository is ${{ github.repository }}."
+              echo "The name of the branch is ${{ github.ref }}."
+              echo "The current working directory is $PWD"
+              echo "The GitHub workspace is ${{ github.workspace }}"
+              echo "The shell used is $SHELL"
+
+      #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      #Login to Docker Hub
+      #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+         - name: Login to Docker Hub
+           uses: docker/login-action@v1
+           with:
+              username: ${{ secrets.DOCKER_HUB_NAME }}
+              password: ${{ secrets.DOCKER_HUB_TOKN }}
+
+
+#*******************************************************************************
+#End
+#*******************************************************************************
