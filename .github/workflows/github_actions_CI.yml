@@ -6,7 +6,7 @@
 #GitHub Actions is a continuous integration and continuous delivery (CI/CD)
 #platform that allows to automate the build, test, and deployment pipeline. The
 #The purpose of this file is to give instructions to GitHub on how to do the
-#work.
+#integration work.
 #Author:
 #Cedric H. David, 2022-2022.
 
