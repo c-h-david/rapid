@@ -17,9 +17,6 @@
 name: GitHub Actions CD
 on:
    push:
-   pull_request:
-on:
-   push:
       branches:
          - 'main'
       tags:
