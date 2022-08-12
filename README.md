@@ -104,11 +104,11 @@ The Network Common Data Form (NetCDF) can be installed using:
 $ mkdir $HOME/installz
 $ cd $HOME/installz
 $ mkdir netcdf-install
-$ wget -O netcdf-c-4.7.3.tar.gz https://github.com/Unidata/netcdf-c/archive/refs/tags/v4.7.3.tar.gz
+$ wget -O netcdf-c-4.8.1.tar.gz https://github.com/Unidata/netcdf-c/archive/refs/tags/v4.8.1.tar.gz
 $ wget -O netcdf-fortran-4.5.2.tar.gz https://github.com/Unidata/netcdf-fortran/archive/refs/tags/v4.5.2.tar.gz
-$ tar -xzf netcdf-c-4.7.3.tar.gz
+$ tar -xzf netcdf-c-4.8.1.tar.gz
 $ tar -xzf netcdf-fortran-4.5.2.tar.gz
-$ cd netcdf-c-4.7.3/
+$ cd netcdf-c-4.8.1/
 $ ./configure CC=gcc CPPFLAGS=-I/usr/lib/x86_64-linux-gnu/hdf5/serial/include LDFLAGS=-L/usr/lib/x86_64-linux-gnu/hdf5/serial/lib --prefix=$HOME/installz/netcdf-install --disable-dap
 $ make check > check.log
 $ make install > install.log
