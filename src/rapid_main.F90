@@ -16,7 +16,6 @@ program rapid_main
 #include <petsc/finclude/petsctao.h>
 use petsctao
 use rapid_var, only :                                                          &
-                   namelist_file,                                              &
                    Vlat_file,Qfor_file,Qhum_file,                              &
                    Qout_file,V_file,                                           &
                    IS_M,JS_M,JS_RpM,IS_RpM,IS_RpF,IS_RpH,                      &
@@ -44,9 +43,9 @@ external rapid_phiroutine
 
 
 !*******************************************************************************
-!Initialize
+!Command line interface and initialization
 !*******************************************************************************
-namelist_file='./rapid_namelist' 
+call rapid_cli
 call rapid_init
 
 

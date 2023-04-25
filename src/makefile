@@ -42,6 +42,7 @@ dummy:
 #Link RAPID main
 #-------------------------------------------------------------------------------
 rapid:	rapid_main.o \
+	rapid_cli.o \
 	rapid_init.o \
 	rapid_read_namelist.o \
 	rapid_arrays.o \
@@ -98,6 +99,7 @@ rapid:	rapid_main.o \
 	${FLINKER} -o \
 	rapid \
 	rapid_main.o \
+	rapid_cli.o \
 	rapid_init.o \
 	rapid_read_namelist.o \
 	rapid_arrays.o \
@@ -176,8 +178,11 @@ rapid_QtoV.o: 			rapid_QtoV.F90 rapid_var.mod
 rapid_routing.o: 		rapid_routing.F90 rapid_var.mod
 	${FLINKER} -c rapid_routing.F90 ${PETSC_FC_INCLUDES} ${NETCDF_INCLUDE}
 
+rapid_cli.o: 			rapid_cli.F90 rapid_var.mod
+	${FLINKER} -c rapid_cli.F90 ${PETSC_FC_INCLUDES} -D RAPID_VERSION=${RAPID_VERSION}
+
 rapid_init.o: 			rapid_read_namelist.o rapid_var.mod
-	${FLINKER} -c rapid_init.F90 ${PETSC_FC_INCLUDES} -D RAPID_VERSION=${RAPID_VERSION}
+	${FLINKER} -c rapid_init.F90 ${PETSC_FC_INCLUDES}
 
 rapid_routing_param.o: 		rapid_routing_param.F90 rapid_var.mod
 	${FLINKER} -c rapid_routing_param.F90 ${PETSC_FC_INCLUDES}
