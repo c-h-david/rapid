@@ -43,7 +43,7 @@ echo "- Changing the authorship year in all files from $old_year to $new_year"
 #*******************************************************************************
 #Change year in ./ directory
 #*******************************************************************************
-for file in `find ./ -maxdepth 1 -type f` 
+for file in `find ./ -maxdepth 1 -type f`
 do
      sed -i -e "s|\-$old_year|\-$new_year|" $file
 done
@@ -54,7 +54,7 @@ echo " . Done for ./ directory"
 #*******************************************************************************
 #Change year in ./src/ directory
 #*******************************************************************************
-for file in `find ./src/ -maxdepth 1 -type f` 
+for file in `find ./src/ -maxdepth 1 -type f`
 do
      sed -i -e "s|\-$old_year|\-$new_year|" $file
 done
@@ -65,12 +65,23 @@ echo " . Done for ./src/ directory"
 #*******************************************************************************
 #Change year in ./tst/ directory
 #*******************************************************************************
-for file in `find ./tst/ -maxdepth 1 -type f` 
+for file in `find ./tst/ -maxdepth 1 -type f`
 do
      sed -i -e "s|\-$old_year|\-$new_year|" $file
 done
 
 echo " . Done for ./tst/ directory"
+
+
+#*******************************************************************************
+#Change year in ./.github/workflows/ directory
+#*******************************************************************************
+for file in `find ./.github/workflows/ -maxdepth 1 -type f`
+do
+     sed -i -e "s|\-$old_year|\-$new_year|" $file
+done
+
+echo " . Done for ./.github/workflows/ directory"
 
 
 #*******************************************************************************
