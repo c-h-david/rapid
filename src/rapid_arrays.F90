@@ -51,7 +51,7 @@ subroutine rapid_arrays
 ! - IV_obs_loc1(IS_obs_bas) allows to know where to put the flow values
 !   in the current modeling domain using the 0-based ZV_Qobs
 !Author: 
-!Cedric H. David, 2014-2021.
+!Cedric H. David, 2014-2023.
 
 
 !*******************************************************************************

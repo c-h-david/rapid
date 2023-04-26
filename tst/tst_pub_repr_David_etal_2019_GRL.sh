@@ -21,7 +21,7 @@
 # - 22 if some arguments are faulty 
 # - 99 if a comparison failed 
 #Author:
-#Cedric H. David, 2015-2021.
+#Cedric H. David, 2015-2023.
 
 
 #*******************************************************************************

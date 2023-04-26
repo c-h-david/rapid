@@ -6,7 +6,7 @@
 #Purpose:
 #This shell script installs all prerequisites for running RAPID on Linux.
 #Author:
-#Alan D. Snow and Cedric H. David, 2015-2021.
+#Alan D. Snow and Cedric H. David, 2015-2023.
 
 
 #*******************************************************************************

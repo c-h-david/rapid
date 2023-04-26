@@ -6,7 +6,7 @@
 #Purpose:
 #This script allows updating the authorship year for all RAPID files. 
 #Author:
-#Cedric H. David, 2019-2021.
+#Cedric H. David, 2019-2023.
 
 
 #*******************************************************************************

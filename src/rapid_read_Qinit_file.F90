@@ -6,7 +6,7 @@ subroutine rapid_read_Qinit_file
 !Purpose:
 !Read Qinit_file from Fortran.
 !Author: 
-!Cedric H. David, 2017-2021.
+!Cedric H. David, 2017-2023.
 
 
 !*******************************************************************************

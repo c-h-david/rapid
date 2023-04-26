@@ -6,7 +6,7 @@
 #This file lists all the packages from the Advanced Packaging Tool that are 
 #required by RAPID, and is used by the "apt-get" software.
 #Author:
-#Cedric H. David, 2017-2021.
+#Cedric H. David, 2017-2023.
 
 
 #*******************************************************************************

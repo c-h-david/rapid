@@ -6,7 +6,7 @@ subroutine rapid_meta_Vlat_file(Vlat_file)
 !Purpose:
 !Read metadata for Vlat_file from Fortran/netCDF.
 !Author: 
-!Cedric H. David, 2016-2021.
+!Cedric H. David, 2016-2023.
 
 
 !*******************************************************************************

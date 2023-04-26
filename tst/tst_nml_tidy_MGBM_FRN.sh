@@ -7,7 +7,7 @@
 #This script resets the namelist of the corresponding publication to default 
 #values.
 #Author:
-#Cedric H. David, 2018-2021.
+#Cedric H. David, 2018-2023.
 
 
 #*******************************************************************************
