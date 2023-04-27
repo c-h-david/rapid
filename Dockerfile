@@ -21,7 +21,7 @@
 #*******************************************************************************
 #Operating System
 #*******************************************************************************
-FROM debian:buster-slim
+FROM debian:bullseye-slim
 
 
 #*******************************************************************************
@@ -62,7 +62,7 @@ ENV  LD_LIBRARY_PATH=$TACC_NETCDF_LIB
 ENV  PATH=$PATH:$TACC_NETCDF_DIR/bin
 #netCDF
 
-ENV  PETSC_DIR=$INSTALLZ_DIR/petsc-3.13.0
+ENV  PETSC_DIR=$INSTALLZ_DIR/petsc-3.13.6
 ENV  PETSC_ARCH=linux-gcc-c
 ENV  PATH=$PATH:$PETSC_DIR/$PETSC_ARCH/bin
 #PETSc

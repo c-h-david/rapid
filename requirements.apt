@@ -43,6 +43,8 @@ m4
 #needed for netCDF-C
 libhdf5-dev
 #needed for netCDF-C
+unzip
+#needed for netCDF-c
 python3-distutils
 #needed for PETSc
 

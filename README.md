@@ -54,7 +54,7 @@ in
 
 ## Installation on Ubuntu
 This document was written and tested on a machine with a **clean** image of 
-[Ubuntu 18.04.6 Desktop 64-bit](https://releases.ubuntu.com/18.04/ubuntu-18.04.6-desktop-amd64.iso)
+[Ubuntu 20.04.6 Desktop 64-bit](https://releases.ubuntu.com/20.04/ubuntu-20.04.6-desktop-amd64.iso)
 installed, *i.e.* **no update** was performed, and **no upgrade** either. 
 
 Note that the experienced users may find more up-to-date installation 
@@ -104,16 +104,16 @@ The Network Common Data Form (NetCDF) can be installed using:
 $ mkdir $HOME/installz
 $ cd $HOME/installz
 $ mkdir netcdf-install
-$ wget -O netcdf-c-4.8.1.tar.gz https://github.com/Unidata/netcdf-c/archive/refs/tags/v4.8.1.tar.gz
-$ wget -O netcdf-fortran-4.5.2.tar.gz https://github.com/Unidata/netcdf-fortran/archive/refs/tags/v4.5.2.tar.gz
-$ tar -xzf netcdf-c-4.8.1.tar.gz
-$ tar -xzf netcdf-fortran-4.5.2.tar.gz
-$ cd netcdf-c-4.8.1/
+$ wget -O netcdf-c-4.9.0.tar.gz https://github.com/Unidata/netcdf-c/archive/refs/tags/v4.9.0.tar.gz
+$ wget -O netcdf-fortran-4.6.0.tar.gz https://github.com/Unidata/netcdf-fortran/archive/refs/tags/v4.6.0.tar.gz
+$ tar -xzf netcdf-c-4.9.0.tar.gz
+$ tar -xzf netcdf-fortran-4.6.0.tar.gz
+$ cd netcdf-c-4.9.0/
 $ ./configure CC=gcc CPPFLAGS=-I/usr/lib/x86_64-linux-gnu/hdf5/serial/include LDFLAGS=-L/usr/lib/x86_64-linux-gnu/hdf5/serial/lib --prefix=$HOME/installz/netcdf-install --disable-dap
 $ make check > check.log
 $ make install > install.log
 $ cd ..
-$ cd netcdf-fortran-4.5.2/
+$ cd netcdf-fortran-4.6.0/
 $ ./configure CC=gcc FC=gfortran LD_LIBRARY_PATH=$HOME/installz/netcdf-install/lib:$LD_LIBRARY_PATH CPPFLAGS=-I$HOME/installz/netcdf-install/include LDFLAGS=-L$HOME/installz/netcdf-install/lib --prefix=$HOME/installz/netcdf-install/
 $ make check > check.log
 $ make install > install.log
@@ -139,9 +139,9 @@ can be installed using:
 
 ```
 $ cd $HOME/installz
-$ wget "https://ftp.mcs.anl.gov/pub/petsc/release-snapshots/petsc-3.13.0.tar.gz"
-$ tar -xzf petsc-3.13.0.tar.gz
-$ cd petsc-3.13.0
+$ wget "https://ftp.mcs.anl.gov/pub/petsc/release-snapshots/petsc-3.13.6.tar.gz"
+$ tar -xzf petsc-3.13.6.tar.gz
+$ cd petsc-3.13.6
 $ python3 ./configure PETSC_DIR=$PWD PETSC_ARCH=linux-gcc-c --download-fblaslapack=1 --download-mpich=1 --with-cc=gcc --with-fc=gfortran --with-clanguage=c --with-debugging=0
 $ make PETSC_DIR=$PWD PETSC_ARCH=linux-gcc-c all > all.log
 $ make PETSC_DIR=$PWD PETSC_ARCH=linux-gcc-c check > check.log
@@ -150,7 +150,7 @@ $ make PETSC_DIR=$PWD PETSC_ARCH=linux-gcc-c check > check.log
 Then, the environment should be updated using:
 
 ```
-$ export PETSC_DIR=$HOME/installz/petsc-3.13.0
+$ export PETSC_DIR=$HOME/installz/petsc-3.13.6
 $ export PETSC_ARCH=linux-gcc-c
 $ export PATH=$PATH:$PETSC_DIR/$PETSC_ARCH/bin
 ```

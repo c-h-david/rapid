@@ -144,35 +144,35 @@ fi
 cd $INSTALLZ_DIR
 
 if $FORCE_INSTALL_NETCDF ; then 
-    rm -rf netcdf-c-4.8.1
-    rm -rf netcdf-fortran-4.5.2
+    rm -rf netcdf-c-4.9.0
+    rm -rf netcdf-fortran-4.6.0
     rm -rf netcdf-install
 fi
 #Remove old netCDF directories if FORCE_INSTALL_NETCDF
 
-if [ ! -f netcdf-c-4.8.1.tar.gz ] && [ ! -d netcdf-c-4.8.1 ]; then
-    wget -nc -O netcdf-c-4.8.1.tar.gz https://github.com/Unidata/netcdf-c/archive/refs/tags/v4.8.1.tar.gz
+if [ ! -f netcdf-c-4.9.0.tar.gz ] && [ ! -d netcdf-c-4.9.0 ]; then
+    wget -nc -O netcdf-c-4.9.0.tar.gz https://github.com/Unidata/netcdf-c/archive/refs/tags/v4.9.0.tar.gz
 fi
 #Download netCDF installation file if it does not exist
 
-if [ ! -d netcdf-c-4.8.1 ]; then
-    tar -xzf netcdf-c-4.8.1.tar.gz
+if [ ! -d netcdf-c-4.9.0 ]; then
+    tar -xzf netcdf-c-4.9.0.tar.gz
 fi
 #Extract netCDF installation file if directory does not exist
 
-if [ ! -f netcdf-fortran-4.5.2.tar.gz ] && [ ! -d netcdf-fortran-4.5.2 ]; then
-    wget -nc -O netcdf-fortran-4.5.2.tar.gz https://github.com/Unidata/netcdf-fortran/archive/refs/tags/v4.5.2.tar.gz
+if [ ! -f netcdf-fortran-4.6.0.tar.gz ] && [ ! -d netcdf-fortran-4.6.0 ]; then
+    wget -nc -O netcdf-fortran-4.6.0.tar.gz https://github.com/Unidata/netcdf-fortran/archive/refs/tags/v4.6.0.tar.gz
 fi
 #Download netCDF installation file if it does not exist
 
-if [ ! -d netcdf-fortran-4.5.2 ]; then
-    tar -xzf netcdf-fortran-4.5.2.tar.gz
+if [ ! -d netcdf-fortran-4.6.0 ]; then
+    tar -xzf netcdf-fortran-4.6.0.tar.gz
 fi
 #Extract netCDF installation file if directory does not exist
 
 if [ ! -d netcdf-install ]; then
     mkdir -p netcdf-install
-    cd netcdf-c-4.8.1
+    cd netcdf-c-4.9.0
     ./configure CC=gcc                                                         \
                 CPPFLAGS=-I/usr/lib/x86_64-linux-gnu/hdf5/serial/include       \
                 LDFLAGS=-L/usr/lib/x86_64-linux-gnu/hdf5/serial/lib            \
@@ -180,7 +180,7 @@ if [ ! -d netcdf-install ]; then
     make check > check.log
     make install > install.log
     cd ..
-    cd netcdf-fortran-4.5.2
+    cd netcdf-fortran-4.6.0
     ./configure CC=gcc FC=gfortran                                             \
                 LD_LIBRARY_PATH=$INSTALLZ_DIR/netcdf-install/lib:$LD_LIBRARY_PATH \
                 CPPFLAGS=-I$INSTALLZ_DIR/netcdf-install/include                \
@@ -197,27 +197,27 @@ fi
 #Install netCDF if directory does not exist
 
 #-------------------------------------------------------------------------------
-#Installing PETSc 3.13.0
+#Installing PETSc 3.13.6
 #-------------------------------------------------------------------------------
 cd $INSTALLZ_DIR
 
 if $FORCE_INSTALL_PETSC ; then 
-    rm -rf petsc-3.13.0
+    rm -rf petsc-3.13.6
 fi
 #Remove old PETSc directories if FORCE_INSTALL_PETSC
 
-if [ ! -d petsc-3.13.0.tar.gz ] && [ ! -d petsc-3.13.0 ]; then
-    wget "https://ftp.mcs.anl.gov/pub/petsc/release-snapshots/petsc-3.13.0.tar.gz"
+if [ ! -d petsc-3.13.6.tar.gz ] && [ ! -d petsc-3.13.6 ]; then
+    wget "https://ftp.mcs.anl.gov/pub/petsc/release-snapshots/petsc-3.13.6.tar.gz"
 fi
 #Download PETSc installation file if it does not exist
 
-if [ ! -d petsc-3.13.0 ]; then
-    tar -xzf petsc-3.13.0.tar.gz
+if [ ! -d petsc-3.13.6 ]; then
+    tar -xzf petsc-3.13.6.tar.gz
 fi
 #Extract PETSc installation file if directory does not exist
 
-if [ ! -d petsc-3.13.0/linux-gcc-c ]; then
-    cd petsc-3.13.0
+if [ ! -d petsc-3.13.6/linux-gcc-c ]; then
+    cd petsc-3.13.6
     if [ "$(expr substr $(uname -s) 1 9)" == "CYGWIN_NT" ]; then
         python3 ./configure PETSC_DIR=$PWD PETSC_ARCH=linux-gcc-c --download-fblaslapack=1 --download-mpich=1 --with-cc=gcc --with-fc=gfortran --with-clanguage=c --with-debugging=0 --with-windows-graphics=0
         #CYGWIN
@@ -228,7 +228,7 @@ if [ ! -d petsc-3.13.0/linux-gcc-c ]; then
     make PETSC_DIR=$PWD PETSC_ARCH=linux-gcc-c all
     make PETSC_DIR=$PWD PETSC_ARCH=linux-gcc-c check
 else
-    echo "- Skipped PETSc installation: petsc-3.13.0/linux-gcc-c directory"
+    echo "- Skipped PETSc installation: petsc-3.13.6/linux-gcc-c directory"
     echo "  already exists."
     echo "  To force installation, run with -pf or --petsc_force."
 fi
