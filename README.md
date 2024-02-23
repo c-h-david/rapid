@@ -99,36 +99,18 @@ $ sudo apt-get install -y --no-install-recommends $(grep -v -E '(^#|^$)' require
 >```
 
 ### Install netCDF
-The Network Common Data Form (NetCDF) can be installed using:
+The Network Common Data Form (NetCDF) was already installed with apt-get.
+
+
+
+
+
+
+However, the environment should be updated using:
 
 ```
-$ mkdir $HOME/installz
-$ cd $HOME/installz
-$ mkdir netcdf-install
-$ wget -O netcdf-c-4.9.0.tar.gz https://github.com/Unidata/netcdf-c/archive/refs/tags/v4.9.0.tar.gz
-$ wget -O netcdf-fortran-4.6.0.tar.gz https://github.com/Unidata/netcdf-fortran/archive/refs/tags/v4.6.0.tar.gz
-$ tar -xzf netcdf-c-4.9.0.tar.gz
-$ tar -xzf netcdf-fortran-4.6.0.tar.gz
-$ cd netcdf-c-4.9.0/
-$ ./configure CC=gcc CPPFLAGS=-I/usr/lib/x86_64-linux-gnu/hdf5/serial/include LDFLAGS=-L/usr/lib/x86_64-linux-gnu/hdf5/serial/lib --prefix=$HOME/installz/netcdf-install --disable-dap
-$ make check > check.log
-$ make install > install.log
-$ cd ..
-$ cd netcdf-fortran-4.6.0/
-$ ./configure CC=gcc FC=gfortran LD_LIBRARY_PATH=$HOME/installz/netcdf-install/lib:$LD_LIBRARY_PATH CPPFLAGS=-I$HOME/installz/netcdf-install/include LDFLAGS=-L$HOME/installz/netcdf-install/lib --prefix=$HOME/installz/netcdf-install/
-$ make check > check.log
-$ make install > install.log
-$ cd ..
-```
-
-Then, the environment should be updated using:
-
-```
-$ export TACC_NETCDF_DIR=$HOME/installz/netcdf-install
-$ export TACC_NETCDF_LIB=$TACC_NETCDF_DIR/lib
-$ export TACC_NETCDF_INC=$TACC_NETCDF_DIR/include
-$ export LD_LIBRARY_PATH=$TACC_NETCDF_LIB
-$ export PATH=$PATH:$TACC_NETCDF_DIR/bin
+$ export NETCDF_LIB='-L /usr/lib -lnetcdff'
+$ export NETCDF_INCLUDE='-I /usr/include'
 ```
 
 > Note that these four lines can also be added in `~/.bash_aliases` so that the 
@@ -168,15 +150,15 @@ $ cd src/
 $ make rapid
 ```
 
-## Testing on Ubuntu
+## Testing on Debian
 Testing scripts are currently under development.
 
 ```
 $ cd rapid/
 $ cd tst/
-$ gfortran -o tst_run_comp tst_run_comp.f90 -I $TACC_NETCDF_INC -L $TACC_NETCDF_LIB -lnetcdff
-$ gfortran -o tst_run_cerr tst_run_cerr.f90 -I $TACC_NETCDF_INC -L $TACC_NETCDF_LIB -lnetcdff
-$ gfortran -o tst_run_conv_Qinit tst_run_conv_Qinit.f90 -I $TACC_NETCDF_INC -L $TACC_NETCDF_LIB -lnetcdff
+$ gfortran -o tst_run_comp tst_run_comp.f90 $NETCDF_INCLUDE $NETCDF_LIB
+$ gfortran -o tst_run_cerr tst_run_cerr.f90 $NETCDF_INCLUDE $NETCDF_LIB
+$ gfortran -o tst_run_conv_Qinit tst_run_conv_Qinit.f90 $NETCDF_INCLUDE $NETCDF_LIB
 ```
 
 Note that the experienced users may find more up-to-date testing instructions 
