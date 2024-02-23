@@ -115,13 +115,11 @@ jobs:
               source ./rapid_specify_varpath.sh $INSTALLZ_DIR
               #The _ENV/_PATH steps below store environment variables for later
               echo "INSTALLZ_DIR=$INSTALLZ_DIR" >> $GITHUB_ENV
-              echo "TACC_NETCDF_LIB=$TACC_NETCDF_LIB" >> $GITHUB_ENV
-              echo "TACC_NETCDF_INC=$TACC_NETCDF_INC" >> $GITHUB_ENV
+              echo "NETCDF_LIB=$NETCDF_LIB" >> $GITHUB_ENV
+              echo "NETCDF_INCLUDE=$NETCDF_INCLUDE" >> $GITHUB_ENV
               echo "PETSC_DIR=$PETSC_DIR" >> $GITHUB_ENV
               echo "PETSC_ARCH=$PETSC_ARCH" >> $GITHUB_ENV
-              echo "LD_LIBRARY_PATH=$TACC_NETCDF_LIB" >> $GITHUB_ENV
               echo "$PETSC_DIR/$PETSC_ARCH/bin" >> $GITHUB_PATH
-              echo "$INSTALLZ_DIR/netcdf-install/bin" >> $GITHUB_PATH
 
       #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       #Build RAPID
@@ -142,6 +140,9 @@ jobs:
            run: |
               cd $GITHUB_WORKSPACE
               cd ./tst/
+              gfortran -o tst_run_comp tst_run_comp.f90 $NETCDF_INCLUDE $NETCDF_LIB
+              gfortran -o tst_run_cerr tst_run_cerr.f90 $NETCDF_INCLUDE $NETCDF_LIB
+              gfortran -o tst_run_conv_Qinit tst_run_conv_Qinit.f90 $NETCDF_INCLUDE $NETCDF_LIB
               gfortran -o tst_run_comp tst_run_comp.f90 -I $TACC_NETCDF_INC -L $TACC_NETCDF_LIB -lnetcdff
               gfortran -o tst_run_cerr tst_run_cerr.f90 -I $TACC_NETCDF_INC -L $TACC_NETCDF_LIB -lnetcdff
               gfortran -o tst_run_conv_Qinit tst_run_conv_Qinit.f90 -I $TACC_NETCDF_INC -L $TACC_NETCDF_LIB -lnetcdff
