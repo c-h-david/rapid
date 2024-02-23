@@ -121,6 +121,7 @@ The Portable, Extensible Toolkit for Scientific Computation (PETSc)
 can be installed using:
 
 ```
+$ mkdir $HOME/installz
 $ cd $HOME/installz
 $ wget "https://ftp.mcs.anl.gov/pub/petsc/release-snapshots/petsc-3.13.6.tar.gz"
 $ tar -xzf petsc-3.13.6.tar.gz
