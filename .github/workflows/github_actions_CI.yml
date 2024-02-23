@@ -78,7 +78,7 @@ jobs:
       #Checkout RAPID code
       #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
          - name: Checkout RAPID code
-           uses: actions/checkout@v3
+           uses: actions/checkout@v4
 
       #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       #Display GitHub Action-related information
@@ -88,7 +88,8 @@ jobs:
               echo "This job was triggered by a ${{ github.event_name }} event."
               echo "This job is running on a ${{ runner.os }} server at GitHub!"
               echo "The name of the repository is ${{ github.repository }}."
-              echo "The name of the branch is ${{ github.ref }}."
+              echo "The full git reference of this event is ${{ github.ref }}."
+              echo "The short git reference of this event is ${{ github.ref_name }}."
               echo "The current working directory is $PWD"
               echo "The GitHub workspace is ${{ github.workspace }}"
               echo "The shell used is $SHELL"
