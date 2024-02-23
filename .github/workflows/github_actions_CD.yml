@@ -52,6 +52,12 @@ jobs:
               echo "The shell used is $SHELL"
 
       #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      #Set up QEMU
+      #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+         - name: Set up QEMU
+           uses: docker/setup-qemu-action@v3
+
+      #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       #Login to Docker Hub
       #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
          - name: Login to Docker Hub
