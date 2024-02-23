@@ -39,9 +39,6 @@ INSTALLZ_DIR=$HOME/installz
 #'-i' option. This location can be updated as wished, but do not move anything 
 #after running this script, or do so at your own risks!
 
-FORCE_INSTALL_NETCDF=false
-#Installation of netCDF is not forced by default.
-
 FORCE_INSTALL_PETSC=false
 #Installation of PETSc is not forced by default.
 
@@ -58,7 +55,6 @@ case $i in
 -h|--help)
 echo "To install with defaults, ./install_rapid_prereqs.sh"
 echo "-i=/path/to/installz | --installz=/path/to/installz | last argument /path/to/installz"
-echo "To force installation of NetCDF: -nf | --netcdf_force"
 echo "To force installation of PETSc: -pf | --petsc_force"
 exit
 ;;
@@ -68,14 +64,6 @@ exit
 #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 -i=*|--installz=*)
 INSTALLZ_DIR="${i#*=}"
-shift
-;;
-
-#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-#Forcing installation of netCDF
-#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
--nf|--netcdf_force)
-FORCE_INSTALL_NETCDF=true
 shift
 ;;
 
@@ -121,12 +109,6 @@ fi
 #-------------------------------------------------------------------------------
 echo "Installing RAPID prereqs in: $INSTALLZ_DIR"
 
-if $FORCE_INSTALL_NETCDF ; then 
-     echo "Forcing reinstallation of netCDF even if its directory exists." 
-else 
-     echo "Not forcing reinstallation of netCDF if its directory exists." 
-fi 
-
 if $FORCE_INSTALL_PETSC ; then 
      echo "Forcing reinstallation of PETSc even if its directory exists." 
 else 
@@ -137,64 +119,6 @@ fi
 #*******************************************************************************
 #Installing prerequisites
 #*******************************************************************************
-
-#-------------------------------------------------------------------------------
-#netCDF
-#-------------------------------------------------------------------------------
-cd $INSTALLZ_DIR
-
-if $FORCE_INSTALL_NETCDF ; then 
-    rm -rf netcdf-c-4.9.0
-    rm -rf netcdf-fortran-4.6.0
-    rm -rf netcdf-install
-fi
-#Remove old netCDF directories if FORCE_INSTALL_NETCDF
-
-if [ ! -f netcdf-c-4.9.0.tar.gz ] && [ ! -d netcdf-c-4.9.0 ]; then
-    wget -nc -O netcdf-c-4.9.0.tar.gz https://github.com/Unidata/netcdf-c/archive/refs/tags/v4.9.0.tar.gz
-fi
-#Download netCDF installation file if it does not exist
-
-if [ ! -d netcdf-c-4.9.0 ]; then
-    tar -xzf netcdf-c-4.9.0.tar.gz
-fi
-#Extract netCDF installation file if directory does not exist
-
-if [ ! -f netcdf-fortran-4.6.0.tar.gz ] && [ ! -d netcdf-fortran-4.6.0 ]; then
-    wget -nc -O netcdf-fortran-4.6.0.tar.gz https://github.com/Unidata/netcdf-fortran/archive/refs/tags/v4.6.0.tar.gz
-fi
-#Download netCDF installation file if it does not exist
-
-if [ ! -d netcdf-fortran-4.6.0 ]; then
-    tar -xzf netcdf-fortran-4.6.0.tar.gz
-fi
-#Extract netCDF installation file if directory does not exist
-
-if [ ! -d netcdf-install ]; then
-    mkdir -p netcdf-install
-    cd netcdf-c-4.9.0
-    ./configure CC=gcc                                                         \
-                CPPFLAGS=-I/usr/lib/x86_64-linux-gnu/hdf5/serial/include       \
-                LDFLAGS=-L/usr/lib/x86_64-linux-gnu/hdf5/serial/lib            \
-                --prefix=$INSTALLZ_DIR/netcdf-install --disable-dap
-    make check > check.log
-    make install > install.log
-    cd ..
-    cd netcdf-fortran-4.6.0
-    ./configure CC=gcc FC=gfortran                                             \
-                LD_LIBRARY_PATH=$INSTALLZ_DIR/netcdf-install/lib:$LD_LIBRARY_PATH \
-                CPPFLAGS=-I$INSTALLZ_DIR/netcdf-install/include                \
-                LDFLAGS=-L$INSTALLZ_DIR/netcdf-install/lib                     \
-                --prefix=$INSTALLZ_DIR/netcdf-install/
-    make check > check.log
-    make install > install.log
-    cd ..
-else
-    echo "- Skipped netCDF installation: netcdf-install directory"
-    echo "  already exists."
-    echo "  To force installation, run with -nf or --netcdf_force."
-fi
-#Install netCDF if directory does not exist
 
 #-------------------------------------------------------------------------------
 #Installing PETSc 3.13.6
@@ -218,13 +142,7 @@ fi
 
 if [ ! -d petsc-3.13.6/linux-gcc-c ]; then
     cd petsc-3.13.6
-    if [ "$(expr substr $(uname -s) 1 9)" == "CYGWIN_NT" ]; then
-        python3 ./configure PETSC_DIR=$PWD PETSC_ARCH=linux-gcc-c --download-fblaslapack=1 --download-mpich=1 --with-cc=gcc --with-fc=gfortran --with-clanguage=c --with-debugging=0 --with-windows-graphics=0
-        #CYGWIN
-    else
-        python3 ./configure PETSC_DIR=$PWD PETSC_ARCH=linux-gcc-c --download-fblaslapack=1 --download-mpich=1 --with-cc=gcc --with-fc=gfortran --with-clanguage=c --with-debugging=0
-        #Linux/Mac
-    fi
+    python3 ./configure PETSC_DIR=$PWD PETSC_ARCH=linux-gcc-c --download-fblaslapack=1 --download-mpich=1 --with-cc=gcc --with-fc=gfortran --with-clanguage=c --with-debugging=0
     make PETSC_DIR=$PWD PETSC_ARCH=linux-gcc-c all
     make PETSC_DIR=$PWD PETSC_ARCH=linux-gcc-c check
 else
