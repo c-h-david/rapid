@@ -55,11 +55,8 @@ RUN  mkdir $INSTALLZ_DIR && \
 #-------------------------------------------------------------------------------
 #Update environment (ENV variables are available in Docker images & containers)
 #-------------------------------------------------------------------------------
-ENV  TACC_NETCDF_DIR=$INSTALLZ_DIR/netcdf-install
-ENV  TACC_NETCDF_LIB=$TACC_NETCDF_DIR/lib
-ENV  TACC_NETCDF_INC=$TACC_NETCDF_DIR/include
-ENV  LD_LIBRARY_PATH=$TACC_NETCDF_LIB
-ENV  PATH=$PATH:$TACC_NETCDF_DIR/bin
+ENV  NETCDF_LIB='-L /usr/lib -lnetcdff'
+ENV  NETCDF_INCLUDE='-I /usr/include'
 #netCDF
 
 ENV  PETSC_DIR=$INSTALLZ_DIR/petsc-3.13.6
@@ -74,9 +71,9 @@ ENV  PATH=$PATH:$PETSC_DIR/$PETSC_ARCH/bin
 RUN  cd ./src/ && \
      make rapid && \
      cd ../tst/ && \
-     gfortran -o tst_run_comp tst_run_comp.f90 -I $TACC_NETCDF_INC -L $TACC_NETCDF_LIB -lnetcdff && \
-     gfortran -o tst_run_cerr tst_run_cerr.f90 -I $TACC_NETCDF_INC -L $TACC_NETCDF_LIB -lnetcdff && \
-     gfortran -o tst_run_conv_Qinit tst_run_conv_Qinit.f90 -I $TACC_NETCDF_INC -L $TACC_NETCDF_LIB -lnetcdff
+     gfortran -o tst_run_comp tst_run_comp.f90 $NETCDF_INCLUDE $NETCDF_LIB && \
+     gfortran -o tst_run_cerr tst_run_cerr.f90 $NETCDF_INCLUDE $NETCDF_LIB && \
+     gfortran -o tst_run_conv_Qinit tst_run_conv_Qinit.f90 $NETCDF_INCLUDE $NETCDF_LIB
 
 
 #*******************************************************************************
