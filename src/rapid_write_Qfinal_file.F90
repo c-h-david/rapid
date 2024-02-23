@@ -6,7 +6,7 @@ subroutine rapid_write_Qfinal_file
 !Purpose:
 !Write into Qfinal_file from Fortran/netCDF.
 !Author: 
-!Cedric H. David, 2017-2023.
+!Cedric H. David, 2017-2024.
 
 
 !*******************************************************************************

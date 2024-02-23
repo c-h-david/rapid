@@ -6,7 +6,7 @@ subroutine rapid_open_Qhum_file(Qhum_file)
 !Purpose:
 !Open Qhum_file from Fortran.
 !Author: 
-!Cedric H. David, 2014-2023.
+!Cedric H. David, 2014-2024.
 
 
 !*******************************************************************************

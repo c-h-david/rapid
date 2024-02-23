@@ -6,7 +6,7 @@ subroutine rapid_cov_mat
 !Purpose:
 !Compute runoff error covariance matrix ZM_Pb for data assimilation
 !Authors: 
-!Charlotte M. Emery, and Cedric H. David, 2018-2023.
+!Charlotte M. Emery, and Cedric H. David, 2018-2024.
 
 
 !*******************************************************************************

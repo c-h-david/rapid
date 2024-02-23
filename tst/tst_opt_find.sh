@@ -13,7 +13,7 @@
 # - 22 if arguments are faulty 
 # - 33 if the search failed 
 #Author:
-#Cedric H. David, 2015-2023.
+#Cedric H. David, 2015-2024.
 
 
 #*******************************************************************************

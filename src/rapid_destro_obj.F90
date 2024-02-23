@@ -8,7 +8,7 @@ subroutine rapid_destro_obj
 !libraries).  PETSc and TAO also need be finalized.  This is what's done here
 !Note: only finilized here, need to add destroy of vectors.
 !Author: 
-!Cedric H. David, 2008-2023.
+!Cedric H. David, 2008-2024.
 
 
 !*******************************************************************************

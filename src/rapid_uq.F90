@@ -8,7 +8,7 @@ subroutine rapid_uq
 !variance, and average covariances of the combined surface/subsurface flow into
 !the river network.  
 !Author: 
-!Cedric H. David, 2016-2023.
+!Cedric H. David, 2016-2024.
 
 
 !*******************************************************************************

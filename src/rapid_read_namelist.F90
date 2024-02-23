@@ -8,7 +8,7 @@ subroutine rapid_read_namelist
 !multiple times without ever have to recompile.  Some information on the options
 !used is also printed in the stdout.
 !Author: 
-!Cedric H. David, 2011-2023.
+!Cedric H. David, 2011-2024.
 
 
 !*******************************************************************************

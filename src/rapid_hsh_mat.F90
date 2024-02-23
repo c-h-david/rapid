@@ -17,7 +17,7 @@ subroutine rapid_hsh_mat
 !Thank you to Chris A. Mattmann and to Si Liu who both suggested the use of 
 !hashtables to decrease model setup time.
 !Author: 
-!Cedric H. David, 2015-2023.
+!Cedric H. David, 2015-2024.
 
 
 !*******************************************************************************

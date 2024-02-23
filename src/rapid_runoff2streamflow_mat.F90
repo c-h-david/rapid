@@ -8,7 +8,7 @@ subroutine rapid_runoff2streamflow_mat
 !This operator is used within the data assimilation as part of the
 !observations operator H in the Kalman gain
 !Authors: 
-!Charlotte M. Emery, and Cedric H. David, 2018-2023.
+!Charlotte M. Emery, and Cedric H. David, 2018-2024.
 
 
 !*******************************************************************************

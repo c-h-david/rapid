@@ -8,7 +8,7 @@
 #only if git is installed and if the RAPID git repository is present.  Otherwise
 #'unknown' is used.  
 #Author:
-#Cedric H. David, 2016-2023.
+#Cedric H. David, 2016-2024.
 
 
 #*******************************************************************************

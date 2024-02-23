@@ -18,7 +18,7 @@
 # - 33 if a search failed 
 # - 99 if a comparison failed 
 #Author:
-#Cedric H. David, 2018-2023.
+#Cedric H. David, 2018-2024.
 
 
 #*******************************************************************************

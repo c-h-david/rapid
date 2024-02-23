@@ -6,7 +6,7 @@ subroutine rapid_cli
 !Purpose:
 !Command line interface for RAPID.
 !Authors: 
-!Kel Markert and Cedric H. David, 2021-2023.
+!Kel Markert and Cedric H. David, 2021-2024.
 
 
 !*******************************************************************************

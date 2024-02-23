@@ -28,7 +28,7 @@
 # - 33 if a search failed
 # - 99 if a comparison failed
 #Authors:
-#Charlotte M. Emery, Cedric H. David, 2017-2023.
+#Charlotte M. Emery, Cedric H. David, 2017-2024.
 
 #*******************************************************************************
 #Notes on tricks used here

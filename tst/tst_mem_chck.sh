@@ -14,7 +14,7 @@
 # - 22 if arguments are faulty 
 # - 44 if the script finds that the matrix memory allocation was NOT optimal
 #Author:
-#Cedric H. David, 2018-2023.
+#Cedric H. David, 2018-2024.
 
 
 #*******************************************************************************
