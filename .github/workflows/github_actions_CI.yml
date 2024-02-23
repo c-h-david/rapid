@@ -75,12 +75,6 @@ jobs:
       steps:
 
       #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      #Checkout RAPID code
-      #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-         - name: Checkout RAPID code
-           uses: actions/checkout@v4
-
-      #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       #Display GitHub Action-related information
       #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
          - name: Display GitHub Action-related information
@@ -93,6 +87,12 @@ jobs:
               echo "The current working directory is $PWD"
               echo "The GitHub workspace is ${{ github.workspace }}"
               echo "The shell used is $SHELL"
+
+      #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      #Checkout RAPID code
+      #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+         - name: Checkout RAPID code
+           uses: actions/checkout@v4
 
       #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       #Install OS requirements
