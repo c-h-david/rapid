@@ -48,18 +48,16 @@ fi
 #*******************************************************************************
 #Exporting environment variables 
 #*******************************************************************************
-export TACC_NETCDF_LIB=$INSTALLZ_DIR/netcdf-install/lib
-export TACC_NETCDF_INC=$INSTALLZ_DIR/netcdf-install/include
+export NETCDF_LIB='-L /usr/lib -lnetcdff'
+export NETCDF_INCLUDE='-I /usr/include'
 export PETSC_DIR=$INSTALLZ_DIR/petsc-3.13.6
 export PETSC_ARCH='linux-gcc-c'
-export LD_LIBRARY_PATH=$TACC_NETCDF_LIB
 
 
 #*******************************************************************************
 #Exporting directories with library-related executables to $PATH
 #*******************************************************************************
 export PATH=$PATH:/$PETSC_DIR/$PETSC_ARCH/bin
-export PATH=$PATH:$INSTALLZ_DIR/netcdf-install/bin
 
 
 #*******************************************************************************
