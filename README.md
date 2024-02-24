@@ -37,6 +37,9 @@ Downloading RAPID with Docker can be done using:
 $ docker pull chdavid/rapid
 ```
 
+> The images for RAPID on Docker Hub support CPU architectures for both AMD64
+> and ARM64!
+
 ### Install packages
 The beauty of Docker is that there is **no need to install anymore packages**.
 RAPID is ready to go! To run it, just use:
@@ -99,12 +102,7 @@ $ sudo apt-get install -y --no-install-recommends $(grep -v -E '(^#|^$)' require
 >```
 
 ### Install netCDF
-The Network Common Data Form (NetCDF) was already installed with apt-get.
-
-
-
-
-
+The Network Common Data Form (NetCDF) was already installed with `apt-get`.
 
 However, the environment should be updated using:
 
@@ -130,6 +128,13 @@ $ python3 ./configure PETSC_DIR=$PWD PETSC_ARCH=linux-gcc-c --download-fblaslapa
 $ make PETSC_DIR=$PWD PETSC_ARCH=linux-gcc-c all > all.log
 $ make PETSC_DIR=$PWD PETSC_ARCH=linux-gcc-c check > check.log
 ```
+
+> Note that the following can be used as a replacement for the above code block:
+>
+> ```
+> $ mkdir $HOME/installz
+> $ ./rapid_install_prereqs.sh --installz=$HOME/installz
+> ```
 
 Then, the environment should be updated using:
 
