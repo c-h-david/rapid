@@ -52,6 +52,17 @@ echo " . Done for ./ directory"
 
 
 #*******************************************************************************
+#Change year in ./drv/ directory
+#*******************************************************************************
+for file in `find ./drv/ -maxdepth 1 -type f`
+do
+     sed -i -e "s|\-$old_year|\-$new_year|" $file
+done
+
+echo " . Done for ./drv/ directory"
+
+
+#*******************************************************************************
 #Change year in ./src/ directory
 #*******************************************************************************
 for file in `find ./src/ -maxdepth 1 -type f`
