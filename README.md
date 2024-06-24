@@ -1,7 +1,7 @@
 # RAPID
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.593867.svg)](https://doi.org/10.5281/zenodo.593867)
 
-[![License (3-Clause BSD)](https://img.shields.io/badge/license-BSD%203--Clause-yellow.svg)](https://github.com/c-h-david/rapid/blob/master/LICENSE)
+[![License (3-Clause BSD)](https://img.shields.io/badge/license-BSD%203--Clause-yellow.svg)](https://github.com/c-h-david/rapid/blob/main/LICENSE)
 
 [![Docker Images](https://img.shields.io/badge/docker-images-blue?logo=docker)](https://hub.docker.com/r/chdavid/rapid/tags)
 
@@ -28,7 +28,7 @@ systems. To install it, follow the instructions in the link provided above.
 
 Note that the experienced users may find more up-to-date installation
 instructions in
-[Dockerfile](https://github.com/c-h-david/rapid/blob/master/Dockerfile).
+[Dockerfile](https://github.com/c-h-david/rapid/blob/main/Dockerfile).
 
 ### Download RAPID
 Downloading RAPID with Docker can be done using:
@@ -53,7 +53,7 @@ Testing scripts are currently under development.
 
 Note that the experienced users may find more up-to-date testing instructions
 in
-[docker.test.yml](https://github.com/c-h-david/rapid/blob/master/docker.test.yml).
+[docker.test.yml](https://github.com/c-h-david/rapid/blob/main/docker.test.yml).
 
 ## Installation on Debian
 This document was written and tested on a machine with a **clean** image of 
@@ -63,7 +63,7 @@ Similar steps **may** be applicable for Ubuntu.
 
 Note that the experienced users may find more up-to-date installation 
 instructions in
-[github\_actions\_CI.yml](https://github.com/c-h-david/rapid/blob/master/.github/workflows/github_actions_CI.yml).
+[github\_actions\_CI.yml](https://github.com/c-h-david/rapid/blob/main/.github/workflows/github_actions_CI.yml).
 
 ### Download RAPID
 First, make sure that `git` is installed: 
@@ -86,7 +86,7 @@ $ cd rapid/
 
 ### Install APT packages
 Software packages for the Advanced Packaging Tool (APT) are summarized in 
-[requirements.apt](https://github.com/c-h-david/rapid/blob/master/requirements.apt)
+[requirements.apt](https://github.com/c-h-david/rapid/blob/main/requirements.apt)
 and can be installed with `apt-get`. All packages can be installed at once using:
 
 ```
@@ -94,7 +94,7 @@ $ sudo apt-get install -y --no-install-recommends $(grep -v -E '(^#|^$)' require
 ```
 
 > Alternatively, one may install the APT packages listed in 
-> [requirements.apt](https://github.com/c-h-david/rapid/blob/master/requirements.apt)
+> [requirements.apt](https://github.com/c-h-david/rapid/blob/main/requirements.apt)
 > one by one, for example:
 >
 > ```
@@ -169,4 +169,4 @@ $ gfortran -o tst_run_conv_Qinit tst_run_conv_Qinit.f90 $NETCDF_INCLUDE $NETCDF_
 
 Note that the experienced users may find more up-to-date testing instructions 
 in
-[github\_actions\_CI.yml](https://github.com/c-h-david/rapid/blob/master/.github/workflows/github_actions_CI.yml).
+[github\_actions\_CI.yml](https://github.com/c-h-david/rapid/blob/main/.github/workflows/github_actions_CI.yml).
